@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.Customers.Query
+namespace AppDiv.SmartAgency.Application.Features.Query.Customers
 {
     // Customer GetCustomerByIdQuery with Customer response
     public class GetCustomerByIdQuery : IRequest<Customer>

@@ -1,6 +1,6 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Features.User.Command.Create;
-using AppDiv.SmartAgency.Application.Features.User.Query;
+using AppDiv.SmartAgency.Application.Features.Command.Create.Users;
+using AppDiv.SmartAgency.Application.Features.Query.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

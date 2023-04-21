@@ -13,10 +13,10 @@ namespace AppDiv.SmartAgency.Domain.Configurations
             builder.Property(s => s.ModifiedBy)
                 .HasDefaultValue(Guid.Empty);
 
-            builder.HasOne(m => m.Gender)
-                .WithMany()
-                .HasForeignKey(u => u.GenderId)
-                .OnDelete(DeleteBehavior.NoAction);
+            // builder.HasOne(m => m.Gender)
+            //     .WithMany()
+            //     .HasForeignKey(u => u.GenderId)
+            //     .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(m => m.Suffix)
                 .WithMany()

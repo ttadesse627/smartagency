@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.Customers.Query
+namespace AppDiv.SmartAgency.Application.Features.Query.Customers
 {
     // Customer query with List<Customer> response
     public record GetAllCustomerQuery : IRequest<List<CustomerResponseDTO>>

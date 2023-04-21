@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Domain.Repositories;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
+using AppDiv.SmartAgency.Infrastructure.Context;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {

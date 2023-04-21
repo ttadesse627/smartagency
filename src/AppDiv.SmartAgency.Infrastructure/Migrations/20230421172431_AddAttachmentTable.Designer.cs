@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230421032121_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230421172431_AddAttachmentTable")]
+    partial class AddAttachmentTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,29 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Attachment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("ShowOnCv")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attachments");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Audit.AuditLog", b =>
                 {
                     b.Property<Guid>("AuditId")
@@ -135,6 +158,47 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a3526770-3c0e-4e7f-8330-5faa4c913aa0",
+                            Name = "Country"
+                        },
+                        new
+                        {
+                            Id = "d9ea70c6-3252-4e8f-a31a-1915ce495197",
+                            Name = "Qualification Type"
+                        },
+                        new
+                        {
+                            Id = "3a04c9e6-a6ec-41bb-8c5e-949343408582",
+                            Name = "Language"
+                        },
+                        new
+                        {
+                            Id = "24463a3a-3dcd-4095-9a20-9d664cdd2c4b",
+                            Name = "Award"
+                        },
+                        new
+                        {
+                            Id = "91bd7504-7209-4b84-95a1-db4fb9a64618",
+                            Name = "Skill"
+                        });
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.PersonalInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,19 +214,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("FirstNameStr")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("GenderId")
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("LastNameStr")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("MiddleNameStr")
+                    b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -177,42 +240,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("PersonalInfo");
                 });
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Gender", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 4, 21, 6, 21, 20, 821, DateTimeKind.Local).AddTicks(4338));
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Name" }, "IDX_UQ_Gender")
-                        .IsUnique();
-
-                    b.ToTable("Genders");
-                });
-
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Suffix", b =>
                 {
                     b.Property<Guid>("Id")
@@ -222,7 +249,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 4, 21, 6, 21, 20, 821, DateTimeKind.Local).AddTicks(5654));
+                        .HasDefaultValue(new DateTime(2023, 4, 21, 20, 24, 30, 847, DateTimeKind.Local).AddTicks(814));
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("char(36)");

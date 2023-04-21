@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Domain.Repositories;
 using MediatR;
 using ApplicationException = AppDiv.SmartAgency.Application.Exceptions.ApplicationException;
 
-namespace AppDiv.SmartAgency.Application.Features.Customers.Command.Create
+namespace AppDiv.SmartAgency.Application.Features.Command.Create.Customers
 {
 
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerCommandResponse>
@@ -18,7 +18,6 @@ namespace AppDiv.SmartAgency.Application.Features.Customers.Command.Create
         }
         public async Task<CreateCustomerCommandResponse> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-           
            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
             var createCustomerCommandResponse = new CreateCustomerCommandResponse();
@@ -38,15 +37,13 @@ namespace AppDiv.SmartAgency.Application.Features.Customers.Command.Create
             if (createCustomerCommandResponse.Success)
             {
                 //can use this instead of automapper
-               var customer = new Customer()
-               {
-                   Id=Guid.NewGuid(),
-                   FirstName=request.customer.FirstName,
-                   Address=request.customer.Address,
-                   ContactNumber=request.customer.ContactNumber, 
-                   Email=request.customer.Email,
-                   LastName=request.customer.LastName
-               };
+                var customer = new Customer()
+                {
+                    Id=Guid.NewGuid(),
+                    FirstName=request.customer.FirstName,
+                    Address=request.customer.Address,
+                    LastName=request.customer.LastName
+                };
                 //
                 await _customerRepository.InsertAsync(customer, cancellationToken);
                 var result = await _customerRepository.SaveChangesAsync(cancellationToken);

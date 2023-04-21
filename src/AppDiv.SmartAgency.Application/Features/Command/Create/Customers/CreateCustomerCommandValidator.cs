@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.Customers.Command.Create
+namespace AppDiv.SmartAgency.Application.Features.Command.Create.Customers
 {
     public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCommand>
     {

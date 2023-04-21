@@ -3,7 +3,7 @@ using AppDiv.SmartAgency.Domain.Entities.Settings;
 
 namespace AppDiv.SmartAgency.Interfaces.Persistence.Settings
 {
-    public interface IGenderRepository : IBaseRepository<Gender>
-    {
-    }
+    // public interface IGenderRepository : IBaseRepository<Gender>
+    // {
+    // }
 }

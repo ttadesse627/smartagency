@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Domain.Entities.Settings;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request
 {
@@ -10,15 +11,10 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
-        public string ContactNumber { get; set; }
-        public string Address { get; set; }
+        public Address Address { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public AddCustomerRequest()
-        {
-            CreatedDate = DateTime.Now;
-        }
+        public AddCustomerRequest() => CreatedDate = DateTime.Now;
     }
 
 }

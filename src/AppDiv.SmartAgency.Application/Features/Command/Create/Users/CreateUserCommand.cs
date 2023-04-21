@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.User.Command.Create
+namespace AppDiv.SmartAgency.Application.Features.Command.Create.Users
 {
     public class CreateUserCommand : IRequest<int>
     {

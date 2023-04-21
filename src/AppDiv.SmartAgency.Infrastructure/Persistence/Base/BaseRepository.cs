@@ -1,6 +1,7 @@
 ﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Base;
+using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Contracts;
 using Audit.EntityFramework;
 using Microsoft.EntityFrameworkCore;

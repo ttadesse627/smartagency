@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230421032121_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230421152845_AddCategoryTable")]
+    partial class AddCategoryTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,6 +135,47 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b886958a-8fca-4361-b673-4ab18dbcc5c2",
+                            Name = "Country"
+                        },
+                        new
+                        {
+                            Id = "c419e08d-dec2-4496-a5aa-bf8345146563",
+                            Name = "Qualification Type"
+                        },
+                        new
+                        {
+                            Id = "89a6b010-eb44-44dd-9028-fec165887693",
+                            Name = "Language"
+                        },
+                        new
+                        {
+                            Id = "ef3a922e-0e9a-40dd-b246-ff00ce7ec6e9",
+                            Name = "Award"
+                        },
+                        new
+                        {
+                            Id = "3c51d531-0314-4e3f-943f-f8c1b040cbff",
+                            Name = "Skill"
+                        });
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.PersonalInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,19 +191,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("FirstNameStr")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("GenderId")
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("LastNameStr")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("MiddleNameStr")
+                    b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -177,42 +217,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("PersonalInfo");
                 });
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Gender", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 4, 21, 6, 21, 20, 821, DateTimeKind.Local).AddTicks(4338));
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Name" }, "IDX_UQ_Gender")
-                        .IsUnique();
-
-                    b.ToTable("Genders");
-                });
-
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Suffix", b =>
                 {
                     b.Property<Guid>("Id")
@@ -222,7 +226,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 4, 21, 6, 21, 20, 821, DateTimeKind.Local).AddTicks(5654));
+                        .HasDefaultValue(new DateTime(2023, 4, 21, 18, 28, 44, 354, DateTimeKind.Local).AddTicks(2146));
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("char(36)");

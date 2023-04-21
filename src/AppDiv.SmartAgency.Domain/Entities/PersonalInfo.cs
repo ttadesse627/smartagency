@@ -1,16 +1,13 @@
 
 using AppDiv.SmartAgency.Domain.Base;
+using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities{
     public class PersonalInfo : BaseAuditableEntity{
-        public string FirstNameStr { get; set; }
-        public string MiddleNameStr { get; set; }
-        public string LastNameStr { get; set;}
+        public string FirstName { get; set; } = string.Empty;
+        public string MiddleName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }
-        public string GenderId { get; set; }
-
-
-
-        
+        public Gender Gender { get; set; }
     }
 }

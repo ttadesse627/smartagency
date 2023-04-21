@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.Customers.Command.Delete
+namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Customers
 {
     // Customer create command with string response
     public class DeleteCustomerCommand : IRequest<String>
