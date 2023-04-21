@@ -1,4 +1,4 @@
-# CRVS
+# Smart Agency
 
 
 
@@ -42,21 +42,11 @@ Use the built-in continuous integration in GitLab.
 - [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
 - [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
 
-***
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
+## Smart Agency
 ## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
+Smart Agecy is the project that used as management tool for an agency that accepts people who interested in working abroad and connects with employers of abroad.
 ## Badges
 On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
@@ -90,3 +80,76 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+```sln
+
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C095E198-0153-4B94-8C5B-06688EEA884D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{79B4A644-6F41-45F7-956D-ACBA218582A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDiv.CRVS.API", "AppDiv.CRVS.API\AppDiv.CRVS.API.csproj", "{CB533A78-4F6F-49F2-A814-3F75B510B87A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDiv.CRVS.Application", "AppDiv.CRVS.Application\AppDiv.CRVS.Application.csproj", "{A2C524B4-6FC4-464F-AE2F-CCB8D185FE18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDiv.CRVS.Domain", "AppDiv.CRVS.Domain\AppDiv.CRVS.Domain.csproj", "{E5EFD755-DF52-4132-9D74-8FCDDCB6F37D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDiv.CRVS.Infrastructure", "AppDiv.CRVS.Infrastructure\AppDiv.CRVS.Infrastructure.csproj", "{8D8DB5F5-CE28-4E57-B9AD-A4F5D7542BB2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDiv.CRVS.Utility", "AppDiv.CRVS.Utility\AppDiv.CRVS.Utility.csproj", "{638E4C1D-362B-4590-8BB8-C236D881D7CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDiv.CRVS.Application.UnitTests", "AppDiv.CRVS.Application.UnitTests\AppDiv.CRVS.Application.UnitTests.csproj", "{CFF1E0C2-FFE0-4EF4-BF9B-9E001C14B128}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB533A78-4F6F-49F2-A814-3F75B510B87A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB533A78-4F6F-49F2-A814-3F75B510B87A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB533A78-4F6F-49F2-A814-3F75B510B87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB533A78-4F6F-49F2-A814-3F75B510B87A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C524B4-6FC4-464F-AE2F-CCB8D185FE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C524B4-6FC4-464F-AE2F-CCB8D185FE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C524B4-6FC4-464F-AE2F-CCB8D185FE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C524B4-6FC4-464F-AE2F-CCB8D185FE18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5EFD755-DF52-4132-9D74-8FCDDCB6F37D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5EFD755-DF52-4132-9D74-8FCDDCB6F37D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5EFD755-DF52-4132-9D74-8FCDDCB6F37D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5EFD755-DF52-4132-9D74-8FCDDCB6F37D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D8DB5F5-CE28-4E57-B9AD-A4F5D7542BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D8DB5F5-CE28-4E57-B9AD-A4F5D7542BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D8DB5F5-CE28-4E57-B9AD-A4F5D7542BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D8DB5F5-CE28-4E57-B9AD-A4F5D7542BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638E4C1D-362B-4590-8BB8-C236D881D7CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{638E4C1D-362B-4590-8BB8-C236D881D7CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{638E4C1D-362B-4590-8BB8-C236D881D7CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{638E4C1D-362B-4590-8BB8-C236D881D7CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFF1E0C2-FFE0-4EF4-BF9B-9E001C14B128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFF1E0C2-FFE0-4EF4-BF9B-9E001C14B128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFF1E0C2-FFE0-4EF4-BF9B-9E001C14B128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFF1E0C2-FFE0-4EF4-BF9B-9E001C14B128}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CB533A78-4F6F-49F2-A814-3F75B510B87A} = {C095E198-0153-4B94-8C5B-06688EEA884D}
+		{A2C524B4-6FC4-464F-AE2F-CCB8D185FE18} = {C095E198-0153-4B94-8C5B-06688EEA884D}
+		{E5EFD755-DF52-4132-9D74-8FCDDCB6F37D} = {C095E198-0153-4B94-8C5B-06688EEA884D}
+		{8D8DB5F5-CE28-4E57-B9AD-A4F5D7542BB2} = {C095E198-0153-4B94-8C5B-06688EEA884D}
+		{638E4C1D-362B-4590-8BB8-C236D881D7CF} = {C095E198-0153-4B94-8C5B-06688EEA884D}
+		{CFF1E0C2-FFE0-4EF4-BF9B-9E001C14B128} = {79B4A644-6F41-45F7-956D-ACBA218582A2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE97D5A7-42DF-43D6-BB20-A7829E6139AF}
+	EndGlobalSection
+EndGlobal
+
+
+```
