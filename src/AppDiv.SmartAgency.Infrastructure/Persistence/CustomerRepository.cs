@@ -1,5 +1,5 @@
-﻿using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Repositories;
+﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;

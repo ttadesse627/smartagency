@@ -1,7 +1,6 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.Request;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Repositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

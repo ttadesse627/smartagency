@@ -4,15 +4,14 @@ namespace AppDiv.SmartAgency.Application.Common
 {
     public class Result
     {
+        public bool Succeeded { get; set; }
+
+        public string[] Errors { get; set; }
         internal Result(bool succeeded, IEnumerable<string> errors)
         {
             Succeeded = succeeded;
             Errors = errors.ToArray();
         }
-
-        public bool Succeeded { get; set; }
-
-        public string[] Errors { get; set; }
 
         public static Result Success()
         {

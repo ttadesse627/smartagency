@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace AppDiv.SmartAgency.API.Controllers
 {
     [ApiController]
@@ -12,6 +11,5 @@ namespace AppDiv.SmartAgency.API.Controllers
         private ISender _mediator = null!;
 
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
-
     }
 }

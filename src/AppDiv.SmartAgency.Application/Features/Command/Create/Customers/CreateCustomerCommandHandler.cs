@@ -2,9 +2,9 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Repositories;
 using MediatR;
 using ApplicationException = AppDiv.SmartAgency.Application.Exceptions.ApplicationException;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 
 namespace AppDiv.SmartAgency.Application.Features.Command.Create.Customers
 {

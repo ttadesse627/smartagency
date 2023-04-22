@@ -1,7 +1,7 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Repositories;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 using System;
 using System.Collections.Generic;

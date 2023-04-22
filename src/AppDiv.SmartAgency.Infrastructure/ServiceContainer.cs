@@ -6,7 +6,6 @@ using AppDiv.SmartAgency.Domain;
 using AppDiv.SmartAgency.Utility.Config;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Infrastructure.Persistence;
-using AppDiv.SmartAgency.Domain.Repositories;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;

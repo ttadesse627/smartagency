@@ -12,7 +12,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.Customers
     {
         public CreateCustomerCommandResponse() : base()
         {
-                     
+          
         }
       //  public CustomerResponseDTO Customer { get; set; }  
     }
