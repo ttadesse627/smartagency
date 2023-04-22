@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230422114124_AttachmentColumnExtended")]
+    partial class AttachmentColumnExtended
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,9 +104,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -188,27 +187,27 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "29247167-6ad8-41fb-86ed-4b118140f52b",
+                            Id = "05e7589c-c1f4-497e-9313-1741cd3059cb",
                             Name = "Country"
                         },
                         new
                         {
-                            Id = "da7f1382-9541-47ae-8927-a48e0bae7763",
+                            Id = "bff34fb0-1750-4408-b612-e28dc66f481a",
                             Name = "Qualification Type"
                         },
                         new
                         {
-                            Id = "1647efce-7321-4690-b3d0-7c259bc9147f",
+                            Id = "d6576a1a-413e-4977-b781-dc91d941e91d",
                             Name = "Language"
                         },
                         new
                         {
-                            Id = "8228545d-8974-4919-b64a-75c96ea1d148",
+                            Id = "b3d1bc05-00a8-497b-9481-eb61b2e747aa",
                             Name = "Award"
                         },
                         new
                         {
-                            Id = "e28a4af4-668a-4fd7-a28f-8d0842984700",
+                            Id = "880126a1-5065-48a3-90bc-0e1b397b5f5b",
                             Name = "Skill"
                         });
                 });
@@ -263,7 +262,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 4, 22, 15, 12, 34, 659, DateTimeKind.Local).AddTicks(668));
+                        .HasDefaultValue(new DateTime(2023, 4, 22, 14, 41, 24, 482, DateTimeKind.Local).AddTicks(7972));
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("char(36)");

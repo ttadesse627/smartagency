@@ -64,6 +64,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IAttachmentRepository, AttaachmentRepository>();
 
             #endregion Repositories DI
 

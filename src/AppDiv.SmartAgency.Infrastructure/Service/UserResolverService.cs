@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AppDiv.SmartAgency.Infrastructure.Services
 {
-    public class UserResolverService: IUserResolverService
+    public class UserResolverService : IUserResolverService
     {
         private readonly IHttpContextAccessor httpContext;
 
@@ -13,14 +13,19 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
             this.httpContext = httpContext;
         }
 
-        public string GetUserEmail()
+        public string? GetUserEmail()
         {
             return httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "Email")?.Value;
         }
 
         public Guid GetUserId()
         {
-            return new Guid(httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId")?.Value);
+            string userIdClaimValue = httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId")?.Value;
+            if (string.IsNullOrEmpty(userIdClaimValue))
+            {
+                return Guid.Empty;
+            }
+            return new Guid(userIdClaimValue);
         }
 
         public string GetLocale()
