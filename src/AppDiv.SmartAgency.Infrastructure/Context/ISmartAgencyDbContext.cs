@@ -12,6 +12,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
 {
     public interface ISmartAgencyDbContext
     {
-        Guid GetCurrentUserId();
+        string GetCurrentUserId();
     }
 }

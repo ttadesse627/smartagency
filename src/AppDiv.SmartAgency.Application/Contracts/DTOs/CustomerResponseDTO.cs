@@ -15,7 +15,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs
         public string Email { get; set; }
         public string ContactNumber { get; set; }
         public string Address { get; set; }
-        public Guid? GenderId { get; set; }
-        public Guid? SuffixId { get; set; }
+        public string? GenderId { get; set; }
+        public string? SuffixId { get; set; }
     }
 }

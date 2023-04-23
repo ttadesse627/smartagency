@@ -12,20 +12,20 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
         {
             this.httpContext = httpContext;
         }
-
+        
         public string? GetUserEmail()
         {
             return httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "Email")?.Value;
         }
 
-        public Guid GetUserId()
+        public string GetUserId()
         {
             string userIdClaimValue = httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId")?.Value;
             if (string.IsNullOrEmpty(userIdClaimValue))
             {
-                return Guid.Empty;
+                return string.Empty;
             }
-            return new Guid(userIdClaimValue);
+            return new String(userIdClaimValue);
         }
 
         public string GetLocale()

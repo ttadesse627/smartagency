@@ -3,7 +3,7 @@
     public interface IUserResolverService
     {
         string GetUserEmail();
-        Guid GetUserId();
+        string GetUserId();
         string GetLocale();
     }
 }

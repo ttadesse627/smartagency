@@ -14,16 +14,16 @@ namespace AppDiv.SmartAgency.Domain.Base
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual Guid Id { get; set; }
+        public virtual string Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual Guid? CreatedBy { get; set; }
-        public virtual Guid? ModifiedBy { get; set; }
+        public virtual string? CreatedBy { get; set; }
+        public virtual string? ModifiedBy { get; set; }
         public BaseAuditableEntity()
         {
+            Id = Guid.NewGuid().ToString();
             this.CreatedAt = DateTime.Now;
-            this.Id=Guid.NewGuid();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-using Microsoft.AspNetCore.Identity;
+using AppDiv.SmartAgency.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

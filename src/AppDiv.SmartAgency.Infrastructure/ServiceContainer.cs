@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using AppDiv.SmartAgency.Domain;
+using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Utility.Config;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Infrastructure.Persistence;

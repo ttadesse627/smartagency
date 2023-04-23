@@ -17,6 +17,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Customer, EditCustomerCommand>().ReverseMap();
             CreateMap<Attachment, CreateAttachmentResponseDTO>().ReverseMap();
             CreateMap<Attachment, CreateAttachmentCommand>().ReverseMap();
+            CreateMap<Attachment, AttachmentResponseDTO>().ReverseMap();
         }
     }
 }

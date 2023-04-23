@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Domain;
+using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces
 {

@@ -19,7 +19,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.ApplicationUser", b =>
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -57,10 +57,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<string>("PersonalInfoId")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("PersonalInfoId1")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
@@ -91,16 +88,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.HasIndex("PersonalInfoId1");
+                    b.HasIndex("PersonalInfoId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Attachment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -112,8 +109,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -124,8 +121,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("ShowOnCv")
                         .HasColumnType("tinyint(1)");
@@ -137,9 +134,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Audit.AuditLog", b =>
                 {
-                    b.Property<Guid>("AuditId")
+                    b.Property<string>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Action")
                         .IsRequired()
@@ -152,8 +149,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("AuditDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("AuditUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("AuditUserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EntityType")
                         .IsRequired()
@@ -188,36 +186,36 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "29247167-6ad8-41fb-86ed-4b118140f52b",
+                            Id = "ec202c88-e36b-4879-a41b-b1e1840a9b2f",
                             Name = "Country"
                         },
                         new
                         {
-                            Id = "da7f1382-9541-47ae-8927-a48e0bae7763",
+                            Id = "f5b3055f-948c-435b-b988-8c18166144b1",
                             Name = "Qualification Type"
                         },
                         new
                         {
-                            Id = "1647efce-7321-4690-b3d0-7c259bc9147f",
+                            Id = "1e84ab14-1999-43ab-8e8e-7f7cbc0c45ee",
                             Name = "Language"
                         },
                         new
                         {
-                            Id = "8228545d-8974-4919-b64a-75c96ea1d148",
+                            Id = "1b808dd6-1c99-43c8-8155-bc28ac98d988",
                             Name = "Award"
                         },
                         new
                         {
-                            Id = "e28a4af4-668a-4fd7-a28f-8d0842984700",
+                            Id = "de00271d-a10d-4fc8-a9d3-8a279cb8e9d2",
                             Name = "Skill"
                         });
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.PersonalInfo", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
@@ -225,8 +223,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -246,8 +244,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -256,23 +254,23 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Suffix", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 4, 22, 15, 12, 34, 659, DateTimeKind.Local).AddTicks(668));
+                        .HasDefaultValue(new DateTime(2023, 4, 23, 10, 41, 7, 7, DateTimeKind.Local).AddTicks(4563));
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -414,11 +412,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.ApplicationUser", b =>
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.PersonalInfo", "PersonalInfo")
                         .WithMany()
-                        .HasForeignKey("PersonalInfoId1")
+                        .HasForeignKey("PersonalInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -436,7 +434,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.ApplicationUser", null)
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -445,7 +443,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.ApplicationUser", null)
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -460,7 +458,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.ApplicationUser", null)
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,7 +467,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.ApplicationUser", null)
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

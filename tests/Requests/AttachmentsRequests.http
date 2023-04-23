@@ -1,0 +1,18 @@
+
+@host = http://127.0.0.1:5120/api/attachment
+
+GET {{host}}/get-all HTTP/1.1
+
+###
+POST {{host}}/create
+Content-Type: application/json
+
+{
+    "attachment": {
+        "code": "Passport",
+        "description": "Passport Attachment",
+        "category": 5,
+        "isRequired": true,
+        "showOnCv": false
+    }
+}

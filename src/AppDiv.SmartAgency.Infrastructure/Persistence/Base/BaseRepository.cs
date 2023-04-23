@@ -14,14 +14,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         private static readonly MethodInfo OrderByAscMethod = typeof(Queryable).GetMethods()
-           .Where(method => method.Name == "OrderBy")
-           .Where(method => method.GetParameters().Length == 2)
-           .Single();
+            .Where(method => method.Name == "OrderBy")
+            .Where(method => method.GetParameters().Length == 2)
+            .Single();
 
         private static readonly MethodInfo OrderByDescMethod = typeof(Queryable).GetMethods()
-           .Where(method => method.Name == "OrderByDescending")
-           .Where(method => method.GetParameters().Length == 2)
-           .Single();
+            .Where(method => method.Name == "OrderByDescending")
+            .Where(method => method.GetParameters().Length == 2)
+            .Single();
 
         private readonly SmartAgencyDbContext _dbContext;
         public BaseRepository(SmartAgencyDbContext dbContext)

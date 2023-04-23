@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
-using AppDiv.SmartAgency.Domain;
+using AppDiv.SmartAgency.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using AppDiv.SmartAgency.Application.Common;
@@ -11,7 +11,7 @@ using System.Text;
 
 namespace AppDiv.SmartAgency.Application.Service
 {
-  public class IdentityService : IIdentityService
+    public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<IdentityService> _logger;
@@ -31,14 +31,14 @@ namespace AppDiv.SmartAgency.Application.Service
 
             if (user != null && await _userManager.CheckPasswordAsync(user, password))
             {
-               var userRoles = await _userManager.GetRolesAsync(user); 
+                var userRoles = await _userManager.GetRolesAsync(user);
                 // var tokenString = _tokenGeneratorService.GenerateJWTToken((userId:user.Id , userName:user.UserName , roles:userRoles));
                 return (Result.Success(), userRoles, user);
 
 
             }
             string[] errors = new string[] { "Invalid login" };
-            return (Result.Failure(errors),null, null);
+            return (Result.Failure(errors), null, null);
 
         }
 
@@ -49,10 +49,11 @@ namespace AppDiv.SmartAgency.Application.Service
 
             return user.UserName;
         }
-        public string GetUserGroupId(string userId){
-            return  _userManager.Users.First(u => u.Id == userId).UserGroupId;
+        public string GetUserGroupId(string userId)
+        {
+            return _userManager.Users.First(u => u.Id == userId).UserGroupId;
         }
-        public async Task<(Result, string)> createUser(string userName, string email,  string personalInfoId, string userGroupId)
+        public async Task<(Result, string)> createUser(string userName, string email, string personalInfoId, string userGroupId)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
@@ -122,7 +123,8 @@ namespace AppDiv.SmartAgency.Application.Service
             return Result.Success();
         }
 
-        public async Task<Result> UpdateUser(string id, string userName, string email,  string personalInfoId, string userGroupId){
+        public async Task<Result> UpdateUser(string id, string userName, string email, string personalInfoId, string userGroupId)
+        {
 
             var user = await _userManager.FindByIdAsync(id.ToString());
 
@@ -131,7 +133,7 @@ namespace AppDiv.SmartAgency.Application.Service
                 return Result.Failure(new string[] { "could not find user with the given id" });
             }
 
-          
+
             user.UserName = userName;
             user.Email = email;
             user.UserGroupId = userGroupId;
@@ -163,7 +165,7 @@ namespace AppDiv.SmartAgency.Application.Service
 
             return Result.Success();
         }
-   
+
         private string GeneratePassword()
         {
             var options = _userManager.Options.Password;

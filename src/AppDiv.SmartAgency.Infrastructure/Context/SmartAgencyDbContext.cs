@@ -70,7 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 auditEntity.AuditData = JsonConvert.SerializeObject(auditedEntity, GetJsonSerializerSettings());
                 auditEntity.EntityType = auditedEntity.EntityType.Name;
                 auditEntity.AuditDate = DateTime.Now;
-                auditEntity.AuditUserId = Guid.NewGuid();
+                auditEntity.AuditUserId = Guid.NewGuid().ToString();
                 if (userResolverService != null)
                 {
                     auditEntity.AuditUserId = userResolverService.GetUserId();
@@ -112,7 +112,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         };
     }
 
-    public Guid GetCurrentUserId()
+    public string GetCurrentUserId()
     {
         return userResolverService.GetUserId();
     }

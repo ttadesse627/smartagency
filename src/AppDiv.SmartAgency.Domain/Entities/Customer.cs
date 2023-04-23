@@ -12,6 +12,6 @@ public class Customer : BaseAuditableEntity
     public string ContactNumber { get; set; } = string.Empty;
     public Address? Address { get; set; }
     public Gender Gender { get; set; } = Gender.Male;
-    public Guid? SuffixId { get; set; }
+    public string? SuffixId { get; set; }
     public Suffix? Suffix { get; set; }
 }

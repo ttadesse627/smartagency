@@ -9,13 +9,13 @@ namespace AppDiv.SmartAgency.Domain.Entities.Audit
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid AuditId { get; set; }
+        public string AuditId { get; set; } = Guid.NewGuid().ToString();
         public string AuditData { get; set; }
         public string Action { get; set; }
         public string Enviroment { get; set; }
         public string EntityType { get; set; }
         public DateTime AuditDate { get; set; }
-        public Guid AuditUserId { get; set; }
+        public string AuditUserId { get; set; } = Guid.NewGuid().ToString();
         public string TablePk { get; set; }
     }
 }

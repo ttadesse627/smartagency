@@ -1,6 +1,5 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 using System;
@@ -27,11 +26,11 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Customers
         }
         public async Task<List<CustomerResponseDTO>> Handle(GetAllCustomerQuery request, CancellationToken cancellationToken)
         {
-           var customerList= await _customerRepository.GetAllAsync();         
+            var customerList = await _customerRepository.GetAllAsync();
             var customerResponse = CustomMapper.Mapper.Map<List<CustomerResponseDTO>>(customerList);
             return customerResponse;
 
-           // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
+            // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
     }
 }

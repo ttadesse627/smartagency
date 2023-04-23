@@ -64,7 +64,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
 
         [HttpPut("Edit/{id}")]
-        public async Task<ActionResult> Edit(Guid id, [FromBody] EditCustomerCommand command)
+        public async Task<ActionResult> Edit(string id, [FromBody] EditCustomerCommand command)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
         [Authorize(Roles = "Admin, Management")]
         [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeleteCustomer(Guid id)
+        public async Task<ActionResult> DeleteCustomer(string id)
         {
             try
             {

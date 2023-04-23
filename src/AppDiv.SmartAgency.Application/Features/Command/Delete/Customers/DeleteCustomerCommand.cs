@@ -11,9 +11,9 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Customers
     // Customer create command with string response
     public class DeleteCustomerCommand : IRequest<String>
     {
-        public Guid Id { get; private set; }
+        public string Id { get; private set; }
 
-        public DeleteCustomerCommand(Guid Id)
+        public DeleteCustomerCommand(string Id)
         {
             this.Id = Id;
         }
@@ -32,7 +32,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Customers
         {
             try
             {
-               var customerEntity = await _customerRepository.GetByIdAsync(request.Id);
+                var customerEntity = await _customerRepository.GetByIdAsync(request.Id);
 
                 await _customerRepository.DeleteAsync(customerEntity);
             }

@@ -9,9 +9,9 @@ namespace AppDiv.SmartAgency.Domain.Configurations
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
             builder.Property(s => s.CreatedBy)
-                .HasDefaultValue(Guid.Empty);
+                .HasDefaultValue(string.Empty);
             builder.Property(s => s.ModifiedBy)
-                .HasDefaultValue(Guid.Empty);
+                .HasDefaultValue(string.Empty);
 
             // builder.HasOne(m => m.Gender)
             //     .WithMany()

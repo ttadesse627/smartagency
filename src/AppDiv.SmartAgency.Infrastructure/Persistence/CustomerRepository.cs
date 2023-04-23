@@ -16,7 +16,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
         }
 
-        public async Task<Customer> GetByIdAsync(Guid id)
+        public async Task<Customer> GetByIdAsync(string id)
         {
             return await base.GetAsync(id);
         }
