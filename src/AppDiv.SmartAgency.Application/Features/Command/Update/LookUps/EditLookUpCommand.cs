@@ -13,16 +13,16 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.LookUps
     public class EditLookUpCommand : IRequest<LookUpResponseDTO>
     {
 
-        
-    public string Id { get; set; }
-    
-    public Category Category { get; set; }
 
-    public string Value { get; set; }
+        public string Id { get; set; }
+
+        public string CategoryId { get; set; }
+
+        public string Value { get; set; }
     }
 
 
-       public class EditLookUpCommandHandler : IRequestHandler<EditLookUpCommand, LookUpResponseDTO>
+    public class EditLookUpCommandHandler : IRequestHandler<EditLookUpCommand, LookUpResponseDTO>
     {
         private readonly ILookUpRepository _lookUpRepository;
         private readonly ILookUpRepository _lookUpQueryRepository;
@@ -32,18 +32,18 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.LookUps
         }
         public async Task<LookUpResponseDTO> Handle(EditLookUpCommand request, CancellationToken cancellationToken)
         {
-           // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request);
+            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request);
             LookUp lookUpEntity = new LookUp
             {
                 Id = request.Id,
-                Category = request.Category,
+                CategoryId = request.CategoryId,
                 Value = request.Value
-                
+
             };
 
             try
             {
-                await _lookUpRepository.UpdateAsync(lookUpEntity,x=>x.Id);
+                await _lookUpRepository.UpdateAsync(lookUpEntity, x => x.Id);
             }
             catch (Exception exp)
             {

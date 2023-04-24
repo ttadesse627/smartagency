@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Domain.Base;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Settings
 {
-    public class Address
+    public class Address : BaseAuditableEntity
     {
-        public string guid = Guid.NewGuid().ToString();
-        public string? Coutry { get; set; }
+        public string? Country { get; set; }
         public string? Region { get; set; }
         public string? Zone { get; set; }
         public string? Woreda { get; set; }

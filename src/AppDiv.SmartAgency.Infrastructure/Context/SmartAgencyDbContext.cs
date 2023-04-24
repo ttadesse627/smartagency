@@ -27,6 +27,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
     public DbSet<Attachment> Attachments { get; set; }
     public DbSet<LookUp> LookUps { get; set; }
     public DbSet<Partner> Partners { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
     public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
     {

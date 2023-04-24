@@ -1,5 +1,6 @@
 
 
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
@@ -9,7 +10,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
 
-public class EditAttachmentCommand : IRequest<AttachmentResponseDTO>
+public class EditAttachmentCommand : IRequest<ServiceResponse<AttachmentResponseDTO>>
 {
 
     public string Id { get; set; }
@@ -20,30 +21,22 @@ public class EditAttachmentCommand : IRequest<AttachmentResponseDTO>
     public bool ShowOnCv { get; set; }
 }
 
-public class EditAttachmentCommandHandler : IRequestHandler<EditAttachmentCommand, AttachmentResponseDTO>
+public class EditAttachmentCommandHandler : IRequestHandler<EditAttachmentCommand, ServiceResponse<AttachmentResponseDTO>>
 {
     private readonly IAttachmentRepository _attachmentRepository;
     private readonly IAttachmentRepository _attachmentQueryRepository;
-    public EditAttachmentCommandHandler(IAttachmentRepository attachmentRepository)
+    public EditAttachmentCommandHandler(IAttachmentRepository attachmentRepository, IAttachmentRepository attachmentQueryRepository)
     {
         _attachmentRepository = attachmentRepository;
+        _attachmentQueryRepository = attachmentQueryRepository;
     }
-    public async Task<AttachmentResponseDTO> Handle(EditAttachmentCommand request, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<AttachmentResponseDTO>> Handle(EditAttachmentCommand request, CancellationToken cancellationToken)
     {
-        // var attachmentEntity = CustomMapper.Mapper.Map<Attachment>(request);
-        // Attachment attachEntity = new Attachment
-        // {
-        //     Id = request.Id,
-        //     Code = request.Code,
-        //     Description = request.Description,
-        //     Category = request.Category,
-        //     IsRequired = request.IsRequired,
-        //     ShowOnCv = request.ShowOnCv
-        // };
+        var response = new ServiceResponse<AttachmentResponseDTO>();
 
         try
         {
-            await _attachmentRepository.UpdateAttachment(request);
+            response = await _attachmentRepository.UpdateAttachment(request);
         }
         catch (Exception exp)
         {
@@ -53,6 +46,6 @@ public class EditAttachmentCommandHandler : IRequestHandler<EditAttachmentComman
         var modifiedAttachment = await _attachmentQueryRepository.GetByIdAsync(request.Id);
         var attachmentResponse = CustomMapper.Mapper.Map<AttachmentResponseDTO>(modifiedAttachment);
 
-        return attachmentResponse;
+        return response;
     }
 }

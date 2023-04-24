@@ -5,9 +5,9 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
 {
     public class CreateLookUpCommandResponse : BaseResponse
     {
-        public CreateLookUpCommandResponse(): base()
-    {
-        
-    }
+        public CreateLookUpCommandResponse() : base()
+        {
+
+        }
     }
 }

@@ -56,13 +56,22 @@ public class AttachmentController : ControllerBase
     }
 
     [HttpPut("edit/{id}")]
-    public async Task<ActionResult> EditAttachment(string id, [FromBody] EditAttachmentCommand request)
+    public async Task<ActionResult<ServiceResponse<EditAttachmentCommand>>> EditAttachment(string id, [FromBody] EditAttachmentCommand request)
     {
         try
         {
             if (request.Id == id)
             {
-                var result = await _mediator.Send(request);
+                var result = await _mediator.Send(new EditAttachmentCommand
+                {
+                    Id = request.Id,
+                    Code = request.Code,
+                    Description = request.Description,
+                    Category = request.Category,
+                    IsRequired = request.IsRequired,
+                    ShowOnCv = request.ShowOnCv
+                }
+                );
                 return Ok(result);
             }
             else

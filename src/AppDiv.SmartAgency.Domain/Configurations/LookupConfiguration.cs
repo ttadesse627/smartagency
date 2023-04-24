@@ -9,8 +9,8 @@ namespace AppDiv.SmartAgency.Domain.Configurations
         public void Configure(EntityTypeBuilder<LookUp> builder)
         {
             
-            builder.HasOne(m => m.Category)
-                .WithMany(n=> n.Lookups)
+            builder.HasOne(m => m.CategoryId)
+                .WithMany(n => n.)
                 .HasForeignKey(u => u.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
         }

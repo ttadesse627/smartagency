@@ -39,7 +39,7 @@ public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, C
                 //can use this instead of automapper
                 var lookUp = new LookUp()
                 {
-                    Category=request.lookUp.Category,
+                    CategoryId=request.lookUp.CategoryId,
                     Value=request.lookUp.Value
                     
                 };
