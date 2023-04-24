@@ -12,6 +12,7 @@ using AppDiv.SmartAgency.Infrastructure.Seed;
 using Audit.EntityFramework;
 using AppDiv.SmartAgency.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using AppDiv.SmartAgency.Domain.Configurations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Context
 {
@@ -22,14 +23,20 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
     public DbSet<AuditLog> AuditLogs { get; set; }
     // public DbSet<Gender> Genders { get; set; }
     public DbSet<Suffix> Suffixes { get; set; }
-    public DbSet<Category> Categories => Set<Category>();
-    public DbSet<Attachment> Attachments => Set<Attachment>();
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Attachment> Attachments { get; set; }
+    public DbSet<LookUp> LookUps { get; set; }
+    public DbSet<Partner> Partners { get; set; }
+
     public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
     {
         this.ChangeTracker.LazyLoadingEnabled = false;
         this.userResolverService = userResolverService;
     }
-
+public SmartAgencyDbContext()
+ {
+    
+ }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -42,7 +49,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         #region Entity Configuration
         {
             //  modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
-            // modelBuilder.ApplyConfiguration(new GenderEntityConfiguration());
+             modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
             modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = Guid.NewGuid().ToString(), Name = "Country" },
