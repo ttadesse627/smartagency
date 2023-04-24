@@ -16,3 +16,26 @@ Content-Type: application/json
         "showOnCv": false
     }
 }
+
+
+###
+
+DELETE {{host}}/delete
+Content-Type: application/json
+
+{
+    "id":"5a6df12b-03d0-4ce2-b6b9-c96d56e7bf27"
+}
+
+###
+PUT {{host}}/edit/5a6df12b-03d0-4ce2-b6b9-c96d56e7bf27
+Content-Type: application/json
+
+{
+    "id":"5a6df12b-03d0-4ce2-b6b9-c96d56e7bf27",
+    "code": "Passport",
+    "description": "Passport Attachment",
+    "category": "OrderAttachment",
+    "isRequired": true,
+    "showOnCv": false
+}

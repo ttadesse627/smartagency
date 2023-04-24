@@ -1,4 +1,5 @@
-﻿using AppDiv.SmartAgency.Utility.Contracts;
+﻿using AppDiv.SmartAgency.Application.Features.Command.Delete.Attachments;
+using AppDiv.SmartAgency.Utility.Contracts;
 using System.Linq.Expressions;
 
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
