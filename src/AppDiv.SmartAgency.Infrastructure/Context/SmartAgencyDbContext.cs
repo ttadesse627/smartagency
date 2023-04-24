@@ -43,7 +43,6 @@ public SmartAgencyDbContext()
         // To run sql scripts, example alter database to set collation, create stored procedure, function, view ....
         // optionsBuilder.ReplaceService<IMigrationsSqlGenerator, CustomSqlServerMigrationsSqlGenerator>();
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         #region Entity Configuration

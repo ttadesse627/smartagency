@@ -364,7 +364,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 return await _dbContext.Set<T>().CountAsync(predicate);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return 0;
             }
@@ -1098,54 +1098,54 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             if (propertyExpression.Type == typeof(string))
             {
                 var newExpression = Expression.Lambda<Func<T, string>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(DateTime))
             {
                 var newExpression = Expression.Lambda<Func<T, DateTime>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(DateTime?))
             {
                 var newExpression = Expression.Lambda<Func<T, DateTime?>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(int))
             {
                 var newExpression = Expression.Lambda<Func<T, int>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(bool))
             {
                 var newExpression = Expression.Lambda<Func<T, bool>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(Decimal))
             {
                 var newExpression = Expression.Lambda<Func<T, Decimal>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(Double))
             {
                 var newExpression = Expression.Lambda<Func<T, Double>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type == typeof(long))
             {
                 var newExpression = Expression.Lambda<Func<T, long>>(propertyExpression, parameters);
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.OrderBy(newExpression).FirstOrDefaultAsync() : entiries.OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
             else if (propertyExpression.Type.IsEnum)
             {
-                return await(sorting_direction == SortingDirection.Ascending ? entiries.AsQueryable().OrderBy(q => propertyExpression.Member.Name).FirstOrDefaultAsync() : entiries.AsQueryable().OrderByDescending(q => propertyExpression.Member.Name).FirstOrDefaultAsync());
+                return await (sorting_direction == SortingDirection.Ascending ? entiries.AsQueryable().OrderBy(q => propertyExpression.Member.Name).FirstOrDefaultAsync() : entiries.AsQueryable().OrderByDescending(q => propertyExpression.Member.Name).FirstOrDefaultAsync());
             }
 
             else
