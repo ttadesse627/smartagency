@@ -17,16 +17,16 @@ namespace AppDiv.SmartAgency.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
-            // services.AddDbContext<SmartAgencyDbContext>(
+            // services.AddDbContext<CRVSDbContext>(
             //     options => options.UseSqlServer(
-            //         configuration.GetConnectionString("SmartAgencyConnectionString"),
+            //         configuration.GetConnectionString("CRVSConnectionString"),
             //         o => o.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)
             //     ).EnableSensitiveDataLogging()
             // );
             services.AddDbContext<SmartAgencyDbContext>(
                 options =>
-            options.UseMySql(configuration.GetConnectionString("SmartAgencyConnectionString"),
-                Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.29-mysql"),
+            options.UseMySql(configuration.GetConnectionString("ConnectionString"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("ConnectionString")),
                 mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()

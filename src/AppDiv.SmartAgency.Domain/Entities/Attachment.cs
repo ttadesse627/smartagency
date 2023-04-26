@@ -1,4 +1,4 @@
-using AppDiv.SmartAgency.Domain.Base;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Enums;
 namespace AppDiv.SmartAgency.Domain.Entities;
 public class Attachment : BaseAuditableEntity

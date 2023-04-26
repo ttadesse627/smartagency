@@ -1,6 +1,6 @@
 ﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
-using AppDiv.SmartAgency.Domain.Base;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Contracts;
 using Audit.EntityFramework;
@@ -1057,7 +1057,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 if (entityEntry.State == EntityState.Added)
                 {
                     ((BaseAuditableEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
-                    ((BaseAuditableEntity)entityEntry.Entity).CreatedBy = _dbContext.GetCurrentUserId();
+                    // ((BaseAuditableEntity)entityEntry.Entity).CreatedBy = _dbContext.GetCurrentUserId();
                 }
                 else
                 {
@@ -1071,7 +1071,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 // In any case we always want to set the properties
                 // ModifiedAt and ModifiedBy
                 ((BaseAuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.UtcNow;
-                ((BaseAuditableEntity)entityEntry.Entity).ModifiedBy = _dbContext.GetCurrentUserId();
+                // ((BaseAuditableEntity)entityEntry.Entity).ModifiedBy = _dbContext.GetCurrentUserId();
             }
 
             // After we set all the needed properties

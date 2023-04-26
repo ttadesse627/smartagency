@@ -1,5 +1,5 @@
 
-using AppDiv.SmartAgency.Domain.Base;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Domain.Entities
 {
@@ -7,7 +7,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
     {
 
         public string CategoryId { get; set; }
-
+        public Category Category { get; set; }
         public string Value { get; set; } = string.Empty;
 
 

@@ -1,4 +1,4 @@
-﻿using AppDiv.SmartAgency.Domain.Base;
+﻿using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Domain.Enums;
 
