@@ -43,7 +43,6 @@ public record CreateApplicantResponseDTO
     public string LanguageId { get; set; }
     public List<Language> Languages { get; set; }
     public string TechnicalSkillId { get; set; }
-    public List<TechnicalSkill> TechnicalSkills { get; set; }
     public string ExperienceId { get; set; }
     public List<Experience> Experiences { get; set; }
     public string EducationId { get; set; }

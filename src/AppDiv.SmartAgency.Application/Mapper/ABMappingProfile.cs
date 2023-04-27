@@ -38,7 +38,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Applicant, CreateApplicantRequest>().ReverseMap();
             CreateMap<Applicant, CreateApplicantResponseDTO>().ReverseMap();
             CreateMap<Language, LanguageRequest>().ReverseMap();
-            CreateMap<TechnicalSkill, TechnicalSkillRequest>().ReverseMap();
             CreateMap<Experience, ExperienceRequest>().ReverseMap();
             CreateMap<Education, EducationRequest>().ReverseMap();
             CreateMap<BankAccount, BankAccountRequest>().ReverseMap();
