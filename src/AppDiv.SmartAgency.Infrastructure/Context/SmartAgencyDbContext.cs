@@ -1,6 +1,7 @@
 ﻿using AppDiv.SmartAgency.Domain.Configuration.Settings;
 using AppDiv.SmartAgency.Domain.Entities.Audit;
 using AppDiv.SmartAgency.Domain.Entities.Settings;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Audit.Core;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using AppDiv.SmartAgency.Domain;
 using AppDiv.SmartAgency.Infrastructure.Seed;
 using Audit.EntityFramework;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using Microsoft.AspNetCore.Identity;
 using AppDiv.SmartAgency.Domain.Configurations;
 
@@ -28,6 +30,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<LookUp> LookUps { get; set; }
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<AttachmentFile> AttachmentFiles { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<Beneficiary> Beneficiaries { get; set; }
+        public DbSet<Education> Educations { get; set; }
+        public DbSet<EmergencyContact> EmergencyContacts { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<LanguageAbility> LanguageAbilities { get; set; }
+        public DbSet<Repersentative> Repersentatives { get; set; }
+        public DbSet<Witness> Witnesses { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
         {
@@ -47,6 +60,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 //  modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
+                modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
+                modelBuilder.ApplyConfiguration(new EducationEntityConfig());
+
                 modelBuilder.Entity<Category>().HasData(
                     new Category { Id = Guid.NewGuid().ToString(), Name = "Country" },
                     new Category { Id = Guid.NewGuid().ToString(), Name = "Qualification Type" },

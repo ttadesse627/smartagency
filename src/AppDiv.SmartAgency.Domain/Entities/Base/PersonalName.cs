@@ -1,7 +1,7 @@
 
 
 namespace AppDiv.SmartAgency.Domain.Entities.Base;
-public class PersonalName
+public record PersonalName
 {
     public string FirstName { get; set; }
     public string MiddleName { get; set; }

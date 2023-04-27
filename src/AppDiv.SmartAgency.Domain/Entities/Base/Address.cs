@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 
-namespace AppDiv.SmartAgency.Domain.Entities.Settings
+namespace AppDiv.SmartAgency.Domain.Entities.Base
 {
     public class Address : BaseAuditableEntity
     {

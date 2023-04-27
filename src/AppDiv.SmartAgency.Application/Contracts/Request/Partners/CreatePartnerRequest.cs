@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppDiv.SmartAgency.Domain.Entities.Settings;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
 {
