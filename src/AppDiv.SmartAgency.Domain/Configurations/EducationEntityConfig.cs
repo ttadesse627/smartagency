@@ -7,13 +7,15 @@ public class EducationEntityConfig : IEntityTypeConfiguration<Education>
 {
     public void Configure(EntityTypeBuilder<Education> builder)
     {
-        builder.HasOne(edu => edu.LevelofEducation)
-            .WithOne(lookup => lookup.LevelOfEducation);
+        builder.HasMany(edu => edu.LevelofEducationLookUps)
+            .WithMany(lookup => lookup.LevelOfEducations);
 
-        builder.HasOne(edu => edu.QualificationType)
-            .WithOne(lookup => lookup.QualificationType);
+        builder.HasOne(edu => edu.QualificationTypeLookUp)
+            .WithMany(lk => lk.QualificationTypeEducations);
 
-        builder.HasMany(edu => edu.Awards)
-            .WithMany(lookup => lookup.Awards);
+        builder.HasOne(edu => edu.AwardLookUp)
+            .WithOne(lookup => lookup.AwardEducation)
+            .HasForeignKey<Education>(fk => fk.AwardLookUpId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

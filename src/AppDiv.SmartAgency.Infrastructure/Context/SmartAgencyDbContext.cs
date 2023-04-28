@@ -38,7 +38,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Language> Languages { get; set; }
-        public DbSet<LanguageAbility> LanguageAbilities { get; set; }
+        // public DbSet<LanguageAbility> LanguageAbilities { get; set; }
         public DbSet<Repersentative> Repersentatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
 
@@ -63,6 +63,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
                 modelBuilder.ApplyConfiguration(new EducationEntityConfig());
+                modelBuilder.ApplyConfiguration(new AddressEntityConfig());
+                modelBuilder.ApplyConfiguration(new LanguageEntityConfig());
+                modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
                     new Category { Id = Guid.NewGuid().ToString(), Name = "Country" },
@@ -71,6 +74,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     new Category { Id = Guid.NewGuid().ToString(), Name = "Award" },
                     new Category { Id = Guid.NewGuid().ToString(), Name = "Skill" }
                 );
+
+                modelBuilder.Ignore<PersonalInfo>();
+
+                // modelBuilder.Entity<Applicant>(entity =>
+                // {
+                //     entity.Property().HasConversion(
+                //         x => JsonConvert.SerializeObject(x) //convert TO a json string
+                //         , x => JsonConvert.DeserializeObject<BaseModel>(x)//convert FROM a json string
+                //     );
+                // });
 
             }
             #endregion

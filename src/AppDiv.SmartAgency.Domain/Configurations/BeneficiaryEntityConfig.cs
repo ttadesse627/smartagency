@@ -11,8 +11,8 @@ public class BeneficiaryEntityConfig : IEntityTypeConfiguration<Beneficiary>
     public void Configure(EntityTypeBuilder<Beneficiary> builder)
     {
         builder.HasOne(ben => ben.Relationship)
-                .WithOne()
-                .HasForeignKey<Beneficiary>(b => b.RelationshipId)
+                .WithMany(ln => ln.BeneficiaryRelationShip)
+                .HasForeignKey(b => b.RelationshipId)
                 .OnDelete(DeleteBehavior.NoAction);
     }
 }

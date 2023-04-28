@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
+[Table("Applicant")]
 public class Applicant : PersonalInfo
 {
     public string PassportNumber { get; set; }
@@ -35,26 +36,19 @@ public class Applicant : PersonalInfo
     public string PartnerId { get; set; }
     public Partner Partner { get; set; }
     public string LanguageId { get; set; }
-    public List<Language> Languages { get; set; }
-    public List<LookUp> TechnicalSkills { get; set; }
-    public string ExperienceId { get; set; }
-    public List<Experience> Experiences { get; set; }
-    public string EducationId { get; set; }
-    public Education Education { get; set; }
-    public string BankAccountId { get; set; }
-    public BankAccount BankAccount { get; set; }
-    // public string EmergencyContactId { get; set; }
-    public EmergencyContact EmergencyContact { get; set; }
-    // public string RepersentativeId { get; set; }
-    public Repersentative Repersentative { get; set; }
-    // public string WitnessId { get; set; }
-    public List<Witness> Witnesses { get; set; }
-    // public string BeneficiaryId { get; set; }
-    public List<Beneficiary> Beneficiaries { get; set; }
-    // public string AttachmentFileId { get; set; }
-    public List<AttachmentFile> AttachmentFile { get; set; }
-    // public string AddressId { get; set; }
-    public Address Address { get; set; }
+    public ICollection<Language> Languages { get; set; }
+    public ICollection<LookUp> TechnicalSkills { get; set; }
+    public ICollection<Experience> Experiences { get; set; }
+    public ICollection<Education> ApplicantEducations { get; set; }
+    public BankAccount? BankAccount { get; set; }
+    public EmergencyContact? EmergencyContact { get; set; }
+    public string? RepersentativeId { get; set; }
+    public Repersentative? Repersentative { get; set; }
+    public ICollection<Witness>? Witnesses { get; set; }
+    public ICollection<Beneficiary>? Beneficiaries { get; set; }
+    public ICollection<AttachmentFile>? AttachmentFiles { get; set; }
+    public string? AddressId { get; set; }
+    public Address? Address { get; set; }
     public bool IsOnline { get; set; } = false;
     public bool IsRequested { get; set; } = false;
     public bool IsReserved { get; set; } = false;

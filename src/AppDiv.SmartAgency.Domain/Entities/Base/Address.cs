@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Base
@@ -16,5 +17,8 @@ namespace AppDiv.SmartAgency.Domain.Entities.Base
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
+        public Applicant AddressApplicant { get; set; }
+        public EmergencyContact? AddressEmergContact { get; set; }
+        public Repersentative? AddressRepresentative { get; set; }
     }
 }

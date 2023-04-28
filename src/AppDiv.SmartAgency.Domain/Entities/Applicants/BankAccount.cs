@@ -8,5 +8,6 @@ public class BankAccount
     public int AccountNumber { get; set; }
     public string? BranchName { get; set; }
     public string? SwiftCode { get; set; }
+    public string ApplicantId { get; set; }
     public Applicant Applicant { get; set; }
 }

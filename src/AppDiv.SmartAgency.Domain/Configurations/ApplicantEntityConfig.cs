@@ -1,4 +1,5 @@
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,11 +23,50 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .WithMany(n => n.ApplicantJobTitles);
 
         builder.HasOne(m => m.Partner)
-            .WithMany()
+            .WithMany(n => n.Applicants)
             .HasForeignKey(n => n.PartnerId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(m => m.Languages)
             .WithMany(n => n.Applicants);
+
+        builder.HasMany(m => m.TechnicalSkills)
+            .WithMany(n => n.TechnicalSkillApplicants)
+            .UsingEntity<TechnicalSkill>();
+        
+        builder.HasMany(m => m.Experiences)
+            .WithOne(n => n.Applicant)
+            .HasForeignKey(n => n.ApplicantId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasOne(m => m.BankAccount)
+            .WithOne(n => n.Applicant)
+            .HasForeignKey<BankAccount>(fk => fk.ApplicantId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(m => m.Witnesses)
+            .WithMany(n => n.Applicants);
+
+        builder.HasMany(m => m.Beneficiaries)
+            .WithOne(n => n.Applicant)
+            .HasForeignKey(n => n.ApplicantId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasMany(m => m.AttachmentFiles)
+            .WithOne(n => n.ApplicantAttachmentFile)
+            .HasForeignKey(n => n.ApplicantId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasOne(m => m.EmergencyContact)
+            .WithOne(n => n.Applicant)
+            .HasForeignKey<EmergencyContact>(n => n.ApplicantId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasOne(m => m.Repersentative)
+            .WithMany(n => n.RepresentativeApplicants)
+            .HasForeignKey(n => n.RepersentativeId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+            
     }
 }
