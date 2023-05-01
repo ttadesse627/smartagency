@@ -16,7 +16,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces
         Task<(Result result, string resetToken)> ForgotPassword(string email);
         Task<Result> ResetPassword(string email, string password, string token);
         Task<Result> ChangePassword(string email, string oldPassword, string newPassword);
-        Task<Result> UpdateUser(string id, string userName, string email, string personalInfoId, string userGroupId);
+        Task<Result> UpdateUser(Guid id, string userName, string email, string personalInfoId, string userGroupId);
         IQueryable<ApplicationUser> AllUsers();
         Task<Result> DeleteUser(string userId);
         string GetUserGroupId(string userId);

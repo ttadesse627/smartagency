@@ -8,7 +8,7 @@ using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Attachments;
 public class DeleteAttachmentCommand : IRequest<ServiceResponse<List<AttachmentResponseDTO>>>
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 }
 public class DeleteAttachmentCommandHandler : IRequestHandler<DeleteAttachmentCommand, ServiceResponse<List<AttachmentResponseDTO>>>
 {

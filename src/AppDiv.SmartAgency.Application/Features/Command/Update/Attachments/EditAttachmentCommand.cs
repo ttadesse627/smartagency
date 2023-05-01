@@ -13,7 +13,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
 public class EditAttachmentCommand : IRequest<ServiceResponse<AttachmentResponseDTO>>
 {
 
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public string Code { get; set; } = string.Empty;
     public string? Description { get; set; }
     public AttachmentCategory Category { get; set; }

@@ -1,10 +1,11 @@
 
 
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 
 public class LanguageRequest
 {
-    public string LanguageId { get; set; }
-    public LanguageAbility Ability { get; set; }
+    public Guid LanguageId { get; set; }
+    public LanguageAbilityRequest? Ability { get; set; }
 }

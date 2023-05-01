@@ -1,4 +1,5 @@
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
@@ -8,17 +9,19 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
 {
-    
-public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, CreateLookUpCommandResponse>
-{
+
+    public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, CreateLookUpCommandResponse>
+    {
         private readonly ILookUpRepository _lookUpRepository;
-        public CreateLookUpCommandHandler(ILookUpRepository lookUpRepository)
+        private readonly ICategoryRepository _categoryRepository;
+        public CreateLookUpCommandHandler(ILookUpRepository lookUpRepository, ICategoryRepository categoryRepository)
         {
             _lookUpRepository = lookUpRepository;
+            _categoryRepository = categoryRepository;
         }
         public async Task<CreateLookUpCommandResponse> Handle(CreateLookUpCommand request, CancellationToken cancellationToken)
         {
-           // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
+            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
             var createLookUpCommandResponse = new CreateLookUpCommandResponse();
 
@@ -36,21 +39,31 @@ public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, C
             }
             if (createLookUpCommandResponse.Success)
             {
-                //can use this instead of automapper
                 var lookUp = new LookUp()
                 {
-                    CategoryId=request.lookUp.CategoryId,
-                    Value=request.lookUp.Value
-                    
+                    CategoryId = request.lookUp.CategoryId,
+                    Value = request.lookUp.Value
                 };
-                //
-                await _lookUpRepository.InsertAsync(lookUp, cancellationToken);
-                await _lookUpRepository.SaveChangesAsync(cancellationToken);
 
-                //var customerResponse = CustomerMapper.Mapper.Map<CustomerResponseDTO>(customer);
-               // createCustomerCommandResponse.Customer = customerResponse;          
+                await _lookUpRepository.InsertAsync(lookUp, cancellationToken);
+                createLookUpCommandResponse.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
+                IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
+                Console.WriteLine(lookUp);
+
+                if (lookUp.CategoryId.ToString() == "ca546868-3cd5-4038-a1df-dbf34509407f")
+                {
+                    var category = new Category { Name = lookUp.Value };
+                    await _categoryRepository.InsertAsync(category, cancellationToken);
+                    await _categoryRepository.SaveChangesAsync(cancellationToken);
+                }
+
+                if (createLookUpCommandResponse.Success)
+                {
+                    createLookUpCommandResponse.Message = "Successfully inserted!";
+                }
+                else createLookUpCommandResponse.Message = "Failed to save your data!";
             }
             return createLookUpCommandResponse;
         }
-}
+    }
 }

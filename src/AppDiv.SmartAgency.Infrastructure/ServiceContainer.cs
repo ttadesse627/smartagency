@@ -68,6 +68,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ILookUpRepository, LookUpRepository>();
             services.AddTransient<IPartnerRepository, PartnerRepository>();
             services.AddTransient<IApplicantRepository, ApplicantRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
             #endregion Repositories DI
 

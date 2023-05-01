@@ -1,7 +1,7 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
-
+using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
@@ -35,22 +35,22 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<LookUp, CreateLookUpCommand>().ReverseMap();
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
 
-            CreateMap<Applicant, CreateApplicantRequest>().ReverseMap();
-            CreateMap<Applicant, CreateApplicantResponseDTO>().ReverseMap();
-            CreateMap<Language, LanguageRequest>().ReverseMap();
-            CreateMap<Experience, ExperienceRequest>().ReverseMap();
-            CreateMap<Education, EducationRequest>().ReverseMap();
-            CreateMap<BankAccount, BankAccountRequest>().ReverseMap();
-            CreateMap<Applicant, CreateApplicantRequest>().ReverseMap();
-            // .ForMember(dest => dest.Beneficiaries, opt => opt.MapFrom(src => src.Beneficiaries));
-            CreateMap<CreateApplicantRequest, Applicant>().ReverseMap();
-            // .ForMember(dest => dest.Beneficiaries, opt => opt.MapFrom(src => src.Beneficiaries));
-            CreateMap<Beneficiary, BeneficiaryRequest>().ReverseMap();
-            // .ForMember(dest => dest.Relationship, opt => opt.MapFrom(src => src.Relationship));
-            CreateMap<EmergencyContact, EmergencyContactRequest>().ReverseMap();
-            CreateMap<Repersentative, RepersentativeRequest>().ReverseMap();
-            CreateMap<Witness, WitnessRequest>().ReverseMap();
-            CreateMap<Address, AddressRequest>().ReverseMap();
+            CreateMap<Applicant, CreateApplicantResponseDTO>();
+            CreateMap<CreateApplicantRequest, Applicant>();
+            CreateMap<LanguageRequest, Language>();
+            CreateMap<ExperienceRequest, Experience>();
+            CreateMap<EducationRequest, Education>();
+            CreateMap<BankAccountRequest, BankAccount>();
+            CreateMap<CreateApplicantRequest, Applicant>();
+            CreateMap<BeneficiaryRequest, Beneficiary>();
+            CreateMap<EmergencyContactRequest, EmergencyContact>();
+            CreateMap<RepersentativeRequest, Repersentative>();
+            CreateMap<WitnessRequest, Witness>();
+            CreateMap<AddressRequest, Address>();
+            CreateMap<TechnicalSkillRequest, TechnicalSkill>();
+            CreateMap<AppLookJobtitleRequest, AppLookJobtitle>();
+
+            CreateMap<Category, CategoryResponseDTO>();
         }
     }
 }

@@ -16,14 +16,14 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string PartnerNameArabic { get; set; }
         public string ContactPerson { get; set; }
         public string IdNumber { get; set; }
-        public string ManagerNameAmharic { get; set; }
-        public string LicenseNumber { get; set; }
-        public string BankName { get; set; }
-        public string BankAccount { get; set; }
-        public string HeaderLogo { get; set; }
-        public string ReferenceNumber { get; set; }
-        public Address Address { get; set; }
-        public List<Applicant> Applicants { get; set; }
-
+        public string? ManagerNameAmharic { get; set; }
+        public string? LicenseNumber { get; set; }
+        public string? BankName { get; set; }
+        public string? BankAccount { get; set; }
+        public string? HeaderLogo { get; set; }
+        public string? ReferenceNumber { get; set; }
+        public Guid AddressId { get; set; }
+        public Address? Address { get; set; }
+        public List<Applicant>? Applicants { get; set; }
     }
 }

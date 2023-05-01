@@ -11,5 +11,10 @@ public class LanguageEntityConfig : IEntityTypeConfiguration<Language>
         builder.Property(e => e.LanguageAbility).HasConversion(
                     v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                     v => JsonConvert.DeserializeObject<LanguageAbility>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!);
+
+        builder.HasOne(lan => lan.LanguageLookUp)
+                .WithOne(lk => lk.LookupLanguage)
+                .HasForeignKey<Language>(fk => fk.LanguageLookUpId)
+                .OnDelete(DeleteBehavior.Cascade);
     }
 }

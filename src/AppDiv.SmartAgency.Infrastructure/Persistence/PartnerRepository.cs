@@ -20,7 +20,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     {
         await base.InsertAsync(partner, cancellationToken);
     }
-    public async Task<Partner> GetByIdAsync(string Id)
+    public async Task<Partner> GetByIdAsync(Guid Id)
     {
         return await base.GetAsync(Id);
     }

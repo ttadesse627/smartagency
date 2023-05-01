@@ -9,9 +9,9 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps
 {
     public class DeleteLookUpCommand: IRequest<String>
     {
-        public string Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        public DeleteLookUpCommand(string Id)
+        public DeleteLookUpCommand(Guid Id)
         {
             this.Id = Id;
         }

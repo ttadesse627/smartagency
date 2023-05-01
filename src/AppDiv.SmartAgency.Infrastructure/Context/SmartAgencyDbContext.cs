@@ -68,11 +68,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.NewGuid().ToString(), Name = "Country" },
-                    new Category { Id = Guid.NewGuid().ToString(), Name = "Qualification Type" },
-                    new Category { Id = Guid.NewGuid().ToString(), Name = "Language" },
-                    new Category { Id = Guid.NewGuid().ToString(), Name = "Award" },
-                    new Category { Id = Guid.NewGuid().ToString(), Name = "Skill" }
+                    new Category { Id = Guid.NewGuid(), Name="Category"},
+                    new Category { Id = Guid.NewGuid(), Name = "Country" },
+                    new Category { Id = Guid.NewGuid(), Name = "Qualification Type" },
+                    new Category { Id = Guid.NewGuid(), Name = "Language" },
+                    new Category { Id = Guid.NewGuid(), Name = "Award" },
+                    new Category { Id = Guid.NewGuid(), Name = "Skill" }
                 );
 
                 modelBuilder.Ignore<PersonalInfo>();

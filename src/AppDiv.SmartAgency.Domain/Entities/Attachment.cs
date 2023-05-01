@@ -9,5 +9,5 @@ public class Attachment : BaseAuditableEntity
     public AttachmentCategory Category { get; set; } = AttachmentCategory.ApplicantAttachment;
     public bool IsRequired { get; set; }
     public bool ShowOnCv { get; set; }
-    public AttachmentFile AttachmentFile { get; set; }
+    public AttachmentFile? AttachmentFile { get; set; }
 }

@@ -7,8 +7,8 @@ namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 public class EmergencyContact : PersonalInfo
 {
     public string Relationship { get; set; }
-    public string AddressId { get; set; }
+    public Guid AddressId { get; set; }
     public Address Address { get; set; }
-    public string ApplicantId { get; set; }
+    public Guid ApplicantId { get; set; }
     public Applicant Applicant { get; set; }
 }

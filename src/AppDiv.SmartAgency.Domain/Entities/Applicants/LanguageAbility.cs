@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Domain.Enums;
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 public class LanguageAbility
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public Guid Id { get; set; } = Guid.NewGuid();
     public bool CanWrite { get; set; }
     public bool CanRead { get; set; }
     public bool CanSpeak { get; set; }

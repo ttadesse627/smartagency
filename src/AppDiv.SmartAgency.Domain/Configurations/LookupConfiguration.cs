@@ -11,7 +11,7 @@ namespace AppDiv.SmartAgency.Domain.Configurations
             builder.HasOne(m => m.Category)
                 .WithMany(n => n.LookUps)
                 .HasForeignKey(u => u.CategoryId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
 
     }

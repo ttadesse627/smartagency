@@ -1,11 +1,15 @@
 
 
+using System.Text.Json.Serialization;
+
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 public class Language
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string LanguageLookUpId { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid LanguageLookUpId { get; set; }
     public LookUp LanguageLookUp { get; set; }
+    [JsonPropertyName("LanguageAbility")]
     public LanguageAbility LanguageAbility { get; set; }
-    public List<Applicant> Applicants { get; set; }
+    public Guid? ApplicantId { get; set; }
+    public Applicant? Applicant { get; set; }
 }

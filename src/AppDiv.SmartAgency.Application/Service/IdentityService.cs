@@ -123,7 +123,7 @@ namespace AppDiv.SmartAgency.Application.Service
             return Result.Success();
         }
 
-        public async Task<Result> UpdateUser(string id, string userName, string email, string personalInfoId, string userGroupId)
+        public async Task<Result> UpdateUser(Guid id, string userName, string email, string personalInfoId, string userGroupId)
         {
 
             var user = await _userManager.FindByIdAsync(id.ToString());

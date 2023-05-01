@@ -20,7 +20,9 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(m => m.LookUpJobTitles)
-            .WithMany(n => n.ApplicantJobTitles);
+            .WithOne(n => n.ApplicantJobtitle)
+            .HasForeignKey(fk => fk.ApplicantJobtitleId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(m => m.Partner)
             .WithMany(n => n.Applicants)
@@ -28,12 +30,15 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(m => m.Languages)
-            .WithMany(n => n.Applicants);
+            .WithOne(n => n.Applicant)
+            .HasForeignKey(fk => fk.ApplicantId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(m => m.TechnicalSkills)
-            .WithMany(n => n.TechnicalSkillApplicants)
-            .UsingEntity<TechnicalSkill>();
-        
+            .WithOne(n => n.ApplicantTechnicalSkill)
+            .HasForeignKey(fk => fk.ApplicantTechnicalSkillId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasMany(m => m.Experiences)
             .WithOne(n => n.Applicant)
             .HasForeignKey(n => n.ApplicantId)
