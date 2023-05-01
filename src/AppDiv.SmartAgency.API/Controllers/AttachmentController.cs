@@ -33,7 +33,7 @@ public class AttachmentController : ControllerBase
     }
 
     [HttpDelete("delete/{id}")]
-    public async Task<ActionResult<ServiceResponse<DeleteAttachmentCommand>>> DeleteAttachment(string id)
+    public async Task<ActionResult<ServiceResponse<DeleteAttachmentCommand>>> DeleteAttachment(Guid id)
     {
         var result = new ServiceResponse<List<AttachmentResponseDTO>>();
         try
@@ -56,7 +56,7 @@ public class AttachmentController : ControllerBase
     }
 
     [HttpPut("edit/{id}")]
-    public async Task<ActionResult<ServiceResponse<EditAttachmentCommand>>> EditAttachment(string id, [FromBody] EditAttachmentCommand request)
+    public async Task<ActionResult<ServiceResponse<EditAttachmentCommand>>> EditAttachment(Guid id, [FromBody] EditAttachmentCommand request)
     {
         try
         {
