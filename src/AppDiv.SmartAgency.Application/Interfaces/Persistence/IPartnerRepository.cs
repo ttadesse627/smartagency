@@ -9,6 +9,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
     public interface IPartnerRepository: IBaseRepository<Partner>
     {
-        Task<Partner> GetByIdAsync(string id);
+        Task<Partner> GetByIdAsync(Guid id);
     }
 }

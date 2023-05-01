@@ -9,9 +9,9 @@ namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
 {
     public class GetLookUpByIdQuery: IRequest<LookUp>
     {
-        public string Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        public GetLookUpByIdQuery(string Id)
+        public GetLookUpByIdQuery(Guid Id)
         {
             this.Id = Id;
         }

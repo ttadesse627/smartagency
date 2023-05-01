@@ -40,13 +40,13 @@ namespace AppDiv.SmartAgency.API.Controllers
 
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<Partner> Get(string id)
+        public async Task<Partner> Get(Guid id)
         {
             return await _mediator.Send(new GetPartnerByIdQuery(id));
         }
 
       [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeletePartner(string id)
+        public async Task<ActionResult> DeletePartner(Guid id)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
      
         [HttpPut("Edit/{id}")]
-        public async Task<ActionResult> Edit(string id, [FromBody] EditPartnerCommand command)
+        public async Task<ActionResult> Edit(Guid id, [FromBody] EditPartnerCommand command)
         {
             try
             {

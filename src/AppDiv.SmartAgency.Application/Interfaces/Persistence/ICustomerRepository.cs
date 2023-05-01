@@ -13,6 +13,6 @@ public interface ICustomerRepository : IBaseRepository<Customer>
 {
     //Custom operation which is not generic
     Task<IEnumerable<Customer>> GetAllAsync();
-    Task<Customer> GetByIdAsync(string id);
+    Task<Customer> GetByIdAsync(Guid id);
     Task<Customer> GetCustomerByEmail(string email);
 }

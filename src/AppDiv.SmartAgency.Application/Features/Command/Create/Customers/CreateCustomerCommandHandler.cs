@@ -39,7 +39,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.Customers
                 //can use this instead of automapper
                 var customer = new Customer()
                 {
-                    Id=Guid.NewGuid().ToString(),
+                    Id=Guid.NewGuid(),
                     FirstName=request.customer.FirstName,
                     Address=request.customer.Address,
                     LastName=request.customer.LastName

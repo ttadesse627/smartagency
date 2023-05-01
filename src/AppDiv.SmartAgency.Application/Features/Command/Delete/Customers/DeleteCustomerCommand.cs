@@ -11,9 +11,9 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Customers
     // Customer create command with string response
     public class DeleteCustomerCommand : IRequest<String>
     {
-        public string Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        public DeleteCustomerCommand(string Id)
+        public DeleteCustomerCommand(Guid Id)
         {
             this.Id = Id;
         }

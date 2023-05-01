@@ -12,38 +12,38 @@ using Microsoft.AspNetCore.Mvc;
 namespace AppDiv.SmartAgency.API.Controllers
 {
 
-[ApiController]
-[Route("api/lookUp")]
-    public class LookUpController: ControllerBase
-{
-    private readonly IMediator _mediator;
-    public LookUpController(IMediator mediator)
+    [ApiController]
+    [Route("api/lookup")]
+    public class LookUpController : ControllerBase
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
+        public LookUpController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-    [HttpPost("create")]
-    public async Task<ActionResult<CreateLookUpResponseDTO>> CreateLookUp(CreateLookUpCommand lookUpRequest, CancellationToken token)
-    {
-        var response = await _mediator.Send(lookUpRequest);
-        return Ok(response);
-    }
+        [HttpPost("create")]
+        public async Task<ActionResult<CreateLookUpResponseDTO>> CreateLookUp(CreateLookUpCommand lookUpRequest, CancellationToken token)
+        {
+            var response = await _mediator.Send(lookUpRequest);
+            return Ok(response);
+        }
 
-    [HttpGet("get-all-lookup")]
-    public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps()
-    {
-        return Ok(await _mediator.Send(new GetAllLookUps()));
-    }
+        [HttpGet("get-all-lookup")]
+        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps()
+        {
+            return Ok(await _mediator.Send(new GetAllLookUps()));
+        }
 
-     [HttpGet("{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<LookUp> Get(string id)
+        public async Task<LookUp> Get(Guid id)
         {
             return await _mediator.Send(new GetLookUpByIdQuery(id));
         }
 
-      [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeleteLookUp(string id)
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult> DeleteLookUp(Guid id)
         {
             try
             {
@@ -59,9 +59,9 @@ namespace AppDiv.SmartAgency.API.Controllers
 
 
 
-     
+
         [HttpPut("Edit/{id}")]
-        public async Task<ActionResult> Edit(string id, [FromBody] EditLookUpCommand command)
+        public async Task<ActionResult> Edit(Guid id, [FromBody] EditLookUpCommand command)
         {
             try
             {
@@ -79,9 +79,9 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
-          
-  
-}
-}
+
+
+        }
+    }
 
 }

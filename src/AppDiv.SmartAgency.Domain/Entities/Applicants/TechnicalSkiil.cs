@@ -3,8 +3,9 @@
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 public class TechnicalSkill
 {
-    public string ApplicantTechnicalSkillId { get; set; }
-    public Applicant ApplicantTechnicalSkill { get; set; }
-    public string LookUpTechnicalSkillId { get; set; }
-    public LookUp LookUpTechnicalSkill { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid? ApplicantTechnicalSkillId { get; set; }
+    public Applicant? ApplicantTechnicalSkill { get; set; }
+    public Guid? LookUpTechnicalSkillId { get; set; }
+    public LookUp? LookUpTechnicalSkill { get; set; }
 }

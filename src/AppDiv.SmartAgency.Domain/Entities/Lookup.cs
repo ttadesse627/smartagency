@@ -6,16 +6,16 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class LookUp : BaseAuditableEntity
     {
-        public string? CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public Category? Category { get; set; }
         public ICollection<Applicant>? ApplicantReligions { get; set; }
-        public ICollection<Applicant>? ApplicantJobTitles { get; set; }
+        public ICollection<AppLookJobtitle>? LookUpJobTitles { get; set; }
         public ICollection<Beneficiary>? BeneficiaryRelationShip { get; set; }
-        public ICollection<Education>? LevelOfEducations { get; set; }
-        public ICollection<Education>? QualificationTypeEducations { get; set; }
-        public Education? AwardEducation { get; set; }
-        public ICollection<Applicant>? TechnicalSkillApplicants { get; set; }
-        public ICollection<Experience>? LookupExpeeriences { get; set; }
+        public LevelOfQualification? LookUpLevelOfQualifications { get; set; }
+        public QualificationType? LookUpQualificationTypes { get; set; }
+        public Award? AwardEducations { get; set; }
+        public TechnicalSkill? LookupTechnicalSkill { get; set; }
+        public Experience? LookupExpeeriences { get; set; }
         public Language? LookupLanguage { get; set; }
         public string Value { get; set; } = string.Empty;
 

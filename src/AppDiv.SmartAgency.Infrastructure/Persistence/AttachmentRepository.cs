@@ -24,11 +24,11 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
     {
         await base.InsertAsync(attachment, cancellationToken);
     }
-    public async Task<Attachment> GetByIdAsync(string Id)
+    public async Task<Attachment> GetByIdAsync(Guid Id)
     {
         return await base.GetAsync(Id);
     }
-    public async Task<ServiceResponse<List<AttachmentResponseDTO>>> DeleteAttachment(string id)
+    public async Task<ServiceResponse<List<AttachmentResponseDTO>>> DeleteAttachment(Guid id)
     {
         var serviceResponse = new ServiceResponse<List<AttachmentResponseDTO>>();
         try
@@ -40,9 +40,7 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
                 throw new Exception($"There is no character with id {id} to delete.");
             }
             _context.Attachments.Remove(attachment);
-            Console.WriteLine("Remove Done!");
-            await _context.SaveChangesAsync();
-            Console.WriteLine("Save Changes Done!");
+            int resp = await _context.SaveChangesAsync();
             serviceResponse.Data = await _context.Attachments
                 .Select(attch => CustomMapper.Mapper.Map<AttachmentResponseDTO>(attch)).ToListAsync();
 
@@ -59,9 +57,6 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
         var serviceResponse = new ServiceResponse<AttachmentResponseDTO>();
         try
         {
-            /// Using Eager loading of loading database entities.
-            /// Because, the loaded character may be loaed with empty user.
-
             var attachment = await _context.Attachments
                 .FirstOrDefaultAsync(ch => ch.Id == updatedAttachment.Id);
             if (attachment is null)

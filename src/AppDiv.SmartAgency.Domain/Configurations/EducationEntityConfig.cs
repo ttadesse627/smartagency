@@ -7,15 +7,24 @@ public class EducationEntityConfig : IEntityTypeConfiguration<Education>
 {
     public void Configure(EntityTypeBuilder<Education> builder)
     {
-        builder.HasMany(edu => edu.LevelofEducationLookUps)
-            .WithMany(lookup => lookup.LevelOfEducations);
+        builder.HasMany(edu => edu.EducationLevelofQualifications)
+            .WithOne(loq => loq.LevelOfQualificationEducation)
+            .HasForeignKey(fk => fk.LevelOfQualificationEducationId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(edu => edu.QualificationTypeLookUp)
-            .WithMany(lk => lk.QualificationTypeEducations);
+        builder.HasMany(edu => edu.EducationQualificationTypes)
+            .WithOne(qt => qt.QualificationTypeEducation)
+            .HasForeignKey(fk => fk.QualificationTypeEducationId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(edu => edu.AwardLookUp)
-            .WithOne(lookup => lookup.AwardEducation)
-            .HasForeignKey<Education>(fk => fk.AwardLookUpId)
+        builder.HasMany(edu => edu.EducationAawards)
+            .WithOne(aw => aw.AwardEducation)
+            .HasForeignKey(fk => fk.AwardEducationId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(edu => edu.EducationApplicant)
+            .WithOne(appl => appl.ApplicantEducation)
+            .HasForeignKey<Education>(fk => fk.EducationApplicantId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

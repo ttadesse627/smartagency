@@ -1,0 +1,156 @@
+
+@host = http://127.0.0.1:5120/api/applicant
+
+POST {{host}}/create
+Content-Type: application/json
+
+{
+    "applicantRequest": {
+        "firstName": "Abebe",
+        "middleName": "Balcha",
+        "lastName": "Firomsa",
+        "gender": "Male",
+        "birthDate": "2023-04-30T18:27:18.967Z",
+        "passportNumber": "EP00000001",
+        "issuingCountry": "Ethiopia",
+        "issuedDate": "2023-04-30T18:27:18.967Z",
+        "issuedPlace": "Addis Ababa",
+        "passportExpiryDate": "2023-04-30T18:27:18.967Z",
+        "placeOfBirth": "Finfinne",
+        "amharicFullName": "አበበ ባልቻ ፊሮምሳ",
+        "arabicFullName": "string",
+        "maritalStatus": "Single",
+        "complexion": "Brown",
+        "numberOfChildren": 0,
+        "health": "Fit",
+        "religionId": "a383ced6-56fa-4dd7-9099-92e3ca642f35",
+        "jobTitles": [
+            {
+                "lookUpJobtitleId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+        ],
+        "salary": 875,
+        "desiredCountry": "Saudi Arabia",
+        "motherFullName": "Toltu Regassa",
+        "previousCountry": "Ethiopia",
+        "currentNationality": "Ethiopian",
+        "height": 165,
+        "contractPeriod": 3,
+        "jobTitleAmharic": "የቤት ሰራተኛ",
+        "brokerName": "ABH",
+        "branch": "Bishoftu",
+        "remark": "He is a good employee!",
+        "languages": [
+            {
+            "languageId": "a22e304a-8948-4e7e-aada-d26a36ee80a1",
+            "ability": {
+                    "canWrite": true,
+                    "canRead": true,
+                    "canSpeak": true,
+                    "canListen": true,
+                    "proficiency": "Good"
+                }
+            }
+        ],
+        "technicalSkills": [
+            {
+                "lookUpTechnicalSkillId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+        ],
+        "experiences": [
+            {
+                "countryLookupId": "d3771a15-ce5d-4e2e-8466-dc91d7592ee2",
+                "periodLength": 5,
+                "position": "Home Maid"
+            }
+        ],
+        "education": {
+            "educationLevelofQualifications": [
+                {
+                    "levelOfQualificationLookUpId": "672fec5a-61cc-4da3-854b-7c4c7e76476c"
+                }
+            ],
+            "educationQualificationTypes": [
+                {
+                    "qualificationTypeLookUpId": "726494a8-68fd-40e9-abc6-4e849b1f3e71"
+                }
+            ],
+            "educationAawards": [
+                {
+                    "awardLookUpId": "7481aee6-1c2e-4d0d-8928-3b3bb3bfa68c"
+                }
+            ],
+            "yearCompleted": 2022,
+            "fieldOfStudy": "SE",
+            "professionalSkill": "Software Development"
+        },
+        "bankAccount": {
+            "bankName": "CBE",
+            "accountNumber": 1000263339413,
+            "branchName": "Oda Nebe",
+            "swiftCode": "CBEETTAA"
+        },
+        "emergencyContact": {
+            "firstName": "Abebe",
+            "middleName": "Lemma",
+            "lastName": "Gutema",
+            "relationship": "Uncle",
+            "address": {
+                "country": "Ethiopia",
+                "region": "Oromia",
+                "zone": "East Shoa",
+                "woreda": "Akaki",
+                "kebele": "Koticha",
+                "phoneNumber": "+251912345678",
+                "email": "abebe@email.com",
+                "website": "abc.com"
+            }
+        },
+        "repersentative": {
+            "firstName": "Geresu",
+            "middleName": "Hagos",
+            "lastName": "Beressa",
+            "address": {
+                "country": "Ethiopia",
+                "region": "Oromia",
+                "zone": "East Shoa",
+                "woreda": "Akaki",
+                "kebele": "Koticha",
+                "phoneNumber": "+251912345678",
+                "email": "abebe@email.com",
+                "website": "abc.com"
+            }
+        },
+        "witnesses": [
+            {
+                "firstName": "Jenbere",
+                "middleName": "Bonsa",
+                "lastName": "Lemmi",
+                "address": "Addis Ababa",
+                "phoneNumber": "+251987654321"
+            }
+        ],
+        "beneficiaries": [
+            {
+                "firstName": "Jitu",
+                "middleName": "Getachew",
+                "lastName": "Talema",
+                "region": "Addis Ababa",
+                "zone": "Kality",
+                "woreda": "Akaki",
+                "relationshipId": "b7e6319f-3326-407e-9fea-85a43bd175b5",
+                "rate": 35
+            }
+        ],
+        "address": {
+            "country": "Ethiopia",
+            "region": "Oromia",
+            "zone": "East Shoa",
+            "woreda": "Akaki",
+            "kebele": "Koticha",
+            "phoneNumber": "+251912345678",
+            "email": "abebe@email.com",
+            "website": "abc.com"
+        }
+    }
+}

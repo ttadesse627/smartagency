@@ -3,7 +3,7 @@
 namespace AppDiv.SmartAgency.Domain.Entities;
 public class Category
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = string.Empty;
     public ICollection<LookUp> LookUps { get; set; }
 }

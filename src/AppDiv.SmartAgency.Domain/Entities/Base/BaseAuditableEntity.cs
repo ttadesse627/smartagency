@@ -13,7 +13,7 @@ namespace AppDiv.SmartAgency.Domain.Entities.Base
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual string Id { get; set; } = Guid.NewGuid().ToString();
+        public virtual Guid Id { get; set; } = Guid.NewGuid();
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public virtual string? CreatedBy { get; set; }

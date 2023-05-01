@@ -8,7 +8,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs
 {
     public record RoleResponseDTO
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string RoleName { get; set; }
     }
 }

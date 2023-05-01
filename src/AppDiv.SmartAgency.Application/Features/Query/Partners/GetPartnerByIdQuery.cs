@@ -13,9 +13,9 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Customers
     // Customer GetCustomerByIdQuery with Customer response
     public class GetPartnerByIdQuery : IRequest<Partner>
     {
-        public string Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        public GetPartnerByIdQuery(string Id)
+        public GetPartnerByIdQuery(Guid Id)
         {
             this.Id = Id;
         }
@@ -33,7 +33,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Customers
         public async Task<Partner> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
         {
             var partners = await _mediator.Send(new GetAllPartnerQuery());
-            var selectedPartner = partners.FirstOrDefault(x => x.Id == request.Id);
+            var selectedPartner = partners.FirstOrDefault();
             return CustomMapper.Mapper.Map<Partner>(selectedPartner);
             // return selectedCustomer;
         }

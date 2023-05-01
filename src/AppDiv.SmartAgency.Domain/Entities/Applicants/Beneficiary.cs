@@ -8,9 +8,9 @@ public class Beneficiary : PersonalInfo
     public string? Region { get; set; }
     public string? Zone { get; set; }
     public string? Woreda { get; set; }
-    public string RelationshipId { get; set; }
+    public Guid RelationshipId { get; set; }
     public LookUp? Relationship { get; set; }
-    public string ApplicantId { get; set; }
+    public Guid ApplicantId { get; set; }
     public Applicant Applicant { get; set; }
     public float Rate { get; set; }
 }
