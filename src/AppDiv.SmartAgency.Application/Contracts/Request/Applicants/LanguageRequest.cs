@@ -7,5 +7,5 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 public class LanguageRequest
 {
     public Guid LanguageId { get; set; }
-    public LanguageAbilityRequest? Ability { get; set; }
+    public LanguageAbility? Ability { get; set; }
 }

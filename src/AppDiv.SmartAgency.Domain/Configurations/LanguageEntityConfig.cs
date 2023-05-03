@@ -8,10 +8,6 @@ public class LanguageEntityConfig : IEntityTypeConfiguration<Language>
 {
     public void Configure(EntityTypeBuilder<Language> builder)
     {
-        builder.Property(e => e.LanguageAbility).HasConversion(
-                    v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    v => JsonConvert.DeserializeObject<LanguageAbility>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!);
-
         builder.HasOne(lan => lan.LanguageLookUp)
                 .WithOne(lk => lk.LookupLanguage)
                 .HasForeignKey<Language>(fk => fk.LanguageLookUpId)

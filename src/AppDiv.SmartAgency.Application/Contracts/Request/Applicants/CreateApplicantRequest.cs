@@ -39,7 +39,7 @@ public class CreateApplicantRequest
     public string? BrokerName { get; set; }
     public string? Branch { get; set; }
     public string? Remark { get; set; }
-    public Guid? PartnerId { get; set; }
+    // public Guid? PartnerId { get; set; }
     public ICollection<LanguageRequest> Languages { get; set; }
     public ICollection<TechnicalSkillRequest> TechnicalSkills { get; set; }
     public ICollection<ExperienceRequest> Experiences { get; set; }

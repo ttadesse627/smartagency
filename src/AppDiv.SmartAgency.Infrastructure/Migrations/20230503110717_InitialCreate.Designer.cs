@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230503072150_InitialCreate")]
+    [Migration("20230503110717_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -422,14 +422,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("AbilityJson")
+                        .HasColumnType("longtext");
+
                     b.Property<Guid?>("ApplicantId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("LanguageAbility")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("LanguageLookUpId")
+                    b.Property<Guid?>("LanguageLookUpId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -839,7 +838,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fc753989-0957-47d9-87f5-315a5c8ab7de"),
+                            Id = new Guid("da1d41e4-9873-4910-9e1a-510a9fe50a3c"),
                             Name = "Category"
                         });
                 });
@@ -1011,7 +1010,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 3, 10, 21, 49, 585, DateTimeKind.Local).AddTicks(1204));
+                        .HasDefaultValue(new DateTime(2023, 5, 3, 14, 7, 16, 946, DateTimeKind.Local).AddTicks(1531));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1325,8 +1324,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "LanguageLookUp")
                         .WithOne("LookupLanguage")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Applicants.Language", "LanguageLookUpId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Applicant");
 

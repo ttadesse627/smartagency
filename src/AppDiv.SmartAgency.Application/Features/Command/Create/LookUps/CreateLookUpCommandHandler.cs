@@ -43,7 +43,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
                 IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
                 Console.WriteLine(lookUp);
 
-                if (lookUp.CategoryId.Equals("fc753989-0957-47d9-87f5-315a5c8ab7de"))
+                if (lookUp.CategoryId.ToString() == "da1d41e4-9873-4910-9e1a-510a9fe50a3c")
                 {
                     var category = new Category { Name = lookUp.Value };
                     await _categoryRepository.InsertAsync(category, cancellationToken);
