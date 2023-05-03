@@ -3,13 +3,8 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
-
-
-
-
 namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
 {
-
     public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, CreateLookUpCommandResponse>
     {
         private readonly ILookUpRepository _lookUpRepository;
@@ -24,10 +19,8 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
             // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
             var createLookUpCommandResponse = new CreateLookUpCommandResponse();
-
             var validator = new CreateLookUpCommandValidator(_lookUpRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
             //Check and log validation errors
             if (validationResult.Errors.Count > 0)
             {
@@ -50,7 +43,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
                 IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
                 Console.WriteLine(lookUp);
 
-                if (lookUp.CategoryId.ToString() == "ca546868-3cd5-4038-a1df-dbf34509407f")
+                if (lookUp.CategoryId.Equals("fc753989-0957-47d9-87f5-315a5c8ab7de"))
                 {
                     var category = new Category { Name = lookUp.Value };
                     await _categoryRepository.InsertAsync(category, cancellationToken);

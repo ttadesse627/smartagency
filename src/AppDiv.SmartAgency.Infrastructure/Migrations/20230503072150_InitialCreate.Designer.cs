@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230501053856_InitialCreate")]
+    [Migration("20230503072150_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -715,9 +715,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Audit.AuditLog", b =>
                 {
-                    b.Property<string>("AuditId")
+                    b.Property<Guid>("AuditId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Action")
                         .IsRequired()
@@ -730,9 +730,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("AuditDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("AuditUserId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("AuditUserId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("EntityType")
                         .IsRequired()
@@ -840,33 +839,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("57c33937-5f0b-400e-93f7-dec12c2a8292"),
+                            Id = new Guid("fc753989-0957-47d9-87f5-315a5c8ab7de"),
                             Name = "Category"
-                        },
-                        new
-                        {
-                            Id = new Guid("cf259b81-009e-402c-b792-1fe7e3b717e3"),
-                            Name = "Country"
-                        },
-                        new
-                        {
-                            Id = new Guid("759bb6e6-ecac-4cde-9719-26a5a64e0f76"),
-                            Name = "Qualification Type"
-                        },
-                        new
-                        {
-                            Id = new Guid("f82de629-5c18-437a-ba6e-e64f67a84a3b"),
-                            Name = "Language"
-                        },
-                        new
-                        {
-                            Id = new Guid("8e48cbec-1868-4424-920c-9d94cd129cb4"),
-                            Name = "Award"
-                        },
-                        new
-                        {
-                            Id = new Guid("8dd53593-667e-44f9-82f4-77f344d1b942"),
-                            Name = "Skill"
                         });
                 });
 
@@ -968,11 +942,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("BankAccount")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("BankName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ContactPerson")
@@ -986,7 +958,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("HeaderLogo")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("IdNumber")
@@ -994,11 +965,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("LicenseNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ManagerNameAmharic")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("ModifiedAt")
@@ -1024,7 +993,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("ReferenceNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -1043,7 +1011,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 1, 8, 38, 56, 139, DateTimeKind.Local).AddTicks(3794));
+                        .HasDefaultValue(new DateTime(2023, 5, 3, 10, 21, 49, 585, DateTimeKind.Local).AddTicks(1204));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1583,14 +1551,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Attachment", b =>
                 {
-                    b.Navigation("AttachmentFile")
-                        .IsRequired();
+                    b.Navigation("AttachmentFile");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.Address", b =>
                 {
-                    b.Navigation("AddressApplicant")
-                        .IsRequired();
+                    b.Navigation("AddressApplicant");
 
                     b.Navigation("AddressEmergContact");
 

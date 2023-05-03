@@ -18,6 +18,5 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public Experience? LookupExpeeriences { get; set; }
         public Language? LookupLanguage { get; set; }
         public string Value { get; set; } = string.Empty;
-
     }
 }

@@ -61,7 +61,7 @@ Content-Type: application/json
             {
                 "countryLookupId": "d3771a15-ce5d-4e2e-8466-dc91d7592ee2",
                 "periodLength": 5,
-                "position": "Home Maid"
+                "position": "House Maid"
             }
         ],
         "education": {

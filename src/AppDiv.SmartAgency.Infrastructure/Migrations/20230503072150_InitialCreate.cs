@@ -134,8 +134,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "AuditLogs",
                 columns: table => new
                 {
-                    AuditId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AuditId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     AuditData = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Action = table.Column<string>(type: "longtext", nullable: false)
@@ -145,8 +144,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     EntityType = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AuditDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AuditUserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AuditUserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     TablePk = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -177,7 +175,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 1, 8, 38, 56, 139, DateTimeKind.Local).AddTicks(3794)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 3, 10, 21, 49, 585, DateTimeKind.Local).AddTicks(1204)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -237,17 +235,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IdNumber = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ManagerNameAmharic = table.Column<string>(type: "longtext", nullable: false)
+                    ManagerNameAmharic = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LicenseNumber = table.Column<string>(type: "longtext", nullable: false)
+                    LicenseNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    BankName = table.Column<string>(type: "longtext", nullable: false)
+                    BankName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    BankAccount = table.Column<string>(type: "longtext", nullable: false)
+                    BankAccount = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    HeaderLogo = table.Column<string>(type: "longtext", nullable: false)
+                    HeaderLogo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ReferenceNumber = table.Column<string>(type: "longtext", nullable: false)
+                    ReferenceNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AddressId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -959,15 +957,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("57c33937-5f0b-400e-93f7-dec12c2a8292"), "Category" },
-                    { new Guid("759bb6e6-ecac-4cde-9719-26a5a64e0f76"), "Qualification Type" },
-                    { new Guid("8dd53593-667e-44f9-82f4-77f344d1b942"), "Skill" },
-                    { new Guid("8e48cbec-1868-4424-920c-9d94cd129cb4"), "Award" },
-                    { new Guid("cf259b81-009e-402c-b792-1fe7e3b717e3"), "Country" },
-                    { new Guid("f82de629-5c18-437a-ba6e-e64f67a84a3b"), "Language" }
-                });
+                values: new object[] { new Guid("fc753989-0957-47d9-87f5-315a5c8ab7de"), "Category" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applicant_AddressId",

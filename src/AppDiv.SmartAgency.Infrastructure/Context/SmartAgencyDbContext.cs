@@ -68,12 +68,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.NewGuid(), Name="Category"},
-                    new Category { Id = Guid.NewGuid(), Name = "Country" },
-                    new Category { Id = Guid.NewGuid(), Name = "Qualification Type" },
-                    new Category { Id = Guid.NewGuid(), Name = "Language" },
-                    new Category { Id = Guid.NewGuid(), Name = "Award" },
-                    new Category { Id = Guid.NewGuid(), Name = "Skill" }
+                    new Category { Id = Guid.NewGuid(), Name="Category"}
                 );
 
                 modelBuilder.Ignore<PersonalInfo>();
@@ -104,7 +99,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     auditEntity.AuditData = JsonConvert.SerializeObject(auditedEntity, GetJsonSerializerSettings());
                     auditEntity.EntityType = auditedEntity.EntityType.Name;
                     auditEntity.AuditDate = DateTime.Now;
-                    auditEntity.AuditUserId = Guid.NewGuid().ToString();
+                    auditEntity.AuditUserId = Guid.NewGuid();
                     // if (userResolverService != null)
                     // {
                     //     auditEntity.AuditUserId = userResolverService.GetUserId();
