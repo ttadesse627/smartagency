@@ -22,7 +22,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string? BankAccount { get; set; }
         public string? HeaderLogo { get; set; }
         public string? ReferenceNumber { get; set; }
-        public Guid AddressId { get; set; }
+        public Guid? AddressId { get; set; }
         public Address? Address { get; set; }
         public List<Applicant>? Applicants { get; set; }
     }

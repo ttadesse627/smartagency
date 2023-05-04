@@ -836,7 +836,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("da1d41e4-9873-4910-9e1a-510a9fe50a3c"),
+                            Id = new Guid("0f092a75-8aa4-4fa1-a0db-1ed674a572c9"),
                             Name = "Category"
                         });
                 });
@@ -994,7 +994,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.ToTable("Partners");
                 });
@@ -1008,7 +1009,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 3, 14, 7, 16, 946, DateTimeKind.Local).AddTicks(1531));
+                        .HasDefaultValue(new DateTime(2023, 5, 4, 12, 0, 41, 860, DateTimeKind.Local).AddTicks(8300));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1436,8 +1437,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne("Partner")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Partner", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1557,6 +1558,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("AddressEmergContact");
 
                     b.Navigation("AddressRepresentative");
+
+                    b.Navigation("Partner");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Category", b =>

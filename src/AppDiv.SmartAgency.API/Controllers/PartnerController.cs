@@ -77,6 +77,8 @@ namespace AppDiv.SmartAgency.API.Controllers
                 {
                     return BadRequest();
                 }
+
+                //var result = await _mediator.Send(command,id);
             }
             catch (Exception exp)
             {

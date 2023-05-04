@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -175,7 +175,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 3, 14, 7, 16, 946, DateTimeKind.Local).AddTicks(1531)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 4, 12, 0, 41, 860, DateTimeKind.Local).AddTicks(8300)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -957,7 +957,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("da1d41e4-9873-4910-9e1a-510a9fe50a3c"), "Category" });
+                values: new object[] { new Guid("0f092a75-8aa4-4fa1-a0db-1ed674a572c9"), "Category" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applicant_AddressId",
@@ -1139,7 +1139,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Partners_AddressId",
                 table: "Partners",
-                column: "AddressId");
+                column: "AddressId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_QualificationType_QualificationTypeEducationId",

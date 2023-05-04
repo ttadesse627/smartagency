@@ -18,6 +18,7 @@ namespace AppDiv.SmartAgency.Domain.Entities.Base
         public string? Email { get; set; }
         public string? Website { get; set; }
         public Applicant? AddressApplicant { get; set; }
+        public Partner? Partner { get; set; }
         public EmergencyContact? AddressEmergContact { get; set; }
         public Repersentative? AddressRepresentative { get; set; }
     }

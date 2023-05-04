@@ -12,6 +12,7 @@ using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
 using AppDiv.SmartAgency.Application.Features.Command.Create.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
@@ -56,7 +57,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Category, CategoryResponseDTO>();
             CreateMap<CreatePartnerRequest, Partner>();
             CreateMap<Partner,PartnerResponseDTO>();
-            CreateMap<Address,AddressResponseDTO>();
+            CreateMap<Address,AddressResponseDTO>().ReverseMap();
+            CreateMap<EditPartnerCommand, Partner>();
+
         }
     }
 }
