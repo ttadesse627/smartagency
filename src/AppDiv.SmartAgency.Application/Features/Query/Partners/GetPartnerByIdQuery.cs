@@ -1,3 +1,4 @@
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Features.Query.Partners;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace AppDiv.SmartAgency.Application.Features.Query.Customers
 {
     // Customer GetCustomerByIdQuery with Customer response
-    public class GetPartnerByIdQuery : IRequest<Partner>
+    public class GetPartnerByIdQuery : IRequest<PartnerResponseDTO>
     {
         public Guid Id { get; private set; }
 
@@ -22,7 +23,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Customers
 
     }
 
-    public class GetPartnerByIdHandler : IRequestHandler<GetPartnerByIdQuery, Partner>
+    public class GetPartnerByIdHandler : IRequestHandler<GetPartnerByIdQuery, PartnerResponseDTO>
     {
         private readonly IMediator _mediator;
 
@@ -30,12 +31,12 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Customers
         {
             _mediator = mediator;
         }
-        public async Task<Partner> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
+        public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
         {
             var partners = await _mediator.Send(new GetAllPartnerQuery());
-            var selectedPartner = partners.FirstOrDefault();
-            return CustomMapper.Mapper.Map<Partner>(selectedPartner);
-            // return selectedCustomer;
+            var selectedPartner = partners.FirstOrDefault(p=>p.Id == request.Id);
+            return CustomMapper.Mapper.Map<PartnerResponseDTO>(selectedPartner);
+           
         }
     }
 }

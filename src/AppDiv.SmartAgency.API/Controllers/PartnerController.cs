@@ -40,7 +40,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<Partner> Get(Guid id)
+        public async Task<PartnerResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetPartnerByIdQuery(id));
         }

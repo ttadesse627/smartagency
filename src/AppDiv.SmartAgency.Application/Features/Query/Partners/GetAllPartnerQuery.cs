@@ -34,4 +34,4 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Partners
             // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
     }
-}
+} 
