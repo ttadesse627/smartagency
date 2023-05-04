@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
+using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
 {
     public class PartnerResponseDTO
     {
       
-      public string  Id {get; set;}   
+      public Guid Id {get; set;}   
       public string  PartnerType {get; set;}
       public string  PartnerName {get; set;}
       public string  PartnerNameAmharic {get; set;}
@@ -21,6 +23,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
       public string  BankAccount {get; set;} 
       public string  HeaderLogo {get; set;}
       public string  ReferenceNumber {get; set;} 
-      public string  Address {get; set;}
+      public AddressResponseDTO  Address {get; set;}
     }
 }

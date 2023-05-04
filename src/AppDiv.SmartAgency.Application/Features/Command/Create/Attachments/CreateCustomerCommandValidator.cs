@@ -1,4 +1,4 @@
-﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+﻿ausing AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
@@ -36,7 +37,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.Partners
             if (createPartnerCommandResponse.Success)
             {
                 //can use this instead of automapper
-                var partner = new Partner()
+              /*  var partner = new Partner()
                 {
                     PartnerName=request.partner.PartnerName,
                     PartnerType=request.partner.PartnerType,
@@ -51,13 +52,15 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.Partners
                     HeaderLogo=request.partner.HeaderLogo,
                     ReferenceNumber=request.partner.ReferenceNumber,
                     Address=request.partner.Address
-                };
-                //
-                await _partnerRepository.InsertAsync(partner, cancellationToken);
-                await _partnerRepository.SaveChangesAsync(cancellationToken);
+                };  */
 
-                //var customerResponse = CustomerMapper.Mapper.Map<CustomerResponseDTO>(customer);
-               // createCustomerCommandResponse.Customer = customerResponse;          
+                
+               // await _partnerRepository.InsertAsync(partner, cancellationToken);
+                //await _partnerRepository.SaveChangesAsync(cancellationToken);
+
+                var partnerEntity = CustomMapper.Mapper.Map<Partner>(request.partner);
+            await _partnerRepository.InsertAsync(partnerEntity, cancellationToken);
+            var result = await _partnerRepository.SaveChangesAsync(cancellationToken);      
             }
             return createPartnerCommandResponse;
         }

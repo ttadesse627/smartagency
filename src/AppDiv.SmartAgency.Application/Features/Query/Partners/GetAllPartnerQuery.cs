@@ -27,7 +27,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Partners
         }
         public async Task<List<PartnerResponseDTO>> Handle(GetAllPartnerQuery request, CancellationToken cancellationToken)
         {
-            var partnerList = await _partnerRepository.GetAllAsync();
+            var partnerList = await _partnerRepository.GetAllWithAsync("Address");
             var partnerResponse = CustomMapper.Mapper.Map<List<PartnerResponseDTO>>(partnerList);
             return partnerResponse;
 

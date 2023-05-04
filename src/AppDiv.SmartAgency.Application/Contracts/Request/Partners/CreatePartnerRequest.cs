@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
 {
     public class CreatePartnerRequest
     {
-        
       public string  PartnerType {get; set;}
       public string  PartnerName {get; set;}
       public string  PartnerNameAmharic {get; set;}
@@ -21,6 +21,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
       public string  BankAccount {get; set;} 
       public string  HeaderLogo {get; set;}
       public string  ReferenceNumber {get; set;} 
-      public Address  Address {get; set;}
+      public AddressRequest  Address {get; set;}
     }
 }

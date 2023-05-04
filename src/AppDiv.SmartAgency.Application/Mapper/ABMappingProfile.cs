@@ -1,10 +1,13 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
+using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
 using AppDiv.SmartAgency.Application.Features.Command.Create.LookUps;
@@ -51,6 +54,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AppLookJobtitleRequest, AppLookJobtitle>();
 
             CreateMap<Category, CategoryResponseDTO>();
+            CreateMap<CreatePartnerRequest, Partner>();
+            CreateMap<Partner,PartnerResponseDTO>();
+            CreateMap<Address,AddressResponseDTO>();
         }
     }
 }
