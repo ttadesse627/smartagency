@@ -7,16 +7,22 @@ namespace AppDiv.SmartAgency.Domain.Entities
     public class LookUp : BaseAuditableEntity
     {
         public Guid? CategoryId { get; set; }
-        public Category? Category { get; set; }
-        public ICollection<Applicant>? ApplicantReligions { get; set; }
-        public ICollection<AppLookJobtitle>? LookUpJobTitles { get; set; }
-        public ICollection<Beneficiary>? BeneficiaryRelationShip { get; set; }
-        public LevelOfQualification? LookUpLevelOfQualifications { get; set; }
-        public QualificationType? LookUpQualificationTypes { get; set; }
-        public Award? AwardEducations { get; set; }
-        public TechnicalSkill? LookupTechnicalSkill { get; set; }
-        public Experience? LookupExpeeriences { get; set; }
-        public Language? LookupLanguage { get; set; }
         public string Value { get; set; } = string.Empty;
+
+        // Navigation properties
+        public Category? Category { get; set; }
+        public ICollection<Applicant>? LookUpReligions { get; set; }
+        public ICollection<Applicant>? LookUpJobTitles { get; set; }
+        public ICollection<Applicant>? LookupTechnicalSkills { get; set; }
+        public ICollection<Applicant>? LookUpBrokerNames { get; set; }
+        public ICollection<Applicant>? LookUpBranches { get; set; }
+
+        public ICollection<Education>? LookUpLevelOfQualifications { get; set; }
+        public ICollection<Education>? LookUpQualificationTypes { get; set; }
+        public ICollection<Education>? LookUpAwards { get; set; }
+        
+        public ICollection<Experience>? LookUpExperiences { get; set; }
+        public ICollection<Beneficiary>? BeneficiaryRelationShip { get; set; }
+        public ICollection<Language>? LookupLanguages { get; set; }
     }
 }

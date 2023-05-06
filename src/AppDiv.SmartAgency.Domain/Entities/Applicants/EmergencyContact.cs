@@ -6,9 +6,13 @@ namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 [Table("EmergencyContact")]
 public class EmergencyContact : PersonalInfo
 {
-    public string Relationship { get; set; }
-    public Guid AddressId { get; set; }
-    public Address Address { get; set; }
-    public Guid ApplicantId { get; set; }
-    public Applicant Applicant { get; set; }
+    // Foreign Keys
+    public Guid? EmergencyContactAddressId { get; set; }
+    public Guid? EmergencyContactApplicantId { get; set; }
+    public Guid EmergencyContactRelationshipId { get; set; }
+
+    // Navigation properties
+    public LookUp? EmergencyContactRelationship { get; set; }
+    public Address? EmergencyContactAddress { get; set; }
+    public Applicant? EmergencyContactApplicant { get; set; }
 }

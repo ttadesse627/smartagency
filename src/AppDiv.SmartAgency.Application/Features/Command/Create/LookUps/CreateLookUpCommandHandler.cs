@@ -41,9 +41,8 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
                 await _lookUpRepository.InsertAsync(lookUp, cancellationToken);
                 createLookUpCommandResponse.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
                 IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
-                Console.WriteLine(lookUp);
 
-                if (lookUp.CategoryId.ToString() == "da1d41e4-9873-4910-9e1a-510a9fe50a3c")
+                if (lookUp.CategoryId.ToString() == "8aec3c2a-96ba-46ce-8a4b-14cf557fd621")
                 {
                     var category = new Category { Name = lookUp.Value };
                     await _categoryRepository.InsertAsync(category, cancellationToken);

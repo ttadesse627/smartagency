@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230505033330_LangLookupRelModified")]
+    partial class LangLookupRelModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -835,7 +837,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dce16473-7a26-42b2-ab79-1d0c48079ccd"),
+                            Id = new Guid("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"),
                             Name = "Category"
                         });
                 });
@@ -1007,7 +1009,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 5, 9, 27, 57, 477, DateTimeKind.Local).AddTicks(3332));
+                        .HasDefaultValue(new DateTime(2023, 5, 5, 6, 33, 29, 543, DateTimeKind.Local).AddTicks(1711));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1251,7 +1253,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
                         .WithMany("Beneficiaries")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Relationship")
@@ -1316,12 +1318,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
                         .WithMany("Languages")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "LanguageLookUp")
                         .WithMany("LookupLanguage")
                         .HasForeignKey("LanguageLookUpId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Applicant");
 

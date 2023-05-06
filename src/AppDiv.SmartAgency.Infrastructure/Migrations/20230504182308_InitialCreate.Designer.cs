@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230503110717_InitialCreate")]
+    [Migration("20230504182308_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -838,7 +838,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("da1d41e4-9873-4910-9e1a-510a9fe50a3c"),
+                            Id = new Guid("22c13ea0-b487-4395-a3a6-23807dff73ad"),
                             Name = "Category"
                         });
                 });
@@ -1010,7 +1010,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 3, 14, 7, 16, 946, DateTimeKind.Local).AddTicks(1531));
+                        .HasDefaultValue(new DateTime(2023, 5, 4, 21, 23, 7, 835, DateTimeKind.Local).AddTicks(6547));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");

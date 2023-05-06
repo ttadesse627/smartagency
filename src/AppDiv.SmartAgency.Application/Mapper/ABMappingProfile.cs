@@ -51,12 +51,12 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<WitnessRequest, Witness>();
             CreateMap<AddressRequest, Address>();
             CreateMap<TechnicalSkillRequest, TechnicalSkill>();
-            CreateMap<AppLookJobtitleRequest, AppLookJobtitle>();
+            CreateMap<List<Applicant>, List<ApplicantsResponseDTO>>();
 
             CreateMap<Category, CategoryResponseDTO>();
             CreateMap<CreatePartnerRequest, Partner>();
-            CreateMap<Partner,PartnerResponseDTO>();
-            CreateMap<Address,AddressResponseDTO>();
+            CreateMap<Partner, PartnerResponseDTO>();
+            CreateMap<Address, AddressResponseDTO>();
         }
     }
 }

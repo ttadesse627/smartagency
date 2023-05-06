@@ -23,7 +23,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         // private readonly IUserResolverService userResolverService;
 
         public DbSet<AuditLog> AuditLogs { get; set; }
-        // public DbSet<Gender> Genders { get; set; }
         public DbSet<Suffix> Suffixes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
@@ -31,14 +30,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<AttachmentFile> AttachmentFiles { get; set; }
+        public DbSet<FileCollection> FileCollections { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Language> Languages { get; set; }
-        // public DbSet<LanguageAbility> LanguageAbilities { get; set; }
         public DbSet<Repersentative> Repersentatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
 
@@ -68,7 +66,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.NewGuid(), Name="Category"}
+                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
 
                 modelBuilder.Ignore<PersonalInfo>();
@@ -129,7 +127,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 }).IgnoreMatchedProperties(true));
             #endregion
         }
-
         public static JsonSerializerSettings GetJsonSerializerSettings()
         {
             return new JsonSerializerSettings

@@ -25,14 +25,14 @@ public class CreateApplicantRequest
     public MaritalStatus MaritalStatus { get; set; }
     public string Complexion { get; set; }
     public int NumberOfChildren { get; set; }
-    public string Health { get; set; }
+    public string? Health { get; set; }
     public Guid ReligionId { get; set; }
-    public ICollection<AppLookJobtitleRequest> JobTitles { get; set; }
+    public ICollection<Guid>? LookUpJobtitleId { get; set; }
     public decimal Salary { get; set; }
-    public string DesiredCountry { get; set; }
-    public string MotherFullName { get; set; }
-    public string PreviousCountry { get; set; }
-    public string CurrentNationality { get; set; }
+    public string? DesiredCountry { get; set; }
+    public string? MotherFullName { get; set; }
+    public string? PreviousCountry { get; set; }
+    public string? CurrentNationality { get; set; }
     public decimal Height { get; set; }
     public int ContractPeriod { get; set; }
     public string? JobTitleAmharic { get; set; }
