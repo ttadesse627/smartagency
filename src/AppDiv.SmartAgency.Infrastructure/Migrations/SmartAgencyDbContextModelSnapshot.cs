@@ -836,7 +836,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4437bc2b-6688-4ae8-9a32-3f46f7d36dea"),
+                            Id = new Guid("7b8dc825-ef67-436a-b33c-e4ff6894068e"),
                             Name = "Category"
                         });
                 });
@@ -949,9 +949,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("DesiredCountry")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("DesiredCountryId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("EducationLevel")
                         .IsRequired()
@@ -991,11 +990,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DesiredCountryId");
+
                     b.HasIndex("ExperienceId");
 
                     b.HasIndex("MartialStatusId");
 
-                    b.ToTable("OnlineApplicant");
+                    b.ToTable("OnlineApplicants");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
@@ -1078,7 +1079,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 6, 11, 35, 23, 31, DateTimeKind.Local).AddTicks(2966));
+                        .HasDefaultValue(new DateTime(2023, 5, 6, 17, 27, 20, 107, DateTimeKind.Local).AddTicks(4278));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1505,6 +1506,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.OnlineApplicant", b =>
                 {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "DesiredCountry")
+                        .WithMany("DesiredCountry")
+                        .HasForeignKey("DesiredCountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Experience")
                         .WithMany("Experience")
                         .HasForeignKey("ExperienceId")
@@ -1516,6 +1523,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("MartialStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DesiredCountry");
 
                     b.Navigation("Experience");
 
@@ -1660,6 +1669,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("AwardEducations");
 
                     b.Navigation("BeneficiaryRelationShip");
+
+                    b.Navigation("DesiredCountry");
 
                     b.Navigation("Experience");
 

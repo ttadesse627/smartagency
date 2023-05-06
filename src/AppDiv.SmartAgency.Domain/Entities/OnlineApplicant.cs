@@ -17,14 +17,14 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string  City{get; set;} =string.Empty;
         public string  PhoneNumber{get; set;}
         public string  EducationLevel{get; set;}=string.Empty;
-        public string DesiredCountry{get; set;}
+        public Guid DesiredCountryId{get; set;}
         public Guid  MartialStatusId {get; set;}
         public Guid  ExperienceId{get; set;}
         public LookUp MaritialStatus {get; set;}
 
         public LookUp Experience {get; set;}
 
-    
+        public LookUp DesiredCountry {get; set;}
 
 
 

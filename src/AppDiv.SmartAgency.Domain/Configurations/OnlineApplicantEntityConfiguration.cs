@@ -17,7 +17,10 @@ namespace AppDiv.SmartAgency.Domain.Configurations
                 .HasForeignKey(o => o.MartialStatusId);
             builder.HasOne(o => o.Experience)
                 .WithMany(l => l.Experience)
-                .HasForeignKey(o => o.ExperienceId);    
+                .HasForeignKey(o => o.ExperienceId);  
+            builder.HasOne(o=> o.DesiredCountry)
+                 .WithMany(l=> l.DesiredCountry)
+                 .HasForeignKey(o=> o.DesiredCountryId);      
         }
 
     }

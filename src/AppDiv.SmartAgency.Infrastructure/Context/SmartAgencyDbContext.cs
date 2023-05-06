@@ -41,6 +41,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         // public DbSet<LanguageAbility> LanguageAbilities { get; set; }
         public DbSet<Repersentative> Repersentatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
+        public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
         {
@@ -69,7 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.NewGuid(), Name="Category"}
+                    new Category { Id = Guid.Parse("7b8dc825-ef67-436a-b33c-e4ff6894068e"), Name="Category"}
                 );
 
                 modelBuilder.Ignore<PersonalInfo>();

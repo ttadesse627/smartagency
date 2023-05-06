@@ -60,6 +60,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Address,AddressResponseDTO>().ReverseMap();
             CreateMap<EditPartnerCommand, Partner>();
 
+            CreateMap<OnlineApplicant, OnlineApplicantResponseDTO>();
+            CreateMap<OnlineApplicantRequest, OnlineApplicant>();
+
         }
     }
 }
