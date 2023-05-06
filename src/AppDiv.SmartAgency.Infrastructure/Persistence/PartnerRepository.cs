@@ -25,5 +25,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         return await base.GetAsync(Id);
     }
     
+   public async Task<Int32> UpdateAsync(Partner partner)
+   {
+      
+        _context.Partners.Update(partner);
+        var response = await _context.SaveChangesAsync();
+
+        return response;
+    }
 }
 }

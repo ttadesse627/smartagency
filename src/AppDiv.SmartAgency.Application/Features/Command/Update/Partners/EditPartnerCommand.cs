@@ -33,17 +33,22 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.Partners
     }
 
 
+
+   
+
     public class EditPartnerCommandHandler : IRequestHandler<EditPartnerCommand, PartnerResponseDTO>
     {
+   
         private readonly IPartnerRepository _partnerRepository;
         private readonly IPartnerRepository _partnerQueryRepository;
-        public EditPartnerCommandHandler(IPartnerRepository partnerRepository)
+        public EditPartnerCommandHandler(IPartnerRepository partnerRepository,IPartnerRepository partnerQueryRepository)
         {
             _partnerRepository = partnerRepository;
+            _partnerQueryRepository=partnerQueryRepository;
         }
         public async Task<PartnerResponseDTO> Handle(EditPartnerCommand request,  CancellationToken cancellationToken)
         {
-             var partnerEntity = CustomMapper.Mapper.Map<Partner>(request);
+            var partnerResponse = new PartnerResponseDTO();
           //  Partner partnerEntity = new Partner
           /*  {
                 Id = request.Id,
@@ -62,19 +67,31 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.Partners
                 Address = request.Address
 
             };
+            
 */
+            var partnerEntity = CustomMapper.Mapper.Map<Partner>(request);
             try
             {
-                await _partnerRepository.UpdateAsync(partnerEntity, x => x.Id);
-                 await _partnerRepository.SaveChangesAsync(cancellationToken);
+                var res =    await _partnerRepository.UpdateAsync(partnerEntity);
+                // await _partnerRepository.SaveChangesAsync(cancellationToken);
+
+                if(res>=1) {
+
+                    var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
+                    Console.WriteLine(modifiedPartner);
+                    partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
+                    Console.WriteLine(partnerResponse);
+
+                }
             }
             catch (Exception exp)
             {
                 throw new ApplicationException(exp.Message);
             }
-
-            var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
-            var partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
+           
+     
+          //  var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
+           // cd cvar partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
 
             return partnerResponse;
         }

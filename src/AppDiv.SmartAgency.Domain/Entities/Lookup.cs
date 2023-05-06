@@ -11,6 +11,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<Applicant>? ApplicantReligions { get; set; }
         public ICollection<AppLookJobtitle>? LookUpJobTitles { get; set; }
         public ICollection<Beneficiary>? BeneficiaryRelationShip { get; set; }
+        public ICollection<OnlineApplicant>? MaritalStatus { get; set; }
+        public ICollection<OnlineApplicant>? Experience { get; set; }
         public LevelOfQualification? LookUpLevelOfQualifications { get; set; }
         public QualificationType? LookUpQualificationTypes { get; set; }
         public Award? AwardEducations { get; set; }

@@ -66,6 +66,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new LanguageEntityConfig());
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
                     new Category { Id = Guid.NewGuid(), Name="Category"}
