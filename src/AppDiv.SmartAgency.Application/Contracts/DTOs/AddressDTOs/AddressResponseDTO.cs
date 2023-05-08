@@ -7,8 +7,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs
 {
     public class AddressResponseDTO
     {
-        
-        public Guid Id { get; set; }
         public string Country { get; set; }
         public string Region { get; set; }
         public string Zone { get; set; }
