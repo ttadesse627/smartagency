@@ -6,6 +6,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Applicants;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Applicants;
 using AppDiv.SmartAgency.Application.Features.Query.Applicants;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ public class ApplicantController : ControllerBase
         return Ok(response);
     }
     [HttpGet("get-all")]
-    public async Task<ActionResult<List<ApplicantsResponseDTO>>> GetAllApplicants()
+    public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants()
     {
         return Ok(await _mediator.Send(new GetAllApplicants()));
     }
@@ -47,5 +48,19 @@ public class ApplicantController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    [HttpGet("search&sortapplicant")]
+    public async Task<ActionResult<ApplicantsResponseDTO>> SearchApplicants
+        (
+            [FromQuery] string searchTerm,
+            [FromQuery] string orderBy = "FirstName",
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] SortingDirection sortOrderAscending = SortingDirection.Ascending
+
+        )
+    {
+        return Ok(await _mediator.Send(new SearchApplicants(searchTerm, orderBy, pageNumber, pageSize, sortOrderAscending)));
     }
 }
