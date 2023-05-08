@@ -1,0 +1,61 @@
+@host = 127.0.0.1/api/order
+
+POST {{host}}/
+header name: header value
+
+content
+{
+  "request": {
+    "orderNumber": 0,
+    "visaNumber": "string",
+    "contractDuration": 0,
+    "visaDate": "2023-05-08T12:46:35.961Z",
+    "contractNumber": "string",
+    "electronicVisaNumber": "string",
+    "electronicVisaDate": "2023-05-08T12:46:35.961Z",
+    "portOfArrivalId": "f5a8bdb6-1563-41fb-bda1-cf945a93c4a5",
+    "priorityId": "1b36dadc-e751-4212-ac6c-60ff8fdc4419",
+    "visaTypeId": "3aead79d-6e6e-4d86-bddb-4c23348303e4",
+    "visaFile": {
+      "fileCollectionAttachmentId": "dca4df58-f503-4e3a-aec8-95a474599363",
+      "filePath": "string"
+    },
+    "orderCriteria": {
+      "age": 0,
+      "nationalityId": "8cf0c6c3-2850-4351-932d-31f9dc3bbbc3",
+      "orderCriteriaJobTitleId": "90774ffc-e2f5-48f1-a20a-5fac0bfaacee",
+      "salaryId": "da86ba94-de5c-4f3d-a04f-e4ee0c2c7b1d",
+      "religionId": "68ccacf6-c656-4447-b8cb-9a2f102f7e93",
+      "experienceId": "68848f4e-19eb-4b19-9eb9-7ab3e0ab6770",
+      "languageId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c",
+      "remark": "string"
+    },
+    "orderPayment": {
+      "totalAmount": 0,
+      "paidAmount": 0,
+      "currentPaidAmount": 0
+    },
+    "orderSponsor": {
+      "idNumber": "string",
+      "fullName": "string",
+      "fullNameAmharic": "string",
+      "otherName": "string",
+      "residentialTitle": "string",
+      "numberOfFamily": 0,
+      "sponsorIDFile": {
+        "fileCollectionAttachmentId": "dca4df58-f503-4e3a-aec8-95a474599363",
+        "filePath": "string"
+      },
+      "sponsorAddress": {
+        "addressCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
+        "region": "string",
+        "zone": "string",
+        "woreda": "string",
+        "kebele": "string",
+        "phoneNumber": "string",
+        "email": "string",
+        "website": "string"
+      }
+    }
+  }
+}
