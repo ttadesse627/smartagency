@@ -17,49 +17,21 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
         builder.HasMany(m => m.ApplicantWitnesses)
             .WithMany(n => n.WitnessApplicants);
 
-        builder.HasMany(m => m.ApplicantBeneficiaries)
-            .WithOne(n => n.BeneficiaryApplicant)
-            .HasForeignKey(fk => fk.BeneficiaryApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(m => m.ApplicantLanguages)
-            .WithOne(n => n.LanguageApplicant)
-            .HasForeignKey(fk => fk.LanguageApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(m => m.ApplicantExperiences)
-            .WithOne(n => n.ExperienceApplicant)
-            .HasForeignKey(fk => fk.ExperienceApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(m => m.ApplicantRepersentative)
-            .WithOne(n => n.RepresentativeApplicant)
-            .HasForeignKey<Repersentative>(n => n.RepresentativeApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(m => m.ApplicantPartner)
             .WithMany(n => n.Applicants)
             .HasForeignKey(fk => fk.ApplicantPartnerId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(m => m.ApplicantAddress)
-            .WithOne(n => n.AddressApplicant);
-
-        builder.HasOne(m => m.ApplicantEducation)
-            .WithOne(n => n.EducationApplicant)
-            .HasForeignKey<Education>(n => n.EducationApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(n => n.AddressApplicant)
+            .HasForeignKey<Applicant>(fk => fk.ApplicantAddressId);
 
         builder.HasOne(m => m.ApplicantBankAccount)
             .WithOne(n => n.Applicant)
-            .HasForeignKey<BankAccount>(n => n.ApplicantId)
+            .HasForeignKey<Applicant>(n => n.ApplicantBankAccountId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(m => m.ApplicantEmergencyContact)
-            .WithOne(n => n.EmergencyContactApplicant)
-            .HasForeignKey<EmergencyContact>(n => n.EmergencyContactApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
-
+            // Relationships with lookup
         builder.HasMany(m => m.ApplicantTechnicalSkills)
             .WithMany(n => n.LookupTechnicalSkills);
 
@@ -83,6 +55,35 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .HasForeignKey(fk => fk.ApplicantJobtitleId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasOne(appl => appl.ApplicantIssuingCountry)
+            .WithMany(lk => lk.LookUpIssuingCountries)
+            .HasForeignKey(fk => fk.ApplicantIssuingCountryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantIssuedPlace)
+            .WithMany(lk => lk.LookUpIssuedPlaces)
+            .HasForeignKey(fk => fk.ApplicantIssuedPlaceId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantHealth)
+            .WithMany(lk => lk.LookUpHealths)
+            .HasForeignKey(fk => fk.ApplicantHealthId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantSalary)
+            .WithMany(lk => lk.LookUpSalaries)
+            .HasForeignKey(fk => fk.ApplicantSalaryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantDesiredCountry)
+            .WithMany(lk => lk.LookUpDesiredCountries)
+            .HasForeignKey(fk => fk.ApplicantDesiredCountryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantMaritalStatus)
+            .WithMany(lk => lk.LookUpMaritalStatuses)
+            .HasForeignKey(fk => fk.ApplicantMaritalStatusId)
+            .OnDelete(DeleteBehavior.SetNull);
 
     }
 }

@@ -14,8 +14,8 @@ public class FileCollectionEntityConfig : IEntityTypeConfiguration<FileCollectio
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(fc => fc.FileCollectionApplicant)
-                .WithMany(appl => appl.ApplicantFileCollections)
-                .HasForeignKey(fk => fk.FileCollectionApplicantId)
-                .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(appl => appl.ApplicantFileCollections)
+            .HasForeignKey(fk => fk.FileCollectionApplicantId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

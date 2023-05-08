@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
+using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AppDiv.SmartAgency.Domain.Entities.Settings;
 
 namespace AppDiv.SmartAgency.Domain.Entities
@@ -24,10 +25,11 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string? ReferenceNumber { get; set; }
 
         // Foreign Keys
-        public Guid AddressId { get; set; }
+        public Guid? PartnerAddressId { get; set; }
 
         // Navigation properties
-        public Address? Address { get; set; }
-        public List<Applicant>? Applicants { get; set; }
+        public Address? PartnerAddress { get; set; }
+        public ICollection<Applicant>? Applicants { get; set; }
+        public ICollection<Order>? Orders { get; set; }
     }
 }

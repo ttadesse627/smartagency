@@ -53,7 +53,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.Partners
                 BankAccount = request.BankAccount,
                 HeaderLogo = request.HeaderLogo,
                 ReferenceNumber = request.ReferenceNumber,
-                Address = request.Address
+                PartnerAddress = request.Address
 
             };
 

@@ -11,11 +11,11 @@ public class Beneficiary : PersonalInfo
     public float Rate { get; set; }
 
     // Foreign Keys
-    public Guid BeneficiaryApplicantId { get; set; }
-    public Guid BeneficiaryRelationshipId { get; set; }
+    public Guid? BeneficiaryApplicantId { get; set; }
+    public Guid? BeneficiaryRelationshipId { get; set; }
 
     // Navigation properties
     public LookUp? BeneficiaryRelationship { get; set; }
-    public Applicant BeneficiaryApplicant { get; set; }
+    public Applicant? BeneficiaryApplicant { get; set; }
     
 }

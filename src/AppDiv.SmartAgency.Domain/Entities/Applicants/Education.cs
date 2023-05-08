@@ -8,7 +8,7 @@ public class Education
     public string? FieldOfStudy { get; set; }
     public string? ProfessionalSkill { get; set; }
     // Foreign Keys
-    public Guid EducationApplicantId { get; set; }
+    public Guid? EducationApplicantId { get; set; }
     
     // Navigation properties
     public Applicant? EducationApplicant { get; set; }

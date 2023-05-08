@@ -12,7 +12,6 @@ public class Language
     public Guid? LanguageLookUpId { get; set; }
 
     // Additional properties
-
     public bool CanWrite { get; set; }
     public bool CanRead { get; set; }
     public bool CanSpeak { get; set; }
