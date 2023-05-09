@@ -5,8 +5,10 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Applicants.OnlineApplicants;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
+using AppDiv.SmartAgency.Application.Features.Command.Delete.Applicants;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
+using AppDiv.SmartAgency.Application.Features.Query.Applicants.OnlineApplicants;
 using AppDiv.SmartAgency.Application.Features.Query.Customers;
 using AppDiv.SmartAgency.Application.Features.Query.Partners;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -33,7 +35,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         return Ok(response);
     }
 
-   /* [HttpGet("get-all-partner")]
+    [HttpGet("get-all-online-applicant")]
     public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants()
     {
         return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery()));
@@ -62,7 +64,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-*/
+
      
         
   

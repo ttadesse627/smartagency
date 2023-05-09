@@ -42,6 +42,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Repersentative> Repersentatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
         public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
+         public DbSet<Deposit>  Deposits{ get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
         {

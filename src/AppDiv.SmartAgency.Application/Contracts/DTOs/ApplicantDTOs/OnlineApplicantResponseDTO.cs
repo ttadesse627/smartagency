@@ -20,7 +20,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
         public string  City{get; set;} 
         public string  PhoneNumber{get; set;}
         public string EducationLevel{get; set;}
-        public Guid DesiredCountry{get; set;}
+        public Guid DesiredCountryId{get; set;}
         public Guid  MartialStatusId {get; set;}
         public Guid  ExperienceId{get; set;}      
     }

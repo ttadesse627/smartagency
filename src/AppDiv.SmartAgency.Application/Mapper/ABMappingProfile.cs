@@ -3,10 +3,12 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
+using AppDiv.SmartAgency.Application.Contracts.Request.Deposit;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
@@ -62,7 +64,11 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<OnlineApplicant, OnlineApplicantResponseDTO>();
             CreateMap<OnlineApplicantRequest, OnlineApplicant>();
+            CreateMap<LookUp, OnlineApplicantLookUpResponseDTO>();
 
+
+           CreateMap<Deposit, DepositResponseDTO>();
+           CreateMap<CreateDepositRequest, DepositResponseDTO>();
         }
     }
 }

@@ -12,9 +12,9 @@ namespace AppDiv.SmartAgency.Domain.Configurations
     {
         public void Configure(EntityTypeBuilder<OnlineApplicant> builder)
         {
-            builder.HasOne(o => o.MaritialStatus)
+            builder.HasOne(o => o.MaritalStatus)
                 .WithMany(l => l.MaritalStatus)
-                .HasForeignKey(o => o.MartialStatusId);
+                .HasForeignKey(o => o.MaritalStatusId);
             builder.HasOne(o => o.Experience)
                 .WithMany(l => l.Experience)
                 .HasForeignKey(o => o.ExperienceId);  

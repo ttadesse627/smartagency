@@ -18,9 +18,9 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string  PhoneNumber{get; set;}
         public string  EducationLevel{get; set;}=string.Empty;
         public Guid DesiredCountryId{get; set;}
-        public Guid  MartialStatusId {get; set;}
+        public Guid  MaritalStatusId {get; set;}
         public Guid  ExperienceId{get; set;}
-        public LookUp MaritialStatus {get; set;}
+        public LookUp MaritalStatus {get; set;}
 
         public LookUp Experience {get; set;}
 
