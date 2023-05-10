@@ -7,6 +7,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
+using AppDiv.SmartAgency.Application.Features.Command.Delete.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
@@ -50,7 +51,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             return await _mediator.Send(new GetDepositByIdQuery(id));
         }
  
- /*
+
       [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteDeposit(Guid id)
         {
@@ -67,7 +68,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-*/
+
      
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)

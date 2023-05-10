@@ -50,8 +50,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Update.Deposits
 
                     var modifiedDeposit = await _depositQueryRepository.GetByIdAsync(request.Id);
                     depositResponse = CustomMapper.Mapper.Map<GetDepositByIdResponseDTO>(modifiedDeposit);
-                    Console.WriteLine(depositResponse);
-
+                 
                 }
             }
             catch (Exception exp)
