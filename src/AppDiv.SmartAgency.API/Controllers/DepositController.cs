@@ -1,14 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+
+
+
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
-/*
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Features.Command.Create.Deposits;
+using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
+using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
+using AppDiv.SmartAgency.Application.Features.Query.Customers;
+using AppDiv.SmartAgency.Application.Features.Query.Deposits;
+using AppDiv.SmartAgency.Application.Features.Query.Partners;
+using AppDiv.SmartAgency.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    [ApiController]
-    [Route("api/deposit")]
-    public class DepositController : ControllerBase
+
+[ApiController]
+[Route("api/deposit")]
+    public class DepositController: ControllerBase
 {
     private readonly IMediator _mediator;
     public DepositController(IMediator mediator)
@@ -23,19 +35,19 @@ namespace AppDiv.SmartAgency.API.Controllers
         return Ok(response);
     }
 
-    [HttpGet("get-all-deposit")]
+   [HttpGet("get-all-deposits")]
     public async Task<ActionResult<DepositResponseDTO>> GetAllDeposits()
     {
         return Ok(await _mediator.Send(new GetAllDepositQuery()));
     }
-
+/*
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<DepositResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetDepositByIdQuery(id));
         }
-
+ 
       [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteDeposit(Guid id)
         {
@@ -77,6 +89,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
           
   
-} */
+}*/
+}
 
-
+}

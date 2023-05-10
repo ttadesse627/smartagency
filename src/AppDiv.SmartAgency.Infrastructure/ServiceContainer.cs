@@ -70,7 +70,8 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IApplicantRepository, ApplicantRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>(); 
-            services.AddTransient<IOnlineApplicantRepository, OnlineApplicantRepository>();     
+            services.AddTransient<IOnlineApplicantRepository, OnlineApplicantRepository>(); 
+            services.AddTransient<IDepositRepository, DepositRepository>();    
             #endregion Repositories DI
 
             return services;

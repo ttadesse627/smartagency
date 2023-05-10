@@ -18,6 +18,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
     public override async Task InsertAsync(Deposit deposit, CancellationToken cancellationToken)
     {
+        
         await base.InsertAsync(deposit, cancellationToken);
     }
     public async Task<Deposit> GetByIdAsync(Guid Id)

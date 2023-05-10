@@ -69,9 +69,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new LanguageEntityConfig());
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new DepositEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.Parse("7b8dc825-ef67-436a-b33c-e4ff6894068e"), Name="Category"}
+                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name="Category"}
                 );
 
                 modelBuilder.Ignore<PersonalInfo>();
