@@ -70,6 +70,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Deposit, DepositResponseDTO>();
             CreateMap<CreateDepositRequest, Deposit>();
             CreateMap<Applicant, DepositApplicantResponseDTO>();
+            CreateMap<Deposit,CreateDepositRequest>();
+            CreateMap<DepositResponseDTO,CreateDepositRequest>();
         }
     }
 }

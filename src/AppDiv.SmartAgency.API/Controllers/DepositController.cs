@@ -4,6 +4,7 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
@@ -40,14 +41,15 @@ namespace AppDiv.SmartAgency.API.Controllers
     {
         return Ok(await _mediator.Send(new GetAllDepositQuery()));
     }
-/*
+
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<DepositResponseDTO> Get(Guid id)
+        public async Task<CreateDepositRequest> Get(Guid id)
         {
             return await _mediator.Send(new GetDepositByIdQuery(id));
         }
  
+ /*
       [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteDeposit(Guid id)
         {
