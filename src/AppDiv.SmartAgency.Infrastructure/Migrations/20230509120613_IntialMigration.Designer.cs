@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230506142720_IntialMigration")]
+    [Migration("20230509120613_IntialMigration")]
     partial class IntialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -899,6 +899,43 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Deposit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<double>("DepositAmount")
+                        .HasColumnType("double");
+
+                    b.Property<string>("DepositedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Deposits");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1081,7 +1118,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 6, 17, 27, 20, 107, DateTimeKind.Local).AddTicks(4278));
+                        .HasDefaultValue(new DateTime(2023, 5, 9, 15, 6, 12, 509, DateTimeKind.Local).AddTicks(6930));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1520,7 +1557,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "MaritialStatus")
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "MaritalStatus")
                         .WithMany("MaritalStatus")
                         .HasForeignKey("MartialStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1530,7 +1567,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("Experience");
 
-                    b.Navigation("MaritialStatus");
+                    b.Navigation("MaritalStatus");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
