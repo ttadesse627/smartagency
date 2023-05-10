@@ -9,10 +9,11 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs
     {
         public Guid Id {get; set;}
         public string PassportNumber {get; set;} 
-        public string DepositAmount {get; set;} 
-        public string Month {get; set;}  
-        public string DepositedBy {get; set;}  
-        public DepositApplicantResponseDTO Applicant {get; set;}
+        public double DepositAmount {get; set;} 
+        public DateTime Month {get; set;}  
+        public string DepositedBy {get; set;} 
+       public  Guid ApplicantId {get; set;} 
+       public DepositApplicantResponseDTO Applicant {get; set;}
 
 
     }

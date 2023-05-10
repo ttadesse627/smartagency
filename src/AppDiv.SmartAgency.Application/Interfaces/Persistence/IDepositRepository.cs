@@ -10,6 +10,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     public interface IDepositRepository: IBaseRepository<Deposit>
     {
         Task<Deposit> GetByIdAsync(Guid id);
-       // Task<Int32> UpdateAsync(Partner partner);
+        Task<Int32> UpdateAsync(Deposit deposit);
     }
 }

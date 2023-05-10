@@ -15,6 +15,7 @@ using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
 using AppDiv.SmartAgency.Application.Features.Command.Create.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -70,8 +71,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Deposit, DepositResponseDTO>();
             CreateMap<CreateDepositRequest, Deposit>();
             CreateMap<Applicant, DepositApplicantResponseDTO>();
-            CreateMap<Deposit,CreateDepositRequest>();
-            CreateMap<DepositResponseDTO,CreateDepositRequest>();
+            CreateMap<DepositResponseDTO,GetDepositByIdResponseDTO>();
+            CreateMap<EditDepositCommand, Deposit>();
+            CreateMap< Deposit,GetDepositByIdResponseDTO>();
+
         }
     }
 }

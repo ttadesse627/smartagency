@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Query.Deposits
 {
-    public class GetDepositByIdQuery: IRequest<CreateDepositRequest>
+    public class GetDepositByIdQuery: IRequest<GetDepositByIdResponseDTO>
     {
         public Guid Id { get; private set; }
 
@@ -19,7 +20,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Deposits
 
     }
 
-    public class GetDepositByIdHandler : IRequestHandler<GetDepositByIdQuery, CreateDepositRequest>
+    public class GetDepositByIdHandler : IRequestHandler<GetDepositByIdQuery, GetDepositByIdResponseDTO>
     {
         private readonly IMediator _mediator;
 
@@ -27,11 +28,11 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Deposits
         {
             _mediator = mediator;
         }
-        public async Task<CreateDepositRequest> Handle(GetDepositByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetDepositByIdResponseDTO> Handle(GetDepositByIdQuery request, CancellationToken cancellationToken)
         {
             var deposits = await _mediator.Send(new GetAllDepositQuery());
             var selectedDeposit = deposits.FirstOrDefault(d=>d.Id == request.Id);
-            return CustomMapper.Mapper.Map<CreateDepositRequest>(selectedDeposit);
+            return CustomMapper.Mapper.Map<GetDepositByIdResponseDTO>(selectedDeposit);
            
         }
 }

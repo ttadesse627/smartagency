@@ -8,6 +8,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Application.Features.Query.Customers;
 using AppDiv.SmartAgency.Application.Features.Query.Deposits;
@@ -66,10 +67,10 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-
+*/
      
         [HttpPut("Edit/{id}")]
-        public async Task<ActionResult> Edit(Guid id, [FromBody] EditPartnerCommand command)
+        public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)
         {
             try
             {
@@ -91,7 +92,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
           
   
-}*/
+}
 }
 
 }
