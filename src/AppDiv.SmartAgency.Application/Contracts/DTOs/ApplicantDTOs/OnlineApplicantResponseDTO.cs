@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
@@ -20,8 +22,8 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
         public string  City{get; set;} 
         public string  PhoneNumber{get; set;}
         public string EducationLevel{get; set;}
-        public Guid DesiredCountryId{get; set;}
-        public Guid  MartialStatusId {get; set;}
-        public Guid  ExperienceId{get; set;}      
+        public  OnlineApplicantLookUpResponseDTO DesiredCountry{get; set;}
+        public  OnlineApplicantLookUpResponseDTO  MaritalStatus {get; set;}
+        public OnlineApplicantLookUpResponseDTO  Experience{get; set;}      
     }
 }
