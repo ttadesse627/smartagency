@@ -1,5 +1,5 @@
 
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
