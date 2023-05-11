@@ -70,4 +70,5 @@ public class Applicant : PersonalInfo
     public LookUp? ApplicantMaritalStatus { get; set; }
     public Order? ApplicantOrder { get; set; }
     public ICollection<Deposit>? Deposits{ get; set; }
+    public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses{ get; set; }
 }
