@@ -9,5 +9,5 @@ public interface IOrderRepository : IBaseRepository<Order>
     public Task<List<Order>> GetAll();
     public Task<ServiceResponse<Order>> GetOrderAsync(Guid id);
     public Task<ServiceResponse<Int32>> SaveDbUpdateAsync();
-    public string UpdateOrder(Order updatedOrder);
+    public ServiceResponse<String> UpdateOrder(Order updatedOrder);
 }

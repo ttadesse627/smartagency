@@ -54,17 +54,23 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
     public ServiceResponse<String> UpdateOrder(Order updatedOrder)
     {
-        string message = null;
+        var response =  new ServiceResponse<String>();
         try
         {
-            await _context.Orders.Update(updatedOrder);
-            message = "The order is updated.";
+            _context.Orders.Update(updatedOrder);
+            response.Data = "Successfully set";
+            response.Message = "The order is updated.";
+            response.Success = true;
+            response.Errors.Add("No error found!");
         }
         catch (System.Exception ex)
         {
-            message = ex.Message;
+            response.Data = null;
+            response.Message = "Cannot update the order because of some error/s";
+            response.Success = false;
+            response.Errors.Add(ex.Message);
         }
-        return message;
+        return response;
     }
 
     public async Task<ServiceResponse<Int32>> SaveDbUpdateAsync()
@@ -73,11 +79,14 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         try
         {
             response.Data = await _context.SaveChangesAsync();
+            response.Message = "The update saved successfully";
         }
         catch (Exception ex)
         {
+            response.Data = 0;
             response.Message = ex.Message;
             response.Success = false;
+            response.Errors.Add(ex.Message);
         }
         return response;
     }
