@@ -79,7 +79,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name="Category"}
                     new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
 

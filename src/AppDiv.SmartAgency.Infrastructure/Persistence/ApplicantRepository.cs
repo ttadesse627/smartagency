@@ -1,3 +1,6 @@
+using System.Linq.Expressions;
+using System.Reflection;
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Infrastructure.Context;
@@ -56,6 +59,15 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         }
         return response;
     }
+    public async Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber)
+        {
+            var serviceResponse = new ServiceResponse<Applicant>();
+            serviceResponse.Data = _context.Applicants.FirstOrDefault(a=>a.PassportNumber==passportNumber);
+
+          return serviceResponse;
+
+            //return base.GetFirstEntryAsync(x => x.PassportNumber.Equals(passportNumber), q => q.Id, Utility.Contracts.SortingDirection.Ascending);
+        }
 
 
     public async Task<List<Applicant>> SearchEntitiesAsync(string searchTerm, int pageNumber, int pageSize, string sortField, bool sortOrderAscending)
