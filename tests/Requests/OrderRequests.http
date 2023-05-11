@@ -1,26 +1,30 @@
-@host = 127.0.0.1/api/order
+@host = http://127.0.0.1:5120/api/order
+
+###
 
 POST {{host}}/
-header name: header value
+Content-Type:  application/json
 
-content
 {
-  "request": {
-    "orderNumber": 0,
-    "visaNumber": "string",
-    "contractDuration": 0,
+  "editOrderRequest": {
+    "id": "55c50012-f442-4b7d-9be4-1cc29554b46a",
+    "orderNumber": "OR0001",
+    "visaNumber": "VS0001",
+    "contractDuration": 2,
     "visaDate": "2023-05-08T12:46:35.961Z",
-    "contractNumber": "string",
-    "electronicVisaNumber": "string",
+    "contractNumber": "+91324567287",
+    "electronicVisaNumber": "EV0001",
     "electronicVisaDate": "2023-05-08T12:46:35.961Z",
     "portOfArrivalId": "f5a8bdb6-1563-41fb-bda1-cf945a93c4a5",
     "priorityId": "1b36dadc-e751-4212-ac6c-60ff8fdc4419",
     "visaTypeId": "3aead79d-6e6e-4d86-bddb-4c23348303e4",
     "visaFile": {
+      "id": "0839717c-c1ac-407a-821f-acfb2f33599c",
       "fileCollectionAttachmentId": "dca4df58-f503-4e3a-aec8-95a474599363",
-      "filePath": "string"
+      "filePath": "D:\\SmartAgency\\FileCollections"
     },
     "orderCriteria": {
+      "id": "08db4fc7-c946-48f0-8589-9d76d6c318c8",
       "age": 0,
       "nationalityId": "8cf0c6c3-2850-4351-932d-31f9dc3bbbc3",
       "orderCriteriaJobTitleId": "90774ffc-e2f5-48f1-a20a-5fac0bfaacee",
@@ -28,32 +32,36 @@ content
       "religionId": "68ccacf6-c656-4447-b8cb-9a2f102f7e93",
       "experienceId": "68848f4e-19eb-4b19-9eb9-7ab3e0ab6770",
       "languageId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c",
-      "remark": "string"
+      "remark": "Demo request"
     },
     "orderPayment": {
-      "totalAmount": 0,
+      "id": "08db4fc7-c952-4199-8da2-b5e6fc2885f8",
+      "totalAmount": 1000,
       "paidAmount": 0,
-      "currentPaidAmount": 0
+      "currentPaidAmount": 500
     },
     "orderSponsor": {
-      "idNumber": "string",
-      "fullName": "string",
-      "fullNameAmharic": "string",
+      "id": "08db4fc7-c956-445e-8456-5594c8fe7837",
+      "idNumber": "SP0001",
+      "fullName": "Al Shugah Khareem",
+      "fullNameAmharic": "አል ሹጋህ ኽሃሪም",
       "otherName": "string",
       "residentialTitle": "string",
-      "numberOfFamily": 0,
+      "numberOfFamily": 4,
       "sponsorIDFile": {
+        "id": "d5d38323-c2c4-4ed6-9bba-f9dc7f53bd24",
         "fileCollectionAttachmentId": "dca4df58-f503-4e3a-aec8-95a474599363",
-        "filePath": "string"
+        "filePath": "D:\\SmartAgency\\FileCollections"
       },
       "sponsorAddress": {
+        "id": "4ba064d2-5dc1-44b9-b75a-692d2bf8a91c",
         "addressCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
-        "region": "string",
-        "zone": "string",
-        "woreda": "string",
-        "kebele": "string",
-        "phoneNumber": "string",
-        "email": "string",
+        "region": "RIYADH",
+        "zone": "RIYADH",
+        "woreda": "01",
+        "kebele": "09",
+        "phoneNumber": "+9664857436423",
+        "email": "alshuga@gmail.com",
         "website": "string"
       }
     }

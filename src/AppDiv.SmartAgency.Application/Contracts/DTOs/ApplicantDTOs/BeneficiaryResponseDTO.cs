@@ -1,3 +1,4 @@
+using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
@@ -12,5 +13,5 @@ public record BeneficiaryResponseDTO
     public string? Zone { get; set; }
     public string? Woreda { get; set; }
     public float Rate { get; set; }
-    public ApplicantsLookUpResponseDTO? Relationship { get; set; }
+    public LookUpResponseDTO? Relationship { get; set; }
 }

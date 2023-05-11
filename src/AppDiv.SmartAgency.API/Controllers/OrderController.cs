@@ -1,6 +1,9 @@
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Orders;
+using AppDiv.SmartAgency.Application.Features.Query.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,4 +24,30 @@ public class OrderController : ControllerBase
     {
         return Ok(await _mediator.Send(request));
     }
+
+    [HttpGet("get/{id}")]
+    public async Task<ActionResult<OrderResponseDTO>> GetByIdAsync([FromQuery] Guid id)
+    {
+        return Ok(await _mediator.Send(new GetSingleOrder(id)));
+    }
+
+    [HttpGet("get-all")]
+    public async Task<ActionResult<OrderResponseDTO>> GetAllAsync()
+    {
+        return Ok(await _mediator.Send(new GetAllOrders()));
+    }
+
+    [HttpPut("delete/{id}")]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        return Ok(await _mediator.Send(new DeleteOrderCommand(id)));
+    }
+
+    [HttpPut("edit")]
+    public async Task<ActionResult> Edit(EditOrderCommand request)
+    {
+        return Ok(await _mediator.Send(request));
+    }
+
+
 }

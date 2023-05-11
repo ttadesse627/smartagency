@@ -1,4 +1,3 @@
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;

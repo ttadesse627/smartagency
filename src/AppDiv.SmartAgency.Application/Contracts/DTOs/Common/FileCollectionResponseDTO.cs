@@ -1,7 +1,7 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Domain.Enums;
 
-namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 public record FileCollectionResponseDTO
 {
     public Guid Id { get; set; }

@@ -32,6 +32,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ser
             createOrderCommandResponse.Data = "You have successfully created order entity.";
             createOrderCommandResponse.Message = "Operation Succeeded";
         }
+        // var savePaidAmountResponse = await _orderRepository.GetByIdAsync(orderEntity.OrderPayment.Id);
 
         //var customerResponse = CustomerMapper.Mapper.Map<CustomerResponseDTO>(customer);
         // createCustomerCommandResponse.Customer = customerResponse;          

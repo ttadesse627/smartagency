@@ -1,7 +1,6 @@
 
-
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Orders;
-public record PaymentRequest
+public record EditPaymentRequest
 {
     public Guid Id { get; set; }
     public int TotalAmount { get; set; }

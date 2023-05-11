@@ -7,13 +7,14 @@ namespace AppDiv.SmartAgency.Domain.Entities.Orders;
 public class Order
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public int OrderNumber { get; set; }
+    public string OrderNumber { get; set; } = string.Empty;
     public string VisaNumber { get; set; } = string.Empty;
     public int ContractDuration { get; set; }
     public DateTime? VisaDate { get; set; }
     public string? ContractNumber { get; set; }
     public string? ElectronicVisaNumber { get; set; }
     public DateTime? ElectronicVisaDate { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     // Foreign Keys
     public Guid? PortOfArrivalId { get; set; }

@@ -1,4 +1,5 @@
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
@@ -10,8 +11,8 @@ public record EmergencyContactResponseDTO
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
     public string? ArabicFullName { get; set; }
-    public ApplicantsLookUpResponseDTO? EmergencyContactRelationship { get; set; }
-    public ApplicantsLookUpResponseDTO? EmergencyContactRegion { get; set; }
-    public ApplicantsLookUpResponseDTO? EmergencyContactApplicant { get; set; }
+    public LookUpResponseDTO? EmergencyContactRelationship { get; set; }
+    public LookUpResponseDTO? EmergencyContactRegion { get; set; }
+    public LookUpResponseDTO? EmergencyContactApplicant { get; set; }
     public AddressResponseDTO? EmergencyContactAddress { get; set; }
 }

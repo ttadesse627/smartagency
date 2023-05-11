@@ -1,9 +1,10 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
@@ -58,7 +59,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AwardLookUpRequest, LookUp>();
 
             CreateMap<Applicant, CreateApplicantResponseDTO>();
-            CreateMap<LookUp, ApplicantsLookUpResponseDTO>();
             CreateMap<Category, CategoryResponseDTO>();
             CreateMap<Applicant, ApplicantsResponseDTO>();
             CreateMap<BankAccount, BankAccountResponseDTO>();
@@ -70,7 +70,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Partner, PartnerApplRespDTO>();
             CreateMap<Repersentative, RepresentativeResponseDTO>();
             CreateMap<Witness, WitnessResponseDTO>();
-
             CreateMap<Applicant, ApplicantsResponseDTO>();
 
             CreateMap<CreatePartnerRequest, Partner>();
@@ -81,6 +80,19 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<OrderCriteriaRequest, OrderCriteria>();
             CreateMap<SponsorRequest, Sponsor>();
             CreateMap<PaymentRequest, Payment>();
+
+            CreateMap<Order, OrderResponseDTO>();
+            CreateMap<OrderCriteria, OrderCriteriaResponseDTO>();
+            CreateMap<Payment, PaymentResponseDTO>();
+            CreateMap<Sponsor, SponsorResponseDTO>();
+            CreateMap<Applicant, OrderApplResponseDTO>();
+            CreateMap<EditOrderRequest, Order>();
+            CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
+            CreateMap<EditSponsorRequest, Sponsor>();
+            CreateMap<EditFileCollectionRequest, FileCollection>();
+            CreateMap<EditPaymentRequest, Payment>();
+            CreateMap<EditAddressRequest, Address>();
+
         }
     }
 }
