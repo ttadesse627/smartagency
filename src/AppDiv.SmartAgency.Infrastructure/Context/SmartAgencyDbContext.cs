@@ -41,6 +41,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<OrderCriteria> OrderCriterias { get; set; }
         public DbSet<Payment> OrderPayments { get; set; }
 
+         public DbSet<ApplicantFollowupStatus>  ApplicantFollowupStatuses { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
         {
@@ -77,10 +78,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new RepresentativeEntityConfig());
                 modelBuilder.ApplyConfiguration(new SponsorEntityConfig());
                 modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new ApplicantFollowupStatusConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
                     new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
+                
+              //  8aec3c2a-96ba-46ce-8a4b-14cf557fd621
+              
 
                 modelBuilder.Ignore<PersonalInfo>();
 

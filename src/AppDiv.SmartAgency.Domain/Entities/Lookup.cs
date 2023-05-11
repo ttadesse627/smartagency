@@ -33,6 +33,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
 
         public ICollection<OnlineApplicant>? MaritalStatus { get; set; }
         public ICollection<OnlineApplicant>? Experience { get; set; }
+
+        public ICollection<ApplicantFollowupStatus>?  FollowupStatus{ get; set; }
         public ICollection<OnlineApplicant>? DesiredCountry { get; set; }
 
         public Experience? LookupExpeeriences { get; set; }
