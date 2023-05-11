@@ -30,18 +30,14 @@ namespace AppDiv.SmartAgency.Domain.Entities
 
         public ICollection<Experience>? LookUpExperiences { get; set; }
         public ICollection<Beneficiary>? BeneficiaryRelationShip { get; set; }
+
         public ICollection<OnlineApplicant>? MaritalStatus { get; set; }
         public ICollection<OnlineApplicant>? Experience { get; set; }
-
         public ICollection<OnlineApplicant>? DesiredCountry { get; set; }
-        // public LevelOfQualification? LookUpLevelOfQualifications { get; set; }
-        // public QualificationType? LookUpQualificationTypes { get; set; }
-        // public Award? AwardEducations { get; set; }
-        // public TechnicalSkill? LookupTechnicalSkill { get; set; }
+
         public Experience? LookupExpeeriences { get; set; }
         public Language? LookupLanguage { get; set; }
         public ICollection<Language>? LookupLanguages { get; set; }
-
         public ICollection<EmergencyContact>? LookUpEmergencyContactRelationships { get; set; }
         public ICollection<EmergencyContact>? LookUpEmergencyContactRegions { get; set; }
         public ICollection<Address>? LookUpAddressCountries { get; set; }
@@ -56,7 +52,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaReligions { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
-
 
     }
 }

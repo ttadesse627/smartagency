@@ -1,35 +1,30 @@
-using AppDiv.SmartAgency.Application.Common;
+
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Orders;
+namespace AppDiv.SmartAgency.Application.Features.Query.DeletedInfos;
 
-public class GetAllOrders : IRequest<List<OrderResponseDTO>>
+public class GetDeletedOrders : IRequest<List<OrderResponseDTO>>
 {
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
 }
 
-public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, List<OrderResponseDTO>>
+public class GetDeletedOrdersHandler : IRequestHandler<GetDeletedOrders, List<OrderResponseDTO>>
 {
-    
     private readonly IOrderRepository _orderRepository;
 
-    public GetAllOrdersHandler(IOrderRepository orderRepository)
+    public GetDeletedOrdersHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
-    public async Task<List<OrderResponseDTO>> Handle(GetAllOrders request, CancellationToken cancellationToken)
+    public async Task<List<OrderResponseDTO>> Handle(GetDeletedOrders request, CancellationToken cancellationToken)
     {
         var orderList = await _orderRepository.GetAllWithAsync
-                        (
+                        (order => order.IsDeleted == true,
                             "Partner", "PortOfArrival", "Priority",
                             "VisaType", "Employee", "VisaFile",
                             "OrderCriteria", "OrderPayment", "OrderSponsor", "VisaFile.FileCollectionAttachment");
-        var paginatedList = new PaginatedList<Order>((IReadOnlyCollection<Order>)orderList, orderList.Count(), request.PageNumber, request.PageSize);
         var orderResponse = CustomMapper.Mapper.Map<List<OrderResponseDTO>>(orderList);
         return orderResponse;
     }
