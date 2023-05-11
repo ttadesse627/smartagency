@@ -12,7 +12,7 @@ Content-Type:  application/json
     "visaNumber": "VS0001",
     "contractDuration": 2,
     "visaDate": "2023-05-08T12:46:35.961Z",
-    "contractNumber": "+91324567287",
+    "contractNumber": "91324567287",
     "electronicVisaNumber": "EV0001",
     "electronicVisaDate": "2023-05-08T12:46:35.961Z",
     "portOfArrivalId": "f5a8bdb6-1563-41fb-bda1-cf945a93c4a5",
@@ -23,46 +23,46 @@ Content-Type:  application/json
       "fileCollectionAttachmentId": "dca4df58-f503-4e3a-aec8-95a474599363",
       "filePath": "D:\\SmartAgency\\FileCollections"
     },
-    "orderCriteria": {
+     "orderCriteria": {
       "id": "08db4fc7-c946-48f0-8589-9d76d6c318c8",
-      "age": 0,
+      "age": 25,
       "nationalityId": "8cf0c6c3-2850-4351-932d-31f9dc3bbbc3",
       "orderCriteriaJobTitleId": "90774ffc-e2f5-48f1-a20a-5fac0bfaacee",
       "salaryId": "da86ba94-de5c-4f3d-a04f-e4ee0c2c7b1d",
       "religionId": "68ccacf6-c656-4447-b8cb-9a2f102f7e93",
       "experienceId": "68848f4e-19eb-4b19-9eb9-7ab3e0ab6770",
       "languageId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c",
-      "remark": "Demo request"
+      "remark": "Demo request 4"
     },
     "orderPayment": {
       "id": "08db4fc7-c952-4199-8da2-b5e6fc2885f8",
-      "totalAmount": 1000,
-      "paidAmount": 0,
-      "currentPaidAmount": 500
+      "totalAmount": 800,
+      "paidAmount": 400,
+      "currentPaidAmount": 300
     },
     "orderSponsor": {
       "id": "08db4fc7-c956-445e-8456-5594c8fe7837",
-      "idNumber": "SP0001",
+      "idNumber": "SP0004",
       "fullName": "Al Shugah Khareem",
-      "fullNameAmharic": "አል ሹጋህ ኽሃሪም",
+      "fullNameAmharic": "አል A",
       "otherName": "string",
       "residentialTitle": "string",
-      "numberOfFamily": 4,
+      "numberOfFamily": 7,
       "sponsorIDFile": {
         "id": "d5d38323-c2c4-4ed6-9bba-f9dc7f53bd24",
         "fileCollectionAttachmentId": "dca4df58-f503-4e3a-aec8-95a474599363",
-        "filePath": "D:\\SmartAgency\\FileCollections"
+        "filePath": "D:\\RequestTest\\FileCollections"
       },
       "sponsorAddress": {
         "id": "4ba064d2-5dc1-44b9-b75a-692d2bf8a91c",
         "addressCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
-        "region": "RIYADH",
-        "zone": "RIYADH",
-        "woreda": "01",
-        "kebele": "09",
-        "phoneNumber": "+9664857436423",
-        "email": "alshuga@gmail.com",
-        "website": "string"
+        "region": "Jeddah",
+        "zone": "Jeddah",
+        "woreda": "05",
+        "kebele": "14",
+        "phoneNumber": "+966123456678",
+        "email": "alshayeer@gmail.com",
+        "website": "abc.com"
       }
     }
   }
