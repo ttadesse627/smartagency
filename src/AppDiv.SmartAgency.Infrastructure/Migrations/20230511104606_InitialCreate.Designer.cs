@@ -1,6 +1,11 @@
 ﻿
 #nullable disable
 
+using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
