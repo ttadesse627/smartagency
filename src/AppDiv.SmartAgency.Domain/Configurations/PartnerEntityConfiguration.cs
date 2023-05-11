@@ -8,9 +8,9 @@ namespace AppDiv.SmartAgency.Domain.Configurations
     {
         public void Configure(EntityTypeBuilder<Partner> builder)
         {
-            builder.HasOne(p => p.Address)
+            builder.HasOne(p => p.PartnerAddress)
                 .WithOne(a => a.Partner)
-                .HasForeignKey<Partner>(p => p.AddressId)
+                .HasForeignKey<Partner>(p => p.PartnerAddressId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
 

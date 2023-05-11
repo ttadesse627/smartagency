@@ -1,11 +1,12 @@
+using AppDiv.SmartAgency.Domain.Enums;
 
-
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Entities.Applicants;
-
+namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 public class LanguageRequest
 {
     public Guid LanguageId { get; set; }
-    public LanguageAbility? Ability { get; set; }
+    public bool CanWrite { get; set; }
+    public bool CanRead { get; set; }
+    public bool CanSpeak { get; set; }
+    public bool CanListen { get; set; }
+    public LanguageProficiency Proficiency { get; set; }
 }

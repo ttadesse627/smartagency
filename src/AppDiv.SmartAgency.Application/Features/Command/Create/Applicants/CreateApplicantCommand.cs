@@ -38,46 +38,19 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         }
         if (createApplicantResponse.Success)
         {
-            //can use this instead of automapper
-
-            // var applicantEntity = new Applicant
-            // {
-            //     FirstName = request.FirstName,
-            //     MiddleName = request.MiddleName,
-            //     LastName = request.LastName,
-            //     BirthDate = request.BirthDate,
-            //     PassportNumber = request.PassportNumber,
-            //     IssuingCountry = request.IssuingCountry,
-            //     IssuedDate = request.IssuedDate,
-            //     IssuedPlace = request.IssuedPlace,
-            //     PassportExpiryDate = request.PassportExpiryDate,
-            //     PlaceOfBirth = request.PlaceOfBirth,
-            //     AmharicFullName = request.AmharicFullName,
-            //     ArabicFullName = request.ArabicFullName,
-            //     MaritalStatus = request.MaritalStatus,
-            //     Complexion = request.Complexion,
-            //     NumberOfChildren = request.NumberOfChildren,
-            //     Health = request.Health,
-            //     ReligionId = request.ReligionId,
-            //     LookUpJobTitles = request.JobTitles,
-            //     Salary = request.Salary,
-            //     DesiredCountry = request.DesiredCountry,
-            //     MotherFullName = request.MotherFullName,
-            //     PreviousCountry = request.PreviousCountry,
-            //     CurrentNationality = request.CurrentNationality,
-            //     Height = request.Height,
-            //     ContractPeriod = request.ContractPeriod,
-            //     JobTitleAmharic = request.JobTitleAmharic,
-            //     BrokerName = request.BrokerName,
-            //     Branch = request.Branch,
-            //     Remark = request.Remark,
-            //     PartnerId = request.PartnerId,
-            //     Languages = request.Languages,
-            // };
 
             var applicantEntity = CustomMapper.Mapper.Map<Applicant>(applicantRequest.applicantRequest);
-            await _applicantRepository.InsertAsync(applicantEntity, cancellationToken);
-            var result = await _applicantRepository.SaveChangesAsync(cancellationToken);
+            var success = await _applicantRepository.CreateApplicantAsync(applicantEntity);
+            if(success >= 1)
+            {
+                createApplicantResponse.Message = "The applicant is successfully added.";
+                createApplicantResponse.Success = true;
+            }
+            else
+            {
+                createApplicantResponse.Message = "Couldn't add the requested applicant.";
+                createApplicantResponse.Success = false;
+            }
         }
 
         return createApplicantResponse;

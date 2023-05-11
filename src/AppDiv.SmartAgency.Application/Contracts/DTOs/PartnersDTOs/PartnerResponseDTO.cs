@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
-using AppDiv.SmartAgency.Domain.Entities.Base;
+
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
 {

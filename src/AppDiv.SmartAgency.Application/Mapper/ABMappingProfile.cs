@@ -1,13 +1,15 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AddressDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
+using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
@@ -21,6 +23,7 @@ using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
+using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AutoMapper;
 
 namespace AppDiv.SmartAgency.Application.Mapper
@@ -39,27 +42,62 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Attachment, EditAttachmentCommand>().ReverseMap();
             CreateMap<EditAttachmentCommand, AttachmentResponseDTO>().ReverseMap();
 
+            CreateMap<Category, CategoryResponseDTO>();
             CreateMap<LookUp, CreateLookUpResponseDTO>().ReverseMap();
             CreateMap<LookUp, CreateLookUpCommand>().ReverseMap();
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
 
-            CreateMap<Applicant, CreateApplicantResponseDTO>();
             CreateMap<CreateApplicantRequest, Applicant>();
             CreateMap<LanguageRequest, Language>();
             CreateMap<ExperienceRequest, Experience>();
             CreateMap<EducationRequest, Education>();
             CreateMap<BankAccountRequest, BankAccount>();
-            CreateMap<CreateApplicantRequest, Applicant>();
             CreateMap<BeneficiaryRequest, Beneficiary>();
             CreateMap<EmergencyContactRequest, EmergencyContact>();
             CreateMap<RepersentativeRequest, Repersentative>();
             CreateMap<WitnessRequest, Witness>();
             CreateMap<AddressRequest, Address>();
-            CreateMap<TechnicalSkillRequest, TechnicalSkill>();
-            CreateMap<AppLookJobtitleRequest, AppLookJobtitle>();
+            CreateMap<FileCollectionRequest, FileCollection>();
+            CreateMap<TechnicalSkillLookUpRequest, LookUp>();
+            CreateMap<LevelOfQualificationLookUpRequest, LookUp>();
+            CreateMap<QualificationTypeLookUpRequest, LookUp>();
+            CreateMap<AwardLookUpRequest, LookUp>();
 
+            CreateMap<Applicant, CreateApplicantResponseDTO>();
             CreateMap<Category, CategoryResponseDTO>();
+            CreateMap<Applicant, ApplicantsResponseDTO>();
+            CreateMap<BankAccount, BankAccountResponseDTO>();
+            CreateMap<Beneficiary, BeneficiaryResponseDTO>();
+            CreateMap<Education, EducationResponseDTO>();
+            CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
+            CreateMap<FileCollection, FileCollectionResponseDTO>();
+            CreateMap<Language, LanguageResponseDTO>();
+            CreateMap<Partner, PartnerApplRespDTO>();
+            CreateMap<Repersentative, RepresentativeResponseDTO>();
+            CreateMap<Witness, WitnessResponseDTO>();
+            CreateMap<Applicant, ApplicantsResponseDTO>();
+
             CreateMap<CreatePartnerRequest, Partner>();
+            CreateMap<Partner, PartnerResponseDTO>();
+            CreateMap<Address, AddressResponseDTO>();
+
+            CreateMap<CreateOrderRequest, Order>();
+            CreateMap<OrderCriteriaRequest, OrderCriteria>();
+            CreateMap<SponsorRequest, Sponsor>();
+            CreateMap<PaymentRequest, Payment>();
+
+            CreateMap<Order, OrderResponseDTO>();
+            CreateMap<OrderCriteria, OrderCriteriaResponseDTO>();
+            CreateMap<Payment, PaymentResponseDTO>();
+            CreateMap<Sponsor, SponsorResponseDTO>();
+            CreateMap<Applicant, OrderApplResponseDTO>();
+            CreateMap<EditOrderRequest, Order>();
+            CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
+            CreateMap<EditSponsorRequest, Sponsor>();
+            CreateMap<EditFileCollectionRequest, FileCollection>();
+            CreateMap<EditPaymentRequest, Payment>();
+            CreateMap<EditAddressRequest, Address>();
+
             CreateMap<Partner,PartnerResponseDTO>();
             CreateMap<Address,AddressResponseDTO>().ReverseMap();
             CreateMap<EditPartnerCommand, Partner>();
