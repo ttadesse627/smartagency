@@ -1,8 +1,3 @@
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Applicants;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Infrastructure.Context;
@@ -14,7 +9,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
     private readonly SmartAgencyDbContext _context;
     public ApplicantRepository(SmartAgencyDbContext dbContext) : base(dbContext)
     {
-        _context = dbContext;
+
     }
     public override async Task InsertAsync(Applicant applicant, CancellationToken cancellationToken)
     {

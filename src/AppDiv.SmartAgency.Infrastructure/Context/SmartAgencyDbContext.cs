@@ -34,6 +34,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Language> Languages { get; set; }
         public DbSet<Repersentative> Repersentatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
+        public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
+         public DbSet<Deposit>  Deposits{ get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<OrderCriteria> OrderCriterias { get; set; }
@@ -65,6 +67,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new ExperienceEntityConfig());
                 modelBuilder.ApplyConfiguration(new FileCollectionEntityConfig());
                 modelBuilder.ApplyConfiguration(new LanguageEntityConfig());
+                modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new DepositEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OrderCriteriaEntityConfig());
                 modelBuilder.ApplyConfiguration(new OrderEntityConfig());
@@ -74,6 +79,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
+                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name="Category"}
                     new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
 

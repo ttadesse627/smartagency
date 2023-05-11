@@ -3,17 +3,22 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
+
+using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
 using AppDiv.SmartAgency.Application.Features.Command.Create.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
@@ -92,6 +97,21 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditFileCollectionRequest, FileCollection>();
             CreateMap<EditPaymentRequest, Payment>();
             CreateMap<EditAddressRequest, Address>();
+
+            CreateMap<Partner,PartnerResponseDTO>();
+            CreateMap<Address,AddressResponseDTO>().ReverseMap();
+            CreateMap<EditPartnerCommand, Partner>();
+
+            CreateMap<OnlineApplicant, OnlineApplicantResponseDTO>();
+            CreateMap<OnlineApplicantRequest, OnlineApplicant>();
+            CreateMap<LookUp, OnlineApplicantLookUpResponseDTO>();
+
+            CreateMap<Deposit, DepositResponseDTO>();
+            CreateMap<CreateDepositRequest, Deposit>();
+            CreateMap<Applicant, DepositApplicantResponseDTO>();
+            CreateMap<DepositResponseDTO,GetDepositByIdResponseDTO>();
+            CreateMap<EditDepositCommand, Deposit>();
+            CreateMap< Deposit,GetDepositByIdResponseDTO>();
 
         }
     }

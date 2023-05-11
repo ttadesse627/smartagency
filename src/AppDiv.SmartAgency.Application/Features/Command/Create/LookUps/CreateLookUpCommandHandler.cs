@@ -41,6 +41,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
                 await _lookUpRepository.InsertAsync(lookUp, cancellationToken);
                 createLookUpCommandResponse.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
                 IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
+                Console.WriteLine(lookUp);
 
                 if (lookUp.CategoryId.ToString() == "8aec3c2a-96ba-46ce-8a4b-14cf557fd621")
                 {

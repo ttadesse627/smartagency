@@ -22,9 +22,11 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps
     public class DeletePartnerCommmandHandler : IRequestHandler<DeletePartnerCommand, String>
     {
         private readonly IPartnerRepository _partnerRepository;
-        public DeletePartnerCommmandHandler(IPartnerRepository partnerRepository)
+         private readonly IAddressRepository _addressRepository;
+        public DeletePartnerCommmandHandler(IPartnerRepository partnerRepository, IAddressRepository addressRepository)
         {
             _partnerRepository= partnerRepository;
+            _addressRepository= addressRepository;
         }
 
         public async Task<string> Handle(DeletePartnerCommand request, CancellationToken cancellationToken)
@@ -32,8 +34,12 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps
             try
             {
                 var partnerEntity = await _partnerRepository.GetByIdAsync(request.Id);
+                var AddressId=partnerEntity.AddressId; 
+                await _partnerRepository.DeleteAsync(partnerEntity.Id);
+                await _addressRepository.DeleteAsync(AddressId);
+                 await _partnerRepository.SaveChangesAsync(cancellationToken);
+                  await _addressRepository.SaveChangesAsync(cancellationToken);
 
-                await _partnerRepository.DeleteAsync(partnerEntity);
             }
             catch (Exception exp)
             {

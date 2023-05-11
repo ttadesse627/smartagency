@@ -1,5 +1,5 @@
 
-
+/*
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
@@ -28,3 +28,5 @@ namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
     }
 }
 }
+
+*/
