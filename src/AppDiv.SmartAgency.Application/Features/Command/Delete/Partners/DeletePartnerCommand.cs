@@ -34,7 +34,7 @@ namespace AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps
             try
             {
                 var partnerEntity = await _partnerRepository.GetByIdAsync(request.Id);
-                var AddressId=partnerEntity.AddressId; 
+                var AddressId=partnerEntity.PartnerAddressId; 
                 await _partnerRepository.DeleteAsync(partnerEntity.Id);
                 await _addressRepository.DeleteAsync(AddressId);
                  await _partnerRepository.SaveChangesAsync(cancellationToken);

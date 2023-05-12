@@ -22,9 +22,7 @@ public class DeleteAttachmentCommandHandler : IRequestHandler<DeleteAttachmentCo
         var response = new ServiceResponse<List<AttachmentResponseDTO>>();
         try
         {
-            Console.WriteLine("First Call From handler");
             response = await _attachmentRepository.DeleteAttachment(request.Id);
-            if (response is not null) Console.WriteLine("Try Success!");
         }
         catch (Exception exp)
         {

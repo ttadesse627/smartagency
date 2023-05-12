@@ -1,4 +1,3 @@
-using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Enums;
 namespace AppDiv.SmartAgency.Domain.Entities;
@@ -9,5 +8,7 @@ public class Attachment : BaseAuditableEntity
     public AttachmentCategory Category { get; set; } = AttachmentCategory.ApplicantAttachment;
     public bool IsRequired { get; set; }
     public bool ShowOnCv { get; set; }
-    public AttachmentFile? AttachmentFile { get; set; }
+
+    // Navigation properties
+    public ICollection<FileCollection>? FileCollections { get; set; }
 }

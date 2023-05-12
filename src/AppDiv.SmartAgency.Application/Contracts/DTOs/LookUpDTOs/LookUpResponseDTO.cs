@@ -8,6 +8,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs
     {
     public Guid Id { get; set; }
     public string Value { get; set; } = string.Empty;
-    public CategoryResponseDTO Category { get; set; }
+    public CategoryResponseDTO? Category { get; set; }
     }
 }

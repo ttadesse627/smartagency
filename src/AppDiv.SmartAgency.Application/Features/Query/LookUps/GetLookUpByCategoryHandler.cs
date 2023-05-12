@@ -17,7 +17,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
         public async Task<LookUp> Handle(GetLookUpByCategory request)
         {
             var lookUps = await _mediator.Send(new GetAllLookUps());
-            var selectedLookUp = lookUps.FirstOrDefault(lookUp => lookUp.Category == request.Category);
+            var selectedLookUp = lookUps.FirstOrDefault(lookUp => lookUp.Category!.Id == request.Category.Id);
             return CustomMapper.Mapper.Map<LookUp>(selectedLookUp);
             // return selectedCustomer;
         }

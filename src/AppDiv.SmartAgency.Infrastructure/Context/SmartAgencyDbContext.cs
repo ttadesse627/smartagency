@@ -2,19 +2,14 @@
 using AppDiv.SmartAgency.Domain.Entities.Audit;
 using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Domain.Entities.Base;
-using AppDiv.SmartAgency.Infrastructure.Context;
 using Audit.Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Newtonsoft.Json;
-using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Domain;
-using AppDiv.SmartAgency.Infrastructure.Seed;
 using Audit.EntityFramework;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using Microsoft.AspNetCore.Identity;
 using AppDiv.SmartAgency.Domain.Configurations;
+using AppDiv.SmartAgency.Domain.Entities.Orders;
 
 namespace AppDiv.SmartAgency.Infrastructure.Context
 {
@@ -23,7 +18,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         // private readonly IUserResolverService userResolverService;
 
         public DbSet<AuditLog> AuditLogs { get; set; }
-        // public DbSet<Gender> Genders { get; set; }
         public DbSet<Suffix> Suffixes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
@@ -31,18 +25,22 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<AttachmentFile> AttachmentFiles { get; set; }
+        public DbSet<FileCollection> FileCollections { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Language> Languages { get; set; }
-        // public DbSet<LanguageAbility> LanguageAbilities { get; set; }
         public DbSet<Repersentative> Repersentatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
         public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
          public DbSet<Deposit>  Deposits{ get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Sponsor> Sponsors { get; set; }
+        public DbSet<OrderCriteria> OrderCriterias { get; set; }
+        public DbSet<Payment> OrderPayments { get; set; }
+
          public DbSet<ApplicantFollowupStatus>  ApplicantFollowupStatuses { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
@@ -61,20 +59,29 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             #region Entity Configuration
             {
                 //  modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
-                modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
-                modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
+                modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new EducationEntityConfig());
-                modelBuilder.ApplyConfiguration(new AddressEntityConfig());
+                modelBuilder.ApplyConfiguration(new EmergencyContactEntityConfig());
+                modelBuilder.ApplyConfiguration(new ExperienceEntityConfig());
+                modelBuilder.ApplyConfiguration(new FileCollectionEntityConfig());
                 modelBuilder.ApplyConfiguration(new LanguageEntityConfig());
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new DepositEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new OrderCriteriaEntityConfig());
+                modelBuilder.ApplyConfiguration(new OrderEntityConfig());
+                modelBuilder.ApplyConfiguration(new PartnerEntityConfig());
+                modelBuilder.ApplyConfiguration(new RepresentativeEntityConfig());
+                modelBuilder.ApplyConfiguration(new SponsorEntityConfig());
+                modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new ApplicantFollowupStatusConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name="Category"}
+                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
                 
               //  8aec3c2a-96ba-46ce-8a4b-14cf557fd621
@@ -133,12 +140,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     }*/
                     //else
                     {
-                        auditEntity.TablePk = auditedEntity.PrimaryKey.First().Value.ToString();
+                        auditEntity.TablePk = auditedEntity.PrimaryKey.First().Value.ToString()!;
                     }
                 }).IgnoreMatchedProperties(true));
             #endregion
         }
-
         public static JsonSerializerSettings GetJsonSerializerSettings()
         {
             return new JsonSerializerSettings

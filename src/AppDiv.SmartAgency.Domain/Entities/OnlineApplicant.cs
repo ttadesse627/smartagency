@@ -12,7 +12,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string Passport {get; set;} 
         public string Sex {get; set;} 
         public string Age {get; set;} =string.Empty; 
-        
         public string Region{get; set;}=string.Empty;
         public string  City{get; set;} =string.Empty;
         public string  PhoneNumber{get; set;}
@@ -21,9 +20,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public Guid  MaritalStatusId {get; set;}
         public Guid  ExperienceId{get; set;}
         public LookUp MaritalStatus {get; set;}
-
         public LookUp Experience {get; set;}
-
         public LookUp DesiredCountry {get; set;}
 
 

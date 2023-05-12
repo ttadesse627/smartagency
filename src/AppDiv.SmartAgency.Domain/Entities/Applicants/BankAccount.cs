@@ -8,6 +8,7 @@ public class BankAccount
     public long AccountNumber { get; set; }
     public string? BranchName { get; set; }
     public string? SwiftCode { get; set; }
-    public Guid? ApplicantId { get; set; }
+
+    // Navigation properties
     public Applicant? Applicant { get; set; }
 }

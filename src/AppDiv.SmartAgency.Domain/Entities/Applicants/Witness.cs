@@ -8,5 +8,5 @@ public class Witness : PersonalInfo
 {
     public string? Address { get; set; }
     public string? PhoneNumber { get; set; }
-    public ICollection<Applicant>? Applicants { get; set; }
+    public ICollection<Applicant>? WitnessApplicants { get; set; }
 }

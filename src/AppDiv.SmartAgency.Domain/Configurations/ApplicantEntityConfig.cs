@@ -10,68 +10,80 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
     {
         builder.Property(s => s.CreatedBy)
             .HasDefaultValue(string.Empty);
-            
+
         builder.Property(s => s.ModifiedBy)
             .HasDefaultValue(string.Empty);
 
-        builder.HasOne(m => m.Religion)
-            .WithMany(n => n.ApplicantReligions)
-            .HasForeignKey(u => u.ReligionId)
-            .OnDelete(DeleteBehavior.NoAction);
+        builder.HasMany(m => m.ApplicantWitnesses)
+            .WithMany(n => n.WitnessApplicants);
 
-        builder.HasMany(m => m.LookUpJobTitles)
-            .WithOne(n => n.ApplicantJobtitle)
-            .HasForeignKey(fk => fk.ApplicantJobtitleId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(m => m.Partner)
+        builder.HasOne(m => m.ApplicantPartner)
             .WithMany(n => n.Applicants)
-            .HasForeignKey(n => n.PartnerId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(fk => fk.ApplicantPartnerId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(m => m.Languages)
+        builder.HasOne(m => m.ApplicantAddress)
+            .WithOne(n => n.AddressApplicant)
+            .HasForeignKey<Applicant>(fk => fk.ApplicantAddressId);
+
+        builder.HasOne(m => m.ApplicantBankAccount)
             .WithOne(n => n.Applicant)
-            .HasForeignKey(fk => fk.ApplicantId)
+            .HasForeignKey<Applicant>(n => n.ApplicantBankAccountId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(m => m.TechnicalSkills)
-            .WithOne(n => n.ApplicantTechnicalSkill)
-            .HasForeignKey(fk => fk.ApplicantTechnicalSkillId)
-            .OnDelete(DeleteBehavior.Cascade);
+            // Relationships with lookup
+        builder.HasMany(m => m.ApplicantTechnicalSkills)
+            .WithMany(n => n.LookupTechnicalSkills);
 
-        builder.HasMany(m => m.Experiences)
-            .WithOne(n => n.Applicant)
-            .HasForeignKey(n => n.ApplicantId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+        builder.HasOne(appl => appl.ApplicantReligion)
+            .WithMany(lk => lk.LookUpReligions)
+            .HasForeignKey(fk => fk.ApplicantReligionId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.BankAccount)
-            .WithOne(n => n.Applicant)
-            .HasForeignKey<BankAccount>(fk => fk.ApplicantId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(appl => appl.ApplicantBrokerName)
+            .WithMany(lk => lk.LookUpBrokerNames)
+            .HasForeignKey(fk => fk.ApplicantBrokerNameId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(m => m.Witnesses)
-            .WithMany(n => n.Applicants);
+        builder.HasOne(appl => appl.ApplicantBranch)
+            .WithMany(lk => lk.LookUpBranches)
+            .HasForeignKey(fk => fk.ApplicantBranchId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(m => m.Beneficiaries)
-            .WithOne(n => n.Applicant)
-            .HasForeignKey(n => n.ApplicantId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+        builder.HasOne(appl => appl.ApplicantJobtitle)
+            .WithMany(lk => lk.LookUpJobTitles)
+            .HasForeignKey(fk => fk.ApplicantJobtitleId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(m => m.AttachmentFiles)
-            .WithOne(n => n.ApplicantAttachmentFile)
-            .HasForeignKey(n => n.ApplicantId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+        builder.HasOne(appl => appl.ApplicantIssuingCountry)
+            .WithMany(lk => lk.LookUpIssuingCountries)
+            .HasForeignKey(fk => fk.ApplicantIssuingCountryId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.EmergencyContact)
-            .WithOne(n => n.Applicant)
-            .HasForeignKey<EmergencyContact>(n => n.ApplicantId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+        builder.HasOne(appl => appl.ApplicantIssuedPlace)
+            .WithMany(lk => lk.LookUpIssuedPlaces)
+            .HasForeignKey(fk => fk.ApplicantIssuedPlaceId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.Repersentative)
-            .WithMany(n => n.RepresentativeApplicants)
-            .HasForeignKey(n => n.RepersentativeId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+        builder.HasOne(appl => appl.ApplicantHealth)
+            .WithMany(lk => lk.LookUpHealths)
+            .HasForeignKey(fk => fk.ApplicantHealthId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-            
+        builder.HasOne(appl => appl.ApplicantSalary)
+            .WithMany(lk => lk.LookUpSalaries)
+            .HasForeignKey(fk => fk.ApplicantSalaryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantDesiredCountry)
+            .WithMany(lk => lk.LookUpDesiredCountries)
+            .HasForeignKey(fk => fk.ApplicantDesiredCountryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(appl => appl.ApplicantMaritalStatus)
+            .WithMany(lk => lk.LookUpMaritalStatuses)
+            .HasForeignKey(fk => fk.ApplicantMaritalStatusId)
+            .OnDelete(DeleteBehavior.SetNull);
+
     }
 }

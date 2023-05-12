@@ -10,9 +10,14 @@ public class BeneficiaryEntityConfig : IEntityTypeConfiguration<Beneficiary>
 {
     public void Configure(EntityTypeBuilder<Beneficiary> builder)
     {
-        builder.HasOne(ben => ben.Relationship)
-                .WithMany(ln => ln.BeneficiaryRelationShip)
-                .HasForeignKey(b => b.RelationshipId)
-                .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(ben => ben.BeneficiaryRelationship)
+            .WithMany(lk => lk.BeneficiaryRelationShip)
+            .HasForeignKey(fk => fk.BeneficiaryRelationshipId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(bnf => bnf.BeneficiaryApplicant)
+            .WithMany(appl => appl.ApplicantBeneficiaries)
+            .HasForeignKey(fk => fk.BeneficiaryApplicantId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

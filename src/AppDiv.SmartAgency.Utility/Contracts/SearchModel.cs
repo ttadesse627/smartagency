@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace AppDiv.SmartAgency.Utility.Contracts
 {
@@ -39,6 +40,7 @@ namespace AppDiv.SmartAgency.Utility.Contracts
         public int MaxPage { get; set; }
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum SortingDirection
     {
         Ascending = 1,
