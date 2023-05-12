@@ -75,6 +75,11 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditDepositCommand, Deposit>();
             CreateMap< Deposit,GetDepositByIdResponseDTO>();
 
+            CreateMap<ApplicantFollowupStatus , ApplicantFollowupStatusResponseDTO>();
+            CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
+          
+
+
         }
     }
 }

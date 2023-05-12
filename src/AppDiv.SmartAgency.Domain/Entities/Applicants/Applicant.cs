@@ -40,6 +40,7 @@ public class Applicant : PersonalInfo
     public ICollection<TechnicalSkill>? TechnicalSkills { get; set; }
     public ICollection<Experience>? Experiences { get; set; }
     public ICollection<Deposit>? Deposits{ get; set; }
+    public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses{ get; set; }
     public Education? ApplicantEducation { get; set; }
     public BankAccount? BankAccount { get; set; }
     public EmergencyContact? EmergencyContact { get; set; }

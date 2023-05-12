@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230509120613_IntialMigration")]
-    partial class IntialMigration
+    [Migration("20230511100339_IntialMign")]
+    partial class IntialMign
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,50 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantFollowupStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("FollowupStatusId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("FollowupStatusId");
+
+                    b.ToTable("ApplicantFollowupStatuses");
+                });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
                 {
@@ -46,7 +90,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Complexion")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("ContractPeriod")
@@ -72,7 +115,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Health")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Height")
@@ -135,7 +177,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("PassportNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PlaceOfBirth")
@@ -838,7 +879,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7b8dc825-ef67-436a-b33c-e4ff6894068e"),
+                            Id = new Guid("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"),
                             Name = "Category"
                         });
                 });
@@ -905,6 +946,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ApplicantId")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -932,6 +976,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
 
                     b.ToTable("Deposits");
                 });
@@ -1002,7 +1048,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("MartialStatusId")
+                    b.Property<Guid>("MaritalStatusId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("ModifiedAt")
@@ -1033,7 +1079,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ExperienceId");
 
-                    b.HasIndex("MartialStatusId");
+                    b.HasIndex("MaritalStatusId");
 
                     b.ToTable("OnlineApplicants");
                 });
@@ -1118,7 +1164,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 9, 15, 6, 12, 509, DateTimeKind.Local).AddTicks(6930));
+                        .HasDefaultValue(new DateTime(2023, 5, 11, 13, 3, 38, 524, DateTimeKind.Local).AddTicks(2628));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1282,6 +1328,25 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantFollowupStatus", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithMany("ApplicantFollowupStatuses")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "FollowupStatus")
+                        .WithMany("FollowupStatus")
+                        .HasForeignKey("FollowupStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("FollowupStatus");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -1533,6 +1598,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Suffix");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Deposit", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithMany("Deposits")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Category", "Category")
@@ -1559,7 +1635,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "MaritalStatus")
                         .WithMany("MaritalStatus")
-                        .HasForeignKey("MartialStatusId")
+                        .HasForeignKey("MaritalStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1649,11 +1725,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 {
                     b.Navigation("ApplicantEducation");
 
+                    b.Navigation("ApplicantFollowupStatuses");
+
                     b.Navigation("AttachmentFiles");
 
                     b.Navigation("BankAccount");
 
                     b.Navigation("Beneficiaries");
+
+                    b.Navigation("Deposits");
 
                     b.Navigation("EmergencyContact");
 
@@ -1712,6 +1792,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("DesiredCountry");
 
                     b.Navigation("Experience");
+
+                    b.Navigation("FollowupStatus");
 
                     b.Navigation("LookUpJobTitles");
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class DepositM : Migration
+    public partial class IntialMign : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,10 +14,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 5, 10, 15, 21, 12, 209, DateTimeKind.Local).AddTicks(9679),
+                defaultValue: new DateTime(2023, 5, 11, 13, 3, 38, 524, DateTimeKind.Local).AddTicks(2628),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 5, 10, 14, 26, 0, 557, DateTimeKind.Local).AddTicks(5211));
+                oldDefaultValue: new DateTime(2023, 5, 11, 12, 57, 24, 510, DateTimeKind.Local).AddTicks(9692));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -27,10 +27,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 5, 10, 14, 26, 0, 557, DateTimeKind.Local).AddTicks(5211),
+                defaultValue: new DateTime(2023, 5, 11, 12, 57, 24, 510, DateTimeKind.Local).AddTicks(9692),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 5, 10, 15, 21, 12, 209, DateTimeKind.Local).AddTicks(9679));
+                oldDefaultValue: new DateTime(2023, 5, 11, 13, 3, 38, 524, DateTimeKind.Local).AddTicks(2628));
         }
     }
 }
