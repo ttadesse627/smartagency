@@ -1,3 +1,4 @@
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.DeletedInfoDTOs;
 public record DeletedOrderApplResponseDTO
 {
     public string? FirstName { get; set; }
