@@ -19,6 +19,50 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantFollowupStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("FollowupStatusId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("FollowupStatusId");
+
+                    b.ToTable("ApplicantFollowupStatuses");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1286,7 +1330,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 11, 13, 46, 5, 360, DateTimeKind.Local).AddTicks(2787));
+                        .HasDefaultValue(new DateTime(2023, 5, 11, 12, 32, 27, 228, DateTimeKind.Local).AddTicks(818));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1510,6 +1554,25 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantFollowupStatus", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithMany("ApplicantFollowupStatuses")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "FollowupStatus")
+                        .WithMany("FollowupStatus")
+                        .HasForeignKey("FollowupStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("FollowupStatus");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -2098,6 +2161,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("ApplicantEducation");
 
+                    b.Navigation("ApplicantFollowupStatuses");
+
+                    b.Navigation("AttachmentFiles");
                     b.Navigation("ApplicantEmergencyContact");
 
                     b.Navigation("ApplicantExperiences");
@@ -2156,6 +2222,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("Experience");
 
+                    b.Navigation("FollowupStatus");
                     b.Navigation("LookUpAddressCountries");
 
                     b.Navigation("LookUpBranches");

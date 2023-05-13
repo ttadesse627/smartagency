@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Features.Command.Create.ApplicantsFollowupStatus;
+using AppDiv.SmartAgency.Application.Features.Query.ApplicantFollowupStatuses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,15 @@ namespace AppDiv.SmartAgency.API.Controllers
         var response = await _mediator.Send(applicantFollowupStatusRequest);
         return Ok(response);
     }
+
+   
+
+   [HttpGet("get-all-applicantFollowupStatuses")]
+    public async Task<ActionResult<ApplicantFollowupStatusResponseDTO>> GetAllApplicantFollowupStatuses()
+    {
+        return Ok(await _mediator.Send(new GetAllApplicantFollowupStatusQuery()));
+    }
+ 
     /*
 
    [HttpGet("get-all-deposits")]
@@ -33,6 +43,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         return Ok(await _mediator.Send(new GetAllDepositQuery()));
     }
 
+>>>>>>> c26c2974fb6647c6e8c3c17e0ca85b8f5a3d695f
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<CreateDepositRequest> Get(Guid id)
