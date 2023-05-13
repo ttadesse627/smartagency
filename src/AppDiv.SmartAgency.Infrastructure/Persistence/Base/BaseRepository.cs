@@ -44,6 +44,75 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await list.ToListAsync();
         }
 
+
+        public virtual async Task<IEnumerable<T>> GetAllWithSearchAsync(string[] columnNames, string searchTerm = "", params string[] eagerLoadedProperties)
+        {
+            // The search functionality here!
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var list1 = _dbContext.Set<T>().AsQueryable();
+                foreach (var nav_property in eagerLoadedProperties)
+                {
+                    list1 = list1.Include(nav_property);
+                }
+                return await list1.ToListAsync();
+            }
+
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var body = Expression.Equal(Expression.Constant(""), Expression.Constant("")); // initial binary expression
+
+            if (columnNames.Length == 0)
+            {
+                // If no column name is specified, search all string properties
+                var stringProperties = typeof(T).GetProperties()
+                    .Where(p => p.PropertyType == typeof(string))
+                    .ToList();
+
+                foreach (var prop in stringProperties)
+                {
+                    var propertyExpr = Expression.Property(parameter, prop);
+                    var containsExpr = Expression.Call(
+                                            propertyExpr,
+                                            typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                                            Expression.Constant(searchTerm));
+
+                    var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+                    body = Expression.Or(body, binaryExpr);
+                }
+            }
+            else
+            {
+                foreach (var columnName in columnNames)
+                {
+                    var prop = typeof(T).GetProperty(columnName);
+
+                    if (prop?.PropertyType != typeof(string))
+                    {
+                        throw new ArgumentException($"Column '{columnName}' is not a string property");
+                    }
+
+                    var propertyExpr = Expression.Property(parameter, prop);
+                    var containsExpr = Expression.Call(
+                        propertyExpr,
+                        typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                        Expression.Constant(searchTerm));
+                    var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+                    body = Expression.Or(body, binaryExpr);
+                }
+            }
+
+            var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+            var list = _dbContext.Set<T>().Where(lambda);
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                list = list.Include(nav_property);
+            }
+
+            var result = await list.ToListAsync();
+            return result;
+        }
+
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
         {
             return await _dbContext.Set<T>().Where(predicate).ToListAsync();

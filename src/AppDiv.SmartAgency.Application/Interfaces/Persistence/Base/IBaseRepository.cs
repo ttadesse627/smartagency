@@ -18,6 +18,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>> orderBy, int skip, int limit);
         Task<IEnumerable<T>> GetAllWithAsync(Expression<Func<T, bool>> predicate = null, params string[] eagerLoadedProperties);
         Task<IEnumerable<T>> GetAllWithAsync(params string[] eagerLoadedProperties);
+        Task<IEnumerable<T>> GetAllWithSearchAsync(string[] columnNames, string searchTerm = "", params string[] eagerLoadedProperties);
         Task<T> GetAsync(object id);
         Task<T> GetAsync(object[] id);
         T GetAtIndex(int i);
