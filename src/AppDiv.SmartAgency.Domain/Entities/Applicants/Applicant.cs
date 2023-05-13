@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
-[Table("Applicant")]
+[Table("Applicants")]
 public class Applicant : PersonalInfo
 {
     public string? PassportNumber { get; set; }

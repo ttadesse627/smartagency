@@ -51,7 +51,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Remark")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -69,23 +68,53 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("AmharicFullName")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid?>("ApplicantAddressId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantBankAccountId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantBranchId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantBrokerNameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantDesiredCountryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantHealthId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantIssuedPlaceId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantIssuingCountryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantJobtitleId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantMaritalStatusId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantPartnerId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantReligionId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantSalaryId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ArabicFullName")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Month")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Branch")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("BrokerName")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Complexion")
                         .HasColumnType("longtext");
@@ -201,7 +230,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ApplicantSalaryId");
 
-                    b.ToTable("Applicant");
+                    b.ToTable("Applicants");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.BankAccount", b =>
@@ -911,12 +940,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("LookupExpeeriencesId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("LookupLanguageId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -930,10 +953,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("LookupExpeeriencesId");
-
-                    b.HasIndex("LookupLanguageId");
 
                     b.ToTable("LookUps");
                 });
@@ -1046,6 +1065,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<Guid?>("OrderCriteriaId")
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("OrderNumber")
                         .IsRequired()
@@ -1300,7 +1322,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 11, 12, 32, 27, 228, DateTimeKind.Local).AddTicks(818));
+                        .HasDefaultValue(new DateTime(2023, 5, 12, 13, 48, 52, 44, DateTimeKind.Local).AddTicks(8906));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1527,25 +1549,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantFollowupStatus", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
-                        .WithMany("ApplicantFollowupStatuses")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "FollowupStatus")
-                        .WithMany("FollowupStatus")
-                        .HasForeignKey("FollowupStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Applicant");
-
-                    b.Navigation("FollowupStatus");
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
                         .WithMany("ApplicantFollowupStatuses")
@@ -1838,19 +1841,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.ClientCascade);
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Experience", "LookupExpeeriences")
-                        .WithMany()
-                        .HasForeignKey("LookupExpeeriencesId");
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Language", "LookupLanguage")
-                        .WithMany()
-                        .HasForeignKey("LookupLanguageId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("LookupExpeeriences");
-
-                    b.Navigation("LookupLanguage");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.OnlineApplicant", b =>
@@ -2150,13 +2141,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("ApplicantEducation");
 
-                    b.Navigation("ApplicantFollowupStatuses");
-
-                    b.Navigation("AttachmentFiles");
+                    b.Navigation("ApplicantEmergencyContact");
 
                     b.Navigation("ApplicantExperiences");
 
                     b.Navigation("ApplicantFileCollections");
+
+                    b.Navigation("ApplicantFollowupStatuses");
 
                     b.Navigation("ApplicantLanguages");
 
@@ -2211,6 +2202,38 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Experience");
 
                     b.Navigation("FollowupStatus");
+
+                    b.Navigation("LookUpAddressCountries");
+
+                    b.Navigation("LookUpBranches");
+
+                    b.Navigation("LookUpBrokerNames");
+
+                    b.Navigation("LookUpCriteriaExperiences");
+
+                    b.Navigation("LookUpCriteriaJobTitles");
+
+                    b.Navigation("LookUpCriteriaLanguages");
+
+                    b.Navigation("LookUpCriteriaNationalities");
+
+                    b.Navigation("LookUpCriteriaReligions");
+
+                    b.Navigation("LookUpCriteriaSalaries");
+
+                    b.Navigation("LookUpDesiredCountries");
+
+                    b.Navigation("LookUpEmergencyContactRegions");
+
+                    b.Navigation("LookUpEmergencyContactRelationships");
+
+                    b.Navigation("LookUpExperiences");
+
+                    b.Navigation("LookUpHealths");
+
+                    b.Navigation("LookUpIssuedPlaces");
+
+                    b.Navigation("LookUpIssuingCountries");
 
                     b.Navigation("LookUpJobTitles");
 

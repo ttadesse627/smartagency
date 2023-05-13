@@ -37,8 +37,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<ApplicantFollowupStatus>?  FollowupStatus{ get; set; }
         public ICollection<OnlineApplicant>? DesiredCountry { get; set; }
 
-        public Experience? LookupExpeeriences { get; set; }
-        public Language? LookupLanguage { get; set; }
+        //public Experience? LookupExpeeriences { get; set; }
+       // public Language? LookupLanguage { get; set; }
         public ICollection<Language>? LookupLanguages { get; set; }
         public ICollection<EmergencyContact>? LookUpEmergencyContactRelationships { get; set; }
         public ICollection<EmergencyContact>? LookUpEmergencyContactRegions { get; set; }
