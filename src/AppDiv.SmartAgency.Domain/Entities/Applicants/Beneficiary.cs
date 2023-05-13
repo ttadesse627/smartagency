@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
-[Table("Beneficiary")]
+[Table("Beneficiaries")]
 public class Beneficiary : PersonalInfo
 {
     public string? Region { get; set; }

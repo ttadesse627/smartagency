@@ -9,7 +9,7 @@ public class LanguageEntityConfig : IEntityTypeConfiguration<Language>
     public void Configure(EntityTypeBuilder<Language> builder)
     {
         builder.HasOne(lan => lan.LanguageLookUp)
-            .WithMany(lk => lk.LookupLanguages)
+            .WithMany(lk => lk.LookUpLanguages)
             .HasForeignKey(fk => fk.LanguageLookUpId)
             .OnDelete(DeleteBehavior.SetNull);
 

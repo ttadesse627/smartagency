@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
-[Table("Applicant")]
+[Table("Applicants")]
 public class Applicant : PersonalInfo
 {
     public string? PassportNumber { get; set; }
@@ -45,6 +45,7 @@ public class Applicant : PersonalInfo
     public Guid? ApplicantSalaryId { get; set; }
     public Guid? ApplicantDesiredCountryId { get; set; }
     public Guid? ApplicantMaritalStatusId { get; set; }
+    public Guid? ApplExperienceId { get; set; }
 
     //Navigation Properties
     public ICollection<Witness>? ApplicantWitnesses { get; set; }
