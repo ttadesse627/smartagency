@@ -13,6 +13,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         // Navigation properties
         public Category? Category { get; set; }
         public ICollection<Applicant>? LookUpReligions { get; set; }
+        public ICollection<Applicant>? LookUpExpriences { get; set; }
         public ICollection<Applicant>? LookUpJobTitles { get; set; }
         public ICollection<Applicant>? LookupTechnicalSkills { get; set; }
         public ICollection<Applicant>? LookUpBrokerNames { get; set; }
@@ -36,13 +37,10 @@ namespace AppDiv.SmartAgency.Domain.Entities
 
         public ICollection<ApplicantFollowupStatus>?  FollowupStatus{ get; set; }
         public ICollection<OnlineApplicant>? DesiredCountry { get; set; }
-
-        //public Experience? LookupExpeeriences { get; set; }
-       // public Language? LookupLanguage { get; set; }
-        public ICollection<Language>? LookupLanguages { get; set; }
+        public ICollection<Language>? LookUpLanguages { get; set; }
         public ICollection<EmergencyContact>? LookUpEmergencyContactRelationships { get; set; }
         public ICollection<EmergencyContact>? LookUpEmergencyContactRegions { get; set; }
-        public ICollection<Address>? LookUpAddressCountries { get; set; }
+        public ICollection<Address>? LookUpAddressRegions { get; set; }
 
         public ICollection<Order>? LookUpPortOfArrivals { get; set; }
         public ICollection<Order>? LookUpPriorities { get; set; }
@@ -54,6 +52,5 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaReligions { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
-
     }
 }

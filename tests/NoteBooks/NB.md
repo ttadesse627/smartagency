@@ -1,0 +1,5 @@
+LookUp Table Data
+
+```sql
+
+```

@@ -30,9 +30,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-lookup")]
-        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps()
+        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber, int pageSize, string searchTerm = "")
         {
-            return Ok(await _mediator.Send(new GetAllLookUps()));
+            return Ok(await _mediator.Send(new GetAllLookUps(searchTerm, pageNumber, pageSize)));
         }
 
         [HttpGet("{id}")]
@@ -79,7 +79,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
-
 
         }
     }

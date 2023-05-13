@@ -28,9 +28,9 @@ public class ApplicantController : ControllerBase
         return Ok(response);
     }
     [HttpGet("get-all")]
-    public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants()
+    public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants(int pageNumber, int pageSize)
     {
-        return Ok(await _mediator.Send(new GetAllApplicants()));
+        return Ok(await _mediator.Send(new GetAllApplicants(pageNumber, pageSize)));
     }
     [HttpPut("delete/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> DeleteApplicant(Guid id, [FromBody] DeleteApplicantCommand command)

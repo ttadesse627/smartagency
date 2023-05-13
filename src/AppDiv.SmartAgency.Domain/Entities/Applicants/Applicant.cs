@@ -44,6 +44,7 @@ public class Applicant : PersonalInfo
     public Guid? ApplicantSalaryId { get; set; }
     public Guid? ApplicantDesiredCountryId { get; set; }
     public Guid? ApplicantMaritalStatusId { get; set; }
+    public Guid? ApplExperienceId { get; set; }
 
     //Navigation Properties
     public ICollection<Witness>? ApplicantWitnesses { get; set; }
@@ -59,6 +60,7 @@ public class Applicant : PersonalInfo
     public EmergencyContact? ApplicantEmergencyContact { get; set; }
     public ICollection<LookUp>? ApplicantTechnicalSkills { get; set; }
     public LookUp? ApplicantReligion { get; set; }
+    public LookUp? ApplExperience { get; set; }
     public LookUp? ApplicantBrokerName { get; set; }
     public LookUp? ApplicantBranch { get; set; }
     public LookUp? ApplicantJobtitle { get; set; }

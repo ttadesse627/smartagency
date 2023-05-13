@@ -1,5 +1,6 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Orders;
 using AppDiv.SmartAgency.Application.Features.Query.DeletedInfos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,5 +20,11 @@ public class DeletedInfoController : ControllerBase
     public async Task<ActionResult<OrderResponseDTO>> GetAllAsync()
     {
         return Ok(await _mediator.Send(new GetDeletedOrders()));
+    }
+    
+    [HttpPut("order/restore/{id}")]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        return Ok(await _mediator.Send(new RestoreDeleteOrderCommand(id)));
     }
 }

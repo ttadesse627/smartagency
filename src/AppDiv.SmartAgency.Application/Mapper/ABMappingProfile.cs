@@ -25,6 +25,8 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AutoMapper;
+using AppDiv.SmartAgency.Application.Common;
+using System.Collections;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -115,7 +117,15 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<ApplicantFollowupStatus , ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
-          
+            CreateMap<PaginatedList<LookUp>, PaginatedList<LookUpResponseDTO>>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items.Select(
+                    x => CustomMapper.Mapper.Map<LookUpResponseDTO>(x)).ToList()));
+
+            CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>))
+                .ForMember("Items", opt => opt.MapFrom(src => src.GetType().GetProperty("Items").GetValue(src)))
+                .ForMember("PageNumber", opt => opt.MapFrom((src => src.GetType().GetProperty("PageNumber").GetValue(src))))
+                .ForMember("TotalPages", opt => opt.MapFrom((src => src.GetType().GetProperty("TotalPages").GetValue(src))))
+                .ForMember("TotalCount", opt => opt.MapFrom((src => src.GetType().GetProperty("TotalCount").GetValue(src))));
 
 
         }
