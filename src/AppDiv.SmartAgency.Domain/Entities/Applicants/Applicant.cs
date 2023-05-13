@@ -36,6 +36,7 @@ public class Applicant : PersonalInfo
     public Guid? ApplicantBankAccountId { get; set; }
     public Guid? ApplicantBrokerNameId { get; set; }
     public Guid? ApplicantBranchId { get; set; }
+    public Guid? ApplicantExprienceId { get; set; }
     public Guid? ApplicantJobtitleId { get; set; }
     public Guid? ApplicantReligionId { get; set; }
     public Guid? ApplicantIssuingCountryId { get; set; }
@@ -59,6 +60,7 @@ public class Applicant : PersonalInfo
     public EmergencyContact? ApplicantEmergencyContact { get; set; }
     public ICollection<LookUp>? ApplicantTechnicalSkills { get; set; }
     public LookUp? ApplicantReligion { get; set; }
+    public LookUp? ApplicantExprience { get; set; }
     public LookUp? ApplicantBrokerName { get; set; }
     public LookUp? ApplicantBranch { get; set; }
     public LookUp? ApplicantJobtitle { get; set; }

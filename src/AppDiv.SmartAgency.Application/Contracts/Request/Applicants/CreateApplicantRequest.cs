@@ -9,12 +9,12 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 public class CreateApplicantRequest
 {
-    public string FirstName { get; set; }
-    public string MiddleName { get; set; }
-    public string LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? MiddleName { get; set; }
+    public string? LastName { get; set; }
     public Gender Gender { get; set; }
     public DateTime BirthDate { get; set; }
-    public string PassportNumber { get; set; }
+    public string? PassportNumber { get; set; }
     public DateTime IssuedDate { get; set; }
     public DateTime PassportExpiryDate { get; set; }
     public string? PlaceOfBirth { get; set; }
@@ -38,6 +38,7 @@ public class CreateApplicantRequest
     // public Guid? ApplicantPartnerId { get; set; }
     public Guid? ApplicantBrokerNameId { get; set; }
     public Guid? ApplicantBranchId { get; set; }
+    public Guid? ApplicantExprienceId { get; set; }
     public Guid? ApplicantJobtitleId { get; set; }
     public Guid? ApplicantReligionId { get; set; }
     public Guid? ApplicantIssuingCountryId { get; set; }

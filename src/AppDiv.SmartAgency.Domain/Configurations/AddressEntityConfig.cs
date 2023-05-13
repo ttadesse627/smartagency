@@ -8,9 +8,9 @@ public class AddressEntityConfig : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
-        builder.HasOne(m => m.AddressCountry)
-            .WithMany(n => n.LookUpAddressCountries)
-            .HasForeignKey(fk => fk.AddressCountryId)
+        builder.HasOne(m => m.AddressRegion)
+            .WithMany(n => n.LookUpAddressRegions)
+            .HasForeignKey(fk => fk.AddressRegionId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }

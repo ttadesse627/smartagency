@@ -8,10 +8,10 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants
     public class CreateApplicantFollowupStatusRequest
     {
 
-       public string PassportNumber {get; set;} 
-        public DateTime Month {get; set;}  
-        public string Remark {get; set;}
-        public Guid FollowupStatusId{get; set;}
-        
+        public string PassportNumber { get; set; }
+        public DateTime Month { get; set; }
+        public string Remark { get; set; }
+        public Guid FollowupStatusId { get; set; }
+
     }
 }
