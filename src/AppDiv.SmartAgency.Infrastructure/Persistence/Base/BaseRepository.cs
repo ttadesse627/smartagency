@@ -59,7 +59,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             }
 
             var parameter = Expression.Parameter(typeof(T), "x");
-            var body = Expression.Equal(Expression.Constant(""), Expression.Constant("")); // initial binary expression
+            var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
 
             if (columnNames.Length == 0)
             {
@@ -98,6 +98,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                         Expression.Constant(searchTerm));
                     var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
                     body = Expression.Or(body, binaryExpr);
+
                 }
             }
 
