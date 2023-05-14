@@ -28,9 +28,9 @@ public class AttachmentController : ControllerBase
         return Ok(response);
     }
     [HttpGet("get-all")]
-    public async Task<ActionResult<AttachmentResponseDTO>> GetAllAttachments(int pageNumber = 1, int pageSize = 20, string searchTerm = "", string? searchByColumnName = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+    public async Task<ActionResult<AttachmentResponseDTO>> GetAllAttachments(int pageNumber = 1, int pageSize = 20, string searchTerm = "",  string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetAllAttachments(pageNumber, pageSize, searchTerm, searchByColumnName, orderBy, sortingDirection)));
+        return Ok(await _mediator.Send(new GetAllAttachments(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
 
     [HttpDelete("delete/{id}")]

@@ -122,13 +122,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items.Select(
                     x => CustomMapper.Mapper.Map<LookUpResponseDTO>(x)).ToList()));
 
-            CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>))
-                .ForMember("Items", opt => opt.MapFrom(src => src.GetType().GetProperty("Items").GetValue(src)))
-                .ForMember("PageNumber", opt => opt.MapFrom((src => src.GetType().GetProperty("PageNumber").GetValue(src))))
-                .ForMember("TotalPages", opt => opt.MapFrom((src => src.GetType().GetProperty("TotalPages").GetValue(src))))
-                .ForMember("TotalCount", opt => opt.MapFrom((src => src.GetType().GetProperty("TotalCount").GetValue(src))));
-
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
+            CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();
 
 
         }
