@@ -13,11 +13,6 @@ public class EmergencyContactEntityConfig : IEntityTypeConfiguration<EmergencyCo
             .HasForeignKey<EmergencyContact>(n => n.EmergencyContactApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(m => m.EmergencyContactRegion)
-            .WithMany(n => n.LookUpEmergencyContactRegions)
-            .HasForeignKey(n => n.EmergencyContactRegionId)
-            .OnDelete(DeleteBehavior.SetNull);
-
         builder.HasOne(m => m.EmergencyContactRelationship)
             .WithMany(n => n.LookUpEmergencyContactRelationships)
             .HasForeignKey(n => n.EmergencyContactRelationshipId)
@@ -26,6 +21,6 @@ public class EmergencyContactEntityConfig : IEntityTypeConfiguration<EmergencyCo
         builder.HasOne(m => m.EmergencyContactAddress)
             .WithOne(n => n.AddressEmergencyContact)
             .HasForeignKey<EmergencyContact>(n => n.EmergencyContactAddressId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

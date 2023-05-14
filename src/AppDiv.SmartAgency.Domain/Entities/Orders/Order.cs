@@ -22,7 +22,6 @@ public class Order : BaseAuditableEntity
     public Guid? VisaTypeId { get; set; }
     public Guid? EmployeeId { get; set; }
     public Guid? PartnerId { get; set; }
-    public Guid? VisaFileId { get; set; }
     public Guid? OrderCriteriaId { get; set; }
     public Guid? OrderPaymentId { get; set; }
     public Guid? OrderSponsorId { get; set; }

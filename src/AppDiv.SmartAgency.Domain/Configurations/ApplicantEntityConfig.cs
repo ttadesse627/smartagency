@@ -17,7 +17,7 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .WithMany(n => n.WitnessApplicants);
 
         builder.HasOne(m => m.ApplicantPartner)
-            .WithMany(n => n.Applicants)
+            .WithMany(n => n.PartnerApplicants)
             .HasForeignKey(fk => fk.ApplicantPartnerId)
             .OnDelete(DeleteBehavior.SetNull);
 
