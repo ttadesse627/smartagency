@@ -31,23 +31,17 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-lookup")]
-        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? searchByColumnName = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
-            return Ok(await _mediator.Send(new GetAllLookUps(pageNumber, pageSize, searchTerm, searchByColumnName, orderBy, sortingDirection)));
+            return Ok(await _mediator.Send(new GetAllLookUps(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
 
-        [HttpGet("get-all-lookup1")]
-        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUpsV1(int pageNumber = 1, int pageSize = 10, string? searchTerm = "")
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<LookUp> Get(Guid id)
         {
-            return Ok(await _mediator.Send(new GetAllLookUpsWithSearch(searchTerm, pageNumber, pageSize)));
+            return await _mediator.Send(new GetLookUpByIdQuery(id));
         }
-
-        // [HttpGet("{id}")]
-        // [ProducesResponseType(StatusCodes.Status200OK)]
-        // public async Task<LookUp> Get(Guid id)
-        // {
-        //     return await _mediator.Send(new GetLookUpByIdQuery(id));
-        // }
 
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteLookUp(Guid id)

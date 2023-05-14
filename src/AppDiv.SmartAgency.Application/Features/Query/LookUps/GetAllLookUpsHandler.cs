@@ -26,10 +26,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
         public async Task<SearchModel<LookUpResponseDTO>> Handle(GetAllLookUps request, CancellationToken cancellationToken)
         {
 
-            var lookUpList = await _lookUpRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.SearchByColumnName, request.OrderBy, request.SortingDirection, "Category");
-
-            // var paginatedListLookUp = new PaginatedList<LookUp>((IReadOnlyCollection<LookUp>)lookUpList, lookUpList.Count(), request.PageNumber, request.PageSize);
-            // var paginatedList = await PaginatedList<LookUp>.CreateAsync(lookUpList, request.PageNumber, request.PageSize);
+            var lookUpList = await _lookUpRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Category");
             var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<LookUpResponseDTO>>(lookUpList);
 
             return paginatedListResp;
