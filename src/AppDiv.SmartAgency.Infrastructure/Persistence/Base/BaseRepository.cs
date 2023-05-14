@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Linq.Dynamic.Core;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
@@ -45,8 +46,72 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
 
 
-        public virtual async Task<IEnumerable<T>> GetAllWithSearchAsync(string[] columnNames, string searchTerm = "", params string[] eagerLoadedProperties)
+        public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string searchByColumnName, string orderBy, SortingDirection sortingDirection, params string[] eagerLoadedProperties)
         {
+            long maxPage = 1, totalItems = 0;
+
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
+
+            var stringProperties = typeof(T).GetProperties()
+                .Where(p => p.PropertyType == typeof(string))
+                .ToList();
+
+            foreach (var prop in stringProperties)
+            {
+                var propertyExpr = Expression.Property(parameter, prop);
+                var containsExpr = Expression.Call(
+                                        propertyExpr,
+                                        typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                                        Expression.Constant(searchTerm));
+
+                var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+                body = Expression.Or(body, binaryExpr);
+            }
+
+            var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+            var list = _dbContext.Set<T>().Where(lambda);
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                list = list.Include(nav_property);
+            }
+            totalItems = list.LongCount();
+            if(totalItems > 0)
+            {
+                maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
+                if (pageNumber >= maxPage)
+                {
+                    pageNumber = Convert.ToInt32(maxPage);
+                }
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
+                list = list.OrderBy(orderExpression);
+            }
+
+            // Pagination
+            var skipAmount = (pageNumber - 1) * pageSize;
+            list = list.Skip(skipAmount).Take(pageSize);
+
+            var result = await list.ToListAsync();
+            return new SearchModel<T>
+            {
+                CurrentPage = pageNumber,
+                MaxPage = maxPage,
+                PagingSize = pageSize,
+                Entities = list,
+                TotalItems = totalItems,
+                SearchKeyWord = searchTerm,
+                SortingColumn = orderBy,
+                SortingDirection = sortingDirection
+            };
+
+
+            /*
             // The search functionality here!
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -61,45 +126,20 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             var parameter = Expression.Parameter(typeof(T), "x");
             var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
 
-            if (columnNames.Length == 0)
+            var stringProperties = typeof(T).GetProperties()
+                .Where(p => p.PropertyType == typeof(string))
+                .ToList();
+
+            foreach (var prop in stringProperties)
             {
-                // If no column name is specified, search all string properties
-                var stringProperties = typeof(T).GetProperties()
-                    .Where(p => p.PropertyType == typeof(string))
-                    .ToList();
+                var propertyExpr = Expression.Property(parameter, prop);
+                var containsExpr = Expression.Call(
+                                        propertyExpr,
+                                        typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                                        Expression.Constant(searchTerm));
 
-                foreach (var prop in stringProperties)
-                {
-                    var propertyExpr = Expression.Property(parameter, prop);
-                    var containsExpr = Expression.Call(
-                                            propertyExpr,
-                                            typeof(string).GetMethod("Contains", new[] { typeof(string) }),
-                                            Expression.Constant(searchTerm));
-
-                    var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
-                    body = Expression.Or(body, binaryExpr);
-                }
-            }
-            else
-            {
-                foreach (var columnName in columnNames)
-                {
-                    var prop = typeof(T).GetProperty(columnName);
-
-                    if (prop?.PropertyType != typeof(string))
-                    {
-                        throw new ArgumentException($"Column '{columnName}' is not a string property");
-                    }
-
-                    var propertyExpr = Expression.Property(parameter, prop);
-                    var containsExpr = Expression.Call(
-                        propertyExpr,
-                        typeof(string).GetMethod("Contains", new[] { typeof(string) }),
-                        Expression.Constant(searchTerm));
-                    var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
-                    body = Expression.Or(body, binaryExpr);
-
-                }
+                var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+                body = Expression.Or(body, binaryExpr);
             }
 
             var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
@@ -112,6 +152,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var result = await list.ToListAsync();
             return result;
+            */
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
@@ -730,6 +771,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             IEnumerable<T> list = null;
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
             var entiries = _dbContext.Set<T>().Where(predicate).AsQueryable();
+            var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
             foreach (var nav_property in eagerLoadedProperties)
             {
                 entiries = entiries.Include(nav_property);
@@ -744,7 +786,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     page = Convert.ToInt32(maxPage);
                 }
 
-                var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
                 var parameters = orderBy.Parameters;
 
                 if (propertyExpression.Type == typeof(string))
@@ -823,7 +864,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 MaxPage = maxPage,
                 PagingSize = pageSize,
                 Entities = list,
-                TotalItems = total_items
+                TotalItems = total_items,
+                SortingColumn = propertyExpression.Member.Name,
+                SortingDirection = sorting_direction
             };
         }
 
@@ -1228,5 +1271,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             return await this._dbContext.Set<T>().AnyAsync(predicate);
         }
+
     }
 }

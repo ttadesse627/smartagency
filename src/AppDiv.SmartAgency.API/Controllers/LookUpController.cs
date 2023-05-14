@@ -6,6 +6,7 @@ using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.LookUps;
 using AppDiv.SmartAgency.Application.Features.Query.LookUps;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,17 +31,23 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-lookup")]
-        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "")
+        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? searchByColumnName = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
-            return Ok(await _mediator.Send(new GetAllLookUps(searchTerm, pageNumber, pageSize)));
+            return Ok(await _mediator.Send(new GetAllLookUps(pageNumber, pageSize, searchTerm, searchByColumnName, orderBy, sortingDirection)));
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<LookUp> Get(Guid id)
+        [HttpGet("get-all-lookup1")]
+        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUpsV1(int pageNumber = 1, int pageSize = 10, string? searchTerm = "")
         {
-            return await _mediator.Send(new GetLookUpByIdQuery(id));
+            return Ok(await _mediator.Send(new GetAllLookUpsWithSearch(searchTerm, pageNumber, pageSize)));
         }
+
+        // [HttpGet("{id}")]
+        // [ProducesResponseType(StatusCodes.Status200OK)]
+        // public async Task<LookUp> Get(Guid id)
+        // {
+        //     return await _mediator.Send(new GetLookUpByIdQuery(id));
+        // }
 
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteLookUp(Guid id)

@@ -8,23 +8,23 @@ using AppDiv.SmartAgency.Infrastructure.Context;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
-    public class OnlineApplicantRepository: BaseRepository<OnlineApplicant>, IOnlineApplicantRepository
-{
-    private readonly SmartAgencyDbContext _context;
-    public OnlineApplicantRepository(SmartAgencyDbContext dbContext) : base(dbContext)
-    { 
-            _context=dbContext;
-    }
+    public class OnlineApplicantRepository : BaseRepository<OnlineApplicant>, IOnlineApplicantRepository
+    {
+        private readonly SmartAgencyDbContext _context;
+        public OnlineApplicantRepository(SmartAgencyDbContext dbContext) : base(dbContext)
+        {
+            _context = dbContext;
+        }
 
-    public override async Task InsertAsync(OnlineApplicant onlineApplicant, CancellationToken cancellationToken)
-    {
-        await base.InsertAsync(onlineApplicant, cancellationToken);
+        public override async Task InsertAsync(OnlineApplicant onlineApplicant, CancellationToken cancellationToken)
+        {
+            await base.InsertAsync(onlineApplicant, cancellationToken);
+        }
+        public async Task<OnlineApplicant> GetByIdAsync(Guid Id)
+        {
+            return await base.GetAsync(Id);
+        }
+
+
     }
-    public async Task<OnlineApplicant> GetByIdAsync(Guid Id)
-    {
-        return await base.GetAsync(Id);
-    }
-    
-   
-}
 }

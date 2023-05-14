@@ -6,6 +6,7 @@ using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.Attachments;
 using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
 using AppDiv.SmartAgency.Application.Features.Query.Attachments;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +28,9 @@ public class AttachmentController : ControllerBase
         return Ok(response);
     }
     [HttpGet("get-all")]
-    public async Task<ActionResult<AttachmentResponseDTO>> GetAllAttachments()
+    public async Task<ActionResult<AttachmentResponseDTO>> GetAllAttachments(int pageNumber = 1, int pageSize = 20, string searchTerm = "", string? searchByColumnName = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetAllAttachments()));
+        return Ok(await _mediator.Send(new GetAllAttachments(pageNumber, pageSize, searchTerm, searchByColumnName, orderBy, sortingDirection)));
     }
 
     [HttpDelete("delete/{id}")]
