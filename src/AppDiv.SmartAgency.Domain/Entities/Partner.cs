@@ -29,7 +29,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
 
         // Navigation properties
         public Address? PartnerAddress { get; set; }
-        public ICollection<Applicant>? Applicants { get; set; }
-        public ICollection<Order>? Orders { get; set; }
+        public ICollection<Applicant>? PartnerApplicants { get; set; }
+        public ICollection<Order>? PartnerOrders { get; set; }
     }
 }

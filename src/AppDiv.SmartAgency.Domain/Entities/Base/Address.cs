@@ -31,8 +31,6 @@ namespace AppDiv.SmartAgency.Domain.Entities.Base
         // Navigation properties
         public LookUp? AddressRegion { get; set; }
         public Applicant? AddressApplicant { get; set; }
-        public Partner? Partner { get; set; }
-        public EmergencyContact? AddressEmergContact { get; set; }
         public EmergencyContact? AddressEmergencyContact { get; set; }
         public Repersentative? AddressRepresentative { get; set; }
         public Partner? AddressPartner { get; set; }

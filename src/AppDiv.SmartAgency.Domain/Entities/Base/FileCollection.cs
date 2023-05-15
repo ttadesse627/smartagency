@@ -12,6 +12,7 @@ public class FileCollection
     // Foreign Keys
     public Guid? FileCollectionAttachmentId { get; set; }
     public Guid? FileCollectionApplicantId { get; set; }
+    public Guid? FileCollectionOrderId { get; set; }
 
     // Navigation properties
     public Attachment? FileCollectionAttachment { get; set; }

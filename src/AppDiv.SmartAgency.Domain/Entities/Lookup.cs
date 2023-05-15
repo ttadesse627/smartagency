@@ -7,11 +7,11 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class LookUp : BaseAuditableEntity
     {
-        public Guid? CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public string Value { get; set; } = string.Empty;
 
         // Navigation properties
-        public Category? Category { get; set; }
+        public Category Category { get; set; }
         public ICollection<Applicant>? LookUpReligions { get; set; }
         public ICollection<Applicant>? LookUpJobTitles { get; set; }
         public ICollection<Applicant>? LookupTechnicalSkills { get; set; }
@@ -38,7 +38,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OnlineApplicant>? DesiredCountry { get; set; }
         public ICollection<Language>? LookUpLanguages { get; set; }
         public ICollection<EmergencyContact>? LookUpEmergencyContactRelationships { get; set; }
-        public ICollection<EmergencyContact>? LookUpEmergencyContactRegions { get; set; }
         public ICollection<Address>? LookUpAddressRegions { get; set; }
 
         public ICollection<Order>? LookUpPortOfArrivals { get; set; }
@@ -51,5 +50,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaReligions { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
+        //public ICollection<Education>? LookUpExpriences { get; internal set; }
     }
 }

@@ -10,11 +10,11 @@ public class SponsorEntityConfig : IEntityTypeConfiguration<Sponsor>
         builder.HasOne(m => m.SponsorIDFile)
             .WithOne(n => n.FileCollectionSponsor)
             .HasForeignKey<Sponsor>(fk => fk.SponsorIDFileId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(m => m.SponsorAddress)
             .WithOne(n => n.AddressSponsor)
             .HasForeignKey<Sponsor>(fk => fk.SponsorAddressId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

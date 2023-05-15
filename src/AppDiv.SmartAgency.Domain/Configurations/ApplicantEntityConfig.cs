@@ -1,5 +1,4 @@
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using AppDiv.SmartAgency.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,13 +17,14 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .WithMany(n => n.WitnessApplicants);
 
         builder.HasOne(m => m.ApplicantPartner)
-            .WithMany(n => n.Applicants)
+            .WithMany(n => n.PartnerApplicants)
             .HasForeignKey(fk => fk.ApplicantPartnerId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(m => m.ApplicantAddress)
             .WithOne(n => n.AddressApplicant)
-            .HasForeignKey<Applicant>(fk => fk.ApplicantAddressId);
+            .HasForeignKey<Applicant>(fk => fk.ApplicantAddressId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(m => m.ApplicantBankAccount)
             .WithOne(n => n.Applicant)
@@ -34,6 +34,11 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             // Relationships with lookup
         builder.HasMany(m => m.ApplicantTechnicalSkills)
             .WithMany(n => n.LookupTechnicalSkills);
+
+        // builder.HasOne(m => m.ApplicantExprience)
+          //  .WithMany(n => n.LookUpExperiences)
+           // .HasForeignKey(fk => fk.ApplicantExprienceId)
+           // .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(appl => appl.ApplicantReligion)
             .WithMany(lk => lk.LookUpReligions)

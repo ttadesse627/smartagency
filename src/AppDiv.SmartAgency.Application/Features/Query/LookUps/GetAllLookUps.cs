@@ -1,21 +1,26 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
 {
-    public record GetAllLookUps : IRequest<PaginatedList<LookUpResponseDTO>>
+    public record GetAllLookUps : IRequest<SearchModel<LookUpResponseDTO>>
     {
-        public string SearchTerm { get; set; }
-        public string[] ColumnNames { get; set; } = new string[]{"Value"};
-        public int PageNumber { get; init; }
-        public int PageSize { get; init; }
-        public GetAllLookUps(string searchTerm = "", int pageNumber = 1, int pageSize = 10)
+
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public string SearchTerm { get; set; } = string.Empty;
+        public string OrderBy { get; set; } = string.Empty;
+        public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
+        public GetAllLookUps(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
         {
-            SearchTerm = searchTerm;
             PageNumber = pageNumber;
             PageSize = pageSize;
+            SearchTerm = searchTerm;
+            OrderBy = orderBy;
+            SortingDirection = sortingDirection;
         }
 
     }

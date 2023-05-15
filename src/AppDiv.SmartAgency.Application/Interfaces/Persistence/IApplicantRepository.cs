@@ -12,6 +12,5 @@ public interface IApplicantRepository : IBaseRepository<Applicant>
     public Task<Applicant> GetApplicantAsync(Guid id);
     public Task<List<Applicant>> GetAll();
     public Task<ServiceResponse<Int32>> EditApplicantAsync();
-    public Task<List<Applicant>> SearchEntitiesAsync(string searchTerm, int pageNumber, int pageSize, string sortField, bool sortOrderAscending);
     public Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber);
 }

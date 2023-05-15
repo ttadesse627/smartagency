@@ -6,6 +6,7 @@ using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
 using AppDiv.SmartAgency.Application.Features.Command.Update.LookUps;
 using AppDiv.SmartAgency.Application.Features.Query.LookUps;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,9 +31,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-lookup")]
-        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber, int pageSize, string searchTerm = "")
+        public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
-            return Ok(await _mediator.Send(new GetAllLookUps(searchTerm, pageNumber, pageSize)));
+            return Ok(await _mediator.Send(new GetAllLookUps(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
 
         [HttpGet("{id}")]

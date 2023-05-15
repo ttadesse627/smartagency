@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class newMigration : Migration
+    public partial class ReMigratedDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -175,7 +175,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 12, 13, 48, 52, 44, DateTimeKind.Local).AddTicks(8906)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 14, 3, 47, 11, 23, DateTimeKind.Local).AddTicks(574)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -189,7 +189,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Witness",
+                name: "Witnesses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -214,7 +214,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Witness", x => x.Id);
+                    table.PrimaryKey("PK_Witnesses", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -350,7 +350,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    CategoryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    CategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Value = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -367,7 +367,71 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         name: "FK_LookUps_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Region = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    City = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    District = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DistrictArabic = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Zone = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Woreda = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Kebele = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Street = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    StreetArabic = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    HouseNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OfficePhone = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Mobile = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AlternativePhone = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Fax = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Addres = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PostCode = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Website = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AddressRegionId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_LookUps_AddressRegionId",
+                        column: x => x.AddressRegionId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -484,47 +548,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Region = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Zone = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Woreda = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Kebele = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Website = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AddressCountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    PartnerId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    AddressEmergContactId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ModifiedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_LookUps_AddressCountryId",
-                        column: x => x.AddressCountryId,
-                        principalTable: "LookUps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
@@ -608,7 +631,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         column: x => x.PartnerAddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -654,6 +677,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     ApplicantBankAccountId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantBrokerNameId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantBranchId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ApplicantExprienceId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantJobtitleId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantReligionId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantIssuingCountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
@@ -662,6 +686,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     ApplicantSalaryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantDesiredCountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ApplicantMaritalStatusId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ApplExperienceId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
@@ -684,7 +709,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         name: "FK_Applicants_Addresses_ApplicantAddressId",
                         column: x => x.ApplicantAddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Applicants_BankAccounts_ApplicantBankAccountId",
                         column: x => x.ApplicantBankAccountId,
@@ -706,6 +732,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Applicants_LookUps_ApplicantDesiredCountryId",
                         column: x => x.ApplicantDesiredCountryId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Applicants_LookUps_ApplicantExprienceId",
+                        column: x => x.ApplicantExprienceId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
@@ -839,16 +871,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicantWitness_Witness_ApplicantWitnessesId",
+                        name: "FK_ApplicantWitness_Witnesses_ApplicantWitnessesId",
                         column: x => x.ApplicantWitnessesId,
-                        principalTable: "Witness",
+                        principalTable: "Witnesses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Beneficiary",
+                name: "Beneficiaries",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -878,15 +910,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Beneficiary", x => x.Id);
+                    table.PrimaryKey("PK_Beneficiaries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Beneficiary_Applicants_BeneficiaryApplicantId",
+                        name: "FK_Beneficiaries_Applicants_BeneficiaryApplicantId",
                         column: x => x.BeneficiaryApplicantId,
                         principalTable: "Applicants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Beneficiary_LookUps_BeneficiaryRelationshipId",
+                        name: "FK_Beneficiaries_LookUps_BeneficiaryRelationshipId",
                         column: x => x.BeneficiaryRelationshipId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
@@ -949,7 +981,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EmergencyContact",
+                name: "EmergencyContacts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -958,7 +990,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     EmergencyContactAddressId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     EmergencyContactApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     EmergencyContactRelationshipId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    EmergencyContactRegionId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
@@ -976,27 +1007,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmergencyContact", x => x.Id);
+                    table.PrimaryKey("PK_EmergencyContacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmergencyContact_Addresses_EmergencyContactAddressId",
+                        name: "FK_EmergencyContacts_Addresses_EmergencyContactAddressId",
                         column: x => x.EmergencyContactAddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmergencyContact_Applicants_EmergencyContactApplicantId",
+                        name: "FK_EmergencyContacts_Applicants_EmergencyContactApplicantId",
                         column: x => x.EmergencyContactApplicantId,
                         principalTable: "Applicants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmergencyContact_LookUps_EmergencyContactRegionId",
-                        column: x => x.EmergencyContactRegionId,
-                        principalTable: "LookUps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_EmergencyContact_LookUps_EmergencyContactRelationshipId",
+                        name: "FK_EmergencyContacts_LookUps_EmergencyContactRelationshipId",
                         column: x => x.EmergencyContactRelationshipId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
@@ -1030,34 +1055,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "FileCollections",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    FilePath = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FileCollectionAttachmentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    FileCollectionApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileCollections", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FileCollections_Applicants_FileCollectionApplicantId",
-                        column: x => x.FileCollectionApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FileCollections_Attachments_FileCollectionAttachmentId",
-                        column: x => x.FileCollectionAttachmentId,
-                        principalTable: "Attachments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -1122,7 +1119,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         column: x => x.RepersentativeAddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Repersentative_Applicants_RepresentativeApplicantId",
                         column: x => x.RepresentativeApplicantId,
@@ -1208,6 +1205,35 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "FileCollections",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FilePath = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FileCollectionAttachmentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    FileCollectionApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    FileCollectionOrderId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileCollections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FileCollections_Applicants_FileCollectionApplicantId",
+                        column: x => x.FileCollectionApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FileCollections_Attachments_FileCollectionAttachmentId",
+                        column: x => x.FileCollectionAttachmentId,
+                        principalTable: "Attachments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Sponsors",
                 columns: table => new
                 {
@@ -1236,13 +1262,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         column: x => x.SponsorAddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Sponsors_FileCollections_SponsorIDFileId",
                         column: x => x.SponsorIDFileId,
                         principalTable: "FileCollections",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -1269,7 +1295,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     VisaTypeId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     EmployeeId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     PartnerId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    VisaFileId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     OrderCriteriaId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     OrderPaymentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     OrderSponsorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
@@ -1287,12 +1312,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         name: "FK_Orders_Applicants_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Orders_FileCollections_VisaFileId",
-                        column: x => x.VisaFileId,
-                        principalTable: "FileCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -1318,25 +1337,25 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         column: x => x.OrderCriteriaId,
                         principalTable: "OrderCriterias",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_OrderPayments_OrderPaymentId",
                         column: x => x.OrderPaymentId,
                         principalTable: "OrderPayments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Partners_PartnerId",
                         column: x => x.PartnerId,
                         principalTable: "Partners",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Orders_Sponsors_OrderSponsorId",
                         column: x => x.OrderSponsorId,
                         principalTable: "Sponsors",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -1346,19 +1365,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 values: new object[] { new Guid("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), "Category" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_AddressCountryId",
+                name: "IX_Addresses_AddressRegionId",
                 table: "Addresses",
-                column: "AddressCountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_AddressEmergContactId",
-                table: "Addresses",
-                column: "AddressEmergContactId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_PartnerId",
-                table: "Addresses",
-                column: "PartnerId");
+                column: "AddressRegionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantFollowupStatuses_ApplicantId",
@@ -1401,6 +1410,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "IX_Applicants_ApplicantDesiredCountryId",
                 table: "Applicants",
                 column: "ApplicantDesiredCountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applicants_ApplicantExprienceId",
+                table: "Applicants",
+                column: "ApplicantExprienceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applicants_ApplicantHealthId",
@@ -1485,13 +1499,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Beneficiary_BeneficiaryApplicantId",
-                table: "Beneficiary",
+                name: "IX_Beneficiaries_BeneficiaryApplicantId",
+                table: "Beneficiaries",
                 column: "BeneficiaryApplicantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Beneficiary_BeneficiaryRelationshipId",
-                table: "Beneficiary",
+                name: "IX_Beneficiaries_BeneficiaryRelationshipId",
+                table: "Beneficiaries",
                 column: "BeneficiaryRelationshipId");
 
             migrationBuilder.CreateIndex(
@@ -1531,25 +1545,20 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmergencyContact_EmergencyContactAddressId",
-                table: "EmergencyContact",
+                name: "IX_EmergencyContacts_EmergencyContactAddressId",
+                table: "EmergencyContacts",
                 column: "EmergencyContactAddressId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmergencyContact_EmergencyContactApplicantId",
-                table: "EmergencyContact",
+                name: "IX_EmergencyContacts_EmergencyContactApplicantId",
+                table: "EmergencyContacts",
                 column: "EmergencyContactApplicantId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmergencyContact_EmergencyContactRegionId",
-                table: "EmergencyContact",
-                column: "EmergencyContactRegionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmergencyContact_EmergencyContactRelationshipId",
-                table: "EmergencyContact",
+                name: "IX_EmergencyContacts_EmergencyContactRelationshipId",
+                table: "EmergencyContacts",
                 column: "EmergencyContactRelationshipId");
 
             migrationBuilder.CreateIndex(
@@ -1571,6 +1580,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "IX_FileCollections_FileCollectionAttachmentId",
                 table: "FileCollections",
                 column: "FileCollectionAttachmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileCollections_FileCollectionOrderId",
+                table: "FileCollections",
+                column: "FileCollectionOrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Languages_LanguageApplicantId",
@@ -1672,12 +1687,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 column: "PriorityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_VisaFileId",
-                table: "Orders",
-                column: "VisaFileId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_VisaTypeId",
                 table: "Orders",
                 column: "VisaTypeId");
@@ -1719,33 +1728,127 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_EmergencyContact_AddressEmergContactId",
-                table: "Addresses",
-                column: "AddressEmergContactId",
-                principalTable: "EmergencyContact",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_Partners_PartnerId",
-                table: "Addresses",
-                column: "PartnerId",
-                principalTable: "Partners",
-                principalColumn: "Id");
+                name: "FK_FileCollections_Orders_FileCollectionOrderId",
+                table: "FileCollections",
+                column: "FileCollectionOrderId",
+                principalTable: "Orders",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_EmergencyContact_AddressEmergContactId",
+                name: "FK_Addresses_LookUps_AddressRegionId",
                 table: "Addresses");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_LookUps_AddressCountryId",
-                table: "Addresses");
+                name: "FK_Applicants_LookUps_ApplicantBranchId",
+                table: "Applicants");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_Partners_PartnerId",
-                table: "Addresses");
+                name: "FK_Applicants_LookUps_ApplicantBrokerNameId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantDesiredCountryId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantExprienceId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantHealthId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantIssuedPlaceId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantIssuingCountryId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantJobtitleId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantMaritalStatusId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantReligionId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Applicants_LookUps_ApplicantSalaryId",
+                table: "Applicants");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderCriterias_LookUps_ExperienceId",
+                table: "OrderCriterias");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderCriterias_LookUps_LanguageId",
+                table: "OrderCriterias");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderCriterias_LookUps_NationalityId",
+                table: "OrderCriterias");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderCriterias_LookUps_OrderCriteriaJobTitleId",
+                table: "OrderCriterias");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderCriterias_LookUps_ReligionId",
+                table: "OrderCriterias");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderCriterias_LookUps_SalaryId",
+                table: "OrderCriterias");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_LookUps_PortOfArrivalId",
+                table: "Orders");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_LookUps_PriorityId",
+                table: "Orders");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_LookUps_VisaTypeId",
+                table: "Orders");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_FileCollections_Applicants_FileCollectionApplicantId",
+                table: "FileCollections");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_Applicants_EmployeeId",
+                table: "Orders");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Partners_Addresses_PartnerAddressId",
+                table: "Partners");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Sponsors_Addresses_SponsorAddressId",
+                table: "Sponsors");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_Partners_PartnerId",
+                table: "Orders");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_FileCollections_Attachments_FileCollectionAttachmentId",
+                table: "FileCollections");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_FileCollections_Orders_FileCollectionOrderId",
+                table: "FileCollections");
 
             migrationBuilder.DropTable(
                 name: "ApplicantFollowupStatuses");
@@ -1775,7 +1878,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "AuditLogs");
 
             migrationBuilder.DropTable(
-                name: "Beneficiary");
+                name: "Beneficiaries");
 
             migrationBuilder.DropTable(
                 name: "Customer");
@@ -1793,6 +1896,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "EducationLookUp2");
 
             migrationBuilder.DropTable(
+                name: "EmergencyContacts");
+
+            migrationBuilder.DropTable(
                 name: "Experiences");
 
             migrationBuilder.DropTable(
@@ -1802,13 +1908,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "OnlineApplicants");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
                 name: "Repersentative");
 
             migrationBuilder.DropTable(
-                name: "Witness");
+                name: "Witnesses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -1823,6 +1926,30 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "Educations");
 
             migrationBuilder.DropTable(
+                name: "LookUps");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Applicants");
+
+            migrationBuilder.DropTable(
+                name: "BankAccounts");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Partners");
+
+            migrationBuilder.DropTable(
+                name: "Attachments");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "OrderCriterias");
 
             migrationBuilder.DropTable(
@@ -1833,30 +1960,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "FileCollections");
-
-            migrationBuilder.DropTable(
-                name: "Attachments");
-
-            migrationBuilder.DropTable(
-                name: "EmergencyContact");
-
-            migrationBuilder.DropTable(
-                name: "Applicants");
-
-            migrationBuilder.DropTable(
-                name: "BankAccounts");
-
-            migrationBuilder.DropTable(
-                name: "LookUps");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Partners");
-
-            migrationBuilder.DropTable(
-                name: "Addresses");
         }
     }
 }

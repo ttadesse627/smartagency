@@ -8,11 +8,12 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
 {
-    public class GetAllLookUpsHandler : IRequestHandler<GetAllLookUps, PaginatedList<LookUpResponseDTO>>
+    public class GetAllLookUpsHandler : IRequestHandler<GetAllLookUps, SearchModel<LookUpResponseDTO>>
     {
         // private readonly ISmartAgencyDbContext _context;
         // private readonly IMapper _mapper;
@@ -22,14 +23,11 @@ namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
         {
             _lookUpRepository = lookUpRepository;
         }
-        public async Task<PaginatedList<LookUpResponseDTO>> Handle(GetAllLookUps request, CancellationToken cancellationToken)
+        public async Task<SearchModel<LookUpResponseDTO>> Handle(GetAllLookUps request, CancellationToken cancellationToken)
         {
 
-            var lookUpList = await _lookUpRepository.GetAllWithSearchAsync(request.ColumnNames, request.SearchTerm, "Category");
-
-            var paginatedListLookUp = new PaginatedList<LookUp>((IReadOnlyCollection<LookUp>)lookUpList, lookUpList.Count(), request.PageNumber, request.PageSize);
-            var paginatedList = await PaginatedList<LookUp>.CreateAsync(lookUpList, request.PageNumber, request.PageSize);
-            var paginatedListResp = CustomMapper.Mapper.Map<PaginatedList<LookUpResponseDTO>>(paginatedList);
+            var lookUpList = await _lookUpRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Category");
+            var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<LookUpResponseDTO>>(lookUpList);
 
             return paginatedListResp;
         }

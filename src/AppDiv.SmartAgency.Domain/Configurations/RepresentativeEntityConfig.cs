@@ -16,6 +16,6 @@ public class RepresentativeEntityConfig : IEntityTypeConfiguration<Repersentativ
         builder.HasOne(m => m.RepersentativeAddress)
             .WithOne(n => n.AddressRepresentative)
             .HasForeignKey<Repersentative>(fk => fk.RepersentativeAddressId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
