@@ -60,7 +60,7 @@ public class Applicant : PersonalInfo
     public EmergencyContact? ApplicantEmergencyContact { get; set; }
     public ICollection<LookUp>? ApplicantTechnicalSkills { get; set; }
     public LookUp? ApplicantReligion { get; set; }
-    public LookUp? ApplExperience { get; set; }
+    //public LookUp? ApplExperience { get; set; }
     public LookUp? ApplicantBrokerName { get; set; }
     public LookUp? ApplicantBranch { get; set; }
     public LookUp? ApplicantJobtitle { get; set; }

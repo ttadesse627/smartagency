@@ -27,6 +27,9 @@ using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AutoMapper;
 using AppDiv.SmartAgency.Application.Common;
 using System.Collections;
+using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Pagess;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -127,6 +130,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
                 .ForMember("TotalPages", opt => opt.MapFrom((src => src.GetType().GetProperty("TotalPages").GetValue(src))))
                 .ForMember("TotalCount", opt => opt.MapFrom((src => src.GetType().GetProperty("TotalCount").GetValue(src))));
 
+            CreateMap<CreatePageRequest, Page>();
+            CreateMap<Page, PageResponseDTO>();
+            CreateMap<EditPageCommand, Page>();
 
         }
     }

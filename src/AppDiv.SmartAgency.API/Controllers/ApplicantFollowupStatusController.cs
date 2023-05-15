@@ -43,8 +43,8 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             return await _mediator.Send(new GetApplicantFollowupStatusByIdQuery(id));
         }
-  /*
-
+  
+/*
       [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteDeposit(Guid id)
         {

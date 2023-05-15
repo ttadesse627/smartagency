@@ -13,7 +13,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         // Navigation properties
         public Category? Category { get; set; }
         public ICollection<Applicant>? LookUpReligions { get; set; }
-        public ICollection<Applicant>? LookUpExpriences { get; set; }
         public ICollection<Applicant>? LookUpJobTitles { get; set; }
         public ICollection<Applicant>? LookupTechnicalSkills { get; set; }
         public ICollection<Applicant>? LookUpBrokerNames { get; set; }
