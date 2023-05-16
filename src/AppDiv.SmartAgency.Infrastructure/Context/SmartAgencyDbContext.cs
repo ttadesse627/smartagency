@@ -40,6 +40,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<OrderCriteria> OrderCriterias { get; set; }
         public DbSet<Payment> OrderPayments { get; set; }
+        public DbSet<Page> Pages { get; set; }
+
 
          public DbSet<ApplicantFollowupStatus>  ApplicantFollowupStatuses { get; set; }
 

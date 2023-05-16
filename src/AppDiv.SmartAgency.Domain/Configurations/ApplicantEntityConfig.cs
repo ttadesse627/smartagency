@@ -35,10 +35,10 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
         builder.HasMany(m => m.ApplicantTechnicalSkills)
             .WithMany(n => n.LookupTechnicalSkills);
 
-        builder.HasOne(m => m.ApplicantExprience)
-            .WithMany(n => n.LookUpExpriences)
-            .HasForeignKey(fk => fk.ApplicantExprienceId)
-            .OnDelete(DeleteBehavior.SetNull);
+        // builder.HasOne(m => m.ApplicantExprience)
+          //  .WithMany(n => n.LookUpExperiences)
+           // .HasForeignKey(fk => fk.ApplicantExprienceId)
+           // .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(appl => appl.ApplicantReligion)
             .WithMany(lk => lk.LookUpReligions)

@@ -28,6 +28,9 @@ using AutoMapper;
 using AppDiv.SmartAgency.Application.Common;
 using System.Collections;
 using AppDiv.SmartAgency.Utility.Contracts;
+using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
+using AppDiv.SmartAgency.Application.Features.Command.Update.Pagess;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -119,6 +122,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
             CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();
+
+            CreateMap<CreatePageRequest, Page>();
+            CreateMap<Page, PageResponseDTO>();
+            CreateMap<EditPageCommand, Page>();
 
         }
     }
