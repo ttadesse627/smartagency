@@ -30,13 +30,13 @@ namespace AppDiv.SmartAgency.API.Controllers
         var response = await _mediator.Send(pageRequest);
         return Ok(response);
     }
-/*
+
     [HttpGet("get-all-pages")]
          public async Task<ActionResult<PageResponseDTO>> GetAllPages(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return Ok(await _mediator.Send(new GetAllPagesQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
-*/
+
 
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

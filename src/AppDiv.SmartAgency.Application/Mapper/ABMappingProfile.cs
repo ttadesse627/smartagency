@@ -121,12 +121,19 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<ApplicantFollowupStatus , ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
-            CreateMap<PaginatedList<LookUp>, PaginatedList<LookUpResponseDTO>>()
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items.Select(
-                    x => CustomMapper.Mapper.Map<LookUpResponseDTO>(x)).ToList()));
 
+            
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
+
             CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();
+
+            CreateMap<SearchModel<Page>, SearchModel<PageResponseDTO>>();
+
+           // CreateMap<PaginatedList<Page>, PaginatedList<PageResponseDTO>>()
+             //   .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items.Select(
+              //      x => CustomMapper.Mapper.Map<PageResponseDTO>(x)).ToList()));
+
+
 
             CreateMap<CreatePageRequest, Page>();
             CreateMap<Page, PageResponseDTO>();

@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
-/*
+
 namespace AppDiv.SmartAgency.Application.Features.Query.Pagess
 {
     public class GetAllPagesQueryHandler : IRequestHandler<GetAllPagesQuery, SearchModel<PageResponseDTO>>
@@ -20,15 +20,15 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Pagess
         {
             _pageRepository = pageRepository;
         }
-    /*    public async Task<SearchModel<PageResponseDTO>> Handle(GetAllPagesQuery request, CancellationToken cancellationToken)
+       public async Task<SearchModel<PageResponseDTO>> Handle(GetAllPagesQuery request, CancellationToken cancellationToken)
         {
 
-            var pageList = await _pageRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Category");
+            var pageList = await _pageRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection);
             var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<PageResponseDTO>>(pageList);
 
             return paginatedListResp;
         }
-        */
-    
-
+        
+    }
+}
 

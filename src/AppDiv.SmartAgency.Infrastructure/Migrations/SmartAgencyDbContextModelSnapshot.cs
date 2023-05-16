@@ -220,8 +220,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ApplicantDesiredCountryId");
 
-                    b.HasIndex("ApplicantExprienceId");
-
                     b.HasIndex("ApplicantHealthId");
 
                     b.HasIndex("ApplicantIssuedPlaceId");
@@ -324,7 +322,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("BeneficiaryRelationshipId");
 
-                    b.ToTable("Beneficiaries");
                     b.ToTable("Beneficiaries");
                 });
 
@@ -576,7 +573,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Witnesses");
-                    b.ToTable("Witnesses");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
@@ -758,19 +754,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("DistrictArabic")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("District")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DistrictArabic")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Fax")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("HouseNumber")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Fax")
@@ -785,9 +769,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("Mobile")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Mobile")
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -797,27 +778,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("OfficePhone")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("PartnerId")
-                        .HasColumnType("char(36)");
-                    b.Property<string>("OfficePhone")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
                     b.Property<string>("PostCode")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PostCode")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Region")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("StreetArabic")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Street")
@@ -836,12 +803,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressEmergContactId");
-
-                    b.HasIndex("AddressRegionId");
-
-                    b.HasIndex("PartnerId");
 
                     b.HasIndex("AddressRegionId");
 
@@ -1427,8 +1388,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 15, 14, 6, 30, 64, DateTimeKind.Local).AddTicks(347));
-                       
+                        .HasDefaultValue(new DateTime(2023, 5, 16, 10, 21, 12, 451, DateTimeKind.Local).AddTicks(6865));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1700,11 +1660,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("ApplicantDesiredCountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "ApplicantExprience")
-                        .WithMany("LookUpExpriences")
-                        .HasForeignKey("ApplicantExprienceId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "ApplicantHealth")
                         .WithMany("LookUpHealths")
                         .HasForeignKey("ApplicantHealthId")
@@ -1754,8 +1709,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("ApplicantBrokerName");
 
                     b.Navigation("ApplicantDesiredCountry");
-
-                    b.Navigation("ApplicantExprience");
 
                     b.Navigation("ApplicantHealth");
 
@@ -1850,7 +1803,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "LanguageLookUp")
                         .WithMany("LookUpLanguages")
-            
                         .HasForeignKey("LanguageLookUpId")
                         .OnDelete(DeleteBehavior.SetNull);
 
@@ -1878,24 +1830,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.Address", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.EmergencyContact", "AddressEmergContact")
-                        .WithMany()
-                        .HasForeignKey("AddressEmergContactId");
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "AddressRegion")
-                        .WithMany("LookUpAddressRegions")
-                        .HasForeignKey("AddressRegionId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Partner", "Partner")
-                        .WithMany()
-                        .HasForeignKey("PartnerId");
-
-                    b.Navigation("AddressEmergContact");
-
-                    b.Navigation("AddressRegion");
-
-                    b.Navigation("Partner");
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "AddressRegion")
                         .WithMany("LookUpAddressRegions")
                         .HasForeignKey("AddressRegionId")
@@ -2317,7 +2251,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("FollowupStatus");
 
                     b.Navigation("LookUpAddressRegions");
-                    b.Navigation("LookUpAddressRegions");
 
                     b.Navigation("LookUpBranches");
 
@@ -2341,8 +2274,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("LookUpExperiences");
 
-                    b.Navigation("LookUpExpriences");
-
                     b.Navigation("LookUpHealths");
 
                     b.Navigation("LookUpIssuedPlaces");
@@ -2350,8 +2281,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("LookUpIssuingCountries");
 
                     b.Navigation("LookUpJobTitles");
-
-                    b.Navigation("LookUpLanguages");
 
                     b.Navigation("LookUpLanguages");
 

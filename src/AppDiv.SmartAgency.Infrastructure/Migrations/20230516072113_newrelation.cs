@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class ReMigratedDb : Migration
+    public partial class newrelation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -169,13 +169,39 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Pages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Category = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Link = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PageContent = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pages", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Suffixes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 14, 3, 47, 11, 23, DateTimeKind.Local).AddTicks(574)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 16, 10, 21, 12, 451, DateTimeKind.Local).AddTicks(6865)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -732,12 +758,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Applicants_LookUps_ApplicantDesiredCountryId",
                         column: x => x.ApplicantDesiredCountryId,
-                        principalTable: "LookUps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Applicants_LookUps_ApplicantExprienceId",
-                        column: x => x.ApplicantExprienceId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
@@ -1412,11 +1432,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 column: "ApplicantDesiredCountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applicants_ApplicantExprienceId",
-                table: "Applicants",
-                column: "ApplicantExprienceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Applicants_ApplicantHealthId",
                 table: "Applicants",
                 column: "ApplicantHealthId");
@@ -1755,10 +1770,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Applicants");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Applicants_LookUps_ApplicantExprienceId",
-                table: "Applicants");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Applicants_LookUps_ApplicantHealthId",
                 table: "Applicants");
 
@@ -1906,6 +1917,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "OnlineApplicants");
+
+            migrationBuilder.DropTable(
+                name: "Pages");
 
             migrationBuilder.DropTable(
                 name: "Repersentative");
