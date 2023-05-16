@@ -1,5 +1,0 @@
-LookUp Table Data
-
-```sql
-
-```
