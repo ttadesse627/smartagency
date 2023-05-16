@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230515113644_CheckModification")]
+    partial class CheckModification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,6 +215,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ApplicantBrokerNameId");
 
                     b.HasIndex("ApplicantDesiredCountryId");
+
+                    b.HasIndex("ApplicantExprienceId");
 
                     b.HasIndex("ApplicantHealthId");
 
@@ -1264,44 +1268,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("Sponsors");
                 });
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Page", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PageContent")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pages");
-                });
-
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1654,6 +1620,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("ApplicantDesiredCountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "ApplicantExprience")
+                        .WithMany("LookUpExpriences")
+                        .HasForeignKey("ApplicantExprienceId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "ApplicantHealth")
                         .WithMany("LookUpHealths")
                         .HasForeignKey("ApplicantHealthId")
@@ -1703,6 +1674,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("ApplicantBrokerName");
 
                     b.Navigation("ApplicantDesiredCountry");
+
+                    b.Navigation("ApplicantExprience");
 
                     b.Navigation("ApplicantHealth");
 
@@ -2267,6 +2240,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("LookUpEmergencyContactRelationships");
 
                     b.Navigation("LookUpExperiences");
+
+                    b.Navigation("LookUpExpriences");
 
                     b.Navigation("LookUpHealths");
 

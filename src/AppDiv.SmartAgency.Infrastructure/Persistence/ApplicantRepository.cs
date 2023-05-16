@@ -66,39 +66,4 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             return serviceResponse;
         }
 
-    private static Expression<Func<Applicant, bool>> GenerateSearchExpression(
-        string searchTerm,
-        PropertyInfo[] properties)
-    {
-        // Create a parameter expression for the entity
-        var entityParam = Expression.Parameter(typeof(Applicant), "e");
-
-        // Create an empty expression that we will add to as we generate the search expression
-        Expression searchExpr = Expression.Constant(false);
-
-        // Loop through each property of the entity
-        foreach (var property in properties)
-        {
-            // Check if the property is a string
-            if (property.PropertyType == typeof(string))
-            {
-                // Create an expression that searches for the search term
-                // in the current property of the entity
-                var propertyValue = Expression.Property(entityParam, property);
-                var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                var searchTermExpr = Expression.Constant(searchTerm, typeof(string));
-                var searchExprPart = Expression.Call(propertyValue, containsMethod, searchTermExpr);
-
-                // Add the search expression for the current property to the overall search expression
-                searchExpr = Expression.Or(searchExpr, searchExprPart);
-            }
-        }
-
-        // Create a lambda expression that takes an entity and returns a boolean
-        // that evaluates the overall search expression we just generated
-        var lambdaExpr = Expression.Lambda<Func<Applicant, bool>>(searchExpr, entityParam);
-
-        return lambdaExpr;
-    }
-
 }

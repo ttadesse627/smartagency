@@ -9,9 +9,9 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 public class CreateApplicantRequest
 {
-    public string? FirstName { get; set; }
-    public string? MiddleName { get; set; }
-    public string? LastName { get; set; }
+    public string FirstName { get; set; }
+    public string MiddleName { get; set; }
+    public string LastName { get; set; }
     public Gender Gender { get; set; }
     public DateTime BirthDate { get; set; }
     public string? PassportNumber { get; set; }
@@ -36,6 +36,7 @@ public class CreateApplicantRequest
     public bool IsDeleted { get; set; } = false;
 
     // public Guid? ApplicantPartnerId { get; set; }
+
     public Guid? ApplicantBrokerNameId { get; set; }
     public Guid? ApplicantBranchId { get; set; }
     public Guid? ApplicantExprienceId { get; set; }
@@ -47,7 +48,6 @@ public class CreateApplicantRequest
     public Guid? ApplicantSalaryId { get; set; }
     public Guid? ApplicantDesiredCountryId { get; set; }
     public Guid? ApplicantMaritalStatusId { get; set; }
-    public ICollection<TechnicalSkillLookUpRequest>? TechnicalSkillIds { get; set; }
 
     public ICollection<WitnessRequest>? ApplicantWitnesses { get; set; }
     public ICollection<BeneficiaryRequest>? ApplicantBeneficiaries { get; set; }
@@ -55,8 +55,10 @@ public class CreateApplicantRequest
     public ICollection<LanguageRequest>? ApplicantLanguages { get; set; }
     public ICollection<ExperienceRequest>? ApplicantExperiences { get; set; }
     public RepersentativeRequest? ApplicantRepersentative { get; set; }
-    public AddressRequest? ApplicantAddress { get; set; }
+    // public Partner? ApplicantPartner { get; set; }
     public EducationRequest? ApplicantEducation { get; set; }
     public BankAccountRequest? ApplicantBankAccount { get; set; }
     public EmergencyContactRequest? ApplicantEmergencyContact { get; set; }
+    public ICollection<Guid>? ApplicantTechnicalSkills { get; set; }
+    public AddressRequest? ApplicantAddress { get; set; }
 }

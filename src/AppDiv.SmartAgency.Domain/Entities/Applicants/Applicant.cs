@@ -1,15 +1,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
-using AppDiv.SmartAgency.Domain.Entities.Settings;
-using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 [Table("Applicants")]
 public class Applicant : PersonalInfo
 {
     public string? PassportNumber { get; set; }
-    public string? IssuingCountry { get; set; }
     public DateTime IssuedDate { get; set; }
     public DateTime PassportExpiryDate { get; set; }
     public string? PlaceOfBirth { get; set; }
@@ -45,7 +42,6 @@ public class Applicant : PersonalInfo
     public Guid? ApplicantSalaryId { get; set; }
     public Guid? ApplicantDesiredCountryId { get; set; }
     public Guid? ApplicantMaritalStatusId { get; set; }
-    public Guid? ApplExperienceId { get; set; }
 
     //Navigation Properties
     public ICollection<Witness>? ApplicantWitnesses { get; set; }
@@ -55,11 +51,11 @@ public class Applicant : PersonalInfo
     public ICollection<Experience>? ApplicantExperiences { get; set; }
     public Repersentative? ApplicantRepersentative { get; set; }
     public Partner? ApplicantPartner { get; set; }
-    public Address? ApplicantAddress { get; set; }
     public Education? ApplicantEducation { get; set; }
     public BankAccount? ApplicantBankAccount { get; set; }
     public EmergencyContact? ApplicantEmergencyContact { get; set; }
     public ICollection<LookUp>? ApplicantTechnicalSkills { get; set; }
+    public Address? ApplicantAddress { get; set; }
     public LookUp? ApplicantReligion { get; set; }
     //public LookUp? ApplicantExprience { get; set; }
     public LookUp? ApplicantBrokerName { get; set; }

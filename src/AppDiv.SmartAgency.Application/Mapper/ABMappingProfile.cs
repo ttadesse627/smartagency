@@ -53,10 +53,12 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<LookUp, CreateLookUpCommand>().ReverseMap();
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
 
-            CreateMap<CreateApplicantRequest, Applicant>();
+            CreateMap<CreateApplicantRequest, Applicant>().ForMember(dest => dest.ApplicantTechnicalSkills, opt => opt.Ignore());
             CreateMap<LanguageRequest, Language>();
             CreateMap<ExperienceRequest, Experience>();
-            CreateMap<EducationRequest, Education>();
+            CreateMap<EducationRequest, Education>().ForMember(dest => dest.EducationLevelofQualifications, opt => opt.Ignore())
+                                                    .ForMember(dest => dest.EducationQualificationTypes, opt => opt.Ignore())
+                                                    .ForMember(dest => dest.EducationAwards, opt => opt.Ignore());
             CreateMap<BankAccountRequest, BankAccount>();
             CreateMap<BeneficiaryRequest, Beneficiary>();
             CreateMap<EmergencyContactRequest, EmergencyContact>();
@@ -64,10 +66,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<WitnessRequest, Witness>();
             CreateMap<AddressRequest, Address>();
             CreateMap<FileCollectionRequest, FileCollection>();
-            CreateMap<TechnicalSkillLookUpRequest, LookUp>();
-            CreateMap<LevelOfQualificationLookUpRequest, LookUp>();
-            CreateMap<QualificationTypeLookUpRequest, LookUp>();
-            CreateMap<AwardLookUpRequest, LookUp>();
 
             CreateMap<Applicant, CreateApplicantResponseDTO>();
             CreateMap<Category, CategoryResponseDTO>();
@@ -104,8 +102,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditPaymentRequest, Payment>();
             CreateMap<EditAddressRequest, Address>();
 
-            CreateMap<Partner,PartnerResponseDTO>();
-            CreateMap<Address,AddressResponseDTO>().ReverseMap();
+            CreateMap<Partner, PartnerResponseDTO>();
+            CreateMap<Address, AddressResponseDTO>();
             CreateMap<EditPartnerCommand, Partner>();
 
             CreateMap<OnlineApplicant, OnlineApplicantResponseDTO>();
@@ -115,11 +113,11 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Deposit, DepositResponseDTO>();
             CreateMap<CreateDepositRequest, Deposit>();
             CreateMap<Applicant, DepositApplicantResponseDTO>();
-            CreateMap<DepositResponseDTO,GetDepositByIdResponseDTO>();
+            CreateMap<DepositResponseDTO, GetDepositByIdResponseDTO>();
             CreateMap<EditDepositCommand, Deposit>();
-            CreateMap< Deposit,GetDepositByIdResponseDTO>();
+            CreateMap<Deposit, GetDepositByIdResponseDTO>();
 
-            CreateMap<ApplicantFollowupStatus , ApplicantFollowupStatusResponseDTO>();
+            CreateMap<ApplicantFollowupStatus, ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
 
             
