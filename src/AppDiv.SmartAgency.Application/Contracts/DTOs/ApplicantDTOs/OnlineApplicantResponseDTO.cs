@@ -21,8 +21,8 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
         public string  City{get; set;} 
         public string  PhoneNumber{get; set;}
         public string EducationLevel{get; set;}
-        public  OnlineApplicantLookUpResponseDTO DesiredCountry{get; set;}
-        public  OnlineApplicantLookUpResponseDTO  MaritalStatus {get; set;}
-        public OnlineApplicantLookUpResponseDTO  Experience{get; set;}      
+        public  OnlineApplicantLookUpResponseDTO? DesiredCountry{get; set;}
+        public  OnlineApplicantLookUpResponseDTO?  MaritalStatus {get; set;}
+        public OnlineApplicantLookUpResponseDTO?  Experience{get; set;}      
     }
 }

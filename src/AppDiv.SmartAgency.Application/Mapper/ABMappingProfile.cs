@@ -127,6 +127,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<SearchModel<Page>, SearchModel<PageResponseDTO>>();
 
+            CreateMap<SearchModel<OnlineApplicant>, SearchModel<OnlineApplicantResponseDTO>>();
+
            // CreateMap<PaginatedList<Page>, PaginatedList<PageResponseDTO>>()
              //   .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items.Select(
               //      x => CustomMapper.Mapper.Map<PageResponseDTO>(x)).ToList()));
