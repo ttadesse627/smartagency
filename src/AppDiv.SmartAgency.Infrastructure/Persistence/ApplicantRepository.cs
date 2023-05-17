@@ -59,11 +59,11 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         return response;
     }
     public async Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber)
-        {
-            var serviceResponse = new ServiceResponse<Applicant>();
-            serviceResponse.Data = await _context.Applicants.FirstOrDefaultAsync(a=>a.PassportNumber==passportNumber);
+    {
+        var serviceResponse = new ServiceResponse<Applicant>();
+        serviceResponse.Data = await _context.Applicants.FirstOrDefaultAsync(a => a.PassportNumber == passportNumber);
 
-            return serviceResponse;
-        }
+        return serviceResponse;
+    }
 
 }

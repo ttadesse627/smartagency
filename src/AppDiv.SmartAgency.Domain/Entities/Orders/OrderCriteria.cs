@@ -11,20 +11,21 @@ public class OrderCriteria
     public string? Remark { get; set; }
 
     // Foreign Keys
-    public Guid? NationalityId { get; set; }
+    public Guid? OrderCriteriaNationalityId { get; set; }
     public Guid? OrderCriteriaJobTitleId { get; set; }
-    public Guid? SalaryId { get; set; }
-    public Guid? ReligionId { get; set; }
-    public Guid? ExperienceId { get; set; }
-    public Guid? LanguageId { get; set; }
+    public Guid? OrderCriteriaSalaryId { get; set; }
+    public Guid? OrderCriteriaReligionId { get; set; }
+    public Guid? OrderCriteriaExperienceId { get; set; }
+    public Guid? OrderCriteriaLanguageId { get; set; }
+    public Guid? OrderCriteriaOrderId { get; set; }
     
     // Navigation properties
-    public LookUp? Nationality { get; set; }
+    public LookUp? OrderCriteriaNationality { get; set; }
     public LookUp? OrderCriteriaJobTitle { get; set; }
-    public LookUp? Salary { get; set; }
-    public LookUp? Religion { get; set; }
-    public LookUp? Experience { get; set; }
-    public LookUp? Language { get; set; }
-    public Order? Order { get; set; }
+    public LookUp? OrderCriteriaSalary { get; set; }
+    public LookUp? OrderCriteriaReligion { get; set; }
+    public LookUp? OrderCriteriaExperience { get; set; }
+    public LookUp? OrderCriteriaLanguage { get; set; }
+    public Order? OrderCriteriaOrder { get; set; }
 
 }

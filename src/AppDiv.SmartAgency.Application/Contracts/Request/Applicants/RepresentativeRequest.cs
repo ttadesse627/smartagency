@@ -3,10 +3,10 @@
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public class RepersentativeRequest
+public class RepresentativeRequest
 {
-    public string FirstName { get; set; }
-    public string MiddleName { get; set; }
-    public string LastName { get; set; }
-    public AddressRequest? RepersentativeAddress { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string MiddleName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public AddressRequest? RepresentativeAddress { get; set; }
 }

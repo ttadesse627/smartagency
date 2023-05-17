@@ -51,7 +51,6 @@ INSERT INTO `categories` VALUES
 ('7859bf3f-7013-4587-a840-94b18fa1e5f6','Experience'),
 ('79883eea-bd7b-4620-8a63-3415dcadb975','Airlines'),
 ('813b098f-a77b-43f1-9782-e951257bccb8','User Status'),
-('8aec3c2a-96ba-46ce-8a4b-14cf557fd621','Category'),
 ('955c3bba-3efc-4012-bbb9-a4c31f65612a','Job Title'),
 ('a19a1b7e-67fc-4c0f-820d-7fc8ced1ba3b','Salary'),
 ('a479edb5-c4ea-4aeb-9c6c-a7d0b828eff5','Qualification Type'),

@@ -11,10 +11,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Command.Create.Applicants;
 public record CreateApplicantCommand(CreateApplicantRequest applicantRequest) : IRequest<ServiceResponse<Int32>>
-{
-
-}
-
+{}
 public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, ServiceResponse<Int32>>
 {
     private readonly IApplicantRepository _applicantRepository;
@@ -28,8 +25,8 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
     {
         var createApplicantResponse = new ServiceResponse<Int32>();
         var request = applicantRequest.applicantRequest;
-        // var createApplicantCommandValidator = new CreateApplicantCommandValidator(_applicantRepository);
-        // var validationResult = await createApplicantCommandValidator.ValidateAsync(applicantRequest, cancellationToken);
+        var createApplicantCommandValidator = new CreateApplicantCommandValidator(_applicantRepository);
+        var validationResult = await createApplicantCommandValidator.ValidateAsync(applicantRequest, cancellationToken);
 
         // if (validationResult.Errors.Count > 0)
         // {
@@ -41,54 +38,65 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         // }
         // if (createApplicantResponse.Success)
         // {
-        var levelOfQualifications = new List<LookUp>();
-        var qualificationTypes = new List<LookUp>();
-        var awards = new List<LookUp>();
-        var technicalSkills = new List<LookUp>();
-        if (request.ApplicantEducation != null)
-        {
-            foreach (var levelOfQualificationId in request.ApplicantEducation.EducationLevelofQualifications!)
+            var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
+
+            var levelOfQualifications = new List<LookUp>();
+            var qualificationTypes = new List<LookUp>();
+            var awards = new List<LookUp>();
+            var technicalSkills = new List<LookUp>();
+            if (request.ApplicantEducation != null)
             {
-                var levelOfQualification = await _lookUpRepository.GetByIdAsync(levelOfQualificationId);
-                levelOfQualifications.Add(levelOfQualification);
+                foreach (var levelOfQualificationId in request.ApplicantEducation.EducationLevelofQualifications!)
+                {
+                    var levelOfQualification = await _lookUpRepository.GetAsync(levelOfQualificationId);
+                    levelOfQualifications.Add(levelOfQualification);
+                }
+                foreach (var qualificationTypeId in request.ApplicantEducation.EducationQualificationTypes!)
+                {
+                    var qualificationType = await _lookUpRepository.GetAsync(qualificationTypeId);
+                    qualificationTypes.Add(qualificationType);
+                }
+                foreach (var awardId in request.ApplicantEducation.EducationAwards!)
+                {
+                    var award = await _lookUpRepository.GetAsync(awardId);
+                    awards.Add(award);
+                }
             }
-            foreach (var qualificationTypeId in request.ApplicantEducation.EducationQualificationTypes!)
+            if (request.ApplicantTechnicalSkills != null)
             {
-                var qualificationType = await _lookUpRepository.GetByIdAsync(qualificationTypeId);
-                qualificationTypes.Add(qualificationType);
+                foreach (var technicalSkillId in request.ApplicantTechnicalSkills!)
+                {
+                    var technicalSkill = await _lookUpRepository.GetAsync(technicalSkillId);
+                    technicalSkills.Add(technicalSkill);
+                }
             }
-            foreach (var awardId in request.ApplicantEducation.EducationAwards!)
+
+            applicantEntity.ApplicantEducation!.EducationLevelofQualifications = levelOfQualifications;
+            applicantEntity.ApplicantEducation.EducationQualificationTypes = qualificationTypes;
+            applicantEntity.ApplicantEducation.EducationAwards = awards;
+            applicantEntity.ApplicantTechnicalSkills = technicalSkills;
+
+        int count = 0;
+
+        if (applicantEntity.ApplicantEducation.EducationLevelofQualifications !=null 
+                && applicantEntity.ApplicantEducation.EducationQualificationTypes !=null
+                && applicantEntity.ApplicantEducation.EducationAwards !=null
+                && applicantEntity.ApplicantTechnicalSkills !=null)
             {
-                var award = await _lookUpRepository.GetByIdAsync(awardId);
-                awards.Add(award);
+                count = await _applicantRepository.CreateApplicantAsync(applicantEntity);
             }
-        }
-        if (request.ApplicantTechnicalSkills != null)
-        {
-            foreach (var technicalSkillId in request.ApplicantTechnicalSkills!)
+            // bool success = _applicantRepository.SaveChanges();
+            bool success = count >= 1;
+            if (success)
             {
-                var technicalSkill = await _lookUpRepository.GetByIdAsync(technicalSkillId);
-                technicalSkills.Add(technicalSkill);
+                createApplicantResponse.Message = "The applicant is successfully added.";
+                createApplicantResponse.Success = true;
             }
-        }
-        var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
-        applicantEntity.ApplicantEducation!.EducationLevelofQualifications = levelOfQualifications;
-        applicantEntity.ApplicantEducation.EducationQualificationTypes = qualificationTypes;
-        applicantEntity.ApplicantEducation.EducationAwards = awards;
-        applicantEntity.ApplicantTechnicalSkills = technicalSkills;
-        int count =  await _applicantRepository.CreateApplicantAsync(applicantEntity);
-        // bool success = _applicantRepository.SaveChanges();
-        bool success = count >= 1;
-        if (success)
-        {
-            createApplicantResponse.Message = "The applicant is successfully added.";
-            createApplicantResponse.Success = true;
-        }
-        else
-        {
-            createApplicantResponse.Message = "Couldn't add the requested applicant.";
-            createApplicantResponse.Success = false;
-        }
+            else
+            {
+                createApplicantResponse.Message = "Couldn't add the requested applicant.";
+                createApplicantResponse.Success = false;
+            }
         // }
 
         return createApplicantResponse;

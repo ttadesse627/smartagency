@@ -19,7 +19,7 @@ public class FileCollectionEntityConfig : IEntityTypeConfiguration<FileCollectio
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(m => m.FileCollectionOrder)
-            .WithOne(n => n.VisaFile)
+            .WithOne(n => n.OrderVisaFile)
             .HasForeignKey<FileCollection>(fk => fk.FileCollectionOrderId)
             .OnDelete(DeleteBehavior.Cascade);
     }

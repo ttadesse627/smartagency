@@ -32,13 +32,14 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .OnDelete(DeleteBehavior.Cascade);
 
             // Relationships with lookup
-        builder.HasMany(m => m.ApplicantTechnicalSkills)
-            .WithMany(n => n.LookupTechnicalSkills);
 
-        // builder.HasOne(m => m.ApplicantExprience)
-          //  .WithMany(n => n.LookUpExperiences)
-           // .HasForeignKey(fk => fk.ApplicantExprienceId)
-           // .OnDelete(DeleteBehavior.SetNull);
+        builder.HasMany(m => m.ApplicantTechnicalSkills)
+            .WithMany(n => n.LookUpTechnicalSkills);
+
+        builder.HasOne(m => m.ApplicantExprience)
+            .WithMany(n => n.LookUpExpriences)
+            .HasForeignKey(fk => fk.ApplicantExprienceId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(appl => appl.ApplicantReligion)
             .WithMany(lk => lk.LookUpReligions)

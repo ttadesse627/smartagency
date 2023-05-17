@@ -3,7 +3,7 @@ using AppDiv.SmartAgency.Domain.Entities.Base;
 namespace AppDiv.SmartAgency.Domain.Entities.Orders;
 public class Sponsor
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string IdNumber { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public string? FullNameAmharic { get; set; }
@@ -13,6 +13,7 @@ public class Sponsor
     public int NumberOfFamily { get; set; }
 
     // Foreign Keys
+    public Guid? SponsorOrderId { get; set; }
     public Guid? SponsorIDFileId { get; set; }
     public Guid? SponsorAddressId { get; set; }
 

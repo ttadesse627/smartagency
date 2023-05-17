@@ -32,10 +32,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Language> Languages { get; set; }
-        public DbSet<Repersentative> Repersentatives { get; set; }
+        public DbSet<Representative> Representatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
         public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
-         public DbSet<Deposit>  Deposits{ get; set; }
+        public DbSet<Deposit> Deposits { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<OrderCriteria> OrderCriterias { get; set; }
@@ -43,7 +43,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Page> Pages { get; set; }
 
 
-         public DbSet<ApplicantFollowupStatus>  ApplicantFollowupStatuses { get; set; }
+        public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
         {
@@ -85,9 +85,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.Entity<Category>().HasData(
                     new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
-                
-              //  8aec3c2a-96ba-46ce-8a4b-14cf557fd621
-              
+
+                //  8aec3c2a-96ba-46ce-8a4b-14cf557fd621
+
 
                 modelBuilder.Ignore<PersonalInfo>();
 

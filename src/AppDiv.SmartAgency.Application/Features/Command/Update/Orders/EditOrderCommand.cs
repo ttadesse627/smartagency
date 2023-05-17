@@ -28,7 +28,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
         var orderToBeEdited = serviceResponse.Data;
         if (orderToBeEdited is not null)
         {
-            if (!orderToBeEdited.OrderCriteria.Equals(null) || !orderToBeEdited.OrderSponsor.Equals(null) || !orderToBeEdited.OrderPayment.Equals(null) || !orderToBeEdited.VisaFile.Equals(null))
+            if (!orderToBeEdited.OrderCriteria.Equals(null) || !orderToBeEdited.OrderSponsor.Equals(null) || !orderToBeEdited.OrderPayment.Equals(null) || orderToBeEdited.OrderVisaFile!.Equals(null))
             {
                 orderToBeEdited = CustomMapper.Mapper.Map<Order>(request.editOrderRequest);
             }

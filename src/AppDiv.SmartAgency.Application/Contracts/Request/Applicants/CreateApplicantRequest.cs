@@ -9,11 +9,9 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 public class CreateApplicantRequest
 {
-    public string FirstName { get; set; }
-    public string MiddleName { get; set; }
-    public string LastName { get; set; }
-    public Gender Gender { get; set; }
-    public DateTime BirthDate { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string MiddleName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public string? PassportNumber { get; set; }
     public DateTime IssuedDate { get; set; }
     public DateTime PassportExpiryDate { get; set; }
@@ -35,8 +33,10 @@ public class CreateApplicantRequest
     public bool IsBlocked { get; set; } = false;
     public bool IsDeleted { get; set; } = false;
 
+    //Foreign keys
     // public Guid? ApplicantPartnerId { get; set; }
-
+    // public Guid? ApplicantAddressId { get; set; }
+    // public Guid? ApplicantBankAccountId { get; set; }
     public Guid? ApplicantBrokerNameId { get; set; }
     public Guid? ApplicantBranchId { get; set; }
     public Guid? ApplicantExprienceId { get; set; }
@@ -49,12 +49,13 @@ public class CreateApplicantRequest
     public Guid? ApplicantDesiredCountryId { get; set; }
     public Guid? ApplicantMaritalStatusId { get; set; }
 
+    //Navigation Properties
     public ICollection<WitnessRequest>? ApplicantWitnesses { get; set; }
     public ICollection<BeneficiaryRequest>? ApplicantBeneficiaries { get; set; }
     public ICollection<FileCollectionRequest>? ApplicantFileCollections { get; set; }
     public ICollection<LanguageRequest>? ApplicantLanguages { get; set; }
     public ICollection<ExperienceRequest>? ApplicantExperiences { get; set; }
-    public RepersentativeRequest? ApplicantRepersentative { get; set; }
+    public RepresentativeRequest? ApplicantRepresentative { get; set; }
     // public Partner? ApplicantPartner { get; set; }
     public EducationRequest? ApplicantEducation { get; set; }
     public BankAccountRequest? ApplicantBankAccount { get; set; }

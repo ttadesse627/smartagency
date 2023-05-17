@@ -49,7 +49,7 @@ public class Applicant : PersonalInfo
     public ICollection<FileCollection>? ApplicantFileCollections { get; set; }
     public ICollection<Language>? ApplicantLanguages { get; set; }
     public ICollection<Experience>? ApplicantExperiences { get; set; }
-    public Repersentative? ApplicantRepersentative { get; set; }
+    public Representative? ApplicantRepresentative { get; set; }
     public Partner? ApplicantPartner { get; set; }
     public Education? ApplicantEducation { get; set; }
     public BankAccount? ApplicantBankAccount { get; set; }

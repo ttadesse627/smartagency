@@ -8,11 +8,9 @@ Content-Type: application/json
   "firstName": "string",
   "middleName": "string",
   "lastName": "string",
-  "gender": "Male",
-  "birthDate": "2023-05-16T05:57:21.291Z",
   "passportNumber": "string",
-  "issuedDate": "2023-05-16T05:57:21.291Z",
-  "passportExpiryDate": "2023-05-16T05:57:21.291Z",
+  "issuedDate": "2023-05-16T20:32:02.517Z",
+  "passportExpiryDate": "2023-05-16T20:32:02.517Z",
   "placeOfBirth": "string",
   "amharicFullName": "string",
   "arabicFullName": "string",
@@ -64,8 +62,8 @@ Content-Type: application/json
   ],
   "applicantFileCollections": [
     {
-      "fileCollectionAttachmentId": "77f39205-f5b2-44cc-bf2a-f8e1c386d543",
-      "filePath": "string"
+      "filePath": "string",
+      "fileCollectionAttachmentId": "77f39205-f5b2-44cc-bf2a-f8e1c386d543"
     }
   ],
   "applicantLanguages": [
@@ -80,16 +78,16 @@ Content-Type: application/json
   ],
   "applicantExperiences": [
     {
-      "experienceCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
       "periodLength": 0,
-      "position": "string"
+      "position": "string",
+      "experienceCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d"
     }
   ],
-  "applicantRepersentative": {
+  "applicantRepresentative": {
     "firstName": "string",
     "middleName": "string",
     "lastName": "string",
-    "repersentativeAddress": {
+    "representativeAddress": {
       "region": "string",
       "zone": "string",
       "woreda": "string",
@@ -122,9 +120,6 @@ Content-Type: application/json
     "swiftCode": "string"
   },
   "applicantEmergencyContact": {
-    "firstName": "string",
-    "middleName": "string",
-    "lastName": "string",
     "arabicFullName": "string",
     "emergencyContactRelationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07",
     "emergencyContactAddress": {

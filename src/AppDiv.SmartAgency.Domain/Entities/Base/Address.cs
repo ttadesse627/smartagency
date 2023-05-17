@@ -32,7 +32,7 @@ namespace AppDiv.SmartAgency.Domain.Entities.Base
         public LookUp? AddressRegion { get; set; }
         public Applicant? AddressApplicant { get; set; }
         public EmergencyContact? AddressEmergencyContact { get; set; }
-        public Repersentative? AddressRepresentative { get; set; }
+        public Representative? AddressRepresentative { get; set; }
         public Partner? AddressPartner { get; set; }
         public Sponsor? AddressSponsor { get; set; }
     }

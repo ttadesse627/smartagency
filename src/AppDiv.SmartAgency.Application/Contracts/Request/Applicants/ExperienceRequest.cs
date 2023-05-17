@@ -3,7 +3,7 @@
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 public class ExperienceRequest
 {
-    public Guid? ExperienceCountryId { get; set; }
     public int PeriodLength { get; set; }
     public string? Position { get; set; }
+    public Guid? ExperienceCountryId { get; set; }
 }
