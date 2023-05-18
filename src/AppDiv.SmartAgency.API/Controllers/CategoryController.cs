@@ -1,9 +1,6 @@
 
-
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
-using AppDiv.SmartAgency.Application.Features.Query.Attachments;
-using AppDiv.SmartAgency.Application.Features.Query.Categories;
+using AppDiv.SmartAgency.Application.Features.Categories.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

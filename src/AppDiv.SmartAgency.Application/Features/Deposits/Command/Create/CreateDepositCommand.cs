@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Deposits
+namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Create
 {
    public record CreateDepositCommand(CreateDepositRequest deposit) : IRequest<CreateDepositCommandResponse>
 {

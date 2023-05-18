@@ -1,14 +1,12 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Entities.Base;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Update.Partners
+namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
 {
     public class EditPartnerCommand : IRequest<PartnerResponseDTO>
     {

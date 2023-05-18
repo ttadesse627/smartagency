@@ -1,5 +1,4 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
-using AppDiv.SmartAgency.Application.Features.Query.Partners;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Customers
+namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 {
     // Customer GetCustomerByIdQuery with Customer response
     public class GetPartnerByIdQuery : IRequest<PartnerResponseDTO>

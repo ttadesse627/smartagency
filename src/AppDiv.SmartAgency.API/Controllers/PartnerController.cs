@@ -1,51 +1,46 @@
 
-
-
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
-using AppDiv.SmartAgency.Application.Features.Query.Customers;
-using AppDiv.SmartAgency.Application.Features.Query.Partners;
-using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Application.Features.Partners.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Partners.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
+using AppDiv.SmartAgency.Application.Features.Partners.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
 
-[ApiController]
-[Route("api/partner")]
-    public class PartnerController: ControllerBase
-{
-    private readonly IMediator _mediator;
-    public PartnerController(IMediator mediator)
+    [ApiController]
+    [Route("api/partner")]
+    public class PartnerController : ControllerBase
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
+        public PartnerController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-    [HttpPost("create")]
-    public async Task<ActionResult<PartnerResponseDTO>> CreatePartner(CreatePartnerCommand partnerRequest, CancellationToken token)
-    {
-        var response = await _mediator.Send(partnerRequest);
-        return Ok(response);
-    }
+        [HttpPost("create")]
+        public async Task<ActionResult<PartnerResponseDTO>> CreatePartner(CreatePartnerCommand partnerRequest, CancellationToken token)
+        {
+            var response = await _mediator.Send(partnerRequest);
+            return Ok(response);
+        }
 
-    [HttpGet("get-all-partner")]
-    public async Task<ActionResult<PartnerResponseDTO>> GetAllPartners()
-    {
-        return Ok(await _mediator.Send(new GetAllPartnerQuery()));
-    }
+        [HttpGet("get-all-partner")]
+        public async Task<ActionResult<PartnerResponseDTO>> GetAllPartners()
+        {
+            return Ok(await _mediator.Send(new GetAllPartnerQuery()));
+        }
 
-     [HttpGet("{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<PartnerResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetPartnerByIdQuery(id));
         }
 
-      [HttpDelete("Delete/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeletePartner(Guid id)
         {
             try
@@ -62,7 +57,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
 
 
-     
+
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditPartnerCommand command)
         {
@@ -84,9 +79,9 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
-          
-  
-}
-}
+
+
+        }
+    }
 
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using FluentValidation;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
+namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
      public class CreateLookUpCommandValidator : AbstractValidator<CreateLookUpCommand>
     {

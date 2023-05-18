@@ -3,7 +3,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Categories;
+namespace AppDiv.SmartAgency.Application.Features.Categories.Query;
 public class GetAllCategories : IRequest<List<CategoryResponseDTO>>
 {
 }

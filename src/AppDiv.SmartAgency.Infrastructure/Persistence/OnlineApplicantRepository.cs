@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
@@ -23,6 +24,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         public async Task<OnlineApplicant> GetByIdAsync(Guid Id)
         {
             return await base.GetAsync(Id);
+         /*  var onlineApplicant=   _context.OnlineApplicants
+               .Include(a => a.MaritalStatus)
+               .Include(a => a.Experience)
+               .Include(a => a.DesiredCountry)
+               .FirstOrDefault(a => a.Id == Id);
+                  
+            return onlineApplicant;
+            */
         }
 
 

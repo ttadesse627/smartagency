@@ -5,30 +5,43 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Applicants.OnlineApplicants
+namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Query;
+    public class GetAllOnlineApplicantQuery : IRequest<SearchModel<OnlineApplicantResponseDTO>>
 {
-    public class GetAllOnlineApplicantQuery: IRequest<List<OnlineApplicantResponseDTO>>
-    {
 
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+    public string SearchTerm { get; set; } = string.Empty;
+    public string OrderBy { get; set; } = string.Empty;
+    public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
+    public GetAllOnlineApplicantQuery(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
+    {
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+        SearchTerm = searchTerm;
+        OrderBy = orderBy;
+        SortingDirection = sortingDirection;
     }
 
-    public class GetAllOnlineApplicantHandler : IRequestHandler<GetAllOnlineApplicantQuery, List<OnlineApplicantResponseDTO>>
+}
+
+public class GetAllOnlineApplicantHandler : IRequestHandler<GetAllOnlineApplicantQuery, SearchModel<OnlineApplicantResponseDTO>>
+{
+    private readonly IOnlineApplicantRepository _onlineApplicantRepository;
+
+    public GetAllOnlineApplicantHandler(IOnlineApplicantRepository onlineApplicantQueryRepository)
     {
-        private readonly IOnlineApplicantRepository _onlineApplicantRepository;
+        _onlineApplicantRepository = onlineApplicantQueryRepository;
+    }
+    public async Task<SearchModel<OnlineApplicantResponseDTO>> Handle(GetAllOnlineApplicantQuery request, CancellationToken cancellationToken)
+    {
+        var onlineApplicantList = await _onlineApplicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "MaritalStatus", "DesiredCountry", "Experience");
+        var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<OnlineApplicantResponseDTO>>(onlineApplicantList);
+        return paginatedListResp;
 
-        public GetAllOnlineApplicantHandler(IOnlineApplicantRepository onlineApplicantQueryRepository)
-        {
-            _onlineApplicantRepository = onlineApplicantQueryRepository;
-        }
-        public async Task<List<OnlineApplicantResponseDTO>> Handle(GetAllOnlineApplicantQuery request, CancellationToken cancellationToken)
-        {
-            var onlineApplicantList = await _onlineApplicantRepository.GetAllWithAsync("MaritalStatus","Experience","DesiredCountry");
-            var onlineApplicantResponse = CustomMapper.Mapper.Map<List<OnlineApplicantResponseDTO>>(onlineApplicantList);
-            return onlineApplicantResponse;
-
-            // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
-        }
+        // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
     }
 }

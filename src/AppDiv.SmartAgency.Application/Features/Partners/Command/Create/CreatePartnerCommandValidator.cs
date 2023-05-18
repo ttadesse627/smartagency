@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using FluentValidation;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Partners
+namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
 {
     public class CreatePartnerCommandValidator: AbstractValidator<CreatePartnerCommand>
     {

@@ -1,7 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Applicants;
+using AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 

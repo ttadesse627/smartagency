@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
+namespace AppDiv.SmartAgency.Application.Features.LookUps.Query
 {
     public record GetAllLookUps : IRequest<SearchModel<LookUpResponseDTO>>
     {

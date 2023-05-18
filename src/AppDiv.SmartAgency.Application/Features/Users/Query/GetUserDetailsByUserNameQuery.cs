@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Users
+namespace AppDiv.SmartAgency.Application.Features.Users.Query
 {
     public class GetUserDetailsByUserNameQuery : IRequest<UserDetailsResponseDTO>
     {

@@ -8,7 +8,7 @@ using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 
 public class EditAttachmentCommand : IRequest<ServiceResponse<AttachmentResponseDTO>>
 {

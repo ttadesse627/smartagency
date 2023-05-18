@@ -18,7 +18,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.OnlineApplicants
         public string  PhoneNumber{get; set;}
         public string EducationLevel{get; set;}
         public Guid DesiredCountryId{get; set;}
-        public Guid  MartialStatusId {get; set;}
+        public Guid  MaritalStatusId {get; set;}
         public Guid  ExperienceId{get; set;} 
     }
 }

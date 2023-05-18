@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
+namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 public class CreateAttachmentCommandHandler : IRequestHandler<CreateAttachmentCommand, CreateAttachmentCommandResponse>
 {
         private readonly IAttachmentRepository _attachmentRepository;

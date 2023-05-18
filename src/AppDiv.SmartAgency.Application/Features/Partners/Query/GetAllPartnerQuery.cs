@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Partners
+namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 {
     // Customer query with List<Customer> response
     public record GetAllPartnerQuery : IRequest<List<PartnerResponseDTO>>

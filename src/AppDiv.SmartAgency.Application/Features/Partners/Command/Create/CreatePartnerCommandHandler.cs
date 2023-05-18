@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Partners
+namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
 {
     public class CreatePartnerCommandHandler : IRequestHandler<CreatePartnerCommand, CreatePartnerCommandResponse>
 {

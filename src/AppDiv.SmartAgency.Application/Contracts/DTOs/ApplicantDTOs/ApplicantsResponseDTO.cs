@@ -7,5 +7,7 @@ public record ApplicantsResponseDTO
     public string? MiddleName { get; set; }
     public string? LastName { get; set; }
     public string? PassportNumber { get; set; }
+   
+
     public PartnerApplRespDTO? Partner { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.Customers;
+using AppDiv.SmartAgency.Application.Features.Customers.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Query.Customers;
 using AppDiv.SmartAgency.Domain.Entities;

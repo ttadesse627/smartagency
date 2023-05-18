@@ -1,9 +1,8 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Orders;
-using AppDiv.SmartAgency.Application.Features.Query.Orders;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
+using AppDiv.SmartAgency.Application.Features.Orders.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

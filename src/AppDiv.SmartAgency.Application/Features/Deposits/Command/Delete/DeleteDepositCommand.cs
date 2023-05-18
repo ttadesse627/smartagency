@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Deposits
+namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete
 {
     public class DeleteDepositCommand: IRequest<String>
     {

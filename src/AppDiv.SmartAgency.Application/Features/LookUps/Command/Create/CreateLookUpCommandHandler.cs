@@ -3,7 +3,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.LookUps
+namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
     public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, CreateLookUpCommandResponse>
     {

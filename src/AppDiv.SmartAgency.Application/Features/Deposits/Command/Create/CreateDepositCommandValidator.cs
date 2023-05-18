@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using FluentValidation;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Deposits
+namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Create
 {
     public class CreateDepositCommandValidator: AbstractValidator<CreateDepositCommand>
     {

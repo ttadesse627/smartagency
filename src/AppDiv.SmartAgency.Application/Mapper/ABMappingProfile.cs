@@ -12,12 +12,11 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
-using AppDiv.SmartAgency.Application.Features.Command.Create.LookUps;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
+// using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
+// using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
+// using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+// using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
+// using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
@@ -29,6 +28,16 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.OnlineApplicants;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ApplicantFollowupStatuses;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
+using AppDiv.SmartAgency.Application.Features.Pages.Command.Update;
+using AppDiv.SmartAgency.Application.Features.LookUps.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Customers.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
+using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
+using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -68,19 +77,18 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AddressRequest, Address>();
             CreateMap<RepAddressRequest, Address>();
 
-            // CreateMap<Applicant, CreateApplicantResponseDTO>();
-            CreateMap<Category, CategoryResponseDTO>();
-            // CreateMap<Applicant, ApplicantsResponseDTO>();
-            // CreateMap<BankAccount, BankAccountResponseDTO>();
-            // CreateMap<Beneficiary, BeneficiaryResponseDTO>();
-            // CreateMap<Education, EducationResponseDTO>();
-            // CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
-            // CreateMap<FileCollection, FileCollectionResponseDTO>();
-            // CreateMap<Language, LanguageResponseDTO>();
-            // CreateMap<Partner, PartnerApplRespDTO>();
-            // CreateMap<Representative, RepresentativeResponseDTO>();
-            // CreateMap<Witness, WitnessResponseDTO>();
-            // CreateMap<Applicant, ApplicantsResponseDTO>();
+            CreateMap<Applicant, CreateApplicantResponseDTO>();
+            CreateMap<SearchModel<Applicant>, SearchModel<ApplicantsResponseDTO>>();
+            CreateMap<BankAccount, BankAccountResponseDTO>();
+            CreateMap<Beneficiary, BeneficiaryResponseDTO>();
+            CreateMap<Education, EducationResponseDTO>();
+            CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
+            CreateMap<AttachmentFile, FileCollectionResponseDTO>();
+            CreateMap<LanguageSkill, LanguageResponseDTO>();
+            CreateMap<Partner, PartnerApplRespDTO>();
+            CreateMap<Representative, RepresentativeResponseDTO>();
+            CreateMap<Witness, WitnessResponseDTO>();
+            CreateMap<Applicant, ApplicantsResponseDTO>();
 
             CreateMap<CreatePartnerRequest, Partner>();
             CreateMap<Partner, PartnerResponseDTO>();
@@ -99,7 +107,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditOrderRequest, Order>();
             CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
             CreateMap<EditSponsorRequest, Sponsor>();
-            // CreateMap<EditFileCollectionRequest, FileCollection>();
             CreateMap<EditPaymentRequest, Payment>();
             CreateMap<EditAddressRequest, Address>();
 
@@ -120,10 +127,17 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<ApplicantFollowupStatus, ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
-
+            
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
+
             CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();
 
+            CreateMap<SearchModel<Page>, SearchModel<PageResponseDTO>>();
+            CreateMap<SearchModel<OnlineApplicant>, SearchModel<OnlineApplicantResponseDTO>>();
+
+            CreateMap<CreatePageRequest, Page>();
+            CreateMap<Page, PageResponseDTO>();
+            CreateMap<EditPageCommand, Page>();
 
         }
     }

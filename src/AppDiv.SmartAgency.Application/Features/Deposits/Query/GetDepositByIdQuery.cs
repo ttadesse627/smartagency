@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Deposits
+namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
 {
     public class GetDepositByIdQuery: IRequest<GetDepositByIdResponseDTO>
     {

@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Applicants.OnlineApplicants
+namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Create
 {
     public class CreateOnlineApplicantCommandHandler : IRequestHandler<CreateOnlineApplicantCommand, CreateOnlineApplicantCommandResponse>
 {

@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Orders;
+namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
 
 public class GetAllOrders : IRequest<List<OrderResponseDTO>>
 {

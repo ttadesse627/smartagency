@@ -1,7 +1,7 @@
 
 using AppDiv.SmartAgency.Application.Common;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Deposits
+namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Create
 {
     public class CreateDepositCommandResponse: BaseResponse
 {

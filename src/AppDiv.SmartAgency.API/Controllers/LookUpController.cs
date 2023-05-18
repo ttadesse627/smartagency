@@ -1,10 +1,10 @@
 
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Create.LookUps;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
-using AppDiv.SmartAgency.Application.Features.Command.Update.LookUps;
-using AppDiv.SmartAgency.Application.Features.Query.LookUps;
+using AppDiv.SmartAgency.Application.Features.LookUps.Command.Create;
+using AppDiv.SmartAgency.Application.Features.LookUps.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
+using AppDiv.SmartAgency.Application.Features.LookUps.Query;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;

@@ -11,7 +11,7 @@ using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.LookUps
+namespace AppDiv.SmartAgency.Application.Features.LookUps.Query
 {
     public class GetAllLookUpsHandler : IRequestHandler<GetAllLookUps, SearchModel<LookUpResponseDTO>>
     {

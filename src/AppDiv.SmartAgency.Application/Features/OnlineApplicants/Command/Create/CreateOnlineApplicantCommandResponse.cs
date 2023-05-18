@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Common;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Applicants.OnlineApplicants
+namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Create
 {
     public class CreateOnlineApplicantCommandResponse: BaseResponse
 {

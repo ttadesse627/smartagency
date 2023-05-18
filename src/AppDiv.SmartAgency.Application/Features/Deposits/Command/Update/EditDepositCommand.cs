@@ -8,7 +8,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Update.Deposits
+namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Update
 {
     public class EditDepositCommand: IRequest<GetDepositByIdResponseDTO>
     {

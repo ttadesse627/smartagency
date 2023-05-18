@@ -2,9 +2,9 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.Attachments;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Query.Attachments;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;

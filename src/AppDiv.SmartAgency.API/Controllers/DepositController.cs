@@ -3,18 +3,11 @@
 
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Deposits;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.Deposits;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
-using AppDiv.SmartAgency.Application.Features.Query.Customers;
-using AppDiv.SmartAgency.Application.Features.Query.Deposits;
-using AppDiv.SmartAgency.Application.Features.Query.Partners;
-using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Application.Features.Deposits.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
+using AppDiv.SmartAgency.Application.Features.Deposits.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

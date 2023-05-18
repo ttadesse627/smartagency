@@ -6,7 +6,7 @@ using MediatR;
 using ApplicationException = AppDiv.SmartAgency.Application.Exceptions.ApplicationException;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Customers
+namespace AppDiv.SmartAgency.Application.Features.Customers.Command.Create
 {
 
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerCommandResponse>

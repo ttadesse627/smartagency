@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Update.Applicants;
+namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 public class DeleteApplicantCommand : IRequest<ServiceResponse<Int32>>
 {
     public bool IsDeleted { get; set; }

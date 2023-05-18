@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepository

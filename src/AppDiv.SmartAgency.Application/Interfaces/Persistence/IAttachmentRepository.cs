@@ -2,8 +2,7 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.Attachments;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
+using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Entities;
 

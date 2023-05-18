@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Applicants
+namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Delete
 {
     public class DeleteOnlineApplicantCommand: IRequest<String>
     {

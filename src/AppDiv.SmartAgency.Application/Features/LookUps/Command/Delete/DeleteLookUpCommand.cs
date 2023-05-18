@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps
+namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Delete
 {
     public class DeleteLookUpCommand: IRequest<String>
     {

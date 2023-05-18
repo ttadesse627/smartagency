@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
+namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 public record CreateOrderCommand(CreateOrderRequest request) : IRequest<ServiceResponse<Int32>>
 { }
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ServiceResponse<Int32>>

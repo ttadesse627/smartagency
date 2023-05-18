@@ -1,8 +1,9 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Applicants.OnlineApplicants;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.Applicants;
-using AppDiv.SmartAgency.Application.Features.Query.Applicants.OnlineApplicants;
+using AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Create;
+using AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.OnlineApplicants.Query;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +28,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-online-applicant")]
-        public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants()
+        public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants(int pageNumber = 1, int pageSize = 15, string? searchTerm = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
-            return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery()));
+            return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
 
         [HttpGet("{id}")]
@@ -53,12 +54,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-
-
-
-
-
-
     }
 }
 

@@ -1,6 +1,6 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Orders;
+using AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Query.DeletedInfos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

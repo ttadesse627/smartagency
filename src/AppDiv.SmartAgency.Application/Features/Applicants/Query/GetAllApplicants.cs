@@ -1,37 +1,41 @@
-// using AppDiv.SmartAgency.Application.Common;
-// using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
-// using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-// using AppDiv.SmartAgency.Application.Mapper;
-// using AppDiv.SmartAgency.Domain.Entities.Applicants;
-// using MediatR;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Domain.Entities.Applicants;
+using AppDiv.SmartAgency.Utility.Contracts;
+using MediatR;
 
-// namespace AppDiv.SmartAgency.Application.Features.Query.Applicants;
-// public class GetAllApplicants : IRequest<PaginatedList<ApplicantsResponseDTO>>
-// {
-//     public int PageNumber { get; init; } = 1;
-//     public int PageSize { get; init; } = 10;
-//     public GetAllApplicants(int pageNumber, int pageSize)
-//     {
-//         PageNumber = pageNumber;
-//         PageSize = pageSize;
-//     }
-// }
-// public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, PaginatedList<ApplicantsResponseDTO>>
-// {
-//     private readonly IApplicantRepository _applicantRepository;
+namespace AppDiv.SmartAgency.Application.Features.Applicants.Queries;
+public class GetAllApplicants : IRequest<SearchModel<ApplicantsResponseDTO>>
+{
+    public int PageNumber { get; init; }
+    public int PageSize { get; init; }
+    public string? SearchTerm { get; init; }
+    public string? OrderBy { get; init; }
+    public SortingDirection SortingDirection { get; init; }
+    public GetAllApplicants(int pageNumber, int pageSize, string searchTerm,  string? orderBy, SortingDirection sortingDirection)
+    {
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+        SearchTerm = searchTerm;
+        OrderBy = orderBy;
+        SortingDirection = sortingDirection;
+    }
+}
+public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchModel<ApplicantsResponseDTO>>
+{
+    private readonly IApplicantRepository _applicantRepository;
 
-//     public GetAllApplicantsHandler(IApplicantRepository applicantRepository)
-//     {
-//         _applicantRepository = applicantRepository;
-//     }
-//     public async Task<PaginatedList<ApplicantsResponseDTO>> Handle(GetAllApplicants request, CancellationToken cancellationToken)
-//     {
-//         var applicantList = await _applicantRepository.GetAll();
+    public GetAllApplicantsHandler(IApplicantRepository applicantRepository)
+    {
+        _applicantRepository = applicantRepository;
+    }
+    public async Task<SearchModel<ApplicantsResponseDTO>> Handle(GetAllApplicants request, CancellationToken cancellationToken)
+    {
+        var applicantList = await _applicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection);
+        var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
 
-//         var paginatedListApplicant = new PaginatedList<Applicant>((IReadOnlyCollection<Applicant>)applicantList, applicantList.Count(), request.PageNumber, request.PageSize);
-//         var paginatedList = await PaginatedList<Applicant>.CreateAsync(applicantList, request.PageNumber, request.PageSize);
-//         var paginatedListResp = CustomMapper.Mapper.Map<PaginatedList<ApplicantsResponseDTO>>(paginatedList);
-
-//         return paginatedListResp;
-//     }
-// }
+        return response;
+    }
+}

@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Delete.Attachments;
+namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Delete;
 public class DeleteAttachmentCommand : IRequest<ServiceResponse<List<AttachmentResponseDTO>>>
 {
     public Guid Id { get; set; }

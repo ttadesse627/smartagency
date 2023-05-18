@@ -33,7 +33,6 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Query
         {
             //var pages = await _mediator.Send(new GetAllPagesQuery());
             var selectedPage = await _pageRepository.GetByIdAsync(request.Id);
-            Console.WriteLine(selectedPage);
             return CustomMapper.Mapper.Map<PageResponseDTO>(selectedPage);
            
         }

@@ -8,38 +8,124 @@ Content-Type: application/json
   "firstName": "string",
   "middleName": "string",
   "lastName": "string",
+  "birthDate": "2023-05-18T11:16:24.767Z",
+  "gender": "Male",
   "passportNumber": "string",
-  "issuedDate": "2023-05-16T20:32:02.517Z",
-  "passportExpiryDate": "2023-05-16T20:32:02.517Z",
+  "issuedDate": "2023-05-18T11:16:24.767Z",
+  "passportExpiryDate": "2023-05-18T11:16:24.767Z",
   "placeOfBirth": "string",
   "amharicFullName": "string",
   "arabicFullName": "string",
   "complexion": "string",
   "numberOfChildren": 0,
-  "motherFullName": "string",
-  "previousCountry": "string",
+  "motherName": "string",
+  "previousNationality": "string",
   "currentNationality": "string",
   "height": 0,
   "weight": 0,
   "contractPeriod": 0,
-  "jobTitleAmharic": "string",
+  "amharicJobTitle": "string",
   "remark": "string",
   "isRequested": true,
   "isReserved": true,
   "isBlocked": true,
   "isDeleted": true,
-  "applicantBrokerNameId": "3c0afa94-4d60-47fb-804a-92624785d035",
-  "applicantBranchId": "9da90c6e-9bee-4b66-bf4b-f16161c87f8a",
-  "applicantExprienceId": "02e12b3c-2377-43aa-81a0-699f7535cb1d",
-  "applicantJobtitleId": "90774ffc-e2f5-48f1-a20a-5fac0bfaacee",
-  "applicantReligionId": "68ccacf6-c656-4447-b8cb-9a2f102f7e93",
-  "applicantIssuingCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
-  "applicantIssuedPlaceId": "ee0f3a62-3d1d-4ad6-81e9-6ba35888ec29",
-  "applicantHealthId": "0468367a-4d6e-4eec-b34b-b67576dfa5c4",
-  "applicantSalaryId": "fc6b063c-90f2-4f50-b2d1-f8fb1aa44ef6",
-  "applicantDesiredCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
-  "applicantMaritalStatusId": "ea7b7d14-1771-4430-bfec-3b1c703d5d12",
-  "applicantWitnesses": [
+  "issuingCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
+  "passportIssuedPlaceId": "ee0f3a62-3d1d-4ad6-81e9-6ba35888ec29",
+  "maritalStatusId": "ea7b7d14-1771-4430-bfec-3b1c703d5d12",
+  "healthId": "0468367a-4d6e-4eec-b34b-b67576dfa5c4",
+  "religionId": "68ccacf6-c656-4447-b8cb-9a2f102f7e93",
+  "jobtitleId": "90774ffc-e2f5-48f1-a20a-5fac0bfaacee",
+  "experienceId": "02e12b3c-2377-43aa-81a0-699f7535cb1d",
+  "languageId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c",
+  "salaryId": "fc6b063c-90f2-4f50-b2d1-f8fb1aa44ef6",
+  "desiredCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
+  "brokerNameId": "3c0afa94-4d60-47fb-804a-92624785d035",
+  "branchId": "9da90c6e-9bee-4b66-bf4b-f16161c87f8a",
+  "partnerId": "fc6c063c-90f2-4f50-b2d1-f8fb1aa44ef6",
+  "languageSkills": [
+    {
+      "canWrite": true,
+      "canRead": true,
+      "canSpeak": true,
+      "canListen": true,
+      "proficiency": "No",
+      "languageId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c"
+    }
+  ],
+  "skills": [
+    "f38e9df7-edf3-44d8-9646-53c289c6daaa"
+  ],
+  "experiences": [
+    {
+      "periodLength": 0,
+      "position": "string",
+      "countryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d"
+    }
+  ],
+  "education": {
+    "yearCompleted": 0,
+    "fieldOfStudy": "string",
+    "professionalSkill": "string",
+    "qualificationTypes": [
+      "a8bf96de-8c09-4e4e-a667-326bc84b8372"
+    ],
+    "levelofQualifications": [
+      "dbb51fc9-c0f3-40c7-9468-4fafc977782f"
+    ],
+    "awards": [
+      "2141ba2b-93fc-4939-b501-45adebba0754"
+    ]
+  },
+  "bankAccount": {
+    "bankName": "string",
+    "accountNumber": 0,
+    "branchName": "string",
+    "swiftCode": "string"
+  },
+  "emergencyContact": {
+    "firstName": "string",
+    "middleName": "string",
+    "lastName": "string",
+    "birthDate": "2023-05-18T11:16:24.768Z",
+    "gender": "Male",
+    "arabicFullName": "string",
+    "relationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07",
+    "address": {
+      "city": "string",
+      "zone": "string",
+      "woreda": "string",
+      "kebele": "string",
+      "phoneNumber": "string",
+      "houseNumber": "string",
+      "officePhone": "string",
+      "mobile": "string",
+      "alternativePhone": "string",
+      "fax": "string",
+      "adress": "string",
+      "postCode": "string",
+      "email": "string",
+      "website": "string",
+      "addressRegionId": "c01fc41e-2057-4e0b-b284-d720b698ea67"
+    }
+  },
+  "representative": {
+    "firstName": "string",
+    "middleName": "string",
+    "lastName": "string",
+    "birthDate": "2023-05-18T11:16:24.768Z",
+    "gender": "Male",
+    "address": {
+      "city": "string",
+      "zone": "string",
+      "woreda": "string",
+      "kebele": "string",
+      "phoneNumber": "string",
+      "houseNumber": "string",
+      "adress": "string"
+    }
+  },
+  "witnesses": [
     {
       "firstName": "string",
       "middleName": "string",
@@ -48,7 +134,7 @@ Content-Type: application/json
       "phoneNumber": "string"
     }
   ],
-  "applicantBeneficiaries": [
+  "beneficiaries": [
     {
       "firstName": "string",
       "middleName": "string",
@@ -57,93 +143,28 @@ Content-Type: application/json
       "zone": "string",
       "woreda": "string",
       "rate": 0,
-      "beneficiaryRelationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07"
+      "relationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07"
     }
   ],
-  "applicantFileCollections": [
+  "attachmentFiles": [
     {
       "filePath": "string",
-      "fileCollectionAttachmentId": "77f39205-f5b2-44cc-bf2a-f8e1c386d543"
+      "attachmentId": "776718f0-281f-4c3d-8a9d-e309c1c9ae7b"
     }
   ],
-  "applicantLanguages": [
-    {
-      "languageLookUpId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c",
-      "canWrite": true,
-      "canRead": true,
-      "canSpeak": true,
-      "canListen": true,
-      "proficiency": "No"
-    }
-  ],
-  "applicantExperiences": [
-    {
-      "periodLength": 0,
-      "position": "string",
-      "experienceCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d"
-    }
-  ],
-  "applicantRepresentative": {
-    "firstName": "string",
-    "middleName": "string",
-    "lastName": "string",
-    "representativeAddress": {
-      "region": "string",
-      "zone": "string",
-      "woreda": "string",
-      "kebele": "string",
-      "phoneNumber": "string",
-      "addres": "string",
-      "email": "string",
-      "website": "string",
-      "addressRegionId": "c01fc41e-2057-4e0b-b284-d720b698ea67"
-    }
-  },
-  "applicantEducation": {
-    "yearCompleted": 0,
-    "fieldOfStudy": "string",
-    "professionalSkill": "string",
-    "educationLevelofQualifications": [
-      "dbb51fc9-c0f3-40c7-9468-4fafc977782f"
-    ],
-    "educationQualificationTypes": [
-      "a8bf96de-8c09-4e4e-a667-326bc84b8372"
-    ],
-    "educationAwards": [
-      "2141ba2b-93fc-4939-b501-45adebba0754"
-    ]
-  },
-  "applicantBankAccount": {
-    "bankName": "string",
-    "accountNumber": 0,
-    "branchName": "string",
-    "swiftCode": "string"
-  },
-  "applicantEmergencyContact": {
-    "arabicFullName": "string",
-    "emergencyContactRelationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07",
-    "emergencyContactAddress": {
-      "region": "string",
-      "zone": "string",
-      "woreda": "string",
-      "kebele": "string",
-      "phoneNumber": "string",
-      "addres": "string",
-      "email": "string",
-      "website": "string",
-      "addressRegionId": "c01fc41e-2057-4e0b-b284-d720b698ea67"
-    }
-  },
-  "applicantTechnicalSkills": [
-    "f38e9df7-edf3-44d8-9646-53c289c6daaa"
-  ],
-  "applicantAddress": {
-    "region": "string",
+  "address": {
+    "city": "string",
     "zone": "string",
     "woreda": "string",
     "kebele": "string",
     "phoneNumber": "string",
-    "addres": "string",
+    "houseNumber": "string",
+    "officePhone": "string",
+    "mobile": "string",
+    "alternativePhone": "string",
+    "fax": "string",
+    "adress": "string",
+    "postCode": "string",
     "email": "string",
     "website": "string",
     "addressRegionId": "c01fc41e-2057-4e0b-b284-d720b698ea67"

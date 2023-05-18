@@ -3,7 +3,7 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Update.Orders;
+namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 public class RestoreDeleteOrderCommand : IRequest<ServiceResponse<Int32>>
 {
     public Guid Id { get; set; }

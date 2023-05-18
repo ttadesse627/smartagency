@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Command.Update.Orders;
+namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 public record EditOrderCommand(EditOrderRequest editOrderRequest) : IRequest<ServiceResponse<Int32>>
 {
 }
