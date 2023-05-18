@@ -7,39 +7,39 @@ public class OrderCriteriaEntityConfig : IEntityTypeConfiguration<OrderCriteria>
 {
     public void Configure(EntityTypeBuilder<OrderCriteria> builder)
     {
-        builder.HasOne(m => m.OrderCriteriaNationality)
+        builder.HasOne(m => m.Nationality)
             .WithMany(n => n.LookUpCriteriaNationalities)
-            .HasForeignKey(fk => fk.OrderCriteriaNationalityId)
+            .HasForeignKey(fk => fk.NationalityId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderCriteriaJobTitle)
+        builder.HasOne(m => m.JobTitle)
             .WithMany(n => n.LookUpCriteriaJobTitles)
-            .HasForeignKey(fk => fk.OrderCriteriaJobTitleId)
+            .HasForeignKey(fk => fk.JobTitleId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderCriteriaSalary)
+        builder.HasOne(m => m.Salary)
             .WithMany(n => n.LookUpCriteriaSalaries)
-            .HasForeignKey(fk => fk.OrderCriteriaSalaryId)
+            .HasForeignKey(fk => fk.SalaryId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderCriteriaReligion)
+        builder.HasOne(m => m.Religion)
             .WithMany(n => n.LookUpCriteriaReligions)
-            .HasForeignKey(fk => fk.OrderCriteriaReligionId)
+            .HasForeignKey(fk => fk.ReligionId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderCriteriaExperience)
+        builder.HasOne(m => m.Experience)
             .WithMany(n => n.LookUpCriteriaExperiences)
-            .HasForeignKey(fk => fk.OrderCriteriaExperienceId)
+            .HasForeignKey(fk => fk.ExperienceId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderCriteriaLanguage)
+        builder.HasOne(m => m.Language)
             .WithMany(n => n.LookUpCriteriaLanguages)
-            .HasForeignKey(fk => fk.OrderCriteriaLanguageId)
+            .HasForeignKey(fk => fk.LanguageId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderCriteriaOrder)
+        builder.HasOne(m => m.Order)
             .WithOne(n => n.OrderCriteria)
-            .HasForeignKey<OrderCriteria>(fk => fk.OrderCriteriaOrderId)
+            .HasForeignKey<OrderCriteria>(fk => fk.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

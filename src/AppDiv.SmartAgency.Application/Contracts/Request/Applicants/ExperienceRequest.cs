@@ -5,5 +5,5 @@ public class ExperienceRequest
 {
     public int PeriodLength { get; set; }
     public string? Position { get; set; }
-    public Guid? ExperienceCountryId { get; set; }
+    public Guid? CountryId { get; set; }
 }

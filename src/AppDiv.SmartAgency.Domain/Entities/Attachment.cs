@@ -10,5 +10,5 @@ public class Attachment : BaseAuditableEntity
     public bool ShowOnCv { get; set; }
 
     // Navigation properties
-    public ICollection<FileCollection>? FileCollections { get; set; }
+    public ICollection<AttachmentFile>? AttachmentFiles { get; set; }
 }

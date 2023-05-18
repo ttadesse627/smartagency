@@ -1,6 +1,5 @@
 
 
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,14 +9,14 @@ public class BeneficiaryEntityConfig : IEntityTypeConfiguration<Beneficiary>
 {
     public void Configure(EntityTypeBuilder<Beneficiary> builder)
     {
-        builder.HasOne(ben => ben.BeneficiaryRelationship)
-            .WithMany(lk => lk.BeneficiaryRelationShip)
-            .HasForeignKey(fk => fk.BeneficiaryRelationshipId)
+        builder.HasOne(ben => ben.Relationship)
+            .WithMany(lk => lk.BenRelationShips)
+            .HasForeignKey(fk => fk.RelationshipId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(bnf => bnf.BeneficiaryApplicant)
-            .WithMany(appl => appl.ApplicantBeneficiaries)
-            .HasForeignKey(fk => fk.BeneficiaryApplicantId)
+        builder.HasOne(ben => ben.Applicant)
+            .WithMany(appl => appl.Beneficiaries)
+            .HasForeignKey(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

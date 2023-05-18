@@ -6,21 +6,21 @@ namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 [Table("Applicants")]
 public class Applicant : PersonalInfo
 {
-    public string? PassportNumber { get; set; }
+    public string PassportNumber { get; set; } = string.Empty;
     public DateTime IssuedDate { get; set; }
     public DateTime PassportExpiryDate { get; set; }
-    public string? PlaceOfBirth { get; set; }
-    public string? AmharicFullName { get; set; }
+    public string PlaceOfBirth { get; set; } = string.Empty;
+    public string AmharicFullName { get; set; } = string.Empty;
     public string? ArabicFullName { get; set; }
     public string? Complexion { get; set; }
     public int NumberOfChildren { get; set; }
-    public string? MotherFullName { get; set; }
-    public string? PreviousCountry { get; set; }
+    public string? MotherName { get; set; }
+    public string? PreviousNationality { get; set; }
     public string? CurrentNationality { get; set; }
     public decimal Height { get; set; }
     public decimal Weight { get; set; }
     public int ContractPeriod { get; set; }
-    public string? JobTitleAmharic { get; set; }
+    public string? AmharicJobTitle { get; set; }
     public string? Remark { get; set; }
     public bool IsRequested { get; set; } = false;
     public bool IsReserved { get; set; } = false;
@@ -28,46 +28,49 @@ public class Applicant : PersonalInfo
     public bool IsDeleted { get; set; } = false;
 
     //Foreign keys
-    public Guid? ApplicantPartnerId { get; set; }
-    public Guid? ApplicantAddressId { get; set; }
-    public Guid? ApplicantBankAccountId { get; set; }
-    public Guid? ApplicantBrokerNameId { get; set; }
-    public Guid? ApplicantBranchId { get; set; }
-    public Guid? ApplicantExprienceId { get; set; }
-    public Guid? ApplicantJobtitleId { get; set; }
-    public Guid? ApplicantReligionId { get; set; }
-    public Guid? ApplicantIssuingCountryId { get; set; }
-    public Guid? ApplicantIssuedPlaceId { get; set; }
-    public Guid? ApplicantHealthId { get; set; }
-    public Guid? ApplicantSalaryId { get; set; }
-    public Guid? ApplicantDesiredCountryId { get; set; }
-    public Guid? ApplicantMaritalStatusId { get; set; }
+    public Guid? IssuingCountryId { get; set; }
+    public Guid? PassportIssuedPlaceId { get; set; }
+    public Guid? MaritalStatusId { get; set; }
+    public Guid? HealthId { get; set; }
+    public Guid? ReligionId { get; set; }
+    public Guid? JobtitleId { get; set; }
+    public Guid? ExperienceId { get; set; }
+    public Guid? LanguageId { get; set; }
+    public Guid? SalaryId { get; set; }
+    public Guid? DesiredCountryId { get; set; }
+    public Guid? BrokerNameId { get; set; }
+    public Guid? BranchId { get; set; }
+    public Guid? PartnerId { get; set; }
+    public Guid? AddressId { get; set; }
+
+    // Objects
+    public ICollection<LanguageSkill>? LanguageSkills { get; set; }
+    public ICollection<LookUp>? Skills { get; set; }
+    public ICollection<Experience>? Experiences { get; set; }
+    public Education? Education { get; set; }
+    public BankAccount? BankAccount { get; set; }
+    public EmergencyContact? EmergencyContact { get; set; }
+    public Representative? Representative { get; set; }
+    public ICollection<Witness>? Witnesses { get; set; }
+    public ICollection<Beneficiary>? Beneficiaries { get; set; }
+    public ICollection<AttachmentFile>? AttachmentFiles { get; set; }
+    public Address? Address { get; set; }
 
     //Navigation Properties
-    public ICollection<Witness>? ApplicantWitnesses { get; set; }
-    public ICollection<Beneficiary>? ApplicantBeneficiaries { get; set; }
-    public ICollection<FileCollection>? ApplicantFileCollections { get; set; }
-    public ICollection<Language>? ApplicantLanguages { get; set; }
-    public ICollection<Experience>? ApplicantExperiences { get; set; }
-    public Representative? ApplicantRepresentative { get; set; }
-    public Partner? ApplicantPartner { get; set; }
-    public Education? ApplicantEducation { get; set; }
-    public BankAccount? ApplicantBankAccount { get; set; }
-    public EmergencyContact? ApplicantEmergencyContact { get; set; }
-    public ICollection<LookUp>? ApplicantTechnicalSkills { get; set; }
-    public Address? ApplicantAddress { get; set; }
-    public LookUp? ApplicantReligion { get; set; }
-    public LookUp? ApplicantExprience { get; set; }
-    public LookUp? ApplicantBrokerName { get; set; }
-    public LookUp? ApplicantBranch { get; set; }
-    public LookUp? ApplicantJobtitle { get; set; }
-    public LookUp? ApplicantIssuingCountry { get; set; }
-    public LookUp? ApplicantIssuedPlace { get; set; }
-    public LookUp? ApplicantHealth { get; set; }
-    public LookUp? ApplicantSalary { get; set; }
-    public LookUp? ApplicantDesiredCountry { get; set; }
-    public LookUp? ApplicantMaritalStatus { get; set; }
-    public Order? ApplicantOrder { get; set; }
-    public ICollection<Deposit>? Deposits{ get; set; }
-    public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses{ get; set; }
+    public Partner? Partner { get; set; }
+    public LookUp? IssuingCountry { get; set; }
+    public LookUp? PassportIssuedPlace { get; set; }
+    public LookUp? MaritalStatus { get; set; }
+    public LookUp? Health { get; set; }
+    public LookUp? Religion { get; set; }
+    public LookUp? Jobtitle { get; set; }
+    public LookUp? Experience { get; set; }
+    public LookUp? Language { get; set; }
+    public LookUp? Salary { get; set; }
+    public LookUp? DesiredCountry { get; set; }
+    public LookUp? BrokerName { get; set; }
+    public LookUp? Branch { get; set; }
+    public Order? Order { get; set; }
+    public ICollection<Deposit>? Deposits { get; set; }
+    public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses { get; set; }
 }

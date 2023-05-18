@@ -25,11 +25,11 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string? ReferenceNumber { get; set; }
 
         // Foreign Keys
-        public Guid? PartnerAddressId { get; set; }
+        public Guid? AddressId { get; set; }
 
         // Navigation properties
-        public Address? PartnerAddress { get; set; }
-        public ICollection<Applicant>? PartnerApplicants { get; set; }
-        public ICollection<Order>? PartnerOrders { get; set; }
+        public Address? Address { get; set; }
+        public ICollection<Applicant>? Applicants { get; set; }
+        public ICollection<Order>? Orders { get; set; }
     }
 }

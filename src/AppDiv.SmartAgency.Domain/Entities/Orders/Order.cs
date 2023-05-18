@@ -17,21 +17,22 @@ public class Order : BaseAuditableEntity
     public bool IsDeleted { get; set; } = false;
 
     // Foreign Keys
-    public Guid? OrderPortOfArrivalId { get; set; }
-    public Guid? OrderPriorityId { get; set; }
-    public Guid? OrderVisaTypeId { get; set; }
-    public Guid? OrderEmployeeId { get; set; }
-    public Guid? OrderPartnerId { get; set; }
+    public Guid? PortOfArrivalId { get; set; }
+    public Guid? PriorityId { get; set; }
+    public Guid? VisaTypeId { get; set; }
+    public Guid? EmployeeId { get; set; }
+    public Guid? PartnerId { get; set; }
 
     // Navigation properties
-    public Partner? OrderPartner { get; set; }
-    public LookUp? OrderPortOfArrival { get; set; }
-    public LookUp? OrderPriority { get; set; }
-    public LookUp? OrderVisaType { get; set; }
-    public Applicant? OrderEmployee { get; set; }
-    public FileCollection? OrderVisaFile { get; set; }
+    
+    public LookUp? PortOfArrival { get; set; }
+    public LookUp? Priority { get; set; }
+    public LookUp? VisaType { get; set; }
+    public Applicant? Employee { get; set; }
+    public AttachmentFile? AttachmentFile { get; set; }
     public OrderCriteria? OrderCriteria { get; set; }
-    public Payment? OrderPayment { get; set; }
-    public Sponsor? OrderSponsor { get; set; }
+    public Payment? Payment { get; set; }
+    public Sponsor? Sponsor { get; set; }
+    public Partner? Partner { get; set; }
 
 }

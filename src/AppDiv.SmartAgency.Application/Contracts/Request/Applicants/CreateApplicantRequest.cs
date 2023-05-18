@@ -7,59 +7,55 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public class CreateApplicantRequest
+public record CreateApplicantRequest
 {
     public string FirstName { get; set; } = string.Empty;
     public string MiddleName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public string? PassportNumber { get; set; }
+    public DateTime? BirthDate { get; set; }
+    public Gender Gender { get; set; }
+    public string PassportNumber { get; set; } = string.Empty;
     public DateTime IssuedDate { get; set; }
     public DateTime PassportExpiryDate { get; set; }
-    public string? PlaceOfBirth { get; set; }
-    public string? AmharicFullName { get; set; }
+    public string PlaceOfBirth { get; set; } = string.Empty;
+    public string AmharicFullName { get; set; } = string.Empty;
     public string? ArabicFullName { get; set; }
     public string? Complexion { get; set; }
     public int NumberOfChildren { get; set; }
-    public string? MotherFullName { get; set; }
-    public string? PreviousCountry { get; set; }
+    public string? MotherName { get; set; }
+    public string? PreviousNationality { get; set; }
     public string? CurrentNationality { get; set; }
     public decimal Height { get; set; }
     public decimal Weight { get; set; }
     public int ContractPeriod { get; set; }
-    public string? JobTitleAmharic { get; set; }
+    public string? AmharicJobTitle { get; set; }
     public string? Remark { get; set; }
     public bool IsRequested { get; set; } = false;
     public bool IsReserved { get; set; } = false;
     public bool IsBlocked { get; set; } = false;
     public bool IsDeleted { get; set; } = false;
-
-    //Foreign keys
-    // public Guid? ApplicantPartnerId { get; set; }
-    // public Guid? ApplicantAddressId { get; set; }
-    // public Guid? ApplicantBankAccountId { get; set; }
-    public Guid? ApplicantBrokerNameId { get; set; }
-    public Guid? ApplicantBranchId { get; set; }
-    public Guid? ApplicantExprienceId { get; set; }
-    public Guid? ApplicantJobtitleId { get; set; }
-    public Guid? ApplicantReligionId { get; set; }
-    public Guid? ApplicantIssuingCountryId { get; set; }
-    public Guid? ApplicantIssuedPlaceId { get; set; }
-    public Guid? ApplicantHealthId { get; set; }
-    public Guid? ApplicantSalaryId { get; set; }
-    public Guid? ApplicantDesiredCountryId { get; set; }
-    public Guid? ApplicantMaritalStatusId { get; set; }
-
-    //Navigation Properties
-    public ICollection<WitnessRequest>? ApplicantWitnesses { get; set; }
-    public ICollection<BeneficiaryRequest>? ApplicantBeneficiaries { get; set; }
-    public ICollection<FileCollectionRequest>? ApplicantFileCollections { get; set; }
-    public ICollection<LanguageRequest>? ApplicantLanguages { get; set; }
-    public ICollection<ExperienceRequest>? ApplicantExperiences { get; set; }
-    public RepresentativeRequest? ApplicantRepresentative { get; set; }
-    // public Partner? ApplicantPartner { get; set; }
-    public EducationRequest? ApplicantEducation { get; set; }
-    public BankAccountRequest? ApplicantBankAccount { get; set; }
-    public EmergencyContactRequest? ApplicantEmergencyContact { get; set; }
-    public ICollection<Guid>? ApplicantTechnicalSkills { get; set; }
-    public AddressRequest? ApplicantAddress { get; set; }
+    public Guid? IssuingCountryId { get; set; }
+    public Guid? PassportIssuedPlaceId { get; set; }
+    public Guid? MaritalStatusId { get; set; }
+    public Guid? HealthId { get; set; }
+    public Guid? ReligionId { get; set; }
+    public Guid? JobtitleId { get; set; }
+    public Guid? ExperienceId { get; set; }
+    public Guid? LanguageId { get; set; }
+    public Guid? SalaryId { get; set; }
+    public Guid? DesiredCountryId { get; set; }
+    public Guid? BrokerNameId { get; set; }
+    public Guid? BranchId { get; set; }
+    public Guid? PartnerId { get; set; }
+    public ICollection<LanguageSkillRequest>? LanguageSkills { get; set; }
+    public ICollection<Guid>? Skills { get; set; }
+    public ICollection<ExperienceRequest>? Experiences { get; set; }
+    public EducationRequest? Education { get; set; }
+    public BankAccountRequest? BankAccount { get; set; }
+    public EmergencyContactRequest? EmergencyContact { get; set; }
+    public RepresentativeRequest? Representative { get; set; }
+    public ICollection<WitnessRequest>? Witnesses { get; set; }
+    public ICollection<BeneficiaryRequest>? Beneficiaries { get; set; }
+    public ICollection<AttachmentFileRequest>? AttachmentFiles { get; set; }
+    public AddressRequest? Address { get; set; }
 }

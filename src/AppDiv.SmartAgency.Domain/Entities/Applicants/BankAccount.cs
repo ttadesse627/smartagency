@@ -9,6 +9,6 @@ public class BankAccount
     public string? BranchName { get; set; }
     public string? SwiftCode { get; set; }
 
-    // Navigation properties
+    public Guid? ApplicantId { get; set; }
     public Applicant? Applicant { get; set; }
 }

@@ -7,39 +7,39 @@ public class OrderEntityConfig : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.HasOne(m => m.OrderPartner)
-            .WithMany(n => n.PartnerOrders)
-            .HasForeignKey(fk => fk.OrderPartnerId)
+        builder.HasOne(m => m.Partner)
+            .WithMany(n => n.Orders)
+            .HasForeignKey(fk => fk.PartnerId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderPortOfArrival)
+        builder.HasOne(m => m.PortOfArrival)
             .WithMany(n => n.LookUpPortOfArrivals)
-            .HasForeignKey(fk => fk.OrderPortOfArrivalId)
+            .HasForeignKey(fk => fk.PortOfArrivalId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderPriority)
+        builder.HasOne(m => m.Priority)
             .WithMany(n => n.LookUpPriorities)
-            .HasForeignKey(fk => fk.OrderPriorityId)
+            .HasForeignKey(fk => fk.PriorityId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderVisaType)
+        builder.HasOne(m => m.VisaType)
             .WithMany(n => n.LookUpVisaTypes)
-            .HasForeignKey(fk => fk.OrderVisaTypeId)
+            .HasForeignKey(fk => fk.VisaTypeId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderEmployee)
-            .WithOne(n => n.ApplicantOrder)
-            .HasForeignKey<Order>(fk => fk.OrderEmployeeId)
+        builder.HasOne(m => m.Employee)
+            .WithOne(n => n.Order)
+            .HasForeignKey<Order>(fk => fk.EmployeeId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.OrderPayment)
-            .WithOne(n => n.PaymentOrder)
-            .HasForeignKey<Payment>(fk => fk.PaymentOrderId)
+        builder.HasOne(m => m.Payment)
+            .WithOne(n => n.Order)
+            .HasForeignKey<Payment>(fk => fk.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(m => m.OrderSponsor)
-            .WithOne(n => n.SponsorOrder)
-            .HasForeignKey<Sponsor>(fk => fk.SponsorOrderId)
+        builder.HasOne(m => m.Sponsor)
+            .WithOne(n => n.Order)
+            .HasForeignKey<Sponsor>(fk => fk.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

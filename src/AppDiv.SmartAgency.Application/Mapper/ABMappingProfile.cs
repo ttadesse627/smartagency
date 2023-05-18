@@ -1,5 +1,4 @@
 ﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
@@ -25,12 +24,11 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AutoMapper;
-using AppDiv.SmartAgency.Application.Common;
-using System.Collections;
 using AppDiv.SmartAgency.Utility.Contracts;
-using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Pagess;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.OnlineApplicants;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.ApplicantFollowupStatuses;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -54,38 +52,35 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
 
             CreateMap<CreateApplicantRequest, Applicant>()
-                .ForMember(dest => dest.ApplicantTechnicalSkills, opt => opt.Ignore());
-            CreateMap<LanguageRequest, Language>();
+                .ForMember(dest => dest.Skills, opt => opt.Ignore());
+            CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
             CreateMap<EducationRequest, Education>()
-                .ForMember(dest => dest.YearCompleted, opt => opt.MapFrom(src => src.YearCompleted))
-                .ForMember(dest => dest.FieldOfStudy, opt => opt.MapFrom(src => src.FieldOfStudy))
-                .ForMember(dest => dest.ProfessionalSkill, opt => opt.MapFrom(src => src.ProfessionalSkill))
-                .ForMember(dest => dest.EducationLevelofQualifications, opt => opt.Ignore())
-                .ForMember(dest => dest.EducationQualificationTypes, opt => opt.Ignore())
-                .ForMember(dest => dest.EducationAwards, opt => opt.Ignore());
-
+                .ForMember(dest => dest.QualificationTypes, opt => opt.Ignore())
+                .ForMember(dest => dest.LevelofQualifications, opt => opt.Ignore())
+                .ForMember(dest => dest.Awards, opt => opt.Ignore());
             CreateMap<BankAccountRequest, BankAccount>();
-            CreateMap<BeneficiaryRequest, Beneficiary>();
             CreateMap<EmergencyContactRequest, EmergencyContact>();
             CreateMap<RepresentativeRequest, Representative>();
             CreateMap<WitnessRequest, Witness>();
+            CreateMap<BeneficiaryRequest, Beneficiary>();
+            CreateMap<AttachmentFileRequest, AttachmentFile>();
             CreateMap<AddressRequest, Address>();
-            CreateMap<FileCollectionRequest, FileCollection>();
+            CreateMap<RepAddressRequest, Address>();
 
-            CreateMap<Applicant, CreateApplicantResponseDTO>();
+            // CreateMap<Applicant, CreateApplicantResponseDTO>();
             CreateMap<Category, CategoryResponseDTO>();
-            CreateMap<Applicant, ApplicantsResponseDTO>();
-            CreateMap<BankAccount, BankAccountResponseDTO>();
-            CreateMap<Beneficiary, BeneficiaryResponseDTO>();
-            CreateMap<Education, EducationResponseDTO>();
-            CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
-            CreateMap<FileCollection, FileCollectionResponseDTO>();
-            CreateMap<Language, LanguageResponseDTO>();
-            CreateMap<Partner, PartnerApplRespDTO>();
-            CreateMap<Representative, RepresentativeResponseDTO>();
-            CreateMap<Witness, WitnessResponseDTO>();
-            CreateMap<Applicant, ApplicantsResponseDTO>();
+            // CreateMap<Applicant, ApplicantsResponseDTO>();
+            // CreateMap<BankAccount, BankAccountResponseDTO>();
+            // CreateMap<Beneficiary, BeneficiaryResponseDTO>();
+            // CreateMap<Education, EducationResponseDTO>();
+            // CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
+            // CreateMap<FileCollection, FileCollectionResponseDTO>();
+            // CreateMap<Language, LanguageResponseDTO>();
+            // CreateMap<Partner, PartnerApplRespDTO>();
+            // CreateMap<Representative, RepresentativeResponseDTO>();
+            // CreateMap<Witness, WitnessResponseDTO>();
+            // CreateMap<Applicant, ApplicantsResponseDTO>();
 
             CreateMap<CreatePartnerRequest, Partner>();
             CreateMap<Partner, PartnerResponseDTO>();
@@ -104,7 +99,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditOrderRequest, Order>();
             CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
             CreateMap<EditSponsorRequest, Sponsor>();
-            CreateMap<EditFileCollectionRequest, FileCollection>();
+            // CreateMap<EditFileCollectionRequest, FileCollection>();
             CreateMap<EditPaymentRequest, Payment>();
             CreateMap<EditAddressRequest, Address>();
 

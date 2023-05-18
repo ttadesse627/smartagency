@@ -12,15 +12,15 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
     private readonly SmartAgencyDbContext _context;
     public ApplicantRepository(SmartAgencyDbContext dbContext) : base(dbContext)
     {
-
+        _context = dbContext;
     }
     public override async Task InsertAsync(Applicant applicant, CancellationToken cancellationToken)
     {
         await base.InsertAsync(applicant, cancellationToken);
     }
-    public async Task<Int32> CreateApplicantAsync(Applicant applicant)
+    public async Task<Int32> CreateApplicantAsync(Applicant applicant, CancellationToken cancellationToken)
     {
-        await _context.Applicants.AddAsync(applicant);
+        await base.InsertAsync(applicant, cancellationToken);        // await _context.Applicants.AddAsync(applicant);
         var success = await _context.SaveChangesAsync();
         return success;
     }

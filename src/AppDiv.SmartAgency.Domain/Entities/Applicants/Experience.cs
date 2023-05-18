@@ -9,11 +9,12 @@ public class Experience
     public string? Position { get; set; }
 
     // Foreign Keys
-    public Guid? ExperienceApplicantId { get; set; }
-    public Guid? ExperienceCountryId { get; set; }
+    public Guid? CountryId { get; set; }
+    public Guid? ApplicantId { get; set; }
 
     // Navigation properties
-    public Applicant? ExperienceApplicant { get; set; }
-    public LookUp? ExperienceCountry { get; set; }
+    public LookUp? Country { get; set; }
+    public Applicant? Applicant { get; set; }
+    
     
 }

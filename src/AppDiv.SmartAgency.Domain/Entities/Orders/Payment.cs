@@ -10,9 +10,9 @@ public class Payment
     public decimal TotalAmount { get; set; }
     public decimal PaidAmount { get; set; }
     public decimal CurrentPaidAmount { get; set; }
-    public Guid? PaymentOrderId { get; set; }
+    public Guid? OrderId { get; set; }
 
     // Navigation properties
-    public Order? PaymentOrder { get; set; }
+    public Order? Order { get; set; }
 
 }

@@ -8,19 +8,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AppDiv.SmartAgency.Domain.Configurations
 {
-    public class OnlineApplicantEntityConfiguration: IEntityTypeConfiguration<OnlineApplicant>
+    public class OnlineApplicantEntityConfiguration : IEntityTypeConfiguration<OnlineApplicant>
     {
         public void Configure(EntityTypeBuilder<OnlineApplicant> builder)
         {
             builder.HasOne(o => o.MaritalStatus)
                 .WithMany(l => l.MaritalStatus)
                 .HasForeignKey(o => o.MaritalStatusId);
+
             builder.HasOne(o => o.Experience)
                 .WithMany(l => l.Experience)
-                .HasForeignKey(o => o.ExperienceId);  
-            builder.HasOne(o=> o.DesiredCountry)
-                 .WithMany(l=> l.DesiredCountry)
-                 .HasForeignKey(o=> o.DesiredCountryId);      
+                .HasForeignKey(o => o.ExperienceId);
+                
+            builder.HasOne(o => o.DesiredCountry)
+                .WithMany(l => l.OnlineApplDesiredCountries)
+                .HasForeignKey(o => o.DesiredCountryId);
         }
 
     }

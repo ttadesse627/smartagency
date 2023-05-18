@@ -7,9 +7,9 @@ public class PartnerEntityConfig : IEntityTypeConfiguration<Partner>
 {
     public void Configure(EntityTypeBuilder<Partner> builder)
     {
-        builder.HasOne(m => m.PartnerAddress)
-            .WithOne(n => n.AddressPartner)
-            .HasForeignKey<Partner>(fk => fk.PartnerAddressId)
+        builder.HasOne(m => m.Address)
+            .WithOne(n => n.Partner)
+            .HasForeignKey<Partner>(fk => fk.AddressId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -9,31 +9,31 @@ public class EducationEntityConfig : IEntityTypeConfiguration<Education>
     public void Configure(EntityTypeBuilder<Education> builder)
     {
 
-        builder.HasOne(edu => edu.EducationApplicant)
-            .WithOne(appl => appl.ApplicantEducation)
-            .HasForeignKey<Education>(fk => fk.EducationApplicantId)
+        builder.HasOne(edu => edu.Applicant)
+            .WithOne(appl => appl.Education)
+            .HasForeignKey<Education>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(e => e.EducationQualificationTypes)
-                .WithMany(l => l.LookUpQualificationTypes)
+        builder.HasMany(e => e.QualificationTypes)
+                .WithMany(l => l.EduQualificationTypes)
                 .UsingEntity<Dictionary<string, object>>(
-                    "EducationQualificationTypes",
+                    "QualificationTypes",
                     j => j.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
                     j => j.HasOne<Education>().WithMany().HasForeignKey("EducationId")
                 );
 
-        builder.HasMany(e => e.EducationLevelofQualifications)
-                .WithMany(l => l.LookUpLevelOfQualifications)
+        builder.HasMany(e => e.LevelofQualifications)
+                .WithMany(l => l.EduLevelOfQualifications)
                 .UsingEntity<Dictionary<string, object>>(
-                    "EducationLevelOfQualifications",
+                    "LevelOfQualifications",
                     j => j.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
                     j => j.HasOne<Education>().WithMany().HasForeignKey("EducationId")
                 );
 
-        builder.HasMany(e => e.EducationAwards)
-                .WithMany(l => l.LookUpAwards)
+        builder.HasMany(e => e.Awards)
+                .WithMany(l => l.EduAwards)
                 .UsingEntity<Dictionary<string, object>>(
-                    "EducationAwards",
+                    "Awards",
                     j => j.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
                     j => j.HasOne<Education>().WithMany().HasForeignKey("EducationId")
                 );

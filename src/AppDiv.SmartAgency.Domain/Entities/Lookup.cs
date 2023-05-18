@@ -7,38 +7,37 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class LookUp : BaseAuditableEntity
     {
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public string Value { get; set; } = string.Empty;
 
         // Navigation properties
-        public Category Category { get; set; }
-        public ICollection<Applicant>? LookUpReligions { get; set; }
-        public ICollection<Applicant>? LookUpJobTitles { get; set; }
-        public ICollection<Applicant>? LookUpTechnicalSkills { get; set; }
-        public ICollection<Education>? LookUpLevelOfQualifications { get; set; }
-        public ICollection<Education>? LookUpQualificationTypes { get; set; }
-        public ICollection<Education>? LookUpAwards { get; set; }
-        public ICollection<Applicant>? LookUpBrokerNames { get; set; }
-        public ICollection<Applicant>? LookUpBranches { get; set; }
-        public ICollection<Applicant>? LookUpIssuingCountries { get; set; }
-        public ICollection<Applicant>? LookUpIssuedPlaces { get; set; }
-        public ICollection<Applicant>? LookUpHealths { get; set; }
-        public ICollection<Applicant>? LookUpSalaries { get; set; }
-        public ICollection<Applicant>? LookUpDesiredCountries { get; set; }
-        public ICollection<Applicant>? LookUpMaritalStatuses { get; set; }
-        public ICollection<Applicant>? LookUpExpriences { get; set; }
-
-        public ICollection<Experience>? LookUpExperiences { get; set; }
-        public ICollection<Beneficiary>? BeneficiaryRelationShip { get; set; }
+        public Category? Category { get; set; }
+        public ICollection<Applicant>? ApplIssuingCountries { get; set; }
+        public ICollection<Applicant>? ApplPassportIssuedPlaces { get; set; }
+        public ICollection<Applicant>? ApplMaritalStatuses { get; set; }
+        public ICollection<Applicant>? ApplHealthes { get; set; }
+        public ICollection<Applicant>? ApplReligions { get; set; }
+        public ICollection<Applicant>? ApplJobtitles { get; set; }
+        public ICollection<Applicant>? ApplExperiences { get; set; }
+        public ICollection<Applicant>? ApplLanguages { get; set; }
+        public ICollection<Applicant>? ApplSalaries { get; set; }
+        public ICollection<Applicant>? ApplDesiredCountries { get; set; }
+        public ICollection<Applicant>? ApplBrokerNames { get; set; }
+        public ICollection<Applicant>? ApplBranches { get; set; }
+        public ICollection<Applicant>? ApplSkills { get; set; }
+        public ICollection<LanguageSkill>? LanguageSkills { get; set; }
+        public ICollection<Experience>? ExpCountries { get; set; }
+        public ICollection<Education>? EduQualificationTypes { get; set; }
+        public ICollection<Education>? EduLevelOfQualifications { get; set; }
+        public ICollection<Education>? EduAwards { get; set; }
+        public ICollection<EmergencyContact>? ECRelationships { get; set; }
+        public ICollection<Beneficiary>? BenRelationShips { get; set; }
+        public ICollection<Address>? AddressRegions { get; set; }
 
         public ICollection<OnlineApplicant>? MaritalStatus { get; set; }
         public ICollection<OnlineApplicant>? Experience { get; set; }
-
-        public ICollection<ApplicantFollowupStatus>?  FollowupStatus{ get; set; }
-        public ICollection<OnlineApplicant>? DesiredCountry { get; set; }
-        public ICollection<Language>? LookUpLanguages { get; set; }
-        public ICollection<EmergencyContact>? LookUpEmergencyContactRelationships { get; set; }
-        public ICollection<Address>? LookUpAddressRegions { get; set; }
+        public ICollection<ApplicantFollowupStatus>? FollowupStatus { get; set; }
+        public ICollection<OnlineApplicant>? OnlineApplDesiredCountries { get; set; }
 
         public ICollection<Order>? LookUpPortOfArrivals { get; set; }
         public ICollection<Order>? LookUpPriorities { get; set; }
@@ -50,6 +49,5 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaReligions { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
-        //public ICollection<Education>? LookUpExpriences { get; internal set; }
     }
 }

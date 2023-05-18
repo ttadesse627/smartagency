@@ -7,14 +7,14 @@ public class SponsorEntityConfig : IEntityTypeConfiguration<Sponsor>
 {
     public void Configure(EntityTypeBuilder<Sponsor> builder)
     {
-        builder.HasOne(m => m.SponsorIDFile)
-            .WithOne(n => n.FileCollectionSponsor)
-            .HasForeignKey<Sponsor>(fk => fk.SponsorIDFileId)
+        builder.HasOne(m => m.AttachmentFile)
+            .WithOne(n => n.Sponsor)
+            .HasForeignKey<Sponsor>(fk => fk.AttachmentFileId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(m => m.SponsorAddress)
-            .WithOne(n => n.AddressSponsor)
-            .HasForeignKey<Sponsor>(fk => fk.SponsorAddressId)
+        builder.HasOne(m => m.Address)
+            .WithOne(n => n.Sponsor)
+            .HasForeignKey<Sponsor>(fk => fk.AddressId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

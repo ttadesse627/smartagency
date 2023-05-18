@@ -25,13 +25,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<FileCollection> FileCollections { get; set; }
+        public DbSet<AttachmentFile> AttachmentFiles { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<Experience> Experiences { get; set; }
-        public DbSet<Language> Languages { get; set; }
+        public DbSet<LanguageSkill> LanguageSkills { get; set; }
         public DbSet<Representative> Representatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
         public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
@@ -39,10 +39,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<OrderCriteria> OrderCriterias { get; set; }
-        public DbSet<Payment> OrderPayments { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public DbSet<Page> Pages { get; set; }
-
-
         public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
@@ -63,13 +61,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 //  modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
+                modelBuilder.ApplyConfiguration(new AttachmentFileEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new EducationEntityConfig());
                 modelBuilder.ApplyConfiguration(new EmergencyContactEntityConfig());
                 modelBuilder.ApplyConfiguration(new ExperienceEntityConfig());
-                modelBuilder.ApplyConfiguration(new FileCollectionEntityConfig());
-                modelBuilder.ApplyConfiguration(new LanguageEntityConfig());
+                modelBuilder.ApplyConfiguration(new LanguageSkillEntityConfig());
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new DepositEntityConfiguration());
@@ -77,7 +75,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new OrderCriteriaEntityConfig());
                 modelBuilder.ApplyConfiguration(new OrderEntityConfig());
                 modelBuilder.ApplyConfiguration(new PartnerEntityConfig());
-                modelBuilder.ApplyConfiguration(new RepresentativeEntityConfig());
                 modelBuilder.ApplyConfiguration(new SponsorEntityConfig());
                 modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new ApplicantFollowupStatusConfiguration());
@@ -86,18 +83,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
                 );
 
-                //  8aec3c2a-96ba-46ce-8a4b-14cf557fd621
-
-
                 modelBuilder.Ignore<PersonalInfo>();
-
-                // modelBuilder.Entity<Applicant>(entity =>
-                // {
-                //     entity.Property().HasConversion(
-                //         x => JsonConvert.SerializeObject(x) //convert TO a json string
-                //         , x => JsonConvert.DeserializeObject<BaseModel>(x)//convert FROM a json string
-                //     );
-                // });
 
             }
             #endregion

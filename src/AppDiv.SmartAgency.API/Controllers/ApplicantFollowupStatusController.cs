@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-using AppDiv.SmartAgency.Application.Features.Command.Create.ApplicantsFollowupStatus;
-using AppDiv.SmartAgency.Application.Features.Query.ApplicantFollowupStatuses;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.ApplicantFollowupStatuses;
+using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Create;
+using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

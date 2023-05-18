@@ -1,7 +1,7 @@
 
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public class WitnessRequest
+public record WitnessRequest
 {
     public string FirstName { get; set; } = string.Empty;
     public string MiddleName { get; set; } = string.Empty;

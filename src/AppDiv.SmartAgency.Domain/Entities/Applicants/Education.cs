@@ -8,12 +8,12 @@ public class Education
     public string? FieldOfStudy { get; set; }
     public string? ProfessionalSkill { get; set; }
     // Foreign Keys
-    public Guid? EducationApplicantId { get; set; }
+    public Guid? ApplicantId { get; set; }
     
     // Navigation properties
-    public Applicant? EducationApplicant { get; set; }
-    public ICollection<LookUp>? EducationLevelofQualifications{ get; set; }
-    public ICollection<LookUp>? EducationQualificationTypes { get; set; }
-    public ICollection<LookUp>? EducationAwards { get; set; }
+    public Applicant? Applicant { get; set; }
+    public ICollection<LookUp>? QualificationTypes { get; set; }
+    public ICollection<LookUp>? LevelofQualifications{ get; set; }
+    public ICollection<LookUp>? Awards { get; set; }
     
 }

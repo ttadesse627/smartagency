@@ -30,9 +30,9 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         {
             order = await _context.Orders
                     .Include(order => order.OrderCriteria)
-                    .Include(order => order.OrderSponsor)
-                        .ThenInclude(os => os.SponsorAddress)
-                    .Include(order => order.OrderPayment).FirstOrDefaultAsync(ord => ord.Id == id);
+                    .Include(order => order.Sponsor)
+                        .ThenInclude(os => os.Address)
+                    .Include(order => order.Payment).FirstOrDefaultAsync(ord => ord.Id == id);
             if (order is not null)
             {
                 response.Data = order;

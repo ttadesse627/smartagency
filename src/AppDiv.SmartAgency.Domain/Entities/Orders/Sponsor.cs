@@ -13,14 +13,14 @@ public class Sponsor
     public int NumberOfFamily { get; set; }
 
     // Foreign Keys
-    public Guid? SponsorOrderId { get; set; }
-    public Guid? SponsorIDFileId { get; set; }
-    public Guid? SponsorAddressId { get; set; }
+    public Guid? OrderId { get; set; }
+    public Guid? AttachmentFileId { get; set; }
+    public Guid? AddressId { get; set; }
 
 
     // Navigation properties
-    public FileCollection? SponsorIDFile { get; set; }
-    public Order? SponsorOrder { get; set; }
-    public Address? SponsorAddress { get; set; }
+    public AttachmentFile? AttachmentFile { get; set; }
+    public Order? Order { get; set; }
+    public Address? Address { get; set; }
 
 }

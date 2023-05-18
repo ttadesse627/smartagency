@@ -8,7 +8,7 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence;
 public interface IApplicantRepository : IBaseRepository<Applicant>
 {
-    public Task<Int32> CreateApplicantAsync(Applicant applicant);
+    public Task<Int32> CreateApplicantAsync(Applicant applicant, CancellationToken cancellationToken);
     public Task<Applicant> GetApplicantAsync(Guid id);
     public Task<List<Applicant>> GetAll();
     public Task<ServiceResponse<Int32>> EditApplicantAsync();

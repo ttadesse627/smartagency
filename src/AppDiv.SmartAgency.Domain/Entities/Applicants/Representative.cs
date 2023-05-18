@@ -6,8 +6,8 @@ namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 [Table("Repersentative")]
 public class Representative : PersonalInfo
 {
-    public Guid? RepresentativeAddressId { get; set; }
-    public Guid? RepresentativeApplicantId { get; set; }
-    public Address? RepresentativeAddress { get; set; }
-    public Applicant? RepresentativeApplicant { get; set; }
+    public Guid? AddressId { get; set; }
+    public Guid? ApplicantId { get; set; }
+    public Address? Address { get; set; }
+    public Applicant? Applicant { get; set; }
 }

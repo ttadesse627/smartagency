@@ -1,54 +1,45 @@
 
-
-
-
-using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
 using AppDiv.SmartAgency.Application.Features.Command.Create.Applicants.OnlineApplicants;
-using AppDiv.SmartAgency.Application.Features.Command.Create.Partners;
 using AppDiv.SmartAgency.Application.Features.Command.Delete.Applicants;
-using AppDiv.SmartAgency.Application.Features.Command.Delete.LookUps;
-using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Application.Features.Query.Applicants.OnlineApplicants;
-using AppDiv.SmartAgency.Application.Features.Query.Customers;
-using AppDiv.SmartAgency.Application.Features.Query.Partners;
-using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
 
-[ApiController]
-[Route("api/onlineApplicant")]
-    public class OnlineApplicantController: ControllerBase
-{
-    private readonly IMediator _mediator;
-    public OnlineApplicantController(IMediator mediator)
+    [ApiController]
+    [Route("api/onlineApplicant")]
+    public class OnlineApplicantController : ControllerBase
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
+        public OnlineApplicantController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-    [HttpPost("create")]
-    public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(CreateOnlineApplicantCommand onlineApplicantRequest, CancellationToken token)
-    {
-        var response = await _mediator.Send(onlineApplicantRequest);
-        return Ok(response);
-    }
+        [HttpPost("create")]
+        public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(CreateOnlineApplicantCommand onlineApplicantRequest, CancellationToken token)
+        {
+            var response = await _mediator.Send(onlineApplicantRequest);
+            return Ok(response);
+        }
 
-    [HttpGet("get-all-online-applicant")]
-    public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants()
-    {
-        return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery()));
-    }
+        [HttpGet("get-all-online-applicant")]
+        public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants()
+        {
+            return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery()));
+        }
 
-     [HttpGet("{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<OnlineApplicantResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetOnlineApplicantByIdQuery(id));
         }
 
-      [HttpDelete("Delete/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteOnlineApplicant(Guid id)
         {
             try
@@ -65,9 +56,9 @@ namespace AppDiv.SmartAgency.API.Controllers
 
 
 
-     
-        
-  
-}
+
+
+
+    }
 }
 
