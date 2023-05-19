@@ -26,7 +26,6 @@ using AutoMapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.OnlineApplicants;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ApplicantFollowupStatuses;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
@@ -38,6 +37,7 @@ using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -138,8 +138,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Deposit, GetDepositByIdResponseDTO>();
             CreateMap<SearchModel<Deposit>, SearchModel<DepositResponseDTO>>();
 
+            CreateMap<SearchModel<ApplicantFollowupStatus>, SearchModel<ApplicantFollowupStatusResponseDTO>>();
             CreateMap<ApplicantFollowupStatus, ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
+
             
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
 

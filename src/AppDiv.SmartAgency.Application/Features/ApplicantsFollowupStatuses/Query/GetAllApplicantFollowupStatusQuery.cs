@@ -2,31 +2,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
+
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query
 {
-    public class GetAllApplicantFollowupStatusQuery: IRequest<List<ApplicantFollowupStatusResponseDTO>>
+    public class GetAllApplicantFollowupStatusQuery: IRequest<SearchModel<ApplicantFollowupStatusResponseDTO>>
     {
-        
+
+         public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public string SearchTerm { get; set; } = string.Empty;
+        public string OrderBy { get; set; } = string.Empty;
+        public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
+        public GetAllApplicantFollowupStatusQuery(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
+        {
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+            SearchTerm = searchTerm;
+            OrderBy = orderBy;
+            SortingDirection = sortingDirection;
+        }
+
     }
 
-    public class GetAllApplicantFollowupStatusHandler : IRequestHandler<GetAllApplicantFollowupStatusQuery, List<ApplicantFollowupStatusResponseDTO>>
+    public class GetAllApplicantFollowupStatusHandler : IRequestHandler<GetAllApplicantFollowupStatusQuery, SearchModel<ApplicantFollowupStatusResponseDTO>>
     {
         private readonly IApplicantFollowupStatusRepository _applicantFollowupStatusRepository;
 
-        public GetAllApplicantFollowupStatusHandler(IApplicantFollowupStatusRepository applicantFollowupStatusQueryRepository)
+        public GetAllApplicantFollowupStatusHandler(IApplicantFollowupStatusRepository applicantFollowupStatusRepository)
         {
-            _applicantFollowupStatusRepository = applicantFollowupStatusQueryRepository;
+            _applicantFollowupStatusRepository = applicantFollowupStatusRepository ;
         }
-        public async Task<List<ApplicantFollowupStatusResponseDTO>> Handle(GetAllApplicantFollowupStatusQuery request, CancellationToken cancellationToken)
+        public async Task<SearchModel<ApplicantFollowupStatusResponseDTO>> Handle(GetAllApplicantFollowupStatusQuery request, CancellationToken cancellationToken)
         {
-            var applicantFollowupStatusList = await _applicantFollowupStatusRepository.GetAllWithAsync("Applicant","FollowupStatus");
-            var applicantFollowupStatusResponse = CustomMapper.Mapper.Map<List<ApplicantFollowupStatusResponseDTO>>(applicantFollowupStatusList);
-            return applicantFollowupStatusResponse;
+            var followupList = await _applicantFollowupStatusRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Applicant","FollowupStatus");
+            var followupResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantFollowupStatusResponseDTO>>(followupList);
+            return followupResponse;
 
             // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
