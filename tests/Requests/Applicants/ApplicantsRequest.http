@@ -10,7 +10,7 @@ Content-Type: application/json
   "lastName": "string",
   "birthDate": "2023-05-18T11:16:24.767Z",
   "gender": "Male",
-  "passportNumber": "string",
+  "passportNumber": "P33",
   "issuedDate": "2023-05-18T11:16:24.767Z",
   "passportExpiryDate": "2023-05-18T11:16:24.767Z",
   "placeOfBirth": "string",
@@ -42,7 +42,7 @@ Content-Type: application/json
   "desiredCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
   "brokerNameId": "3c0afa94-4d60-47fb-804a-92624785d035",
   "branchId": "9da90c6e-9bee-4b66-bf4b-f16161c87f8a",
-  "partnerId": "fc6c063c-90f2-4f50-b2d1-f8fb1aa44ef6",
+  "partnerId": null,
   "languageSkills": [
     {
       "canWrite": true,
@@ -149,7 +149,7 @@ Content-Type: application/json
   "attachmentFiles": [
     {
       "filePath": "string",
-      "attachmentId": "776718f0-281f-4c3d-8a9d-e309c1c9ae7b"
+      "attachmentId": "fce6ed27-5a20-4bc4-9701-e24c798552fb"
     }
   ],
   "address": {

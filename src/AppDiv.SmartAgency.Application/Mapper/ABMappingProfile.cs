@@ -110,9 +110,21 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditPaymentRequest, Payment>();
             CreateMap<EditAddressRequest, Address>();
 
-            CreateMap<Partner, PartnerResponseDTO>();
+            
             CreateMap<Address, AddressResponseDTO>();
+          
+           CreateMap<CreatePartnerRequest, Partner>();
+            CreateMap<Address, AddressResponseDTO>();
+
+            CreateMap<Partner, PartnerResponseDTO>();
+            CreateMap<Partner, GetAllPartnerResponseDTO>();
+            CreateMap<Address, PartnerAddressResponseDTO>();
+            CreateMap<Address, GetAllPartnerAddressResponseDTO>();
             CreateMap<EditPartnerCommand, Partner>();
+            CreateMap<PartnerAddressRequest, Address>();
+            CreateMap<EditPartnerAddressRequest, Address>();
+            CreateMap<SearchModel<Partner>, SearchModel<GetAllPartnerResponseDTO>>();
+
 
             CreateMap<OnlineApplicant, OnlineApplicantResponseDTO>();
             CreateMap<OnlineApplicantRequest, OnlineApplicant>();
@@ -138,6 +150,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CreatePageRequest, Page>();
             CreateMap<Page, PageResponseDTO>();
             CreateMap<EditPageCommand, Page>();
+            CreateMap<Page, GetPageByIdResponseDTO>();
 
         }
     }

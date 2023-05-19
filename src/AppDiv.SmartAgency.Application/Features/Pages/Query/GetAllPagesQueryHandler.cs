@@ -23,7 +23,7 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Query
         public async Task<SearchModel<PageResponseDTO>> Handle(GetAllPagesQuery request, CancellationToken cancellationToken)
         {
 
-            var pageList = await _pageRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Category");
+            var pageList = await _pageRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection);
             var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<PageResponseDTO>>(pageList);
 
             return paginatedListResp;

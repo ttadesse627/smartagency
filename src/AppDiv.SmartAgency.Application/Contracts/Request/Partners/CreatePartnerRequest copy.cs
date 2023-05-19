@@ -21,6 +21,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
       public string  BankAccount {get; set;} 
       public string  HeaderLogo {get; set;}
       public string  ReferenceNumber {get; set;} 
-      public AddressRequest  Address {get; set;}
+      public PartnerAddressRequest Address {get; set;}
     }
 }

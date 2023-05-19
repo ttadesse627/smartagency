@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230518104058_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230519084858_Editedpartnermigrtion")]
+    partial class Editedpartnermigrtion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -743,18 +743,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("AddressRegionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Adress")
+                    b.Property<string>("Addres")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<Guid?>("AddressRegionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("AlternativePhone")
                         .HasColumnType("longtext");
 
                     b.Property<string>("City")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid?>("CountryId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -819,6 +822,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressRegionId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Addresses");
                 });
@@ -1402,7 +1407,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 18, 13, 40, 58, 519, DateTimeKind.Local).AddTicks(8282));
+                        .HasDefaultValue(new DateTime(2023, 5, 19, 11, 48, 58, 130, DateTimeKind.Local).AddTicks(7359));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1637,7 +1642,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
                         .WithOne("Applicant")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "AddressId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Branch")
                         .WithMany("ApplBranches")
@@ -1862,7 +1867,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("AddressRegionId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Country")
+                        .WithMany("Countries")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("AddressRegion");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
@@ -2282,6 +2294,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("ApplSalaries");
 
                     b.Navigation("BenRelationShips");
+
+                    b.Navigation("Countries");
 
                     b.Navigation("ECRelationships");
 

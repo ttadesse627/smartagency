@@ -12,7 +12,8 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Update
 {
     public class EditPageCommand: IRequest<PageResponseDTO>
     {
-      public Guid Id {get; set;}   
+      public Guid Id {get; set;} 
+      public string  Category {get; set;}  
       public string  Link {get; set;}
       public string  Title{get; set;}
 
