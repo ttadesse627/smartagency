@@ -16,6 +16,7 @@ namespace AppDiv.SmartAgency.Domain.Configurations
                 .WithMany(a => a.Deposits)
                 .HasForeignKey(d => d.ApplicantId);
                 
+                
         }
 
     }

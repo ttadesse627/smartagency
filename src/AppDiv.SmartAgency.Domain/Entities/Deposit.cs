@@ -17,6 +17,5 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public Guid ApplicantId{get; set;}
         public Applicant? Applicant{get; set;}
 
-
     }
 }

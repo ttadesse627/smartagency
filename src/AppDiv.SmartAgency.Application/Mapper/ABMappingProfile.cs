@@ -136,6 +136,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<DepositResponseDTO, GetDepositByIdResponseDTO>();
             CreateMap<EditDepositCommand, Deposit>();
             CreateMap<Deposit, GetDepositByIdResponseDTO>();
+            CreateMap<SearchModel<Deposit>, SearchModel<DepositResponseDTO>>();
 
             CreateMap<ApplicantFollowupStatus, ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
@@ -144,9 +145,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();
 
-            CreateMap<SearchModel<Page>, SearchModel<PageResponseDTO>>();
+            
             CreateMap<SearchModel<OnlineApplicant>, SearchModel<OnlineApplicantResponseDTO>>();
 
+            CreateMap<SearchModel<Page>, SearchModel<PageResponseDTO>>();
             CreateMap<CreatePageRequest, Page>();
             CreateMap<Page, PageResponseDTO>();
             CreateMap<EditPageCommand, Page>();

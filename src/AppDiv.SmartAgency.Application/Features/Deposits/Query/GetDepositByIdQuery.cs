@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
@@ -22,16 +23,15 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
 
     public class GetDepositByIdHandler : IRequestHandler<GetDepositByIdQuery, GetDepositByIdResponseDTO>
     {
-        private readonly IMediator _mediator;
+        private readonly IDepositRepository _depositRepository;
 
-        public GetDepositByIdHandler(IMediator mediator)
+        public GetDepositByIdHandler(IDepositRepository depositRepository)
         {
-            _mediator = mediator;
+            _depositRepository= depositRepository;
         }
         public async Task<GetDepositByIdResponseDTO> Handle(GetDepositByIdQuery request, CancellationToken cancellationToken)
         {
-            var deposits = await _mediator.Send(new GetAllDepositQuery());
-            var selectedDeposit = deposits.FirstOrDefault(d=>d.Id == request.Id);
+            var selectedDeposit = await _depositRepository.GetByIdAsync(request.Id);
             return CustomMapper.Mapper.Map<GetDepositByIdResponseDTO>(selectedDeposit);
            
         }

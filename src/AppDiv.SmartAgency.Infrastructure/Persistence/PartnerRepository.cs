@@ -24,10 +24,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     public async Task<Partner> GetByIdAsync(Guid Id)
         {
 
-    var partner =  _context.Partners
+    var partner = await _context.Partners
         .Include(p => p.Address)
         .ThenInclude(c => c.Country)
-        .FirstOrDefault(p => p.Id == Id);
+        .FirstOrDefaultAsync(p => p.Id == Id);
        return  partner;
             //return await base.GetAsync(Id);
          /*  var onlineApplicant=   _context.OnlineApplicants

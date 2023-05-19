@@ -38,28 +38,7 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Create
             }
             if (createDepositCommandResponse.Success)
             {
-                //can use this instead of automapper
-                /*  var partner = new Partner()
-                  {
-                      PartnerName=request.partner.PartnerName,
-                      PartnerType=request.partner.PartnerType,
-                      PartnerNameAmharic=request.partner.PartnerNameAmharic,
-                      PartnerNameArabic=request.partner.PartnerNameArabic,
-                      ContactPerson=request.partner.ContactPerson,
-                      IdNumber=request.partner.IdNumber,
-                      ManagerNameAmharic=request.partner.ManagerNameAmharic,
-                      LicenseNumber=request.partner.LicenseNumber,
-                      BankName=request.partner.BankName,
-                      BankAccount=request.partner.BankAccount,
-                      HeaderLogo=request.partner.HeaderLogo,
-                      ReferenceNumber=request.partner.ReferenceNumber,
-                      Address=request.partner.Address
-                  };  */
-
-
-                // await _partnerRepository.InsertAsync(partner, cancellationToken);
-                //await _partnerRepository.SaveChangesAsync(cancellationToken);
-
+                
 
                 var serviceResponse = await _applicantRepository.GetApplicantByPassportNumber(request.deposit.PassportNumber);
                 var ApplicantId = serviceResponse.Data.Id;
