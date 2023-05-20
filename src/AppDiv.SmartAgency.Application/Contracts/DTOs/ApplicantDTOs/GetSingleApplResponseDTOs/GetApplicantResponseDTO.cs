@@ -1,14 +1,11 @@
-using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
-using AppDiv.SmartAgency.Domain.Entities.Base;
-using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 
-
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public record CreateApplicantRequest
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+public record GetApplicantResponseDTO
 {
+    public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string MiddleName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -47,15 +44,15 @@ public record CreateApplicantRequest
     public Guid? BrokerNameId { get; set; }
     public Guid? BranchId { get; set; }
     public Guid? PartnerId { get; set; }
-    public ICollection<LanguageSkillRequest>? LanguageSkills { get; set; }
+    public ICollection<GetLanguageSkillResponseDTO>? LanguageSkills { get; set; }
     public ICollection<Guid>? Skills { get; set; }
-    public ICollection<ExperienceRequest>? Experiences { get; set; }
-    public EducationRequest? Education { get; set; }
-    public BankAccountRequest? BankAccount { get; set; }
-    public EmergencyContactRequest? EmergencyContact { get; set; }
-    public RepresentativeRequest? Representative { get; set; }
-    public ICollection<WitnessRequest>? Witnesses { get; set; }
-    public ICollection<BeneficiaryRequest>? Beneficiaries { get; set; }
-    public ICollection<AttachmentFileRequest>? AttachmentFiles { get; set; }
-    public AddressRequest? Address { get; set; }
+    public ICollection<GetExperienceResponseDTO>? Experiences { get; set; }
+    public GetEducationResponseDTO? Education { get; set; }
+    public GetBankAccountResponseDTO? BankAccount { get; set; }
+    public GetEmergencyContactResponseDTO? EmergencyContact { get; set; }
+    public GetRepresentativeResponseDTO? Representative { get; set; }
+    public ICollection<GetWitnessResponseDTO>? Witnesses { get; set; }
+    public ICollection<GetBeneficiaryResponseDTO>? Beneficiaries { get; set; }
+    public ICollection<AttachmentFileResponseDTO>? AttachmentFiles { get; set; }
+    public GetAddressResponseDTO? Address { get; set; }
 }

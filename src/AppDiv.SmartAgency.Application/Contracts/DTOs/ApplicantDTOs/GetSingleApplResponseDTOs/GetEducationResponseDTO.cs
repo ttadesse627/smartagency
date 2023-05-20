@@ -1,6 +1,6 @@
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public record EducationRequest
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+public record GetEducationResponseDTO
 {
     public int YearCompleted { get; set; }
     public string? FieldOfStudy { get; set; }

@@ -19,7 +19,7 @@ public record OrderResponseDTO
     public LookUpResponseDTO? Priority { get; set; }
     public LookUpResponseDTO? VisaType { get; set; }
     public LookUpResponseDTO? Employee { get; set; }
-    public FileCollectionResponseDTO? VisaFile { get; set; }
+    public AttachmentFileResponseDTO? VisaFile { get; set; }
     public OrderCriteriaResponseDTO? OrderCriteria { get; set; }
     public PaymentResponseDTO? OrderPayment { get; set; }
     public SponsorResponseDTO? OrderSponsor { get; set; }

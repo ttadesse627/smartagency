@@ -1,4 +1,3 @@
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,12 +13,6 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
 
         builder.Property(appl => appl.PassportNumber)
             .IsRequired();
-            
-        builder.HasMany(appl => appl.Skills)
-            .WithMany(lk => lk.ApplSkills)
-            .UsingEntity<Dictionary<string, object>>("Skills",
-                sk => sk.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
-                sk => sk.HasOne<Applicant>().WithMany().HasForeignKey("ApplicantId"));
 
         builder.HasMany(appl => appl.Witnesses)
             .WithOne(wt => wt.Applicant)
@@ -100,5 +93,8 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .WithMany(lk => lk.ApplBranches)
             .HasForeignKey(appl => appl.BranchId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasMany(appl => appl.Skills)
+            .WithMany(lk => lk.Skills);
     }
 }

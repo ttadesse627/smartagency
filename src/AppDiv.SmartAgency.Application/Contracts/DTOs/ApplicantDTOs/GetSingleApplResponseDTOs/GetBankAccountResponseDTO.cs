@@ -1,7 +1,7 @@
 
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public class BankAccountRequest
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+public class GetBankAccountResponseDTO
 {
     public string? BankName { get; set; }
     public long AccountNumber { get; set; }

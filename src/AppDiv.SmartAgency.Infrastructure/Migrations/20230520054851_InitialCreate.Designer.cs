@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230518104058_InitialCreate")]
+    [Migration("20230520054851_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1402,7 +1402,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 18, 13, 40, 58, 519, DateTimeKind.Local).AddTicks(8282));
+                        .HasDefaultValue(new DateTime(2023, 5, 20, 8, 48, 50, 183, DateTimeKind.Local).AddTicks(6998));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1425,34 +1425,64 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("Suffixes");
                 });
 
-            modelBuilder.Entity("Awards", b =>
+            modelBuilder.Entity("ApplicantLookUp", b =>
                 {
-                    b.Property<Guid>("EducationId")
+                    b.Property<Guid>("SkillsId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("LookUpId")
+                    b.Property<Guid>("SkillsId1")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("EducationId", "LookUpId");
+                    b.HasKey("SkillsId", "SkillsId1");
 
-                    b.HasIndex("LookUpId");
+                    b.HasIndex("SkillsId1");
 
-                    b.ToTable("Awards");
+                    b.ToTable("ApplicantLookUp");
                 });
 
-            modelBuilder.Entity("LevelOfQualifications", b =>
+            modelBuilder.Entity("EducationLookUp", b =>
                 {
-                    b.Property<Guid>("EducationId")
+                    b.Property<Guid>("QualificationTypesId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("LookUpId")
+                    b.Property<Guid>("QualificationTypesId1")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("EducationId", "LookUpId");
+                    b.HasKey("QualificationTypesId", "QualificationTypesId1");
 
-                    b.HasIndex("LookUpId");
+                    b.HasIndex("QualificationTypesId1");
 
-                    b.ToTable("LevelOfQualifications");
+                    b.ToTable("EducationLookUp");
+                });
+
+            modelBuilder.Entity("EducationLookUp1", b =>
+                {
+                    b.Property<Guid>("LevelOfQualificationsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("LevelOfQualificationsId1")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("LevelOfQualificationsId", "LevelOfQualificationsId1");
+
+                    b.HasIndex("LevelOfQualificationsId1");
+
+                    b.ToTable("EducationLookUp1");
+                });
+
+            modelBuilder.Entity("EducationLookUp2", b =>
+                {
+                    b.Property<Guid>("AwardsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AwardsId1")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("AwardsId", "AwardsId1");
+
+                    b.HasIndex("AwardsId1");
+
+                    b.ToTable("EducationLookUp2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1583,36 +1613,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("QualificationTypes", b =>
-                {
-                    b.Property<Guid>("EducationId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("LookUpId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("EducationId", "LookUpId");
-
-                    b.HasIndex("LookUpId");
-
-                    b.ToTable("QualificationTypes");
-                });
-
-            modelBuilder.Entity("Skills", b =>
-                {
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("LookUpId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("ApplicantId", "LookUpId");
-
-                    b.HasIndex("LookUpId");
-
-                    b.ToTable("Skills");
-                });
-
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantFollowupStatus", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
@@ -1637,7 +1637,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
                         .WithOne("Applicant")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "AddressId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Branch")
                         .WithMany("ApplBranches")
@@ -2087,32 +2087,62 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("Awards", b =>
+            modelBuilder.Entity("ApplicantLookUp", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Education", null)
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
                         .WithMany()
-                        .HasForeignKey("EducationId")
+                        .HasForeignKey("SkillsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", null)
                         .WithMany()
-                        .HasForeignKey("LookUpId")
+                        .HasForeignKey("SkillsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LevelOfQualifications", b =>
+            modelBuilder.Entity("EducationLookUp", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Education", null)
                         .WithMany()
-                        .HasForeignKey("EducationId")
+                        .HasForeignKey("QualificationTypesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
                         .WithMany()
-                        .HasForeignKey("LookUpId")
+                        .HasForeignKey("QualificationTypesId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EducationLookUp1", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Education", null)
+                        .WithMany()
+                        .HasForeignKey("LevelOfQualificationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
+                        .WithMany()
+                        .HasForeignKey("LevelOfQualificationsId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EducationLookUp2", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Education", null)
+                        .WithMany()
+                        .HasForeignKey("AwardsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
+                        .WithMany()
+                        .HasForeignKey("AwardsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -2164,36 +2194,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("QualificationTypes", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Education", null)
-                        .WithMany()
-                        .HasForeignKey("EducationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
-                        .WithMany()
-                        .HasForeignKey("LookUpId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Skills", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", null)
-                        .WithMany()
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", null)
-                        .WithMany()
-                        .HasForeignKey("LookUpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

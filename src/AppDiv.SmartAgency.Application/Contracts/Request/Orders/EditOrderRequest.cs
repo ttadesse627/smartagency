@@ -17,7 +17,7 @@ public record EditOrderRequest
     public Guid? PriorityId { get; set; }
     public Guid? VisaTypeId { get; set; }
 
-    public EditFileCollectionRequest? VisaFile { get; set; }
+    public EditAttachmentFileRequest? VisaFile { get; set; }
     public EditOrderCriteriaRequest? OrderCriteria { get; set; }
     public EditPaymentRequest? OrderPayment { get; set; }
     public EditSponsorRequest? OrderSponsor { get; set; }

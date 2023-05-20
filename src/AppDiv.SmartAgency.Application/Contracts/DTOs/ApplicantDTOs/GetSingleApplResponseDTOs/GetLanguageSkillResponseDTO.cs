@@ -1,7 +1,7 @@
 using AppDiv.SmartAgency.Domain.Enums;
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public class LanguageSkillRequest
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+public class GetLanguageSkillResponseDTO
 {
     public bool CanWrite { get; set; }
     public bool CanRead { get; set; }

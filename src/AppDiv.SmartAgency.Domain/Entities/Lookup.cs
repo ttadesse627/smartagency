@@ -24,12 +24,12 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<Applicant>? ApplDesiredCountries { get; set; }
         public ICollection<Applicant>? ApplBrokerNames { get; set; }
         public ICollection<Applicant>? ApplBranches { get; set; }
-        public ICollection<Applicant>? ApplSkills { get; set; }
+        public ICollection<Applicant>? Skills { get; set; }
         public ICollection<LanguageSkill>? LanguageSkills { get; set; }
         public ICollection<Experience>? ExpCountries { get; set; }
-        public ICollection<Education>? EduQualificationTypes { get; set; }
-        public ICollection<Education>? EduLevelOfQualifications { get; set; }
-        public ICollection<Education>? EduAwards { get; set; }
+        public ICollection<Education>? QualificationTypes { get; set; }
+        public ICollection<Education>? LevelOfQualifications { get; set; }
+        public ICollection<Education>? Awards { get; set; }
         public ICollection<EmergencyContact>? ECRelationships { get; set; }
         public ICollection<Beneficiary>? BenRelationShips { get; set; }
         public ICollection<Address>? AddressRegions { get; set; }

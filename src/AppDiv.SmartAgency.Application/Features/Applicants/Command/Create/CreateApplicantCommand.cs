@@ -1,7 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -60,14 +60,14 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             }
 
             applicantEntity.Education.QualificationTypes = qualificationTypes;
-            applicantEntity.Education.LevelofQualifications = levelOfQualifications;
+            applicantEntity.Education.LevelOfQualifications = levelOfQualifications;
             applicantEntity.Education.Awards = awards;
             applicantEntity.Skills = technicalSkills;
             // var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
 
         int count = 0;
 
-        if (applicantEntity.Education.LevelofQualifications !=null 
+        if (applicantEntity.Education.LevelOfQualifications !=null 
                 && applicantEntity.Education.QualificationTypes !=null
                 && applicantEntity.Education.Awards !=null
                 && applicantEntity.Skills !=null)

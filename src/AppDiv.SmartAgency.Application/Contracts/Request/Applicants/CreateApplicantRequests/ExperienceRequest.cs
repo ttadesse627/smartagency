@@ -1,6 +1,6 @@
 
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
+namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 public class ExperienceRequest
 {
     public int PeriodLength { get; set; }

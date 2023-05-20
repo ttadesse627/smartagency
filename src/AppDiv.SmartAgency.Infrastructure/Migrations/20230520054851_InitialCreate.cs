@@ -167,7 +167,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 18, 13, 40, 58, 519, DateTimeKind.Local).AddTicks(8282)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 5, 20, 8, 48, 50, 183, DateTimeKind.Local).AddTicks(6998)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -612,7 +612,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Applicants_LookUps_BranchId",
                         column: x => x.BranchId,
@@ -725,6 +725,31 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_ApplicantFollowupStatuses_LookUps_FollowupStatusId",
                         column: x => x.FollowupStatusId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ApplicantLookUp",
+                columns: table => new
+                {
+                    SkillsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SkillsId1 = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicantLookUp", x => new { x.SkillsId, x.SkillsId1 });
+                    table.ForeignKey(
+                        name: "FK_ApplicantLookUp_Applicants_SkillsId1",
+                        column: x => x.SkillsId1,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicantLookUp_LookUps_SkillsId",
+                        column: x => x.SkillsId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -1075,31 +1100,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LookUpId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => new { x.ApplicantId, x.LookUpId });
-                    table.ForeignKey(
-                        name: "FK_Skills_Applicants_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Skills_LookUps_LookUpId",
-                        column: x => x.LookUpId,
-                        principalTable: "LookUps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Witnesses",
                 columns: table => new
                 {
@@ -1137,24 +1137,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Awards",
+                name: "EducationLookUp",
                 columns: table => new
                 {
-                    EducationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LookUpId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    QualificationTypesId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    QualificationTypesId1 = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Awards", x => new { x.EducationId, x.LookUpId });
+                    table.PrimaryKey("PK_EducationLookUp", x => new { x.QualificationTypesId, x.QualificationTypesId1 });
                     table.ForeignKey(
-                        name: "FK_Awards_Educations_EducationId",
-                        column: x => x.EducationId,
+                        name: "FK_EducationLookUp_Educations_QualificationTypesId",
+                        column: x => x.QualificationTypesId,
                         principalTable: "Educations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Awards_LookUps_LookUpId",
-                        column: x => x.LookUpId,
+                        name: "FK_EducationLookUp_LookUps_QualificationTypesId1",
+                        column: x => x.QualificationTypesId1,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -1162,24 +1162,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "LevelOfQualifications",
+                name: "EducationLookUp1",
                 columns: table => new
                 {
-                    EducationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LookUpId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    LevelOfQualificationsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    LevelOfQualificationsId1 = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LevelOfQualifications", x => new { x.EducationId, x.LookUpId });
+                    table.PrimaryKey("PK_EducationLookUp1", x => new { x.LevelOfQualificationsId, x.LevelOfQualificationsId1 });
                     table.ForeignKey(
-                        name: "FK_LevelOfQualifications_Educations_EducationId",
-                        column: x => x.EducationId,
+                        name: "FK_EducationLookUp1_Educations_LevelOfQualificationsId",
+                        column: x => x.LevelOfQualificationsId,
                         principalTable: "Educations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LevelOfQualifications_LookUps_LookUpId",
-                        column: x => x.LookUpId,
+                        name: "FK_EducationLookUp1_LookUps_LevelOfQualificationsId1",
+                        column: x => x.LevelOfQualificationsId1,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -1187,24 +1187,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "QualificationTypes",
+                name: "EducationLookUp2",
                 columns: table => new
                 {
-                    EducationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LookUpId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    AwardsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AwardsId1 = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QualificationTypes", x => new { x.EducationId, x.LookUpId });
+                    table.PrimaryKey("PK_EducationLookUp2", x => new { x.AwardsId, x.AwardsId1 });
                     table.ForeignKey(
-                        name: "FK_QualificationTypes_Educations_EducationId",
-                        column: x => x.EducationId,
+                        name: "FK_EducationLookUp2_Educations_AwardsId",
+                        column: x => x.AwardsId,
                         principalTable: "Educations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_QualificationTypes_LookUps_LookUpId",
-                        column: x => x.LookUpId,
+                        name: "FK_EducationLookUp2_LookUps_AwardsId1",
+                        column: x => x.AwardsId1,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -1399,6 +1399,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 column: "FollowupStatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApplicantLookUp_SkillsId1",
+                table: "ApplicantLookUp",
+                column: "SkillsId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Applicants_AddressId",
                 table: "Applicants",
                 column: "AddressId",
@@ -1529,11 +1534,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Awards_LookUpId",
-                table: "Awards",
-                column: "LookUpId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_BankAccounts_ApplicantId",
                 table: "BankAccounts",
                 column: "ApplicantId",
@@ -1563,6 +1563,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "IX_Deposits_ApplicantId",
                 table: "Deposits",
                 column: "ApplicantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EducationLookUp_QualificationTypesId1",
+                table: "EducationLookUp",
+                column: "QualificationTypesId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EducationLookUp1_LevelOfQualificationsId1",
+                table: "EducationLookUp1",
+                column: "LevelOfQualificationsId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EducationLookUp2_AwardsId1",
+                table: "EducationLookUp2",
+                column: "AwardsId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Educations_ApplicantId",
@@ -1606,11 +1621,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "IX_LanguageSkills_LanguageId",
                 table: "LanguageSkills",
                 column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LevelOfQualifications_LookUpId",
-                table: "LevelOfQualifications",
-                column: "LookUpId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LookUps_CategoryId",
@@ -1707,11 +1717,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_QualificationTypes_LookUpId",
-                table: "QualificationTypes",
-                column: "LookUpId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Repersentative_AddressId",
                 table: "Repersentative",
                 column: "AddressId",
@@ -1722,11 +1727,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Repersentative",
                 column: "ApplicantId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Skills_LookUpId",
-                table: "Skills",
-                column: "LookUpId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sponsors_AddressId",
@@ -1764,6 +1764,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "ApplicantFollowupStatuses");
 
             migrationBuilder.DropTable(
+                name: "ApplicantLookUp");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -1782,9 +1785,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "AuditLogs");
 
             migrationBuilder.DropTable(
-                name: "Awards");
-
-            migrationBuilder.DropTable(
                 name: "BankAccounts");
 
             migrationBuilder.DropTable(
@@ -1797,6 +1797,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "Deposits");
 
             migrationBuilder.DropTable(
+                name: "EducationLookUp");
+
+            migrationBuilder.DropTable(
+                name: "EducationLookUp1");
+
+            migrationBuilder.DropTable(
+                name: "EducationLookUp2");
+
+            migrationBuilder.DropTable(
                 name: "EmergencyContacts");
 
             migrationBuilder.DropTable(
@@ -1804,9 +1813,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "LanguageSkills");
-
-            migrationBuilder.DropTable(
-                name: "LevelOfQualifications");
 
             migrationBuilder.DropTable(
                 name: "OnlineApplicants");
@@ -1821,13 +1827,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "QualificationTypes");
-
-            migrationBuilder.DropTable(
                 name: "Repersentative");
-
-            migrationBuilder.DropTable(
-                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Sponsors");
