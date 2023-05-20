@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.ApplicantFollowupStatuses;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Create;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,18 +27,19 @@ namespace AppDiv.SmartAgency.API.Controllers
    
 
    [HttpGet("get-all-applicantFollowupStatuses")]
-    public async Task<ActionResult<ApplicantFollowupStatusResponseDTO>> GetAllApplicantFollowupStatuses()
+    public async Task<ActionResult<ApplicantFollowupStatusResponseDTO>> GetAllApplicantFollowupStatuses(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetAllApplicantFollowupStatusQuery()));
+        return Ok(await _mediator.Send(new GetAllApplicantFollowupStatusQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
  
   
-     [HttpGet("{id}")]
+   /*  [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<CreateApplicantFollowupStatusRequest> Get(Guid id)
         {
             return await _mediator.Send(new GetApplicantFollowupStatusByIdQuery(id));
         }
+        
   
 /*
       [HttpDelete("Delete/{id}")]

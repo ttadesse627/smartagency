@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Features.Partners.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Partners.Query;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,9 +29,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-partner")]
-        public async Task<ActionResult<PartnerResponseDTO>> GetAllPartners()
+        public async Task<ActionResult<GetAllPartnerResponseDTO>> GetAllPartners(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
-            return Ok(await _mediator.Send(new GetAllPartnerQuery()));
+            return Ok(await _mediator.Send(new GetAllPartnerQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
 
         [HttpGet("{id}")]

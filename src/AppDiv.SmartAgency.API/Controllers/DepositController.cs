@@ -8,6 +8,7 @@ using AppDiv.SmartAgency.Application.Features.Deposits.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Deposits.Query;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,10 +33,12 @@ namespace AppDiv.SmartAgency.API.Controllers
     }
 
    [HttpGet("get-all-deposits")]
-    public async Task<ActionResult<DepositResponseDTO>> GetAllDeposits()
+    public async Task<ActionResult<DepositResponseDTO>> GetAllDeposits(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetAllDepositQuery()));
+        return Ok(await _mediator.Send(new GetAllDepositQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+        
     }
+    
 
      [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

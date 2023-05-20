@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
+
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
-
+/*
 namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query
 {
     public class GetApplicantFollowupStatusByIdQuery: IRequest<GetApplicantFollowupStatusByIdResponseDTO>
@@ -36,3 +36,4 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Que
         }
 }
 }
+*/

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Pages.Query
 {
-    public class GetPageByIdQuery: IRequest<PageResponseDTO>
+    public class GetPageByIdQuery: IRequest<GetPageByIdResponseDTO>
     {
         public Guid Id { get; private set; }
 
@@ -20,7 +20,7 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Query
 
     }
 
-    public class GetPageByIdHandler : IRequestHandler<GetPageByIdQuery, PageResponseDTO>
+    public class GetPageByIdHandler : IRequestHandler<GetPageByIdQuery, GetPageByIdResponseDTO>
     {
         private readonly IMediator _mediator;
        private readonly IPageRepository _pageRepository;
@@ -29,11 +29,11 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Query
             _mediator = mediator;
             _pageRepository= pageRepository;
         }
-        public async Task<PageResponseDTO> Handle(GetPageByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetPageByIdResponseDTO> Handle(GetPageByIdQuery request, CancellationToken cancellationToken)
         {
             //var pages = await _mediator.Send(new GetAllPagesQuery());
             var selectedPage = await _pageRepository.GetByIdAsync(request.Id);
-            return CustomMapper.Mapper.Map<PageResponseDTO>(selectedPage);
+            return CustomMapper.Mapper.Map<GetPageByIdResponseDTO>(selectedPage);
            
         }
     }

@@ -2,6 +2,7 @@
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
@@ -20,7 +21,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     }
     public async Task<Deposit> GetByIdAsync(Guid Id)
     {
-        return await base.GetAsync(Id);
+        var deposit= await _context.Deposits
+                 .Include(d=>d.Applicant)
+                 .FirstOrDefaultAsync(a=> a.Id== Id);
+         return deposit;        
     }
     public async Task<Int32> UpdateAsync(Deposit deposit)
    {

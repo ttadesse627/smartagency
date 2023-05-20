@@ -741,18 +741,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("AddressRegionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Adress")
+                    b.Property<string>("Addres")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<Guid?>("AddressRegionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("AlternativePhone")
                         .HasColumnType("longtext");
 
                     b.Property<string>("City")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid?>("CountryId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -817,6 +820,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressRegionId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Addresses");
                 });
@@ -1860,7 +1865,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("AddressRegionId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Country")
+                        .WithMany("Countries")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("AddressRegion");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
@@ -2280,6 +2292,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("ApplSalaries");
 
                     b.Navigation("BenRelationShips");
+
+                    b.Navigation("Countries");
 
                     b.Navigation("ECRelationships");
 

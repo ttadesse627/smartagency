@@ -21,6 +21,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
       public string  ReferenceNumber {get; set;} 
      
        public Guid  AddressId {get; set;}
-      public AddressResponseDTO  Address {get; set;}
+      public PartnerAddressResponseDTO  Address {get; set;}
     }
 }

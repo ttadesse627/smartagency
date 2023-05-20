@@ -1,6 +1,7 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -23,10 +24,9 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
         public string BankAccount { get; set; }
         public string HeaderLogo { get; set; }
         public string ReferenceNumber { get; set; }
-        public Guid AddressId { get; set; }
+         public Guid AddressId { get; set; }
 
-        public AddressResponseDTO Address { get; set; }
-
+        public EditPartnerAddressRequest Address { get; set; }
        
     }
 
@@ -76,9 +76,8 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
                 if(res>=1) {
 
                     var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
-                    Console.WriteLine(modifiedPartner);
                     partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
-                    Console.WriteLine(partnerResponse);
+                  
 
                 }
             }
