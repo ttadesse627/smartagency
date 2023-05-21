@@ -1,4 +1,5 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Create;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
@@ -33,9 +34,9 @@ namespace AppDiv.SmartAgency.API.Controllers
     }
  
   
-   /*  [HttpGet("{id}")]
+    [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<CreateApplicantFollowupStatusRequest> Get(Guid id)
+        public async Task<GetApplicantFollowupStatusByIdResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetApplicantFollowupStatusByIdQuery(id));
         }

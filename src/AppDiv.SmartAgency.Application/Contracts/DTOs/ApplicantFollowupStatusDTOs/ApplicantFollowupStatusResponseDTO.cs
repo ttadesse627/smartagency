@@ -12,8 +12,10 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusD
         
         public string PassportNumber{get; set;}
         public string? Remark{get; set;}
-        public DepositApplicantResponseDTO Applicant{get; set;}
-        public OnlineApplicantLookUpResponseDTO FollowupStatus {get; set;}
+   
+        public DepositApplicantResponseDTO? Applicant{get; set;}
+
+        public OnlineApplicantLookUpResponseDTO? FollowupStatus {get; set;}
 
 
     }

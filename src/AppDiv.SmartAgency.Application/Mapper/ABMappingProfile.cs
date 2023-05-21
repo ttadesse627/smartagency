@@ -38,6 +38,7 @@ using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -141,6 +142,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<SearchModel<ApplicantFollowupStatus>, SearchModel<ApplicantFollowupStatusResponseDTO>>();
             CreateMap<ApplicantFollowupStatus, ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
+            CreateMap<ApplicantFollowupStatus, GetApplicantFollowupStatusByIdResponseDTO>();
 
             
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
