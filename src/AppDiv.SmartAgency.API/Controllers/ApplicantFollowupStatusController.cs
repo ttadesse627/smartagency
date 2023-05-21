@@ -2,6 +2,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Create;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query;
+using AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -42,14 +43,14 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
         
   
-/*
+
       [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeleteDeposit(Guid id)
+        public async Task<ActionResult> DeleteApplicantFollowupStatus(Guid id)
         {
             try
             {
                 string result = string.Empty;
-                result = await _mediator.Send(new DeleteDepositCommand(id));
+                result = await _mediator.Send(new DeleteApplicantFollowupStatusCommand(id));
                 return Ok(result);
             }
             catch (Exception exp)
@@ -59,7 +60,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-
+/*
      
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)
