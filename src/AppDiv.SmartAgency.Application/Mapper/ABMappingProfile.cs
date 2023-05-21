@@ -39,6 +39,7 @@ using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -77,6 +78,24 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AttachmentFileRequest, AttachmentFile>();
             CreateMap<AddressRequest, Address>();
             CreateMap<RepAddressRequest, Address>();
+
+            // Get Single Applicant Mapper
+            CreateMap<Applicant, GetApplicantResponseDTO>();
+            CreateMap<LanguageSkill, GetLanguageSkillResponseDTO>();
+            CreateMap<Experience, GetExperienceResponseDTO>();
+            CreateMap<Education, GetEducationResponseDTO>();
+            CreateMap<BankAccount, GetBankAccountResponseDTO>();
+            CreateMap<EmergencyContact, GetEmergencyContactResponseDTO>();
+            CreateMap<Representative, GetRepresentativeResponseDTO>();
+            CreateMap<Witness, GetWitnessResponseDTO>();
+            CreateMap<Beneficiary, GetBeneficiaryResponseDTO>();
+            CreateMap<Address, GetAddressResponseDTO>();
+            CreateMap<Address, GetRepAddressResponseDTO>();
+            CreateMap<Beneficiary, GetBeneficiaryResponseDTO>();
+            CreateMap<Skill, GetSkillResponseDTO>();
+            CreateMap<QualificationType, GetQualificationTypeResponseDTO>();
+            CreateMap<LevelOfQualification, GetLevelOfQualificationResponseDTO>();
+            CreateMap<Award, GetAwardResponseDTO>();
 
             // Edit Applicant Mapper
             CreateMap<EditApplicantRequest, Applicant>()

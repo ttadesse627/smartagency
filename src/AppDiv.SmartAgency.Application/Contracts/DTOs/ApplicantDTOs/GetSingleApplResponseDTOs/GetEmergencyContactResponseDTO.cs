@@ -1,5 +1,6 @@
 
 
+using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Domain.Enums;
 
@@ -12,6 +13,6 @@ public record GetEmergencyContactResponseDTO
     public DateTime? BirthDate { get; set; }
     public Gender? Gender { get; set; }
     public string? ArabicFullName { get; set; }
-    public Guid? RelationshipId { get; set; }
-    public EditAddressRequest? Address { get; set; }
+    public LookUpResponseDTO? Relationship { get; set; }
+    public GetAddressResponseDTO? Address { get; set; }
 }

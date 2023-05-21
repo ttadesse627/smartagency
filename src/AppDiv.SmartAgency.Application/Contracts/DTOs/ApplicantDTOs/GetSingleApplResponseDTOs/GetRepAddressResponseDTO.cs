@@ -8,6 +8,6 @@ public record GetRepAddressResponseDTO
     public string? Kebele { get; set; }
     public string? PhoneNumber { get; set; }
     public string? HouseNumber { get; set; }
-    public string Adress { get; set; } = string.Empty;
+    public string Adress { get; set; }
 
 }

@@ -39,47 +39,33 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
     {
         var applicant = await _context.Applicants
                                 .Include(appl => appl.IssuingCountry)
-                                    .ThenInclude(ln => ln.Category)
                                 .Include(appl => appl.PassportIssuedPlace)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.MaritalStatus)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Health)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Religion)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Jobtitle)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Experience)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Language)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Salary)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.DesiredCountry)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.BrokerName)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Branch)
-                                    .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Partner)
                                 .Include(appl => appl.LanguageSkills)
                                     .ThenInclude(ln => ln.Language)
-                                        .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Skills)
-                                    .ThenInclude(lk => lk.Category)
+                                    .ThenInclude(lk => lk.LookUp)
                                 .Include(appl => appl.Experiences)
                                     .ThenInclude(exp => exp.Country)
-                                        .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Education)
                                     .ThenInclude(edu => edu.QualificationTypes)
-                                        .ThenInclude(lk => lk.Category)
+                                        .ThenInclude(lk => lk.LookUp)
                                 .Include(appl => appl.Education)
                                     .ThenInclude(edu => edu.LevelOfQualifications)
-                                        .ThenInclude(lk => lk.Category)
+                                        .ThenInclude(lk => lk.LookUp)
                                 .Include(appl => appl.Education)
                                     .ThenInclude(edu => edu.Awards)
-                                        .ThenInclude(lk => lk.Category)
+                                        .ThenInclude(lk => lk.LookUp)
                                 .Include(appl => appl.BankAccount)
                                 .Include(appl => appl.EmergencyContact)
                                     .ThenInclude(ec => ec.Relationship)
@@ -89,16 +75,13 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
                                 .Include(appl => appl.Representative)
                                     .ThenInclude(rep => rep.Address)
                                         .ThenInclude(addr => addr.AddressRegion)
-                                            .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.Witnesses)
                                 .Include(appl => appl.Beneficiaries)
                                     .ThenInclude(ben => ben.Relationship)
-                                        .ThenInclude(lk => lk.Category)
                                 .Include(appl => appl.AttachmentFiles)
                                     .ThenInclude(atf => atf.Attachment)
                                 .Include(appl => appl.Address)
                                     .ThenInclude(addr => addr.AddressRegion)
-                                        .ThenInclude(lk => lk.Category)
                                 .Where(appl => appl.Id.Equals(id)).FirstOrDefaultAsync(appl => appl.Id == id);
         if (applicant is null)
         {
@@ -139,6 +122,21 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         serviceResponse.Data = await _context.Applicants.FirstOrDefaultAsync(a => a.PassportNumber == passportNumber);
 
         return serviceResponse;
+    }
+    public async Task<int> AddApplicantAsync(Applicant applicant)
+    {
+        var response = 0;
+        try
+        {
+            await _context.Applicants.AddAsync(applicant);
+            response = 1;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Couldn't add the applicant");
+        }
+
+        return response;
     }
 
     public async Task<int> EditApplicantAsync(Applicant applicant)
