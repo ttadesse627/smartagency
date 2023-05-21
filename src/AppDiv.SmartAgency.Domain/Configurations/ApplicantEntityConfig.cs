@@ -93,8 +93,5 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .WithMany(lk => lk.ApplBranches)
             .HasForeignKey(appl => appl.BranchId)
             .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasMany(appl => appl.Skills)
-            .WithMany(lk => lk.Skills);
     }
 }
