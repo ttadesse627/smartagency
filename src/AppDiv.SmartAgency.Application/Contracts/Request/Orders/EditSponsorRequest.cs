@@ -11,6 +11,6 @@ public record EditSponsorRequest
     public string? OtherName { get; set; }
     public string? ResidentialTitle { get; set; }
     public int NumberOfFamily { get; set; }
-    public EditFileCollectionRequest? SponsorIDFile { get; set; }
+    public EditAttachmentFileRequest? SponsorIDFile { get; set; }
     public EditAddressRequest? SponsorAddress { get; set; }
 }

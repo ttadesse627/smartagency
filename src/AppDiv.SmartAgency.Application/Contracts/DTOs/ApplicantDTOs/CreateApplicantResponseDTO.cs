@@ -46,6 +46,6 @@ public record CreateApplicantResponseDTO
     public RepresentativeResponseDTO? Repersentative { get; set; }
     public ICollection<WitnessResponseDTO>? Witnesses { get; set; }
     public ICollection<BeneficiaryResponseDTO>? Beneficiaries { get; set; }
-    public ICollection<FileCollectionResponseDTO>? FileCollections { get; set; }
+    public ICollection<AttachmentFileResponseDTO>? FileCollections { get; set; }
     public AddressResponseDTO? Address { get; set; }
 }

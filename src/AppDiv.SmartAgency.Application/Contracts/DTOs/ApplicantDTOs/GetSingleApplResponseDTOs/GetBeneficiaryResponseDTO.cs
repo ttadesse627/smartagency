@@ -1,7 +1,7 @@
 
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public record BeneficiaryRequest
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+public record GetBeneficiaryResponseDTO
 {
     public string FirstName { get; set; } = string.Empty;
     public string MiddleName { get; set; } = string.Empty;

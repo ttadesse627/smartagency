@@ -14,29 +14,14 @@ public class EducationEntityConfig : IEntityTypeConfiguration<Education>
             .HasForeignKey<Education>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(e => e.QualificationTypes)
-                .WithMany(l => l.EduQualificationTypes)
-                .UsingEntity<Dictionary<string, object>>(
-                    "QualificationTypes",
-                    j => j.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
-                    j => j.HasOne<Education>().WithMany().HasForeignKey("EducationId")
-                );
+        builder.HasMany(edu => edu.QualificationTypes)
+            .WithMany(appl => appl.QualificationTypes);
 
-        builder.HasMany(e => e.LevelofQualifications)
-                .WithMany(l => l.EduLevelOfQualifications)
-                .UsingEntity<Dictionary<string, object>>(
-                    "LevelOfQualifications",
-                    j => j.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
-                    j => j.HasOne<Education>().WithMany().HasForeignKey("EducationId")
-                );
+        builder.HasMany(edu => edu.LevelOfQualifications)
+            .WithMany(lk => lk.LevelOfQualifications);
 
-        builder.HasMany(e => e.Awards)
-                .WithMany(l => l.EduAwards)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Awards",
-                    j => j.HasOne<LookUp>().WithMany().HasForeignKey("LookUpId"),
-                    j => j.HasOne<Education>().WithMany().HasForeignKey("EducationId")
-                );
+        builder.HasMany(edu => edu.Awards)
+            .WithMany(lk => lk.Awards);
 
     }
 }

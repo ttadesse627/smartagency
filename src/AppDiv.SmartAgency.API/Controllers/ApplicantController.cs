@@ -2,7 +2,8 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Applicants.Queries;
@@ -32,6 +33,12 @@ public class ApplicantController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetAllApplicants(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
+
+    // [HttpGet("get/{id}")]
+    // public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants(int pageNumber = 1, int pageSize = 20, string searchTerm = "",  string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+    // {
+    //     return Ok(await _mediator.Send(new GetAllApplicants(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+    // }
     [HttpPut("delete/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> DeleteApplicant(Guid id, [FromBody] DeleteApplicantCommand command)
     {
@@ -40,6 +47,24 @@ public class ApplicantController : ControllerBase
             if (command.Id == id)
             {
                 var response = await _mediator.Send(command);
+                return Ok(response);
+            }
+            else return BadRequest();
+        }
+        catch (System.Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("edit/{id}")]
+    public async Task<ActionResult<ServiceResponse<Int32>>> EditApplicant(Guid id, [FromBody] EditApplicantRequest request)
+    {
+        try
+        {
+            if (request.Id == id)
+            {
+                var response = await _mediator.Send(new EditApplicantCommand(request));
                 return Ok(response);
             }
             else return BadRequest();

@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 
@@ -37,6 +37,7 @@ using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 
@@ -67,7 +68,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<ExperienceRequest, Experience>();
             CreateMap<EducationRequest, Education>()
                 .ForMember(dest => dest.QualificationTypes, opt => opt.Ignore())
-                .ForMember(dest => dest.LevelofQualifications, opt => opt.Ignore())
+                .ForMember(dest => dest.LevelOfQualifications, opt => opt.Ignore())
                 .ForMember(dest => dest.Awards, opt => opt.Ignore());
             CreateMap<BankAccountRequest, BankAccount>();
             CreateMap<EmergencyContactRequest, EmergencyContact>();
@@ -78,13 +79,32 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AddressRequest, Address>();
             CreateMap<RepAddressRequest, Address>();
 
+            // Edit Applicant Mapper
+            CreateMap<EditApplicantRequest, Applicant>()
+                .ForMember(dest => dest.Skills, opt => opt.Ignore());
+            CreateMap<EditBankAccountRequest, BankAccount>();
+            CreateMap<EditBeneficiaryRequest, Beneficiary>();
+            CreateMap<EditEducationRequest, Education>()
+                .ForMember(dest => dest.QualificationTypes, opt => opt.Ignore())
+                .ForMember(dest => dest.LevelOfQualifications, opt => opt.Ignore())
+                .ForMember(dest => dest.Awards, opt => opt.Ignore());
+            CreateMap<EditEmergencyContactRequest, EmergencyContact>();
+            CreateMap<EditExperienceRequest, Experience>();
+            CreateMap<EditLanguageSkillRequest, LanguageSkill>();
+            CreateMap<EditRepresentativeRequest, Representative>();
+            CreateMap<EditWitnessRequest, Witness>();
+            CreateMap<EditAttachmentFileRequest, AttachmentFile>();
+            CreateMap<EditAddressRequest, Address>();
+            CreateMap<EditRepAddressRequest, Address>();
+
+            // Applicant Response
             CreateMap<Applicant, CreateApplicantResponseDTO>();
             CreateMap<SearchModel<Applicant>, SearchModel<ApplicantsResponseDTO>>();
             CreateMap<BankAccount, BankAccountResponseDTO>();
             CreateMap<Beneficiary, BeneficiaryResponseDTO>();
             CreateMap<Education, EducationResponseDTO>();
             CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
-            CreateMap<AttachmentFile, FileCollectionResponseDTO>();
+            CreateMap<AttachmentFile, AttachmentFileResponseDTO>();
             CreateMap<LanguageSkill, LanguageResponseDTO>();
             CreateMap<Partner, PartnerApplRespDTO>();
             CreateMap<Representative, RepresentativeResponseDTO>();

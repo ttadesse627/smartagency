@@ -1,7 +1,8 @@
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
-public record RepAddressRequest
+namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants. EditApplicantRequests;
+public record EditRepAddressRequest
 {
+    public Guid Id { get; set; }
     public string? City { get; set; }
     public string? Zone { get; set; }
     public string? Woreda { get; set; }

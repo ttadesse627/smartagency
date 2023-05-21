@@ -10,6 +10,6 @@ public record SponsorResponseDTO
     public string? OtherName { get; set; }
     public string? ResidentialTitle { get; set; }
     public int NumberOfFamily { get; set; }
-    public FileCollectionResponseDTO? SponsorIDFile { get; set; }
+    public AttachmentFileResponseDTO? SponsorIDFile { get; set; }
     public AddressResponseDTO? SponsorAddress { get; set; }
 }
