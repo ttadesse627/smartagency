@@ -1,8 +1,10 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Create;
+using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Update;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query;
-using AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete;
+
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -58,12 +60,9 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-
-
-/*
      
         [HttpPut("Edit/{id}")]
-        public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)
+        public async Task<ActionResult> Edit(Guid id, [FromBody] EditApplicantFollowupStatusCommand command)
         {
             try
             {
@@ -84,7 +83,7 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
           
-  */
+  
 }
 }
-
+}

@@ -31,10 +31,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return followupStatus;         
 
     }
-    public async Task<Int32> UpdateAsync(Deposit deposit)
+    public async Task<Int32> UpdateAsync(ApplicantFollowupStatus applicantFollowupStatus)
    {
       
-        _context.Deposits.Update(deposit);
+        _context.ApplicantFollowupStatuses.Update(applicantFollowupStatus);
         var response = await _context.SaveChangesAsync();
 
         return response;
