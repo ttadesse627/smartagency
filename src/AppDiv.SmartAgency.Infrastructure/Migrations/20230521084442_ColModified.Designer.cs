@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230521084442_ColModified")]
+    partial class ColModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +61,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("FollowupStatusId");
 
-                    b.ToTable("ApplicantFollowupStatuses", (string)null);
+                    b.ToTable("ApplicantFollowupStatuses");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -237,7 +239,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("SalaryId");
 
-                    b.ToTable("Applicants", (string)null);
+                    b.ToTable("Applicants");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Award", b =>
@@ -258,7 +260,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("LookUpId");
 
-                    b.ToTable("Awards", (string)null);
+                    b.ToTable("Awards");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.BankAccount", b =>
@@ -287,7 +289,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ApplicantId")
                         .IsUnique();
 
-                    b.ToTable("BankAccounts", (string)null);
+                    b.ToTable("BankAccounts");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Beneficiary", b =>
@@ -350,7 +352,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("RelationshipId");
 
-                    b.ToTable("Beneficiaries", (string)null);
+                    b.ToTable("Beneficiaries");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Education", b =>
@@ -376,7 +378,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ApplicantId")
                         .IsUnique();
 
-                    b.ToTable("Educations", (string)null);
+                    b.ToTable("Educations");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.EmergencyContact", b =>
@@ -437,7 +439,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("RelationshipId");
 
-                    b.ToTable("EmergencyContacts", (string)null);
+                    b.ToTable("EmergencyContacts");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Experience", b =>
@@ -464,7 +466,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Experiences", (string)null);
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.LanguageSkill", b =>
@@ -500,7 +502,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("LanguageSkills", (string)null);
+                    b.ToTable("LanguageSkills");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.LevelOfQualification", b =>
@@ -521,7 +523,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("LookUpId");
 
-                    b.ToTable("LevelOfQualifications", (string)null);
+                    b.ToTable("LevelOfQualifications");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.QualificationType", b =>
@@ -542,7 +544,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("LookUpId");
 
-                    b.ToTable("QualificationTypes", (string)null);
+                    b.ToTable("QualificationTypes");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Representative", b =>
@@ -595,7 +597,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ApplicantId")
                         .IsUnique();
 
-                    b.ToTable("Repersentative", (string)null);
+                    b.ToTable("Repersentative");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Skill", b =>
@@ -616,7 +618,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("LookUpId");
 
-                    b.ToTable("Skills", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Witness", b =>
@@ -668,7 +670,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ApplicantId");
 
-                    b.ToTable("Witnesses", (string)null);
+                    b.ToTable("Witnesses");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
@@ -779,7 +781,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Audit.AuditLog", b =>
@@ -816,7 +818,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("AuditId");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.Address", b =>
@@ -907,7 +909,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
@@ -937,7 +939,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("AttachmentFiles", (string)null);
+                    b.ToTable("AttachmentFiles");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Category", b =>
@@ -952,7 +954,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -1015,7 +1017,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("SuffixId");
 
-                    b.ToTable("Customer", (string)null);
+                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Deposit", b =>
@@ -1057,7 +1059,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ApplicantId");
 
-                    b.ToTable("Deposits", (string)null);
+                    b.ToTable("Deposits");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
@@ -1089,7 +1091,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("LookUps", (string)null);
+                    b.ToTable("LookUps");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.OnlineApplicant", b =>
@@ -1159,7 +1161,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("MaritalStatusId");
 
-                    b.ToTable("OnlineApplicants", (string)null);
+                    b.ToTable("OnlineApplicants");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Order", b =>
@@ -1237,7 +1239,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("VisaTypeId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.OrderCriteria", b =>
@@ -1290,7 +1292,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("SalaryId");
 
-                    b.ToTable("OrderCriterias", (string)null);
+                    b.ToTable("OrderCriterias");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Payment", b =>
@@ -1316,7 +1318,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Sponsor", b =>
@@ -1368,7 +1370,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Sponsors", (string)null);
+                    b.ToTable("Sponsors");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Page", b =>
@@ -1406,7 +1408,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages", (string)null);
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
@@ -1477,7 +1479,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Partners", (string)null);
+                    b.ToTable("Partners");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Suffix", b =>
@@ -1489,7 +1491,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 21, 12, 12, 6, 236, DateTimeKind.Local).AddTicks(7799));
+                        .HasDefaultValue(new DateTime(2023, 5, 21, 11, 44, 41, 345, DateTimeKind.Local).AddTicks(6603));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1509,7 +1511,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex(new[] { "Name" }, "IDX_UQ_Suffix")
                         .IsUnique();
 
-                    b.ToTable("Suffixes", (string)null);
+                    b.ToTable("Suffixes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
