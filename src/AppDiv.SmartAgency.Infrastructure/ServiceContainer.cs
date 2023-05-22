@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using AppDiv.SmartAgency.Application.Interfaces;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {
@@ -74,7 +75,8 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IDepositRepository, DepositRepository>(); 
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IApplicantFollowupStatusRepository, ApplicantFollowupStatusRepository>();
-            services.AddTransient<IPageRepository, PageRepository>();  
+            services.AddTransient<IPageRepository, PageRepository>();
+            services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();  
             #endregion Repositories DI
 
             return services;

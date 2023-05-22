@@ -41,6 +41,8 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantR
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Update;
+using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -179,6 +181,17 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Page, PageResponseDTO>();
             CreateMap<EditPageCommand, Page>();
             CreateMap<Page, GetPageByIdResponseDTO>();
+
+            CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
+            CreateMap<Address, CompanyAddressRequest>().ReverseMap();
+            CreateMap<LetterInformation, LetterInformationRequest>().ReverseMap();
+            CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
+            CreateMap<Witness, WitnessRequest>().ReverseMap();
+            CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
+            CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
+
+
+
 
         }
     }

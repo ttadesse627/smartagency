@@ -50,5 +50,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
          public ICollection<Address>? Countries { get; set; }
+         public CountryOperation? CountryOperation { get; set; }
     }
 }

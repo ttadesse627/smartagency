@@ -46,6 +46,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; }
+        public DbSet<CompanyInformation> CompanyInformations {get; set;}
+        public DbSet<CompanySetting> CompanySettings {get; set;}
+        public DbSet<LetterInformation> LetterInformations {get; set;}
+        public DbSet<CountryOperation> CountryOperations {get; set;}
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
         {
@@ -86,6 +90,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new SponsorEntityConfig());
                 modelBuilder.ApplyConfiguration(new SuffixEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new ApplicantFollowupStatusConfiguration());
+                modelBuilder.ApplyConfiguration(new CompanyInformationEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new CountryOperationEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new LetterInformationEntityConfiguration());
 
                 modelBuilder.Entity<Category>().HasData(
                     new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
