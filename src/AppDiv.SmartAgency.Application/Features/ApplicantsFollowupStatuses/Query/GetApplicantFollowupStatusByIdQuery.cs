@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
-/*
+
 namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query
 {
     public class GetApplicantFollowupStatusByIdQuery: IRequest<GetApplicantFollowupStatusByIdResponseDTO>
@@ -21,19 +22,17 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Que
 
     public class GetApplicantFollowupStatusByIdHandler : IRequestHandler<GetApplicantFollowupStatusByIdQuery, GetApplicantFollowupStatusByIdResponseDTO>
     {
-        private readonly IMediator _mediator;
+        private readonly IApplicantFollowupStatusRepository _applicantFollowupStatusRepository;
 
-        public GetApplicantFollowupStatusByIdHandler(IMediator mediator)
+        public GetApplicantFollowupStatusByIdHandler(IApplicantFollowupStatusRepository applicantFollowupStatusRepository)
         {
-            _mediator = mediator;
+            _applicantFollowupStatusRepository = applicantFollowupStatusRepository;
         }
         public async Task<GetApplicantFollowupStatusByIdResponseDTO> Handle(GetApplicantFollowupStatusByIdQuery request, CancellationToken cancellationToken)
         {
-            var applicantFollowupStatuses = await _mediator.Send(new GetAllApplicantFollowupStatusQuery());
-            var selectedApplicantFollowupStatus = applicantFollowupStatuses.FirstOrDefault(d=>d.Id == request.Id);
+            var selectedApplicantFollowupStatus = await _applicantFollowupStatusRepository.GetByIdAsync(request.Id);
             return CustomMapper.Mapper.Map<GetApplicantFollowupStatusByIdResponseDTO>(selectedApplicantFollowupStatus);
            
         }
 }
 }
-*/

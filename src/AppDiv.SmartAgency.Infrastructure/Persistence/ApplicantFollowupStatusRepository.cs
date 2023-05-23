@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
@@ -23,12 +24,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     }
     public async Task<ApplicantFollowupStatus> GetByIdAsync(Guid Id)
     {
-        return await base.GetAsync(Id);
+        var followupStatus=await _context.ApplicantFollowupStatuses
+                     .Include(a=>a.Applicant)
+                     .Include(a=>a.FollowupStatus)
+                     .FirstOrDefaultAsync(a=>a.Id==Id);
+            return followupStatus;         
+
     }
-    public async Task<Int32> UpdateAsync(Deposit deposit)
+    public async Task<Int32> UpdateAsync(ApplicantFollowupStatus applicantFollowupStatus)
    {
       
-        _context.Deposits.Update(deposit);
+        _context.ApplicantFollowupStatuses.Update(applicantFollowupStatus);
         var response = await _context.SaveChangesAsync();
 
         return response;

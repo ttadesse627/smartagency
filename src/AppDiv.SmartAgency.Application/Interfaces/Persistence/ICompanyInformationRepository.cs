@@ -7,9 +7,9 @@ using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
-    public interface IApplicantFollowupStatusRepository: IBaseRepository<ApplicantFollowupStatus>
+    public interface ICompanyInformationRepository: IBaseRepository<CompanyInformation>
     {
-        Task<ApplicantFollowupStatus> GetByIdAsync(Guid id);
-       Task<Int32> UpdateAsync(ApplicantFollowupStatus applicantFollowupStatus);
+      //  Task<CompanyInformation> GetByIdAsync(Guid id);
+        Task<Int32> UpdateAsync(CompanyInformation companyInformation);
     }
 }
