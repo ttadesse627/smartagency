@@ -24,7 +24,14 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
     {
         var serviceResponse = new ServiceResponse<Int32>();
         var exceptions = new List<Exception>();
-        var applicantEntity = await _applicantRepository.GetApplicantByIdWithAsync(command.request.Id);
+
+        var eagerLoadedProperties = new string[]
+                                    {
+                                        "Skills.LookUp","Education.QualificationTypes.LookUp",
+                                        "Education.LevelOfQualifications.LookUp","Education.Awards.LookUp"
+                                    };
+        var loadedApplicants = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.request.Id, eagerLoadedProperties);
+        var applicantEntity = loadedApplicants.First();
 
         if (applicantEntity != null)
         {

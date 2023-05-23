@@ -47,6 +47,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusRespo
 using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -160,12 +161,15 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Sponsor, GetSponsorRespDTO>();
             CreateMap<Address, GetSponsorAddressRespDTO>();
             CreateMap<ServiceResponse<Order>, ServiceResponse<GetOrderRespDTO>>();
+            CreateMap<Order, GetForAssignmentOrderDTO>();
+            CreateMap<OrderCriteria, GetOrderCriteriaRespDTO>();
+            CreateMap<Sponsor, GetSponsorResponseDTO>();
 
-            // CreateMap<EditOrderRequest, Order>();
-            // CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
-            // CreateMap<EditSponsorRequest, Sponsor>();
-            // CreateMap<EditPaymentRequest, Payment>();
-            // CreateMap<EditAddressRequest, Address>();
+            CreateMap<EditOrderRequest, Order>();
+            CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
+            CreateMap<EditSponsorRequest, Sponsor>();
+            CreateMap<EditPaymentRequest, Payment>();
+            CreateMap<EditAddressRequest, Address>();
 
 
             CreateMap<Address, AddressResponseDTO>();
@@ -202,6 +206,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<ApplicantFollowupStatus, GetApplicantFollowupStatusByIdResponseDTO>();
             CreateMap<EditApplicantFollowupStatusCommand, ApplicantFollowupStatus>();
+
 
             
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
