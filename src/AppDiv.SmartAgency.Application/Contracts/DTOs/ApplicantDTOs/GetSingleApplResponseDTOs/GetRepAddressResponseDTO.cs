@@ -1,7 +1,8 @@
 
-namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
 public record GetRepAddressResponseDTO
 {
+    public Guid Id { get; set; }
     public string? City { get; set; }
     public string? Zone { get; set; }
     public string? Woreda { get; set; }

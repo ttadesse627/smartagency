@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Domain.Enums;
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
 public class GetLanguageSkillResponseDTO
 {
+    public Guid Id { get; set; }
     public bool CanWrite { get; set; }
     public bool CanRead { get; set; }
     public bool CanSpeak { get; set; }

@@ -3,6 +3,7 @@
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
 public record GetWitnessResponseDTO
 {
+    public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string MiddleName { get; set; }
     public string LastName { get; set; }

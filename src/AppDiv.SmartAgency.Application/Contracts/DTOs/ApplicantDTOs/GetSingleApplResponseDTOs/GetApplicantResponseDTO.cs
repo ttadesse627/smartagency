@@ -31,7 +31,6 @@ public record GetApplicantResponseDTO
     public bool IsRequested { get; set; } = false;
     public bool IsReserved { get; set; } = false;
     public bool IsBlocked { get; set; } = false;
-    public bool IsDeleted { get; set; } = false;
 
     // Objects
     public ICollection<GetLanguageSkillResponseDTO>? LanguageSkills { get; set; }

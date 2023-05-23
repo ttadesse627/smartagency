@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
 public record GetEducationResponseDTO
 {
+    public Guid Id { get; set; }
     public int YearCompleted { get; set; }
     public string? FieldOfStudy { get; set; }
     public string? ProfessionalSkill { get; set; }
