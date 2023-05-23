@@ -13,19 +13,14 @@ public class AddressEntityConfig : IEntityTypeConfiguration<Address>
             .HasForeignKey(fk => fk.AddressRegionId)
             .OnDelete(DeleteBehavior.SetNull);
 
-            builder.HasOne(a=>a.Country)
-                .WithMany(l=>l.Countries)  
-                .HasForeignKey(fk=>fk.CountryId)
-                .OnDelete(DeleteBehavior.SetNull);
+        builder.HasOne(a => a.Country)
+            .WithMany(l => l.Countries)
+            .HasForeignKey(fk => fk.CountryId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(m => m.Representative)
             .WithOne(n => n.Address)
             .HasForeignKey<Representative>(fk => fk.AddressId)
-            .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasOne(m => m.Applicant)
-            .WithOne(n => n.Address)
-            .HasForeignKey<Applicant>(fk => fk.AddressId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

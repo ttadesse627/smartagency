@@ -13,6 +13,7 @@ public interface IApplicantRepository : IBaseRepository<Applicant>
     public Task<List<Applicant>> GetAll();
     public Task<ServiceResponse<Int32>> DeleteApplicantAsync();
     public Task<int> EditApplicantAsync(Applicant applicant);
+    public Task<ServiceResponse<Int32>> SaveDbUpdateAsync();
     public Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber);
     public Task<int> AddApplicantAsync(Applicant applicant);
     public Task<Applicant> GetApplicantByIdWithAsync(Guid id);

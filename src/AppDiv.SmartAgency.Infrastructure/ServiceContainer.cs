@@ -27,7 +27,8 @@ namespace AppDiv.SmartAgency.Infrastructure
                 options =>
             options.UseMySql(configuration.GetConnectionString("ConnectionString"),
                 ServerVersion.AutoDetect(configuration.GetConnectionString("ConnectionString")),
-                mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
+                mySqlOptions => mySqlOptions.EnableRetryOnFailure()).EnableSensitiveDataLogging());
+            
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<SmartAgencyDbContext>()

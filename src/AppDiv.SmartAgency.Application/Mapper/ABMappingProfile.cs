@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrdersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
@@ -40,6 +41,8 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
+using AppDiv.SmartAgency.Application.Common;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -138,21 +141,31 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<SponsorRequest, Sponsor>();
             CreateMap<PaymentRequest, Payment>();
 
-            CreateMap<Order, OrderResponseDTO>();
+            // Map Group of orders
+            CreateMap<Order, GetOrdersResponseDTO>();
+            CreateMap<Applicant, OrderApplResponseDTO>();
             CreateMap<OrderCriteria, OrderCriteriaResponseDTO>();
             CreateMap<Payment, PaymentResponseDTO>();
             CreateMap<Sponsor, SponsorResponseDTO>();
-            CreateMap<Applicant, OrderApplResponseDTO>();
-            CreateMap<EditOrderRequest, Order>();
-            CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
-            CreateMap<EditSponsorRequest, Sponsor>();
-            CreateMap<EditPaymentRequest, Payment>();
-            CreateMap<EditAddressRequest, Address>();
+            CreateMap<SearchModel<Order>, SearchModel<GetOrdersResponseDTO>>();
 
-            
+            // Map response to get single Order
+            CreateMap<Order, GetOrderRespDTO>();
+            CreateMap<OrderCriteria, GetOrderCriteriaRespDTO>();
+            CreateMap<Payment, GetPaymentRespDTO>();
+            CreateMap<Sponsor, GetSponsorRespDTO>();
+            CreateMap<Address, GetSponsorAddressRespDTO>();
+            CreateMap<ServiceResponse<Order>, ServiceResponse<GetOrderRespDTO>>();
+
+            // CreateMap<EditOrderRequest, Order>();
+            // CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
+            // CreateMap<EditSponsorRequest, Sponsor>();
+            // CreateMap<EditPaymentRequest, Payment>();
+            // CreateMap<EditAddressRequest, Address>();
+
+
             CreateMap<Address, AddressResponseDTO>();
-          
-           CreateMap<CreatePartnerRequest, Partner>();
+            CreateMap<CreatePartnerRequest, Partner>();
             CreateMap<Address, AddressResponseDTO>();
 
             CreateMap<Partner, PartnerResponseDTO>();
@@ -180,12 +193,12 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<SearchModel<ApplicantFollowupStatus>, SearchModel<ApplicantFollowupStatusResponseDTO>>();
             CreateMap<ApplicantFollowupStatus, ApplicantFollowupStatusResponseDTO>();
             CreateMap<CreateApplicantFollowupStatusRequest, ApplicantFollowupStatus>();
-            
+
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
 
             CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();
 
-            
+
             CreateMap<SearchModel<OnlineApplicant>, SearchModel<OnlineApplicantResponseDTO>>();
 
             CreateMap<SearchModel<Page>, SearchModel<PageResponseDTO>>();

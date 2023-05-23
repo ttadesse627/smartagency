@@ -13,17 +13,18 @@ public record CreateOrderRequest
     public string? ContractNumber { get; set; }
     public string? ElectronicVisaNumber { get; set; }
     public DateTime? ElectronicVisaDate { get; set; }
-    public bool IsDeleted { get; set; } = false;
 
     // Foreign Keys
-    public Guid? OrderPortOfArrivalId { get; set; }
-    public Guid? OrderPriorityId { get; set; }
-    public Guid? OrderVisaTypeId { get; set; }
-    public Guid? OrderEmployeeId { get; set; }
-    public Guid? OrderPartnerId { get; set; }
+    public Guid? PortOfArrivalId { get; set; }
+    public Guid? PriorityId { get; set; }
+    public Guid? VisaTypeId { get; set; }
+    public Guid? EmployeeId { get; set; }
+    public Guid? PartnerId { get; set; }
 
     // Navigation properties
+
+    public AttachmentFileRequest? AttachmentFile { get; set; }
     public OrderCriteriaRequest? OrderCriteria { get; set; }
-    public PaymentRequest? OrderPayment { get; set; }
-    public SponsorRequest? OrderSponsor { get; set; }
+    public PaymentRequest? Payment { get; set; }
+    public SponsorRequest? Sponsor { get; set; }
 }
