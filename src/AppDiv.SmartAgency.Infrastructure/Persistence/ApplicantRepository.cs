@@ -35,59 +35,23 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         return applicant;
     }
 
-    public async Task<Applicant> GetApplicantByIdWithAsync(Guid id)
+    public async Task<ServiceResponse<Int32>> SaveDbUpdateAsync()
     {
-        var applicant = await _context.Applicants
-                                .Include(appl => appl.IssuingCountry)
-                                .Include(appl => appl.PassportIssuedPlace)
-                                .Include(appl => appl.MaritalStatus)
-                                .Include(appl => appl.Health)
-                                .Include(appl => appl.Religion)
-                                .Include(appl => appl.Jobtitle)
-                                .Include(appl => appl.Experience)
-                                .Include(appl => appl.Language)
-                                .Include(appl => appl.Salary)
-                                .Include(appl => appl.DesiredCountry)
-                                .Include(appl => appl.BrokerName)
-                                .Include(appl => appl.Branch)
-                                .Include(appl => appl.Partner)
-                                .Include(appl => appl.LanguageSkills)
-                                    .ThenInclude(ln => ln.Language)
-                                .Include(appl => appl.Skills)
-                                    .ThenInclude(lk => lk.LookUp)
-                                .Include(appl => appl.Experiences)
-                                    .ThenInclude(exp => exp.Country)
-                                .Include(appl => appl.Education)
-                                    .ThenInclude(edu => edu.QualificationTypes)
-                                        .ThenInclude(lk => lk.LookUp)
-                                .Include(appl => appl.Education)
-                                    .ThenInclude(edu => edu.LevelOfQualifications)
-                                        .ThenInclude(lk => lk.LookUp)
-                                .Include(appl => appl.Education)
-                                    .ThenInclude(edu => edu.Awards)
-                                        .ThenInclude(lk => lk.LookUp)
-                                .Include(appl => appl.BankAccount)
-                                .Include(appl => appl.EmergencyContact)
-                                    .ThenInclude(ec => ec.Relationship)
-                                .Include(appl => appl.EmergencyContact)
-                                    .ThenInclude(ec => ec.Address)
-                                        .ThenInclude(addr => addr.AddressRegion)
-                                .Include(appl => appl.Representative)
-                                    .ThenInclude(rep => rep.Address)
-                                        .ThenInclude(addr => addr.AddressRegion)
-                                .Include(appl => appl.Witnesses)
-                                .Include(appl => appl.Beneficiaries)
-                                    .ThenInclude(ben => ben.Relationship)
-                                .Include(appl => appl.AttachmentFiles)
-                                    .ThenInclude(atf => atf.Attachment)
-                                .Include(appl => appl.Address)
-                                    .ThenInclude(addr => addr.AddressRegion)
-                                .Where(appl => appl.Id.Equals(id)).FirstOrDefaultAsync(appl => appl.Id == id);
-        if (applicant is null)
+        var response = new ServiceResponse<Int32>();
+        try
         {
-            throw new Exception($"An applicant with id {id} could not be found!");
+            response.Data = await _context.SaveChangesAsync();
+            response.Message = "The update saved successfully";
+            
         }
-        return applicant;
+        catch (Exception ex)
+        {
+            response.Data = 0;
+            response.Message = ex.Message;
+            response.Success = false;
+            response.Errors?.Add(ex.Message);
+        }
+        return response;
     }
 
     public async Task<ServiceResponse<Int32>> DeleteApplicantAsync()
@@ -144,7 +108,9 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         var response = 0;
         try
         {
-            _context.Applicants.Update(applicant);
+            _context.Set<Applicant>().Attach(applicant);
+            _context.Entry(applicant).State = EntityState.Modified;
+            // _context.Applicants.Update(applicant);
             response = await _context.SaveChangesAsync();
         }
         catch (Exception ex)
