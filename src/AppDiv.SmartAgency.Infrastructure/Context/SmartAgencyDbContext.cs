@@ -55,6 +55,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+
+            // var dbContext = new SmartAgencyDbContext(optionsBuilder.Options);
             // To run sql scripts, example alter database to set collation, create stored procedure, function, view ....
             // optionsBuilder.ReplaceService<IMigrationsSqlGenerator, CustomSqlServerMigrationsSqlGenerator>();
         }

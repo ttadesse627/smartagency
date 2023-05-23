@@ -61,7 +61,7 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
                 .FirstOrDefaultAsync(ch => ch.Id == updatedAttachment.Id);
             if (attachment is null)
             {
-                throw new Exception($"Character with id {updatedAttachment.Id} is not found.");
+                throw new Exception($"Attachment with id {updatedAttachment.Id} is not found.");
             }
             attachment.Code = updatedAttachment.Code;
             attachment.Description = updatedAttachment.Description;
