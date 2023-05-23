@@ -1,8 +1,8 @@
-@host = http://127.0.0.1:5120/api/order
+@host = http://127.0.0.1:5120/api
 
 ###
 
-POST {{host}}/
+PUT {{host}}/order/edit
 Content-Type:  application/json
 
 {
@@ -67,3 +67,6 @@ Content-Type:  application/json
     }
   }
 }
+
+###
+{{host}}/lookup/get-all-lookup?pageNumber=1&pageSize=100&orderBy=Value&sortingDirection=Ascending

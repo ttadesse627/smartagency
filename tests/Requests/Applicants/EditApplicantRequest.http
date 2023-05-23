@@ -2,11 +2,11 @@
 
 @host = http://127.0.0.1:5120/api/applicant
 
-PUT {{host}}/edit/22de630e-269e-415e-9282-f3747aefc6f6
+PUT {{host}}/edit/1200b439-ac65-48ec-b5b5-3805cdc716a8
 Content-Type: application/json
 
 {
-  "id": "22de630e-269e-415e-9282-f3747aefc6f6",
+  "id": "1200b439-ac65-48ec-b5b5-3805cdc716a8",
   "firstName": "FN1",
   "middleName": "MN1",
   "lastName": "LN1",
@@ -47,7 +47,7 @@ Content-Type: application/json
   "partnerId": "01160ed8-18f4-4887-92ac-10d667f42868",
   "languageSkills": [
     {
-      "id": "44a42e96-0a04-46c9-8126-7162de4f62f0",
+      "id": "be39a36f-b04b-49ad-b5e0-91bb19a7a2c0",
       "canWrite": true,
       "canRead": false,
       "canSpeak": false,
@@ -68,8 +68,8 @@ Content-Type: application/json
     }
   ],
   "education": {
-    "id": "7564f664-4fa1-49de-a5f1-170f130aa971",
-    "yearCompleted": 2022,
+    "id": "873548a0-1755-47e6-bfb1-287061a9448e",
+    "yearCompleted": 2014,
     "fieldOfStudy": "CS",
     "professionalSkill": "No Skill",
     "qualificationTypes": [
@@ -83,14 +83,14 @@ Content-Type: application/json
     ]
   },
   "bankAccount": {
-    "id": "047e1674-bf9c-48a2-a2af-8bf4d74847ca",
+    "id": "f2d04719-ad68-4e82-b08f-a53816679980",
     "bankName": "Dashen",
     "accountNumber": 1000263339413,
     "branchName": "Bole",
-    "swiftCode": "CBEETTAA"
+    "swiftCode": "DISHTAA"
   },
   "emergencyContact": {
-    "id": "055ac9f2-c6e2-4c93-8edd-7b4417278c71",
+    "id": "dce47efd-9165-4d1a-a73c-e6dc5d721ccb",
     "firstName": "ECF1",
     "middleName": "ECM1",
     "lastName": "ECL1",
@@ -99,7 +99,7 @@ Content-Type: application/json
     "arabicFullName": "ArabicFN",
     "relationshipId": "c0fe6c0e-1512-4e3f-956d-46645844e167",
     "address": {
-      "id": "70b81a3d-b6f7-4625-8d95-1fd77278436f",
+      "id": "da2616b9-8bb0-4b34-9321-6e9ade6ed0b2",
       "region": "ECAR1",
       "city": "ECAC1",
       "district": "string",
@@ -123,14 +123,14 @@ Content-Type: application/json
     }
   },
   "representative": {
-    "id": "c8587065-5826-4a8d-a9f5-8c7058fa31da",
+    "id": "9088e981-537b-4774-8217-2b3f20618ff5",
     "firstName": "RF1",
     "middleName": "RM1",
     "lastName": "RL1",
     "birthDate": "1993-05-19T10:50:47.889Z",
     "gender": "Male",
     "address": {
-      "id": "a32c5a42-e168-48ca-8e63-5afd1c5095db",
+      "id": "de7e9a7b-c3a2-4e25-a1a6-6d892f5bb468",
       "city": "RAC1",
       "zone": "Kality",
       "woreda": "09",
@@ -142,7 +142,7 @@ Content-Type: application/json
   },
   "witnesses": [
     {
-      "id": "ecf10454-2bb6-4ac3-977d-e0125d562811",
+      "id": "da7f8422-5157-4c6e-be03-bd5a5e36d00f",
       "firstName": "WF1",
       "middleName": "string",
       "lastName": "string",
@@ -152,7 +152,7 @@ Content-Type: application/json
   ],
   "beneficiaries": [
     {
-      "id": "ee58e789-6739-429c-9703-43e8dd835068",
+      "id": "0e9fef6e-7462-400b-8b4e-0f1d75509ede",
       "firstName": "BENF1",
       "middleName": "string",
       "lastName": "string",
@@ -165,13 +165,13 @@ Content-Type: application/json
   ],
   "attachmentFiles": [
     {
-      "id": "4f747df4-4565-4991-b908-ccebbb3c916d",
-      "filePath": "D:\\Academic\\Tests",
+      "id": "be1c1313-3bae-47ba-8152-b136b29090b7",
+      "filePath": "D:\\Academic\\Tests2",
       "attachmentId": "011f0ed8-18f4-4887-92ac-10d667f42868"
     }
   ],
   "address": {
-      "id": "01d14056-7977-4eba-affc-2bdad5e23529",
+      "id": "b6ed5b19-b54b-4aac-bb19-94cdf11fe1ec",
       "region": "AA1",
       "city": "Bishoftu",
       "district": "string",
