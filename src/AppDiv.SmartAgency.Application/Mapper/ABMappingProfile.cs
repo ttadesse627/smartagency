@@ -200,6 +200,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<ApplicantFollowupStatus, GetApplicantFollowupStatusByIdResponseDTO>();
             CreateMap<EditApplicantFollowupStatusCommand, ApplicantFollowupStatus>();
 
+            CreateMap<ApplicantFollowupStatus, GetApplicantFollowupStatusByIdResponseDTO>();
+            CreateMap<EditApplicantFollowupStatusCommand, ApplicantFollowupStatus>();
+
             
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
 
@@ -213,6 +216,17 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Page, PageResponseDTO>();
             CreateMap<EditPageCommand, Page>();
             CreateMap<Page, GetPageByIdResponseDTO>();
+
+            CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
+            CreateMap<Address, CompanyAddressRequest>().ReverseMap();
+            CreateMap<LetterInformation, LetterInformationRequest>().ReverseMap();
+            CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
+            CreateMap<Witness, WitnessRequest>().ReverseMap();
+            CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
+            CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
+
+
+
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
