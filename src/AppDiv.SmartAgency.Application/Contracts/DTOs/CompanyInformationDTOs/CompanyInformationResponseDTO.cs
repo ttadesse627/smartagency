@@ -22,7 +22,8 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
        public string? ViceManager { get; set; }
        public string? ViceManagerAmharic { get; set; }
        public string? CountriesOperation { get; set; }
-       public LetterInformationRequest? LetterInformation { get; set; }
+       public string? LetterLogo { get; set; }
+       public string? LetterBackGround{ get; set; }
        public CompanyAddressRequest? Address { get; set; }
        public ICollection<WitnessRequest>? Witnesses { get; set; }
        public CompanySettingRequest? CompanySetting {get; set;} 

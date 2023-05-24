@@ -9,7 +9,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
     public interface ICompanyInformationRepository: IBaseRepository<CompanyInformation>
     {
-      //  Task<CompanyInformation> GetByIdAsync(Guid id);
+        Task<CompanyInformation> GetByIdAsync(Guid id);
         Task<Int32> UpdateAsync(CompanyInformation companyInformation);
     }
 }

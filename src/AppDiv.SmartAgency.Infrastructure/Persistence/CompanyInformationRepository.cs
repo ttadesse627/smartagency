@@ -13,6 +13,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     { 
             _context=dbContext;
     }
+    public async Task<CompanyInformation> GetByIdAsync(Guid Id)
+    {
+        return await base.GetAsync(Id);
+    }
 
     public override async Task InsertAsync(CompanyInformation companyInformation, CancellationToken cancellationToken)
     {

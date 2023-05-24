@@ -45,6 +45,27 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await list.ToListAsync();
         }
 
+// newwwwwwwwwwwwwwww
+  
+         public virtual async Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+
+            var query = _dbContext.Set<T>().AsQueryable();
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                query = query.Include(nav_property);
+            }
+            var entity = await query.ToListAsync();
+
+            return  entity.First();
+        }
+
+
 
         public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, params string[] eagerLoadedProperties)
         {
