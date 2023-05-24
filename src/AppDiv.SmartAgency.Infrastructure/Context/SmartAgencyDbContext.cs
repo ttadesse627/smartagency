@@ -34,10 +34,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<LanguageSkill> LanguageSkills { get; set; }
         public DbSet<Representative> Representatives { get; set; }
         public DbSet<Witness> Witnesses { get; set; }
-        // public DbSet<Skill> Skills { get; set; }
-        // public DbSet<QualificationType> QualificationTypes { get; set; }
-        // public DbSet<LevelOfQualification> LevelOfQualifications { get; set; }
-        // public DbSet<Award> Awards { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<QualificationType> QualificationTypes { get; set; }
+        public DbSet<LevelOfQualification> LevelOfQualifications { get; set; }
+        public DbSet<Award> Awards { get; set; }
         public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -58,6 +58,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+
+            // var dbContext = new SmartAgencyDbContext(optionsBuilder.Options);
             // To run sql scripts, example alter database to set collation, create stored procedure, function, view ....
             // optionsBuilder.ReplaceService<IMigrationsSqlGenerator, CustomSqlServerMigrationsSqlGenerator>();
         }
@@ -78,10 +80,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OnlineApplicantEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new DepositEntityConfiguration());
-                // modelBuilder.ApplyConfiguration(new LevelOfQualificationEntityConfig());
-                // modelBuilder.ApplyConfiguration(new QualificationTypeEntityConfig());
-                // modelBuilder.ApplyConfiguration(new AwardEntityConfig());
-                // modelBuilder.ApplyConfiguration(new SkillEntityConfig());
+                modelBuilder.ApplyConfiguration(new LoQEntityConfig());
+                modelBuilder.ApplyConfiguration(new QTEntityConfig());
+                modelBuilder.ApplyConfiguration(new AwardEntityConfig());
+                modelBuilder.ApplyConfiguration(new SkillEntityConfig());
                 modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OrderCriteriaEntityConfig());
                 modelBuilder.ApplyConfiguration(new OrderEntityConfig());

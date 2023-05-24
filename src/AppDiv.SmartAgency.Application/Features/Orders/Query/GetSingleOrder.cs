@@ -1,42 +1,49 @@
 
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
-public class GetSingleOrder : IRequest<OrderResponseDTO>
-{
-    public Guid Id { get; set; }
-    public GetSingleOrder(Guid id)
-    {
-        Id = id;
-    }
-}
+public record GetSingleOrder(Guid id) : IRequest<ServiceResponse<GetOrderRespDTO>>
+{ }
 
-public class GetSingleOrderHandler : IRequestHandler<GetSingleOrder, OrderResponseDTO>
+public class GetSingleOrderHandler : IRequestHandler<GetSingleOrder, ServiceResponse<GetOrderRespDTO>>
 {
-    private readonly IMediator _mediator;
     private readonly IOrderRepository _orderRepository;
 
-    public GetSingleOrderHandler(IMediator mediator, IOrderRepository orderRepository)
+    public GetSingleOrderHandler(IOrderRepository orderRepository)
     {
-        _mediator = mediator;
         _orderRepository = orderRepository;
     }
-    public async Task<OrderResponseDTO> Handle(GetSingleOrder request, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<GetOrderRespDTO>> Handle(GetSingleOrder request, CancellationToken cancellationToken)
     {
-        // var orders = await _mediator.Send(new GetAllOrders());
-        var serviceResponse = new ServiceResponse<Order>();
-        var returnedOrder = new OrderResponseDTO();
-        serviceResponse = await _orderRepository.GetOrderAsync(request.Id);
-        if (serviceResponse.Data is not null)
+        var orderResponse = new ServiceResponse<Order>();
+        var orderResponseDTO = new ServiceResponse<GetOrderRespDTO>();
+        var eagerLoadedProperties = new string[]
+                                    {
+                                        "PortOfArrival", "Priority","VisaType",
+                                        "PortOfArrival","AttachmentFile","OrderCriteria",
+                                        "OrderCriteria.Nationality","OrderCriteria.JobTitle",
+                                        "OrderCriteria.Salary","OrderCriteria.Religion",
+                                        "OrderCriteria.Experience","OrderCriteria.Language",
+                                        "Sponsor","Sponsor.AttachmentFile","Sponsor.Address",
+                                        "Sponsor.Address.AddressRegion","Sponsor.Address.Country",
+                                        "Payment","Employee","Partner"
+                                    };
+        orderResponse.Data = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.id && order.IsDeleted == false, eagerLoadedProperties);
+
+        if (orderResponse.Data is not null)
         {
-            var selectedOrder = serviceResponse.Data;
-            returnedOrder = CustomMapper.Mapper.Map<OrderResponseDTO>(selectedOrder);
+            orderResponse.Success = true;
+            orderResponseDTO = CustomMapper.Mapper.Map<ServiceResponse<GetOrderRespDTO>>(orderResponse);
         }
-        return returnedOrder;
+        else
+        {
+            orderResponseDTO.Message = orderResponse.Message;
+        }
+        return orderResponseDTO;
     }
 }

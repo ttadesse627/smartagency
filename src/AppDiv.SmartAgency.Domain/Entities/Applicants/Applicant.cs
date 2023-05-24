@@ -45,7 +45,7 @@ public class Applicant : PersonalInfo
 
     // Objects
     public ICollection<LanguageSkill>? LanguageSkills { get; set; }
-    public ICollection<LookUp>? Skills { get; set; }
+    public ICollection<Skill>? Skills { get; set; }
     public ICollection<Experience>? Experiences { get; set; }
     public Education? Education { get; set; }
     public BankAccount? BankAccount { get; set; }

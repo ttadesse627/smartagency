@@ -41,7 +41,7 @@ public class RestoreDeleteOrderCommandHandler : IRequestHandler<RestoreDeleteOrd
             response.Message = $"An applicant with an Id {request.Id} is not found!";
             response.Success = false;
         }
-        else throw new Exception("Unknown error occorred while trying to delete the order.");
+        else throw new Exception("Unknown error occorred while trying to restore the order.");
         return response;
     }
 }

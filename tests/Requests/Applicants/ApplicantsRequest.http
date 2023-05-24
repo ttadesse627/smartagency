@@ -5,12 +5,12 @@ POST {{host}}/create
 Content-Type: application/json
 
 {
-  "firstName": "KEbede",
-  "middleName": "Abebe",
+  "firstName": "Getahun",
+  "middleName": "Shura",
   "lastName": "Gezachew",
   "birthDate": "2023-05-19T10:50:47.889Z",
   "gender": "Male",
-  "passportNumber": "EP000002",
+  "passportNumber": "EP000006",
   "issuedDate": "2023-05-19T10:50:47.889Z",
   "passportExpiryDate": "2023-05-19T10:50:47.889Z",
   "placeOfBirth": "AA",
@@ -18,7 +18,7 @@ Content-Type: application/json
   "arabicFullName": "አል ነመራ",
   "complexion": "Brown",
   "numberOfChildren": 3,
-  "motherName": "Demmitu",
+  "motherName": "Alemitu",
   "previousNationality": "Ethiopian",
   "currentNationality": "Ethiopian",
   "height":160,
@@ -45,51 +45,47 @@ Content-Type: application/json
   "partnerId": "01160ed8-18f4-4887-92ac-10d667f42868",
   "languageSkills": [
     {
-      "canWrite": false,
+      "canWrite": true,
       "canRead": true,
-      "canSpeak": false,
+      "canSpeak": true,
       "canListen": true,
       "proficiency": "Good",
       "languageId": "fd472986-1cff-4d10-b421-8ded83039c37"
     }
   ],
   "skills": [
-    "826d7ff9-dac6-4286-bbb6-f4e0277240a8",
     "f38e9df7-edf3-44d8-9646-53c289c6daaa"
   ],
   "experiences": [
     {
       "periodLength": 2,
-      "position": "IT Administrator",
+      "position": "SW Developer",
       "countryId": "e21f9284-c916-4b50-865f-fdeff0731ebc"
     }
   ],
   "education": {
-    "yearCompleted": 2022,
+    "yearCompleted": 2020,
     "fieldOfStudy": "SE",
-    "professionalSkill": "No Skill",
+    "professionalSkill": "Programming",
     "qualificationTypes": [
-      "a8bf96de-8c09-4e4e-a667-326bc84b8372",
       "1a1f1de1-7253-4398-93ea-b16ef314656d"
     ],
     "levelofQualifications": [
-      "dbb51fc9-c0f3-40c7-9468-4fafc977782f",
       "ee7d3a52-24e5-4dd5-81e2-964444f0fadb"
     ],
     "awards": [
-      "2141ba2b-93fc-4939-b501-45adebba0754",
       "fef46287-75df-4bd4-9704-54ec0e60ef5e"
     ]
   },
   "bankAccount": {
-    "bankName": "CBE",
+    "bankName": "Dashen",
     "accountNumber": 1000263339413,
     "branchName": "Bole",
-    "swiftCode": "CBEETTAA"
+    "swiftCode": "DISHTTAA"
   },
   "emergencyContact": {
-    "firstName": "Ashaferegn",
-    "middleName": "Regassa",
+    "firstName": "Seboka",
+    "middleName": "Jaleta",
     "lastName": "Dugasa",
     "birthDate": "1990-05-19T10:50:47.889Z",
     "gender": "Male",
@@ -97,7 +93,7 @@ Content-Type: application/json
     "relationshipId": "c0fe6c0e-1512-4e3f-956d-46645844e167",
     "address": {
       "region": "Oromia",
-      "city": "Bishoftu",
+      "city": "Dukem",
       "district": "string",
       "districtArabic": "string",
       "zone": "East Shoa",
@@ -106,7 +102,7 @@ Content-Type: application/json
       "street": "Ethio-Djibouti Railway",
       "streetArabic": "string",
       "phoneNumber": "+25175465647564",
-      "houseNumber": "MK0021",
+      "houseNumber": "MK0022",
       "officePhone": "string",
       "mobile": "string",
       "alternativePhone": "string",
@@ -119,9 +115,9 @@ Content-Type: application/json
     }
   },
   "representative": {
-    "firstName": "Bakka Bu'aa 1",
-    "middleName": "Rep 1",
-    "lastName": "Tewekay 1",
+    "firstName": "Bakka Buusaa 2",
+    "middleName": "Rep 2",
+    "lastName": "Tewekay 2",
     "birthDate": "1993-05-19T10:50:47.889Z",
     "gender": "Male",
     "address": {
@@ -136,34 +132,34 @@ Content-Type: application/json
   },
   "witnesses": [
     {
-      "firstName": "string",
-      "middleName": "string",
-      "lastName": "string",
-      "address": "string",
-      "phoneNumber": "string"
+      "firstName": "Tola",
+      "middleName": "Kabeta",
+      "lastName": "Lmmessa",
+      "address": "AA",
+      "phoneNumber": "098765432"
     }
   ],
   "beneficiaries": [
     {
-      "firstName": "Witness 1",
+      "firstName": "Ben 1",
       "middleName": "string",
       "lastName": "string",
       "region": "string",
       "zone": "string",
       "woreda": "string",
-      "rate": 12,
+      "rate": 13,
       "relationshipId": "c0fe6c0e-1512-4e3f-956d-46645844e167"
     }
   ],
   "attachmentFiles": [
     {
-      "filePath": "D:\\Academic\\Tests",
+      "filePath": "D:\\Academic\\Test 1",
       "attachmentId": "011f0ed8-18f4-4887-92ac-10d667f42868"
     }
   ],
   "address": {
       "region": "Oromia",
-      "city": "Bishoftu",
+      "city": "Dukem",
       "district": "string",
       "districtArabic": "string",
       "zone": "East Shoa",
@@ -172,7 +168,7 @@ Content-Type: application/json
       "street": "Ethio-Djibouti Railway",
       "streetArabic": "string",
       "phoneNumber": "+25175465647564",
-      "houseNumber": "MK0021",
+      "houseNumber": "MK0022",
       "officePhone": "string",
       "mobile": "string",
       "alternativePhone": "string",
@@ -187,4 +183,8 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:5120/api/lookup/get-all-lookup?orderby=Value HTTP/1.1
+GET {{host}}/get/22de630e-269e-415e-9282-f3747aefc6f6 HTTP/1.1
+
+
+###
+GET {{host}}/get-all HTTP/1.1

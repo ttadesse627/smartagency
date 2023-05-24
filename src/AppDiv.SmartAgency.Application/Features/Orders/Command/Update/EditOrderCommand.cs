@@ -3,7 +3,6 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
@@ -23,16 +22,28 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
         var editOrderRequest = request.editOrderRequest;
         var response = new ServiceResponse<int>();
         var updateResponse = new ServiceResponse<String>();
-        var serviceResponse = await _orderRepository.GetOrderAsync(editOrderRequest.Id);
 
-        var orderToBeEdited = serviceResponse.Data;
-        if (orderToBeEdited is not null)
+        var eagerLoadedProperties = new string[]
+                                    {
+                                        "PortOfArrival", "Priority","VisaType",
+                                        "PortOfArrival","AttachmentFile","OrderCriteria",
+                                        "OrderCriteria.Nationality","OrderCriteria.JobTitle",
+                                        "OrderCriteria.Salary","OrderCriteria.Religion",
+                                        "OrderCriteria.Experience","OrderCriteria.Language",
+                                        "Sponsor","Sponsor.AttachmentFile","Sponsor.Address",
+                                        "Sponsor.Address.AddressRegion","Sponsor.Address.Country",
+                                        "Payment","Employee","Partner"
+                                    };
+        var serviceResponse = await _orderRepository.GetWithPredicateAsync(order => order.Id == editOrderRequest.Id, eagerLoadedProperties);
+
+        var orderEntity = serviceResponse;
+        if (orderEntity is not null)
         {
-            if (!orderToBeEdited.OrderCriteria!.Equals(null) || !orderToBeEdited.Sponsor!.Equals(null) || !orderToBeEdited.Payment!.Equals(null) || orderToBeEdited.AttachmentFile!.Equals(null))
+            if (!orderEntity.OrderCriteria!.Equals(null) || !orderEntity.Sponsor!.Equals(null) || !orderEntity.Payment!.Equals(null) || orderEntity.AttachmentFile!.Equals(null))
             {
-                orderToBeEdited = CustomMapper.Mapper.Map<Order>(request.editOrderRequest);
+                CustomMapper.Mapper.Map(request.editOrderRequest, orderEntity);
             }
-            updateResponse = _orderRepository.UpdateOrder(orderToBeEdited);
+            // updateResponse = _orderRepository.UpdateOrder(orderEntity);
             response = await _orderRepository.SaveDbUpdateAsync();
             if (response.Data >= 1)
             {
@@ -40,7 +51,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                 response.Success = true;
             }
         }
-        else if (orderToBeEdited is null)
+        else if (orderEntity is null)
         {
             response.Message = $"An order with an Id {editOrderRequest.Id} is not found!";
             response.Success = false;

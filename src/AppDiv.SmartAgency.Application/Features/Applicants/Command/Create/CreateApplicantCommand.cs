@@ -10,7 +10,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
 public record CreateApplicantCommand(CreateApplicantRequest applicantRequest) : IRequest<ServiceResponse<Int32>>
-{}
+{ }
 public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, ServiceResponse<Int32>>
 {
     private readonly IApplicantRepository _applicantRepository;
@@ -23,69 +23,134 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
     public async Task<ServiceResponse<Int32>> Handle(CreateApplicantCommand applicantRequest, CancellationToken cancellationToken)
     {
         var createApplicantResponse = new ServiceResponse<Int32>();
+        var exceptions = new List<Exception>();
         var request = applicantRequest.applicantRequest;
 
-            var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
+        var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
 
-            ICollection<LookUp> levelOfQualifications =  new List<LookUp>();
-            ICollection<LookUp> qualificationTypes = new List<LookUp>();
-            ICollection<LookUp> awards = new List<LookUp>();
-            ICollection<LookUp> technicalSkills = new List<LookUp>();
-            
-            if (request.Education != null)
+        ICollection<LookUp> levelOfQualifications = new List<LookUp>();
+        ICollection<LookUp> qualificationTypes = new List<LookUp>();
+        ICollection<LookUp> awards = new List<LookUp>();
+        ICollection<LookUp> technicalSkills = new List<LookUp>();
+
+        if (request.Education != null)
+        {
+            if (request.Education.QualificationTypes != null)
+            {
+                foreach (var qualificationTypeId in request.Education.QualificationTypes!)
+                {
+                    var qualificationType = await _lookUpRepository.GetAsync(qualificationTypeId);
+                    if (qualificationType == null)
+                    {
+                        exceptions.Add(new Exception($"There is no skill instance from lookup with an id {qualificationTypeId}"));
+                    }
+                    else qualificationTypes.Add(qualificationType);
+                }
+            }
+
+            if (request.Education.LevelofQualifications != null)
             {
                 foreach (var levelOfQualificationId in request.Education.LevelofQualifications!)
                 {
                     var levelOfQualification = await _lookUpRepository.GetAsync(levelOfQualificationId);
-                    levelOfQualifications.Add(levelOfQualification);
+                    if (levelOfQualification == null)
+                    {
+                        exceptions.Add(new Exception($"There is no skill instance from lookup with an id {levelOfQualificationId}"));
+                    }
+                    else levelOfQualifications.Add(levelOfQualification);
                 }
-                foreach (var qualificationTypeId in request.Education.QualificationTypes!)
-                {
-                    var qualificationType = await _lookUpRepository.GetAsync(qualificationTypeId);
-                    qualificationTypes.Add(qualificationType);
-                }
+            }
+            if (request.Education.Awards != null)
+            {
                 foreach (var awardId in request.Education.Awards!)
                 {
                     var award = await _lookUpRepository.GetAsync(awardId);
-                    awards.Add(award);
-                }
-            }
-            if (request.Skills != null)
-            {
-                foreach (var technicalSkillId in request.Skills!)
-                {
-                    var technicalSkill = await _lookUpRepository.GetAsync(technicalSkillId);
-                    technicalSkills.Add(technicalSkill);
+                    if (award == null)
+                    {
+                        exceptions.Add(new Exception($"There is no award instance from lookup with an id {awardId}"));
+                    }
+                    else awards.Add(award);
                 }
             }
 
-            applicantEntity.Education.QualificationTypes = qualificationTypes;
-            applicantEntity.Education.LevelOfQualifications = levelOfQualifications;
-            applicantEntity.Education.Awards = awards;
-            applicantEntity.Skills = technicalSkills;
-            // var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
+        }
+        if (request.Skills != null)
+        {
+            foreach (var skillId in request.Skills!)
+            {
+                var skill = await _lookUpRepository.GetAsync(skillId);
+                if (skill == null)
+                {
+                    exceptions.Add(new Exception($"There is no skill instance from lookup with an id {skillId}"));
+                }
+                else technicalSkills.Add(skill);
+            }
+        }
+
+        if (levelOfQualifications.Count > 0)
+        {
+            var lvlqs = new List<LevelOfQualification>();
+            foreach (var loq in levelOfQualifications)
+            {
+                var lvlq = new LevelOfQualification();
+                lvlq.LookUp = loq;
+                lvlqs.Add(lvlq);
+            }
+            applicantEntity.Education.LevelOfQualifications = lvlqs;
+        }
+        if (qualificationTypes.Count > 0)
+        {
+            var qts = new List<QualificationType>();
+            foreach (var qt in qualificationTypes)
+            {
+                var quaqt = new QualificationType();
+                quaqt.LookUp = qt;
+                qts.Add(quaqt);
+            }
+            applicantEntity.Education.QualificationTypes = qts;
+        }
+        if (awards.Count > 0)
+        {
+            var awds = new List<Award>();
+            foreach (var awd in awards)
+            {
+                var aw = new Award();
+                aw.LookUp = awd;
+                awds.Add(aw);
+            }
+            applicantEntity.Education.Awards = awds;
+        }
+        if (technicalSkills.Count > 0)
+        {
+            var skls = new List<Skill>();
+            foreach (var sk in technicalSkills)
+            {
+                var skl = new Skill();
+                skl.LookUp = sk;
+                skls.Add(skl);
+            }
+            applicantEntity.Skills = skls;
+        }
 
         int count = 0;
 
-        if (applicantEntity.Education.LevelOfQualifications !=null 
-                && applicantEntity.Education.QualificationTypes !=null
-                && applicantEntity.Education.Awards !=null
-                && applicantEntity.Skills !=null)
-            {
-                count = await _applicantRepository.CreateApplicantAsync(applicantEntity, cancellationToken);
-            }
-            // bool success = _applicantRepository.SaveChanges();
-            bool success = count >= 1;
-            if (success)
-            {
-                createApplicantResponse.Message = "The applicant is successfully added.";
-                createApplicantResponse.Success = true;
-            }
-            else
-            {
-                createApplicantResponse.Message = "Couldn't add the requested applicant.";
-                createApplicantResponse.Success = false;
-            }
+        // Apply the update to the database
+        if (exceptions.Count() == 0)
+        {
+            count = await _applicantRepository.CreateApplicantAsync(applicantEntity, cancellationToken);
+        }
+        // bool success = _applicantRepository.SaveChanges();
+        bool success = count >= 1;
+        if (success)
+        {
+            createApplicantResponse.Message = "The applicant is successfully added.";
+            createApplicantResponse.Success = true;
+        }
+        else
+        {
+            createApplicantResponse.Message = "Couldn't add the requested applicant.";
+            createApplicantResponse.Success = false;
+        }
         // }
 
         return createApplicantResponse;

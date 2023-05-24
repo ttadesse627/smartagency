@@ -12,8 +12,8 @@ public class Education
     
     // Navigation properties
     public Applicant? Applicant { get; set; }
-    public ICollection<LookUp>? QualificationTypes { get; set; }
-    public ICollection<LookUp>? LevelOfQualifications{ get; set; }
-    public ICollection<LookUp>? Awards { get; set; }
+    public ICollection<QualificationType>? QualificationTypes { get; set; }
+    public ICollection<LevelOfQualification>? LevelOfQualifications{ get; set; }
+    public ICollection<Award>? Awards { get; set; }
     
 }

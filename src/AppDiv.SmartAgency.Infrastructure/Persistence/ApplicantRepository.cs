@@ -35,76 +35,23 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         return applicant;
     }
 
-    public async Task<Applicant> GetApplicantByIdWithAsync(Guid id)
+    public async Task<ServiceResponse<Int32>> SaveDbUpdateAsync()
     {
-        var applicant = await _context.Applicants
-                                .Include(appl => appl.IssuingCountry)
-                                    .ThenInclude(ln => ln.Category)
-                                .Include(appl => appl.PassportIssuedPlace)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.MaritalStatus)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Health)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Religion)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Jobtitle)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Experience)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Language)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Salary)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.DesiredCountry)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.BrokerName)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Branch)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Partner)
-                                .Include(appl => appl.LanguageSkills)
-                                    .ThenInclude(ln => ln.Language)
-                                        .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Skills)
-                                    .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Experiences)
-                                    .ThenInclude(exp => exp.Country)
-                                        .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Education)
-                                    .ThenInclude(edu => edu.QualificationTypes)
-                                        .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Education)
-                                    .ThenInclude(edu => edu.LevelOfQualifications)
-                                        .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Education)
-                                    .ThenInclude(edu => edu.Awards)
-                                        .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.BankAccount)
-                                .Include(appl => appl.EmergencyContact)
-                                    .ThenInclude(ec => ec.Relationship)
-                                .Include(appl => appl.EmergencyContact)
-                                    .ThenInclude(ec => ec.Address)
-                                        .ThenInclude(addr => addr.AddressRegion)
-                                .Include(appl => appl.Representative)
-                                    .ThenInclude(rep => rep.Address)
-                                        .ThenInclude(addr => addr.AddressRegion)
-                                            .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.Witnesses)
-                                .Include(appl => appl.Beneficiaries)
-                                    .ThenInclude(ben => ben.Relationship)
-                                        .ThenInclude(lk => lk.Category)
-                                .Include(appl => appl.AttachmentFiles)
-                                    .ThenInclude(atf => atf.Attachment)
-                                .Include(appl => appl.Address)
-                                    .ThenInclude(addr => addr.AddressRegion)
-                                        .ThenInclude(lk => lk.Category)
-                                .Where(appl => appl.Id.Equals(id)).FirstOrDefaultAsync(appl => appl.Id == id);
-        if (applicant is null)
+        var response = new ServiceResponse<Int32>();
+        try
         {
-            throw new Exception($"An applicant with id {id} could not be found!");
+            response.Data = await _context.SaveChangesAsync();
+            response.Message = "The update saved successfully";
+            
         }
-        return applicant;
+        catch (Exception ex)
+        {
+            response.Data = 0;
+            response.Message = ex.Message;
+            response.Success = false;
+            response.Errors?.Add(ex.Message);
+        }
+        return response;
     }
 
     public async Task<ServiceResponse<Int32>> DeleteApplicantAsync()
@@ -140,13 +87,30 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
 
         return serviceResponse;
     }
+    public async Task<int> AddApplicantAsync(Applicant applicant)
+    {
+        var response = 0;
+        try
+        {
+            await _context.Applicants.AddAsync(applicant);
+            response = 1;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Couldn't add the applicant");
+        }
+
+        return response;
+    }
 
     public async Task<int> EditApplicantAsync(Applicant applicant)
     {
         var response = 0;
         try
         {
-            _context.Applicants.Update(applicant);
+            _context.Set<Applicant>().Attach(applicant);
+            _context.Entry(applicant).State = EntityState.Modified;
+            // _context.Applicants.Update(applicant);
             response = await _context.SaveChangesAsync();
         }
         catch (Exception ex)

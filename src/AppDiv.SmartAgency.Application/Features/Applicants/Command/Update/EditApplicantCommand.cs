@@ -23,50 +23,187 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
     public async Task<ServiceResponse<Int32>> Handle(EditApplicantCommand command, CancellationToken cancellationToken)
     {
         var serviceResponse = new ServiceResponse<Int32>();
-        var editedApplicant = await _applicantRepository.GetAsync(command.request.Id);
-        editedApplicant = CustomMapper.Mapper.Map<Applicant>(command.request);
+        var exceptions = new List<Exception>();
 
-        ICollection<LookUp> qualificationTypes = new List<LookUp>();
-        ICollection<LookUp> levelOfQualifications = new List<LookUp>();
-        ICollection<LookUp> awards = new List<LookUp>();
-        ICollection<LookUp> skills = new List<LookUp>();
+        var eagerLoadedProperties = new string[]
+                                    {
+                                        "Skills.LookUp","Education.QualificationTypes.LookUp",
+                                        "Education.LevelOfQualifications.LookUp","Education.Awards.LookUp"
+                                    };
+        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.request.Id, eagerLoadedProperties);
 
-        foreach (var qualificationType in command.request.Education.QualificationTypes!)
+        if (applicantEntity != null)
         {
-            var qt = await _lookUpRepository.GetAsync(qualificationType);
-            qualificationTypes.Add(qt);
+            CustomMapper.Mapper.Map(command.request, applicantEntity);
+            var editedApplicant = CustomMapper.Mapper.Map<Applicant>(command.request);
+
+            ICollection<LookUp> qualificationTypesLookup = new List<LookUp>();
+            ICollection<LookUp> levelOfQualificationsLookup = new List<LookUp>();
+            ICollection<LookUp> awardsLookup = new List<LookUp>();
+            ICollection<LookUp> skillsLookup = new List<LookUp>();
+
+            foreach (var qualificationTypeId in command.request.Education?.QualificationTypes!)
+            {
+                var qt = await _lookUpRepository.GetAsync(qualificationTypeId);
+                qualificationTypesLookup.Add(qt);
+            }
+            foreach (var levelOfQualificationId in command.request.Education.LevelofQualifications!)
+            {
+                var loq = await _lookUpRepository.GetAsync(levelOfQualificationId);
+                levelOfQualificationsLookup.Add(loq);
+            }
+            foreach (var awardId in command.request.Education.Awards!)
+            {
+                var awd = await _lookUpRepository.GetAsync(awardId);
+                awardsLookup.Add(awd);
+            }
+            foreach (var skill in command.request.Skills!)
+            {
+                var sk = await _lookUpRepository.GetAsync(skill);
+                skillsLookup.Add(sk);
+            }
+
+            // Update the QualificationTypes
+            if (command.request.Education != null && command.request.Education.QualificationTypes != null)
+            {
+                foreach (var qualificationTypeId in command.request.Education.QualificationTypes)
+                {
+                    var qt = await _lookUpRepository.GetAsync(qualificationTypeId);
+                    if (qt != null)
+                    {
+                        // Check if the QualificationType already exists
+                        var existingQualificationType = applicantEntity.Education?.QualificationTypes?
+                            .FirstOrDefault(qt => qt.LookUp?.Id == qualificationTypeId);
+
+                        if (existingQualificationType == null)
+                        {
+                            // Create a new QualificationType and add it to the list in the parent entity
+                            var newQualificationType = new QualificationType
+                            {
+                                LookUp = qt
+                            };
+                            applicantEntity.Education?.QualificationTypes?.Add(newQualificationType);
+                        }
+                        else
+                        {
+                            exceptions.Add(new Exception($"The Applicant is already up-to-date with a QualificationType with Id {qualificationTypeId}"));
+                        }
+                    }
+                }
+            }
+
+            // Update the LevelOfQualifications
+            if (command.request.Education != null && command.request.Education.LevelofQualifications != null)
+            {
+                foreach (var levelOfQualificationId in command.request.Education.LevelofQualifications)
+                {
+                    var loq = await _lookUpRepository.GetAsync(levelOfQualificationId);
+                    if (loq != null)
+                    {
+                        // Check if the LevelOfQualification already exists
+                        var existingLevelOfQualification = applicantEntity.Education?.LevelOfQualifications?
+                            .FirstOrDefault(loq => loq.LookUp?.Id == levelOfQualificationId);
+
+                        if (existingLevelOfQualification == null)
+                        {
+                            // Create a new LevelOfQualification and add it to the list in the parent entity
+                            var newLevelOfQualification = new LevelOfQualification
+                            {
+                                LookUp = loq
+                            };
+                            applicantEntity.Education?.LevelOfQualifications?.Add(newLevelOfQualification);
+                        }
+                        else
+                        {
+                            exceptions.Add(new Exception($"The Applicant is already up-to-date with a LevelOfQualification with Id {levelOfQualificationId}"));
+                        }
+                    }
+                }
+            }
+
+            // Update the Awards
+            if (command.request.Education != null && command.request.Education.Awards != null)
+            {
+                foreach (var awardId in command.request.Education.Awards)
+                {
+                    var award = await _lookUpRepository.GetAsync(awardId);
+                    if (award != null)
+                    {
+                        // Check if the Award already exists
+                        var existingAward = applicantEntity.Education?.Awards?
+                            .FirstOrDefault(a => a.LookUp?.Id == awardId);
+
+                        if (existingAward == null)
+                        {
+                            // Create a new Award and add it to the list in the parent entity
+                            var newAward = new Award
+                            {
+                                LookUp = award
+                            };
+                            applicantEntity.Education?.Awards?.Add(newAward);
+                        }
+                        else
+                        {
+                            exceptions.Add(new Exception($"The Applicant is already up-to-date with an Award with Id {award.Id}"));
+                        }
+                    }
+                }
+            }
+
+            // Update the Skills
+            if (command.request.Skills != null)
+            {
+                foreach (var skillId in command.request.Skills)
+                {
+                    var skill = await _lookUpRepository.GetAsync(skillId);
+                    if (skill != null)
+                    {
+                        // Check if the Skill already exists
+                        var existingSkill = applicantEntity.Skills?
+                            .FirstOrDefault(s => s.LookUp?.Id == skillId);
+
+                        if (existingSkill == null)
+                        {
+                            // Create a new Skill and add it to the list in the parent entity
+                            var newSkill = new Skill
+                            {
+                                LookUp = skill
+                            };
+                            applicantEntity.Skills?.Add(newSkill);
+                        }
+                        else
+                        {
+                            exceptions.Add(new Exception($"The Applicant is already up-to-date with a Skill with Id {skill.Id}"));
+                        }
+                    }
+                }
+            }
+
+            // Save changes to the database
+            try
+            {
+                serviceResponse = await _applicantRepository.SaveDbUpdateAsync();
+
+
+                if (serviceResponse.Data >= 1)
+                {
+                    serviceResponse.Success = true;
+                    serviceResponse.Message = "Successfully updated the applicant.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any database errors and add them to the exceptions list
+                exceptions.Add(ex);
+            }
         }
-        foreach (var levelOfQualification in command.request.Education.LevelofQualifications)
+
+        // Handle any exceptions
+        if (exceptions.Count > 0)
         {
-            var loq = await _lookUpRepository.GetAsync(levelOfQualification);
-            levelOfQualifications.Add(loq);
-        }
-        foreach (var award in command.request.Education.Awards!)
-        {
-            var awd = await _lookUpRepository.GetAsync(award);
-            awards.Add(awd);
-        }
-        foreach (var skill in command.request.Skills!)
-        {
-            var sk = await _lookUpRepository.GetAsync(skill);
-            skills.Add(sk);
+            throw new AggregateException("One or more exceptions occurred while updating the applicant.", exceptions);
         }
 
-
-
-        // Update the retrieved entities with the request
-
-        // editedApplicant.Education!.QualificationTypes = qualificationTypes;
-        // editedApplicant.Education.LevelOfQualifications = levelOfQualifications;
-        // editedApplicant.Education.Awards = awards;
-        // editedApplicant.Skills = skills;
-
-        serviceResponse.Data = await _applicantRepository.EditApplicantAsync(editedApplicant);
-        // _applicantRepository.Update(editedApplicant);
-        if (serviceResponse.Success)
-        {
-            serviceResponse.Message = "Successfully updated the applicant.";
-        }
         return serviceResponse;
     }
 }

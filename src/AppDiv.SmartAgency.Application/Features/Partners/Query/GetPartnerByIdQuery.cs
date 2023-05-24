@@ -23,21 +23,20 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 
     }
 
-    public class GetPartnerByIdHandler : IRequestHandler<GetPartnerByIdQuery,PartnerResponseDTO>
+    public class GetPartnerByIdHandler : IRequestHandler<GetPartnerByIdQuery, PartnerResponseDTO>
     {
         private readonly IPartnerRepository _partnerRepository;
-        
+
 
         public GetPartnerByIdHandler(IPartnerRepository partnerRepository)
         {
-            _partnerRepository= partnerRepository;
+            _partnerRepository = partnerRepository;
         }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
         {
-            //var partners = await _mediator.Send(new GetAllPartnerQuery());
             var selectedPartner = await _partnerRepository.GetByIdAsync(request.Id);
             return CustomMapper.Mapper.Map<PartnerResponseDTO>(selectedPartner);
-           
+
         }
     }
 }

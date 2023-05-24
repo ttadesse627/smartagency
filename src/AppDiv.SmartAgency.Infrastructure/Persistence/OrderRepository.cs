@@ -29,10 +29,26 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         try
         {
             order = await _context.Orders
-                    .Include(order => order.OrderCriteria)
-                    .Include(order => order.Sponsor)
-                        .ThenInclude(os => os.Address)
-                    .Include(order => order.Payment).FirstOrDefaultAsync(ord => ord.Id == id);
+                    .Include("PortOfArrival")
+                    .Include("Priority")
+                    .Include("VisaType")
+                    .Include("PortOfArrival")
+                    .Include("AttachmentFile")
+                    .Include("OrderCriteria")
+                    .Include("OrderCriteria.Nationality")
+                    .Include("OrderCriteria.JobTitle")
+                    .Include("OrderCriteria.Salary")
+                    .Include("OrderCriteria.Religion")
+                    .Include("OrderCriteria.Experience")
+                    .Include("OrderCriteria.Language")
+                    .Include("Sponsor")
+                    .Include("Sponsor.AttachmentFile")
+                    .Include("Sponsor.Address")
+                    .Include("Sponsor.Address.AddressRegion")
+                    .Include("Sponsor.Address.Country")
+                    .Include("Payment")
+                    .Include("Employee")
+                    .Include("Partner").FirstOrDefaultAsync(ord => ord.Id == id);
             if (order is not null)
             {
                 response.Data = order;
@@ -61,14 +77,14 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             response.Data = "Successfully set";
             response.Message = "The order is updated.";
             response.Success = true;
-            response.Errors.Add("No error found!");
+            response.Errors?.Add("No error found!");
         }
         catch (System.Exception ex)
         {
             response.Data = null;
             response.Message = "Cannot update the order because of some error/s";
             response.Success = false;
-            response.Errors.Add(ex.Message);
+            response.Errors?.Add(ex.Message);
         }
         return response;
     }
@@ -86,7 +102,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             response.Data = 0;
             response.Message = ex.Message;
             response.Success = false;
-            response.Errors.Add(ex.Message);
+            response.Errors?.Add(ex.Message);
         }
         return response;
     }

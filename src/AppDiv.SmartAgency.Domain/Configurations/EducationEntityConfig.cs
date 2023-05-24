@@ -15,13 +15,16 @@ public class EducationEntityConfig : IEntityTypeConfiguration<Education>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(edu => edu.QualificationTypes)
-            .WithMany(appl => appl.QualificationTypes);
+            .WithOne(qt => qt.Education)
+            .HasForeignKey(fk => fk.EducationId);
 
         builder.HasMany(edu => edu.LevelOfQualifications)
-            .WithMany(lk => lk.LevelOfQualifications);
+            .WithOne(qt => qt.Education)
+            .HasForeignKey(fk => fk.EducationId);
 
         builder.HasMany(edu => edu.Awards)
-            .WithMany(lk => lk.Awards);
+            .WithOne(qt => qt.Education)
+            .HasForeignKey(fk => fk.EducationId);
 
     }
 }

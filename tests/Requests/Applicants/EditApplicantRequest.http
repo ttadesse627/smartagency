@@ -7,12 +7,12 @@ Content-Type: application/json
 
 {
   "id": "1200b439-ac65-48ec-b5b5-3805cdc716a8",
-  "firstName": "Chala",
-  "middleName": "Abebe",
-  "lastName": "Gezachew",
+  "firstName": "FN1",
+  "middleName": "MN1",
+  "lastName": "LN1",
   "birthDate": "2023-05-19T10:50:47.889Z",
   "gender": "Male",
-  "passportNumber": "EP000001",
+  "passportNumber": "EP000005",
   "issuedDate": "2023-05-19T10:50:47.889Z",
   "passportExpiryDate": "2023-05-19T10:50:47.889Z",
   "placeOfBirth": "AA",
@@ -20,7 +20,7 @@ Content-Type: application/json
   "arabicFullName": "አል ነመራ",
   "complexion": "Brown",
   "numberOfChildren": 3,
-  "motherName": "Demmitu",
+  "motherName": "Chaltu",
   "previousNationality": "Ethiopian",
   "currentNationality": "Ethiopian",
   "height":160,
@@ -30,7 +30,7 @@ Content-Type: application/json
   "remark": "He is a good worker",
   "isRequested": false,
   "isReserved": false,
-  "isBlocked": false,
+  "isBlocked": true,
   "isDeleted": false,
   "issuingCountryId": "e21f9284-c916-4b50-865f-fdeff0731ebc",
   "passportIssuedPlaceId": "e77884eb-89db-49eb-8ffd-1579ffa607bb",
@@ -49,7 +49,7 @@ Content-Type: application/json
     {
       "id": "be39a36f-b04b-49ad-b5e0-91bb19a7a2c0",
       "canWrite": true,
-      "canRead": true,
+      "canRead": false,
       "canSpeak": false,
       "canListen": true,
       "proficiency": "Good",
@@ -61,50 +61,47 @@ Content-Type: application/json
   ],
   "experiences": [
     {
-      "id": "773f5013-fc86-46b7-98ab-c6a3ff9b45d5",
-      "periodLength": 2,
-      "position": "IT Administrator",
+      "id": "5ee2c121-cd92-473f-813e-a8c1009c2750",
+      "periodLength": 4,
+      "position": "System Administrator",
       "countryId": "e21f9284-c916-4b50-865f-fdeff0731ebc"
     }
   ],
   "education": {
     "id": "873548a0-1755-47e6-bfb1-287061a9448e",
-    "yearCompleted": 2022,
-    "fieldOfStudy": "SE",
+    "yearCompleted": 2014,
+    "fieldOfStudy": "CS",
     "professionalSkill": "No Skill",
     "qualificationTypes": [
-      "a8bf96de-8c09-4e4e-a667-326bc84b8372",
-      "1a1f1de1-7253-4398-93ea-b16ef314656d"
+      "a8bf96de-8c09-4e4e-a667-326bc84b8372"
     ],
     "levelofQualifications": [
-      "dbb51fc9-c0f3-40c7-9468-4fafc977782f",
-      "ee7d3a52-24e5-4dd5-81e2-964444f0fadb"
+      "dbb51fc9-c0f3-40c7-9468-4fafc977782f"
     ],
     "awards": [
-      "2141ba2b-93fc-4939-b501-45adebba0754",
-      "fef46287-75df-4bd4-9704-54ec0e60ef5e"
+      "2141ba2b-93fc-4939-b501-45adebba0754"
     ]
   },
   "bankAccount": {
     "id": "f2d04719-ad68-4e82-b08f-a53816679980",
-    "bankName": "CBE",
+    "bankName": "Dashen",
     "accountNumber": 1000263339413,
     "branchName": "Bole",
-    "swiftCode": "CBEETTAA"
+    "swiftCode": "DISHTAA"
   },
   "emergencyContact": {
     "id": "dce47efd-9165-4d1a-a73c-e6dc5d721ccb",
-    "firstName": "Ashaferegn",
-    "middleName": "Regassa",
-    "lastName": "Dugasa",
+    "firstName": "ECF1",
+    "middleName": "ECM1",
+    "lastName": "ECL1",
     "birthDate": "1990-05-19T10:50:47.889Z",
     "gender": "Male",
     "arabicFullName": "ArabicFN",
     "relationshipId": "c0fe6c0e-1512-4e3f-956d-46645844e167",
     "address": {
       "id": "da2616b9-8bb0-4b34-9321-6e9ade6ed0b2",
-      "region": "Oromia",
-      "city": "Bishoftu",
+      "region": "ECAR1",
+      "city": "ECAC1",
       "district": "string",
       "districtArabic": "string",
       "zone": "East Shoa",
@@ -127,14 +124,14 @@ Content-Type: application/json
   },
   "representative": {
     "id": "9088e981-537b-4774-8217-2b3f20618ff5",
-    "firstName": "Bakka Bu'aa 1",
-    "middleName": "Rep 1",
-    "lastName": "Tewekay 1",
+    "firstName": "RF1",
+    "middleName": "RM1",
+    "lastName": "RL1",
     "birthDate": "1993-05-19T10:50:47.889Z",
     "gender": "Male",
     "address": {
       "id": "de7e9a7b-c3a2-4e25-a1a6-6d892f5bb468",
-      "city": "AA",
+      "city": "RAC1",
       "zone": "Kality",
       "woreda": "09",
       "kebele": "12",
@@ -146,7 +143,7 @@ Content-Type: application/json
   "witnesses": [
     {
       "id": "da7f8422-5157-4c6e-be03-bd5a5e36d00f",
-      "firstName": "string",
+      "firstName": "WF1",
       "middleName": "string",
       "lastName": "string",
       "address": "string",
@@ -156,7 +153,7 @@ Content-Type: application/json
   "beneficiaries": [
     {
       "id": "0e9fef6e-7462-400b-8b4e-0f1d75509ede",
-      "firstName": "Witness 1",
+      "firstName": "BENF1",
       "middleName": "string",
       "lastName": "string",
       "region": "string",
@@ -169,13 +166,13 @@ Content-Type: application/json
   "attachmentFiles": [
     {
       "id": "be1c1313-3bae-47ba-8152-b136b29090b7",
-      "filePath": "D:\\Academic\\Tests",
+      "filePath": "D:\\Academic\\Tests2",
       "attachmentId": "011f0ed8-18f4-4887-92ac-10d667f42868"
     }
   ],
   "address": {
       "id": "b6ed5b19-b54b-4aac-bb19-94cdf11fe1ec",
-      "region": "Oromia",
+      "region": "AA1",
       "city": "Bishoftu",
       "district": "string",
       "districtArabic": "string",
@@ -200,4 +197,4 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:5120/api/lookup/get-all-lookup?orderby=Value HTTP/1.1
+GET http://localhost:5120/api/lookup/get-all-lookup HTTP/1.1

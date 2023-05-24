@@ -45,28 +45,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await list.ToListAsync();
         }
 
-// newwwwwwwwwwwwwwww
-  
-         public virtual async Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
-        {
-
-            var query = _dbContext.Set<T>().AsQueryable();
-            if (predicate != null)
-            {
-                query = query.Where(predicate);
-            }
-
-            foreach (var nav_property in eagerLoadedProperties)
-            {
-                query = query.Include(nav_property);
-            }
-            var entity = await query.ToListAsync();
-
-            return  entity.First();
-        }
-
-
-
         public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
@@ -83,7 +61,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 var propertyExpr = Expression.Property(parameter, prop);
                 var containsExpr = Expression.Call(
                                         propertyExpr,
-                                        typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                                        typeof(string).GetMethod("Contains", new[] { typeof(string) })!,
                                         Expression.Constant(searchTerm));
 
                 var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
@@ -130,8 +108,99 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 SortingColumn = orderBy,
                 SortingDirection = sortingDirection
             };
-
         }
+        public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+            long maxPage = 1, totalItems = 0;
+
+            var query = _dbContext.Set<T>().AsQueryable();
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            // Search
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var body = Expression.Equal(Expression.Constant(null), Expression.Constant(""));
+            var stringProperties = typeof(T).GetProperties()
+                .Where(p => p.PropertyType == typeof(string))
+                .ToList();
+
+            foreach (var prop in stringProperties)
+            {
+                var propertyExpr = Expression.Property(parameter, prop);
+                var containsExpr = Expression.Call(
+                                        propertyExpr,
+                                        typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                                        Expression.Constant(searchTerm));
+
+                var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+                body = Expression.Or(body, binaryExpr);
+            }
+
+            var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+            query = query.Where(lambda);
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                query = query.Include(nav_property);
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
+                query = query.OrderBy(orderExpression);
+            }
+
+            // Pagination
+            var skipAmount = (pageNumber - 1) * pageSize;
+            query = query.Skip(skipAmount).Take(pageSize);
+
+            // Projection
+            var result = await query.ToListAsync();
+            totalItems = await query.LongCountAsync();
+
+            // Create the search result model
+            maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
+            if (pageNumber >= maxPage)
+            {
+                pageNumber = Convert.ToInt32(maxPage);
+            }
+
+            return new SearchModel<T>
+            {
+                CurrentPage = pageNumber,
+                MaxPage = maxPage,
+                PagingSize = pageSize,
+                Entities = result,
+                TotalItems = totalItems,
+                SearchKeyWord = searchTerm,
+                SortingColumn = orderBy,
+                SortingDirection = sortingDirection
+            };
+        }
+
+
+        public virtual async Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+
+            var query = _dbContext.Set<T>().AsQueryable();
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                query = query.Include(nav_property);
+            }
+            var entity = await query.ToListAsync();
+
+            return entity.First();
+        }
+
+
 
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
         {

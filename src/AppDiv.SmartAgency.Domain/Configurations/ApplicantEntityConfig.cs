@@ -29,6 +29,11 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .HasForeignKey<Representative>(rep => rep.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(m => m.Address)
+            .WithOne(n => n.Applicant)
+            .HasForeignKey<Applicant>(fk => fk.AddressId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasOne(appl => appl.Partner)
             .WithMany(rep => rep.Applicants)
             .HasForeignKey(appl => appl.PartnerId)
@@ -93,8 +98,5 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .WithMany(lk => lk.ApplBranches)
             .HasForeignKey(appl => appl.BranchId)
             .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasMany(appl => appl.Skills)
-            .WithMany(lk => lk.Skills);
     }
 }

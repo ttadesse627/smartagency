@@ -33,7 +33,6 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         {
             var selectedDeposit = await _depositRepository.GetByIdAsync(request.Id);
             return CustomMapper.Mapper.Map<GetDepositByIdResponseDTO>(selectedDeposit);
-           
         }
 }
 

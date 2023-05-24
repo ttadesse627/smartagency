@@ -1,6 +1,7 @@
 using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
 public record GetApplicantResponseDTO
@@ -30,22 +31,10 @@ public record GetApplicantResponseDTO
     public bool IsRequested { get; set; } = false;
     public bool IsReserved { get; set; } = false;
     public bool IsBlocked { get; set; } = false;
-    public bool IsDeleted { get; set; } = false;
-    public Guid? IssuingCountryId { get; set; }
-    public Guid? PassportIssuedPlaceId { get; set; }
-    public Guid? MaritalStatusId { get; set; }
-    public Guid? HealthId { get; set; }
-    public Guid? ReligionId { get; set; }
-    public Guid? JobtitleId { get; set; }
-    public Guid? ExperienceId { get; set; }
-    public Guid? LanguageId { get; set; }
-    public Guid? SalaryId { get; set; }
-    public Guid? DesiredCountryId { get; set; }
-    public Guid? BrokerNameId { get; set; }
-    public Guid? BranchId { get; set; }
-    public Guid? PartnerId { get; set; }
+
+    // Objects
     public ICollection<GetLanguageSkillResponseDTO>? LanguageSkills { get; set; }
-    public ICollection<Guid>? Skills { get; set; }
+    public ICollection<GetSkillResponseDTO>? Skills { get; set; }
     public ICollection<GetExperienceResponseDTO>? Experiences { get; set; }
     public GetEducationResponseDTO? Education { get; set; }
     public GetBankAccountResponseDTO? BankAccount { get; set; }
@@ -55,4 +44,20 @@ public record GetApplicantResponseDTO
     public ICollection<GetBeneficiaryResponseDTO>? Beneficiaries { get; set; }
     public ICollection<AttachmentFileResponseDTO>? AttachmentFiles { get; set; }
     public GetAddressResponseDTO? Address { get; set; }
+
+    //Navigation Properties
+    public PartnerApplRespDTO? Partner { get; set; }
+    public LookUpResponseDTO? IssuingCountry { get; set; }
+    public LookUpResponseDTO? PassportIssuedPlace { get; set; }
+    public LookUpResponseDTO? MaritalStatus { get; set; }
+    public LookUpResponseDTO? Health { get; set; }
+    public LookUpResponseDTO? Religion { get; set; }
+    public LookUpResponseDTO? Jobtitle { get; set; }
+    public LookUpResponseDTO? Experience { get; set; }
+    public LookUpResponseDTO? Language { get; set; }
+    public LookUpResponseDTO? Salary { get; set; }
+    public LookUpResponseDTO? DesiredCountry { get; set; }
+    public LookUpResponseDTO? BrokerName { get; set; }
+    public LookUpResponseDTO? Branch { get; set; }
+    public LookUpResponseDTO? Order { get; set; }
 }
