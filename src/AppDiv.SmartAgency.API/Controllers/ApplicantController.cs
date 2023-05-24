@@ -75,4 +75,10 @@ public class ApplicantController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpGet("get-for-assignment")]
+    public async Task<ActionResult<List<GetForAssignmentDTO>>> GetOrderForAssignment()
+    {
+        return Ok(await _mediator.Send(new GetForAssignmentQuery()));
+    }
 }

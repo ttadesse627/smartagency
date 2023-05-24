@@ -182,7 +182,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
 
 
-        public virtual async Task<List<T>> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        public virtual async Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
 
             var query = _dbContext.Set<T>().AsQueryable();
@@ -195,8 +195,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 query = query.Include(nav_property);
             }
+            var entity = await query.ToListAsync();
 
-            return await query.ToListAsync();
+            return entity.First();
         }
 
 

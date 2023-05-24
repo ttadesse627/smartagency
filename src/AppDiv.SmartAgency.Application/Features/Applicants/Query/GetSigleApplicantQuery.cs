@@ -31,8 +31,7 @@ public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicant
                                         "Witnesses","Beneficiaries.Relationship","AttachmentFiles.Attachment",
                                         "Address.AddressRegion"
                                     };
-        var applicants = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.id && appl.IsDeleted == false, eagerLoadedProperties);
-        var applicantEntity = applicants.First();
+        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.id && appl.IsDeleted == false, eagerLoadedProperties);
         var applicantResponse = CustomMapper.Mapper.Map<GetApplicantResponseDTO>(applicantEntity);
         return applicantResponse;
     }

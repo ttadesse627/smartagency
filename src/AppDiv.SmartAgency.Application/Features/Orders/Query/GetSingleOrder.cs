@@ -33,8 +33,7 @@ public class GetSingleOrderHandler : IRequestHandler<GetSingleOrder, ServiceResp
                                         "Sponsor.Address.AddressRegion","Sponsor.Address.Country",
                                         "Payment","Employee","Partner"
                                     };
-        var orders = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.id && order.IsDeleted == false, eagerLoadedProperties);
-        orderResponse.Data = orders.First();
+        orderResponse.Data = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.id && order.IsDeleted == false, eagerLoadedProperties);
 
         if (orderResponse.Data is not null)
         {

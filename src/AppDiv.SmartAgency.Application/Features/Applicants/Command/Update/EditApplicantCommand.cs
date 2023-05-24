@@ -30,8 +30,7 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                                         "Skills.LookUp","Education.QualificationTypes.LookUp",
                                         "Education.LevelOfQualifications.LookUp","Education.Awards.LookUp"
                                     };
-        var loadedApplicants = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.request.Id, eagerLoadedProperties);
-        var applicantEntity = loadedApplicants.First();
+        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.request.Id, eagerLoadedProperties);
 
         if (applicantEntity != null)
         {

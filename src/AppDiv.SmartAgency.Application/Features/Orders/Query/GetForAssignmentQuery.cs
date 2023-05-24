@@ -28,8 +28,7 @@ public class GetForAssignmentQueryHandler : IRequestHandler<GetForAssignmentQuer
                         (
                             order => order.IsDeleted == false && order.EmployeeId == null, eagerLoadedProperties
                         );
-        Console.WriteLine(orderList.Count);
-        orderResponse = CustomMapper.Mapper.Map<List<GetForAssignmentOrderDTO>>(orderList);
+        orderResponse = CustomMapper.Mapper.Map(orderList, orderResponse);
         return orderResponse;
     }
 }

@@ -3,7 +3,6 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
@@ -37,7 +36,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                                     };
         var serviceResponse = await _orderRepository.GetWithPredicateAsync(order => order.Id == editOrderRequest.Id, eagerLoadedProperties);
 
-        var orderEntity = serviceResponse.First();
+        var orderEntity = serviceResponse;
         if (orderEntity is not null)
         {
             if (!orderEntity.OrderCriteria!.Equals(null) || !orderEntity.Sponsor!.Equals(null) || !orderEntity.Payment!.Equals(null) || orderEntity.AttachmentFile!.Equals(null))
