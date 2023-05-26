@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
@@ -23,6 +24,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         public async Task<LookUp> GetByIdAsync(Guid Id)
         {
             return await base.GetAsync(Id);
+        }
+        public async Task<Int32> UpdateAsync(LookUp lookUp)
+        {
+
+                   _context.LookUps.Update(lookUp);  
+                   return await _context.SaveChangesAsync();
+                     
         }
 
     }

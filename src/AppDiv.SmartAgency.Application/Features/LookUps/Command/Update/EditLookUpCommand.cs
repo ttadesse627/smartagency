@@ -41,18 +41,23 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
 
             };
 
+        var lookUpResponse= new LookUpResponseDTO();
+
             try
             {
-                await _lookUpRepository.UpdateAsync(lookUpEntity, x => x.Id);
+              var res=  await _lookUpRepository.UpdateAsync(lookUpEntity);
+
+                if(res>=1){
+                    var modifiedLookUp =await _lookUpRepository.GetWithPredicateAsync(l=>l.Id==request.Id, "Category");
+                    lookUpResponse= CustomMapper.Mapper.Map<LookUpResponseDTO>(modifiedLookUp);
+                }
             }
             catch (Exception exp)
             {
                 throw new ApplicationException(exp.Message);
             }
 
-            var modifiedLookUp = await _lookUpQueryRepository.GetByIdAsync(request.Id);
-            var lookUpResponse = CustomMapper.Mapper.Map<LookUpResponseDTO>(modifiedLookUp);
-
+           
             return lookUpResponse;
         }
     }
