@@ -83,11 +83,9 @@ namespace AppDiv.SmartAgency.API.Controllers
             catch (Exception exp)
             {
                 return BadRequest(exp.Message);
-         
-    
-      }
-          
+      }    
   }
+  
 
 }
 }

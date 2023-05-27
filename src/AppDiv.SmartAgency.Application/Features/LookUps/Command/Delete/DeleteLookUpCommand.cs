@@ -33,7 +33,8 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Delete
             {
                 var lookUpEntity = await _lookUpRepository.GetByIdAsync(request.Id);
 
-                await _lookUpRepository.DeleteAsync(lookUpEntity);
+                await _lookUpRepository.DeleteAsync(lookUpEntity.Id);
+                await _lookUpRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception exp)
             {

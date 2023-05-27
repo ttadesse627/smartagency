@@ -25,7 +25,6 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
     public class EditLookUpCommandHandler : IRequestHandler<EditLookUpCommand, LookUpResponseDTO>
     {
         private readonly ILookUpRepository _lookUpRepository;
-        private readonly ILookUpRepository _lookUpQueryRepository;
         public EditLookUpCommandHandler(ILookUpRepository lookUpRepository)
         {
             _lookUpRepository = lookUpRepository;
