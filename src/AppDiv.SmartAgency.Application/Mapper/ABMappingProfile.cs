@@ -136,6 +136,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Representative, RepresentativeResponseDTO>();
             CreateMap<Witness, WitnessResponseDTO>();
             CreateMap<Applicant, ApplicantsResponseDTO>();
+            CreateMap<Applicant, ApplSearchResponseDTO>();
+            CreateMap<SearchModel<Applicant>, SearchModel<ApplSearchResponseDTO>>();
 
             CreateMap<CreatePartnerRequest, Partner>();
             CreateMap<Partner, PartnerResponseDTO>();
@@ -209,7 +211,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditApplicantFollowupStatusCommand, ApplicantFollowupStatus>();
 
 
-            
+
             CreateMap<SearchModel<LookUp>, SearchModel<LookUpResponseDTO>>();
 
             CreateMap<SearchModel<Attachment>, SearchModel<AttachmentResponseDTO>>();

@@ -19,11 +19,11 @@ public class GetForAssignmentQueryHandler : IRequestHandler<GetForAssignmentQuer
     {
         var applicantResponse = new List<GetForAssignmentDTO>();
         var eagerLoadedProperties = new string[]{"Order",  "Jobtitle","Language","Religion", "Salary"};
-        var applicantList = await _applicantRepository.GetWithPredicateAsync
+        var applicantList = await _applicantRepository.GetAllWithPredicateAsync
                         (
                             applicant => applicant.IsDeleted == false && applicant.Order == null, eagerLoadedProperties
                         );
-        applicantResponse = CustomMapper.Mapper.Map<List<GetForAssignmentDTO>>(applicantList);
+        applicantResponse = CustomMapper.Mapper.Map(applicantList, applicantResponse);
         return applicantResponse;
     }
 }

@@ -90,6 +90,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
                 list = list.OrderBy(orderExpression);
+                
             }
 
             // Pagination
@@ -109,6 +110,84 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 SortingDirection = sortingDirection
             };
         }
+
+        // public virtual async Task<SearchModel<T>> GetAllWithSearchAsync1(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, params string[] eagerLoadedProperties)
+        // {
+        //     long maxPage = 1, totalItems = 0;
+
+        //     var parameter = Expression.Parameter(typeof(T), "x");
+        //     var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
+
+        //     var stringProperties = typeof(T).GetProperties()
+        //         .Where(p => p.PropertyType == typeof(string))
+        //         .ToList();
+
+        //     foreach (var prop in stringProperties)
+        //     {
+        //         var propertyExpr = Expression.Property(parameter, prop);
+        //         var containsExpr = Expression.Call(
+        //                                 propertyExpr,
+        //                                 typeof(string).GetMethod("Contains", new[] { typeof(string) })!,
+        //                                 Expression.Constant(searchTerm));
+
+        //         var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+        //         body = Expression.Or(body, binaryExpr);
+        //     }
+
+        //     foreach (var propertyName in collection)
+        //     {
+
+        //     }
+
+        //     var propertyExpr = Expression.Property(parameter, propertyName);
+        //     var containsExpr = Expression.Call(
+        //         propertyExpr,
+        //         typeof(object).GetMethod("ToString", new Type[0]),
+        //         Expression.Constant(CultureInfo.InvariantCulture));
+        //     var searchTermExpr = Expression.Constant(searchTerm);
+        //     var equalsExpr = Expression.Equal(containsExpr, searchTermExpr);
+
+        //     var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+        //     var list = _dbContext.Set<T>().Where(lambda);
+
+        //     foreach (var nav_property in eagerLoadedProperties)
+        //     {
+        //         list = list.Include(nav_property);
+        //     }
+        //     totalItems = list.LongCount();
+        //     if (totalItems > 0)
+        //     {
+        //         maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
+        //         if (pageNumber >= maxPage)
+        //         {
+        //             pageNumber = Convert.ToInt32(maxPage);
+        //         }
+        //     }
+
+        //     // Sorting
+        //     if (!string.IsNullOrEmpty(orderBy))
+        //     {
+        //         var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
+        //         list = list.OrderBy(orderExpression);
+        //     }
+
+        //     // Pagination
+        //     var skipAmount = (pageNumber - 1) * pageSize;
+        //     list = list.Skip(skipAmount).Take(pageSize);
+
+        //     var result = await list.ToListAsync();
+        //     return new SearchModel<T>
+        //     {
+        //         CurrentPage = pageNumber,
+        //         MaxPage = maxPage,
+        //         PagingSize = pageSize,
+        //         Entities = list,
+        //         TotalItems = totalItems,
+        //         SearchKeyWord = searchTerm,
+        //         SortingColumn = orderBy,
+        //         SortingDirection = sortingDirection
+        //     };
+        // }
         public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
@@ -198,6 +277,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             var entity = await query.ToListAsync();
 
             return entity.First();
+        }
+
+        public virtual async Task<List<T>> GetAllWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+
+            var query = _dbContext.Set<T>().AsQueryable();
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                query = query.Include(nav_property);
+            }
+            var entities = await query.ToListAsync();
+
+            return entities;
         }
 
 

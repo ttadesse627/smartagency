@@ -24,7 +24,7 @@ public class GetForAssignmentQueryHandler : IRequestHandler<GetForAssignmentQuer
                                         "OrderCriteria.Salary",  "OrderCriteria.JobTitle",
                                         "OrderCriteria.Language","OrderCriteria.Religion",
                                     };
-        var orderList = await _orderRepository.GetWithPredicateAsync
+        var orderList = await _orderRepository.GetAllWithPredicateAsync
                         (
                             order => order.IsDeleted == false && order.EmployeeId == null, eagerLoadedProperties
                         );

@@ -4,7 +4,10 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using AppDiv.SmartAgency.Utility.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using System.Globalization;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
@@ -42,7 +45,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         {
             response.Data = await _context.SaveChangesAsync();
             response.Message = "The update saved successfully";
-            
+
         }
         catch (Exception ex)
         {
@@ -119,4 +122,61 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         }
         return response;
     }
+
+
+    public virtual async Task<SearchModel<Applicant>> GetAllApplWithPredicateAsync(int pageNumber, int pageSize, string orderBy, SortingDirection sortingDirection, List<Expression<Func<Applicant, bool>>> predicates, params string[] eagerLoadedProperties)
+    {
+        long maxPage = 1, totalItems = 0;
+
+        var query = _context.Set<Applicant>().AsQueryable();
+        if (predicates.Count > 0)
+        {
+            var pred = $"{predicates[0]}";
+            for (int i = 1; i < predicates.Count; i++)
+            {
+                pred.Concat($"AND {predicates[i]}");
+            }
+            query = query.Where(pred);
+        }
+        else query = _context.Set<Applicant>().AsQueryable();
+
+        foreach (var nav_property in eagerLoadedProperties)
+        {
+            query = query.Include(nav_property);
+        }
+
+        totalItems = query.LongCount();
+        if (totalItems > 0)
+        {
+            maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
+            if (pageNumber >= maxPage)
+            {
+                pageNumber = Convert.ToInt32(maxPage);
+            }
+        }
+
+        // Sorting
+        if (!string.IsNullOrEmpty(orderBy))
+        {
+            var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
+            query = query.OrderBy(orderExpression);
+        }
+
+        // Pagination
+        var skipAmount = (pageNumber - 1) * pageSize;
+        query = query.Skip(skipAmount).Take(pageSize);
+
+        var result = await query.ToListAsync();
+        return new SearchModel<Applicant>
+        {
+            CurrentPage = pageNumber,
+            MaxPage = maxPage,
+            PagingSize = pageSize,
+            Entities = result,
+            TotalItems = totalItems,
+            SortingColumn = orderBy,
+            SortingDirection = sortingDirection
+        };
+    }
+
 }
