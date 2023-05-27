@@ -1653,7 +1653,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 23, 15, 17, 4, 417, DateTimeKind.Local).AddTicks(6623));
+                        .HasDefaultValue(new DateTime(2023, 5, 24, 22, 46, 17, 770, DateTimeKind.Local).AddTicks(8856));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");

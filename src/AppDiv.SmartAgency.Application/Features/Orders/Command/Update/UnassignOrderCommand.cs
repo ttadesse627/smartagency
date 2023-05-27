@@ -3,7 +3,6 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
