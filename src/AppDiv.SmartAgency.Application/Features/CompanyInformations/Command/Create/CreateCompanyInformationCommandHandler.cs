@@ -3,7 +3,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
-
+/*
 namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create
 {
     public class CreateCompanyInformationCommandHandler : IRequestHandler<CreateCompanyInformationCommand, CreateCompanyInformationCommandResponse>
@@ -35,6 +35,12 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Cr
             {
 
             var companyInformationEntity = CustomMapper.Mapper.Map<CompanyInformation>(request.companyInformation);
+            var companyInformationExistence= await _companyInformationRepository.GetAsync(request.companyInformation.Id);
+            if (companyInformationExistence!= null){
+                
+                try
+                var res= await _companyInformationRepository.UpdateAsync(companyInformationEntity);
+            }
             await _companyInformationRepository.InsertAsync(companyInformationEntity, cancellationToken);
             var result = await _companyInformationRepository.SaveChangesAsync(cancellationToken);      
             }
@@ -42,3 +48,4 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Cr
         }
 }
 }
+*/

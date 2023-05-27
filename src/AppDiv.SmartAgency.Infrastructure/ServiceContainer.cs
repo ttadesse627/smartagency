@@ -77,7 +77,8 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IApplicantFollowupStatusRepository, ApplicantFollowupStatusRepository>();
             services.AddTransient<IPageRepository, PageRepository>();
-            services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();  
+            services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();
+            //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
 
             return services;

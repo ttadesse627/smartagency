@@ -7,10 +7,12 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
 {
     public class CompanySettingRequest
     {
+        public Guid Id { get; set; }
         public int FileNumberStartFrom {get; set;}
         public int PrintedDocumentSubmitDays {get; set;}
         public int AmountOfDeposit {get; set;}
         public bool ViseManager {get; set;}
         public bool Manager {get; set;}
+        public Guid? CompanyInformationId {get; set;}
     }
 }

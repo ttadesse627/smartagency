@@ -58,5 +58,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
         Task UpdateAsync(T entity, Func<T, object[]> getKey);
         Task UpdateAsync(T entity, Func<T, object> getKey);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+
     }
 }

@@ -6,5 +6,6 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
     public record CreateLookUpCommand(CreateLookUpRequest lookUp) : IRequest<CreateLookUpCommandResponse>
 {
+    
 }
 }

@@ -8,5 +8,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     public interface ILookUpRepository : IBaseRepository<LookUp>
     {
         Task<LookUp> GetByIdAsync(Guid id);
+        Task<Int32> UpdateAsync(LookUp lookUp);
     }
 }

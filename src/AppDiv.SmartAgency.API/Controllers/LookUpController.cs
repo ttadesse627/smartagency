@@ -38,7 +38,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<LookUp> Get(Guid id)
+        public async Task<LookUpResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetLookUpByIdQuery(id));
         }

@@ -10,6 +10,6 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Cr
 {
     public record CreateCompanyInformationCommand(CreateCompanyInformationRequest companyInformation) : IRequest<CreateCompanyInformationCommandResponse>
 {
-
+   
 }
 }

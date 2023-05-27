@@ -1020,6 +1020,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("GeneralManagerAmharic")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("LetterBackGround")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LetterLogo")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -1220,50 +1226,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ApplicantId");
 
                     b.ToTable("Deposits");
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LetterInformation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Agent")
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid?>("CompanyInformationId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LetterBackGround")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LetterLogo")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid?>("PartnerId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyInformationId")
-                        .IsUnique();
-
-                    b.HasIndex("PartnerId")
-                        .IsUnique();
-
-                    b.ToTable("LetterInformations");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
@@ -2260,23 +2222,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Applicant");
                 });
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LetterInformation", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.CompanyInformation", "CompanyInformation")
-                        .WithOne("LetterInformation")
-                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.LetterInformation", "CompanyInformationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Partner", "Partner")
-                        .WithOne("LetterInformation")
-                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.LetterInformation", "PartnerId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CompanyInformation");
-
-                    b.Navigation("Partner");
-                });
-
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Category", "Category")
@@ -2573,8 +2518,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("CountryOperations");
 
-                    b.Navigation("LetterInformation");
-
                     b.Navigation("Witnesses");
                 });
 
@@ -2667,8 +2610,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
                 {
                     b.Navigation("Applicants");
-
-                    b.Navigation("LetterInformation");
 
                     b.Navigation("Orders");
                 });

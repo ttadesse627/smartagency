@@ -28,10 +28,7 @@ namespace AppDiv.SmartAgency.Domain.Configurations
                 .WithOne( w=> w.CompanyInformation)
                 .HasForeignKey(fk=> fk.CompanyInformationId)
                 .OnDelete(DeleteBehavior.Cascade);    
-            builder.HasOne(ci => ci.LetterInformation)
-                .WithOne( li=> li.CompanyInformation)
-                .HasForeignKey<LetterInformation>(fk=> fk.CompanyInformationId)
-                .OnDelete(DeleteBehavior.Cascade); 
+             
                 
         }
 

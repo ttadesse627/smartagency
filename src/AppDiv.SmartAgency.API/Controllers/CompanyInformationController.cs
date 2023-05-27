@@ -1,6 +1,8 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,18 +20,20 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<CompanyInformationResponseDTO>> CreateCompanyInformation(CreateCompanyInformationCommand companyInformationRequest, CancellationToken token)
+        public async Task<ActionResult> CreateCompanyInformation([FromBody] EditCompanyInformationCommand companyInformationRequest)
         {
             var response = await _mediator.Send(companyInformationRequest);
             return Ok(response);
         }
-/*
-        [HttpGet("get-all-online-applicant")]
-        public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants(int pageNumber = 1, int pageSize = 15, string? searchTerm = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
-        {
-            return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
-        }
+    
 
+
+        [HttpGet("get-company-information")]
+        public async Task<ActionResult<GetCompanyInformationResponseDTO>> GetCompanyInformation()
+        {
+            return Ok(await _mediator.Send(new GetCompanyInformationQuery()));
+        }
+/*
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<OnlineApplicantResponseDTO> Get(Guid id)

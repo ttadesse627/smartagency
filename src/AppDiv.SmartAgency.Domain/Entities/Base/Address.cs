@@ -38,9 +38,10 @@ public class Address : BaseAuditableEntity
     public Applicant? Applicant { get; set; }
     public EmergencyContact? EmergencyContact { get; set; }
     public Representative? Representative { get; set; }
-
     public Partner? Partner { get; set; }
     public Sponsor? Sponsor { get; set; }
     public CompanyInformation? CompanyInformation { get; set; }
+
+    public User? User { get; set; }
 
 }

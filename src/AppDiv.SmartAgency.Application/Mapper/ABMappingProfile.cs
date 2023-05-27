@@ -227,18 +227,23 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-            CreateMap<LetterInformation, LetterInformationRequest>().ReverseMap();
+          
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
+            CreateMap<CompanyWitnessRequest,Witness>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
-
-
+            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
+            CreateMap<Address, CompanyAddressResponseDTO>(); 
+            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
+            CreateMap<CountryOperation, CountryOperationResponseDTO>();
+            
+        
 
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-            CreateMap<LetterInformation, LetterInformationRequest>().ReverseMap();
+           
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
