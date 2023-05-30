@@ -1,20 +1,21 @@
-﻿using AppDiv.SmartAgency.Application.Interfaces;
+﻿using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Application.Interfaces;
+using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
 {
     public class CreateUserCommand : IRequest<int>
     {
+        public string FullName { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string UserGroupId { get; set; }
-        public string PersonalInfoId { get; set;}
+        public string ConfirmationPassword { get; set; }
+        public Guid? PositionId { get; set; }
+        public Guid? BranchId { get; set; }
+        public Guid? PartnerId { get; set; }
+        public List<string>? Roles { get; set; } = null;
     }
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
@@ -26,12 +27,17 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
         }
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var response = await _identityService.createUser(
+            if (request.Password != request.ConfirmationPassword)
+            {
+                throw new BadRequestException("The password should be confirmed");
+            }
+            var result = await _identityService.CreateUserAsync(
                 request.UserName,
+                request.Password,
                 request.Email,
-                request.UserGroupId,
-                request.PersonalInfoId);
-            return response.result.Succeeded ? 1 : 0;
+                request.FullName,
+                request.Roles);
+            return result.isSucceed ? 1 : 0;
         }
     }
 }

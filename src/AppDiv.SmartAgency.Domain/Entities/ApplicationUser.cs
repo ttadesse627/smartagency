@@ -6,8 +6,12 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string UserGroupId { get; set; }
-        public string PersonalInfoId { get;set;}
-        public virtual PersonalInfo PersonalInfo { get; set; }
+        public string? FullName { get; set; }
+        public Guid? PositionId { get; set; }
+        public Guid? BranchId { get; set; }
+        public Guid? PartnerId { get; set; }
+        public LookUp? Position { get; set; }
+        public LookUp? Branch { get; set; }
+        public Partner? Partner { get; set; }
     }
 }

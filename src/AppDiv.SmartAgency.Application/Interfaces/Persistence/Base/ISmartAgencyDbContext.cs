@@ -8,10 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Infrastructure.Context
+namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
+public interface ISmartAgencyDbContext
 {
-    public interface ISmartAgencyDbContext
-    {
-        string GetCurrentUserId();
-    }
+    string GetCurrentUserId();
 }

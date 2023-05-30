@@ -16,7 +16,6 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
         }
         public async Task<CreateLookUpCommandResponse> Handle(CreateLookUpCommand request, CancellationToken cancellationToken)
         {
-            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
             var createLookUpCommandResponse = new CreateLookUpCommandResponse();
             var validator = new CreateLookUpCommandValidator(_lookUpRepository);
@@ -34,23 +33,12 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
             {
                 var lookUp = new LookUp()
                 {
-                    CategoryId = request.lookUp.CategoryId,
+                    Category = request.lookUp.Category,
                     Value = request.lookUp.Value
                 };
 
                 await _lookUpRepository.InsertAsync(lookUp, cancellationToken);
                 createLookUpCommandResponse.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
-                IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
-                Console.WriteLine(lookUp);
-
-                if (lookUp.CategoryId.ToString() == "8aec3c2a-96ba-46ce-8a4b-14cf557fd621")
-              
-              
-                {
-                    var category = new Category { Name = lookUp.Value };
-                    await _categoryRepository.InsertAsync(category, cancellationToken);
-                    await _categoryRepository.SaveChangesAsync(cancellationToken);
-                }
 
                 if (createLookUpCommandResponse.Success)
                 {

@@ -2,7 +2,6 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
@@ -11,9 +10,12 @@ using AppDiv.SmartAgency.Application.Features.Applicants.Queries;
 using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
+
+[Authorize()]
 [ApiController]
 [Route("api/applicant")]
 public class ApplicantController : ControllerBase
@@ -42,16 +44,12 @@ public class ApplicantController : ControllerBase
         return Ok(await _mediator.Send(new GetSingleApplicantQuery(id)));
     }
     [HttpPut("delete/{id}")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> DeleteApplicant(Guid id, [FromBody] DeleteApplicantCommand command)
+    public async Task<ActionResult<ServiceResponse<Int32>>> DeleteApplicant(Guid id)
     {
         try
         {
-            if (command.Id == id)
-            {
-                var response = await _mediator.Send(command);
-                return Ok(response);
-            }
-            else return BadRequest();
+            var response = await _mediator.Send(new DeleteApplicantCommand(id));
+            return Ok(response);
         }
         catch (System.Exception ex)
         {

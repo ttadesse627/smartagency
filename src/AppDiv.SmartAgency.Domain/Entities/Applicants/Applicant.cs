@@ -73,4 +73,5 @@ public class Applicant : PersonalInfo
     public Order? Order { get; set; }
     public ICollection<Deposit>? Deposits { get; set; }
     public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses { get; set; }
+    public ICollection<ApplicantProcess>? ApplicantProcesses { get; set; }
 }

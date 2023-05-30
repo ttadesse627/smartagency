@@ -48,6 +48,8 @@ using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -227,27 +229,30 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-          
+
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
-            CreateMap<CompanyWitnessRequest,Witness>().ReverseMap();
+            CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
-            CreateMap<Address, CompanyAddressResponseDTO>(); 
+            CreateMap<Address, CompanyAddressResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CountryOperation, CountryOperationResponseDTO>();
-            
-        
-
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-           
+
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
+            CreateMap<Process, GetProcessResponseDTO>();
+            CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
+            CreateMap<CreateProcessRequest, Process>();
+            CreateMap<CreateProcessDefinitionRequest, ProcessDefinition>();
+            CreateMap<EditProcessRequest, Process>();
+            CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
 
 
 

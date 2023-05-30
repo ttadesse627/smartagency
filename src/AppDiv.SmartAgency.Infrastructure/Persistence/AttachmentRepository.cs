@@ -19,39 +19,6 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
     {
         _context = dbContext;
     }
-
-    public override async Task InsertAsync(Attachment attachment, CancellationToken cancellationToken)
-    {
-        await base.InsertAsync(attachment, cancellationToken);
-    }
-    public async Task<Attachment> GetByIdAsync(Guid Id)
-    {
-        return await base.GetAsync(Id);
-    }
-    public async Task<ServiceResponse<List<AttachmentResponseDTO>>> DeleteAttachment(Guid id)
-    {
-        var serviceResponse = new ServiceResponse<List<AttachmentResponseDTO>>();
-        try
-        {
-            var attachment = await _context.Attachments.FirstOrDefaultAsync(att => att.Id == id);
-
-            if (attachment is null)
-            {
-                throw new Exception($"There is no character with id {id} to delete.");
-            }
-            _context.Attachments.Remove(attachment);
-            int resp = await _context.SaveChangesAsync();
-            serviceResponse.Data = await _context.Attachments
-                .Select(attch => CustomMapper.Mapper.Map<AttachmentResponseDTO>(attch)).ToListAsync();
-
-        }
-        catch (Exception ex)
-        {
-            serviceResponse.Message = ex.Message;
-            serviceResponse.Success = false;
-        }
-        return serviceResponse;
-    }
     public async Task<ServiceResponse<AttachmentResponseDTO>> UpdateAttachment(EditAttachmentCommand updatedAttachment)
     {
         var serviceResponse = new ServiceResponse<AttachmentResponseDTO>();
@@ -63,10 +30,9 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
             {
                 throw new Exception($"Attachment with id {updatedAttachment.Id} is not found.");
             }
-            attachment.Code = updatedAttachment.Code;
-            attachment.Description = updatedAttachment.Description;
-            attachment.Category = updatedAttachment.Category;
-            attachment.IsRequired = updatedAttachment.IsRequired;
+            attachment.Title = updatedAttachment.Title;
+            attachment.Type = updatedAttachment.Type;
+            attachment.Required = updatedAttachment.Required;
             attachment.ShowOnCv = updatedAttachment.ShowOnCv;
             await _context.SaveChangesAsync();
             serviceResponse.Data = CustomMapper.Mapper.Map<AttachmentResponseDTO>(attachment);

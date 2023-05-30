@@ -12,8 +12,7 @@ namespace AppDiv.SmartAgency.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    // [Authorize(Roles = "Admin, Management")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ApiControllerBase
     {
         [HttpPost("Create")]

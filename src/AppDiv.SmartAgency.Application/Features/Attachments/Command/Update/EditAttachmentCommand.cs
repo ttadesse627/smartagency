@@ -2,26 +2,25 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 
-public class EditAttachmentCommand : IRequest<ServiceResponse<AttachmentResponseDTO>>
+public class EditAttachmentCommand : IRequest<ServiceResponse<Int32>>
 {
 
     public Guid Id { get; set; }
-    public string Code { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public AttachmentCategory Category { get; set; }
-    public bool IsRequired { get; set; }
+    public string? Title { get; set; }
+    public AttachmentCategory Type { get; set; }
+    public bool Required { get; set; }
     public bool ShowOnCv { get; set; }
 }
 
-public class EditAttachmentCommandHandler : IRequestHandler<EditAttachmentCommand, ServiceResponse<AttachmentResponseDTO>>
+public class EditAttachmentCommandHandler : IRequestHandler<EditAttachmentCommand, ServiceResponse<Int32>>
 {
     private readonly IAttachmentRepository _attachmentRepository;
     private readonly IAttachmentRepository _attachmentQueryRepository;
@@ -30,21 +29,33 @@ public class EditAttachmentCommandHandler : IRequestHandler<EditAttachmentComman
         _attachmentRepository = attachmentRepository;
         _attachmentQueryRepository = attachmentQueryRepository;
     }
-    public async Task<ServiceResponse<AttachmentResponseDTO>> Handle(EditAttachmentCommand request, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<Int32>> Handle(EditAttachmentCommand request, CancellationToken cancellationToken)
     {
-        var response = new ServiceResponse<AttachmentResponseDTO>();
-
-        try
+        var response = new ServiceResponse<Int32>();
+        var modifiedAttachment = await _attachmentQueryRepository.GetAsync(request.Id);
+        if (modifiedAttachment != null)
         {
-            response = await _attachmentRepository.UpdateAttachment(request);
+            modifiedAttachment.Title = request.Title;
+            modifiedAttachment.Type = request.Type;
+            modifiedAttachment.Required = request.Required;
+            modifiedAttachment.ShowOnCv = request.ShowOnCv;
+            try
+            {
+                response.Success = await _attachmentRepository.SaveChangesAsync(cancellationToken);
+                if (response.Success)
+                {
+                    response.Message = "Update Succeeded!";
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new System.ApplicationException(exp.Message);
+            }
         }
-        catch (Exception exp)
+        else
         {
-            throw new ApplicationException(exp.Message);
+            throw new NotFoundException($"The attachment with id {request.Id} doesn't found!");
         }
-
-        var modifiedAttachment = await _attachmentQueryRepository.GetByIdAsync(request.Id);
-        var attachmentResponse = CustomMapper.Mapper.Map<AttachmentResponseDTO>(modifiedAttachment);
 
         return response;
     }

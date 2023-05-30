@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Features.Command.Common.Auth;
+using AppDiv.SmartAgency.Application.Features.Auth.Command;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {

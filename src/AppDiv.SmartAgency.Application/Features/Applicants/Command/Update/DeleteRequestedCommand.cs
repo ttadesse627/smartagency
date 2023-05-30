@@ -1,6 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
@@ -17,16 +18,24 @@ public class DeleteRequestedCommandHandler : IRequestHandler<DeleteRequestedComm
     {
         var response = new ServiceResponse<Int32>();
         var applicant = await _applicantRepository.GetAsync(request.id);
-        if (applicant.IsRequested)
+        if (applicant != null)
         {
-            applicant.IsRequested = false;
-            response = await _applicantRepository.SaveDbUpdateAsync();
+            if (applicant.IsRequested)
+            {
+                applicant.IsRequested = false;
+                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+            }
+            if (response.Success)
+            {
+                response.Message = "Deleted Successfully!";
+            }
         }
-        if (response.Data > 0)
+        else
         {
-            response.Message = "Deleted Successfully!";
-            response.Success = true;
+            response.Success = false;
+            throw new NotFoundException($"The applicant with Id {request.id} is not found!");
         }
+
         return response;
     }
 }

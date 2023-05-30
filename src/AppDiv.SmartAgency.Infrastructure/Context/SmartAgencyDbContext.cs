@@ -10,16 +10,17 @@ using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Configurations;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 
 namespace AppDiv.SmartAgency.Infrastructure.Context
 {
-    public class SmartAgencyDbContext : AuditIdentityDbContext<ApplicationUser>
+    public class SmartAgencyDbContext : AuditIdentityDbContext<ApplicationUser>, ISmartAgencyDbContext
     {
-        // private readonly IUserResolverService userResolverService;
+        private readonly IUserResolverService _userResolverService;
 
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Suffix> Suffixes { get; set; }
-        public DbSet<Category> Categories { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<LookUp> LookUps { get; set; }
         public DbSet<Partner> Partners { get; set; }
@@ -46,14 +47,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; }
-        public DbSet<CompanyInformation> CompanyInformations {get; set;}
-        public DbSet<CompanySetting> CompanySettings {get; set;}
-        public DbSet<CountryOperation> CountryOperations {get; set;}
+        public DbSet<CompanyInformation> CompanyInformations { get; set; }
+        public DbSet<CompanySetting> CompanySettings { get; set; }
+        public DbSet<CountryOperation> CountryOperations { get; set; }
+        public DbSet<Process> Processes { get; set; }
+        public DbSet<ProcessDefinition> ProcessDefinitions { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options) : base(options)
+        public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
-            // this.userResolverService = userResolverService;
+            _userResolverService = userResolverService;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -67,7 +71,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         {
             #region Entity Configuration
             {
-                //  modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new AttachmentFileEntityConfig());
@@ -84,7 +88,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new QTEntityConfig());
                 modelBuilder.ApplyConfiguration(new AwardEntityConfig());
                 modelBuilder.ApplyConfiguration(new SkillEntityConfig());
-                modelBuilder.ApplyConfiguration(new LookUpEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new OrderCriteriaEntityConfig());
                 modelBuilder.ApplyConfiguration(new OrderEntityConfig());
                 modelBuilder.ApplyConfiguration(new PartnerEntityConfig());
@@ -93,11 +96,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new ApplicantFollowupStatusConfiguration());
                 modelBuilder.ApplyConfiguration(new CompanyInformationEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new CountryOperationEntityConfiguration());
-
-                modelBuilder.Entity<Category>().HasData(
-                    new Category { Id = Guid.Parse("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"), Name = "Category" }
-                );
-
+                modelBuilder.ApplyConfiguration(new ProcessDefinitionEntityConfig());
+                modelBuilder.ApplyConfiguration(new ProcessEntityConfig());
                 modelBuilder.Ignore<PersonalInfo>();
 
             }
@@ -119,10 +119,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     auditEntity.EntityType = auditedEntity.EntityType.Name;
                     auditEntity.AuditDate = DateTime.Now;
                     auditEntity.AuditUserId = Guid.NewGuid();
-                    // if (userResolverService != null)
-                    // {
-                    //     auditEntity.AuditUserId = userResolverService.GetUserId();
-                    // }
+
+                    if (_userResolverService != null)
+                    {
+                        auditEntity.AuditUserId = _userResolverService.GetUserId();
+                    }
 
                     auditEntity.Action = auditedEntity.Action;
                     auditEntity.Enviroment = JsonConvert.SerializeObject(new AuditEventEnvironment
@@ -159,9 +160,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             };
         }
 
-        // public string GetCurrentUserId()
-        // {
-        //     return userResolverService.GetUserId();
-        // }
+        public string GetCurrentUserId()
+        {
+            return _userResolverService.GetUserId().ToString();
+        }
     }
 }

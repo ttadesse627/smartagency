@@ -1,11 +1,6 @@
 ﻿using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Query
 {
@@ -24,9 +19,8 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Query
         }
         public async Task<UserDetailsResponseDTO> Handle(GetUserDetailsByUserNameQuery request, CancellationToken cancellationToken)
         {
-            // var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsByUserNameAsync(request.UserName);
-            return new UserDetailsResponseDTO() ;
-            // { Id = userId, FullName = fullName, UserName = userName, Email = email, Roles = roles };
+            var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsByUserNameAsync(request.UserName);
+            return new UserDetailsResponseDTO() { Id = Guid.Parse(userId), FullName = fullName, UserName = userName, Email = email, Roles = roles };
         }
     }
 }

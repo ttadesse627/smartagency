@@ -13,7 +13,7 @@ public class CreateAttachmentCommandValidator : AbstractValidator<CreateAttachme
     public CreateAttachmentCommandValidator(IAttachmentRepository repo)
     {
         _repo = repo;
-        RuleFor(p => p.attachment.Code)
+        RuleFor(p => p.attachment.Title)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull()
             .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");

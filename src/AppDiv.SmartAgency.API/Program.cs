@@ -112,9 +112,9 @@ app.UseCors("CorsPolicy");
 
 // Added for authentication
 // Maintain middleware order
-// app.UseAuthentication();
+app.UseAuthentication();
 
-// app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 

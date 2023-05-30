@@ -62,6 +62,42 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("ApplicantFollowupStatuses");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantProcess", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("ProcessId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("ApplicantProcess");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -684,6 +720,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
@@ -694,6 +733,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -709,11 +751,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
+                    b.Property<Guid?>("PartnerId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<string>("PersonalInfoId")
-                        .IsRequired()
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
@@ -722,15 +763,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<Guid?>("PositionId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("UserGroupId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -738,12 +778,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("PartnerId");
+
+                    b.HasIndex("PositionId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -754,24 +800,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("IsRequired")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
@@ -779,8 +812,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("Required")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("ShowOnCv")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -936,7 +978,19 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("AttachmentId")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("FilePath")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("OrderId")
@@ -952,28 +1006,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("AttachmentFiles");
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8aec3c2a-96ba-46ce-8a4b-14cf557fd621"),
-                            Name = "Category"
-                        });
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.CompanyInformation", b =>
@@ -1234,8 +1266,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -1254,8 +1287,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("LookUps");
                 });
@@ -1644,6 +1675,82 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.ToTable("Partners");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Process", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CountryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsVisaRequired")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Step")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Processes");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("ProcessId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("RequestApproval")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Step")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("ProcessDefinitions");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Suffix", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1653,7 +1760,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 24, 22, 46, 17, 770, DateTimeKind.Local).AddTicks(8856));
+                        .HasDefaultValue(new DateTime(2023, 5, 30, 15, 58, 20, 820, DateTimeKind.Local).AddTicks(4453));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1821,6 +1928,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Applicant");
 
                     b.Navigation("FollowupStatus");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantProcess", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithMany("ApplicantProcesses")
+                        .HasForeignKey("ApplicantId");
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", "Process")
+                        .WithMany("ApplicantProcesses")
+                        .HasForeignKey("ProcessId");
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("Process");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -2117,6 +2239,30 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("CompanyInformation");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Branch")
+                        .WithMany("UserBranch")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Partner", "Partner")
+                        .WithMany("Users")
+                        .HasForeignKey("PartnerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Position")
+                        .WithMany("UserPosition")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Partner");
+
+                    b.Navigation("Position");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.Address", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "AddressRegion")
@@ -2220,16 +2366,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Applicant");
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Category", "Category")
-                        .WithMany("LookUps")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.OnlineApplicant", b =>
@@ -2393,6 +2529,26 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Process", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Country")
+                        .WithMany("ProcessCountries")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Process", "Process")
+                        .WithMany("ProcessDefinitions")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Process");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -2447,6 +2603,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
                 {
                     b.Navigation("ApplicantFollowupStatuses");
+
+                    b.Navigation("ApplicantProcesses");
 
                     b.Navigation("AttachmentFiles");
 
@@ -2505,11 +2663,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
                 {
                     b.Navigation("Sponsor");
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("LookUps");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.CompanyInformation", b =>
@@ -2591,9 +2744,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("OnlineApplDesiredCountries");
 
+                    b.Navigation("ProcessCountries");
+
                     b.Navigation("QualificationTypes");
 
                     b.Navigation("Skills");
+
+                    b.Navigation("UserBranch");
+
+                    b.Navigation("UserPosition");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Order", b =>
@@ -2612,6 +2771,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Applicants");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Process", b =>
+                {
+                    b.Navigation("ProcessDefinitions");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", b =>
+                {
+                    b.Navigation("ApplicantProcesses");
                 });
 #pragma warning restore 612, 618
         }

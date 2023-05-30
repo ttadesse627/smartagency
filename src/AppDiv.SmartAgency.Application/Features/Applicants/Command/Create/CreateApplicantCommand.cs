@@ -132,15 +132,12 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             applicantEntity.Skills = skls;
         }
 
-        int count = 0;
-
         // Apply the update to the database
         if (exceptions.Count() == 0)
         {
-            count = await _applicantRepository.CreateApplicantAsync(applicantEntity, cancellationToken);
+            await _applicantRepository.InsertAsync(applicantEntity, cancellationToken);
         }
-        // bool success = _applicantRepository.SaveChanges();
-        bool success = count >= 1;
+        bool success = await _applicantRepository.SaveChangesAsync(cancellationToken);
         if (success)
         {
             createApplicantResponse.Message = "The applicant is successfully added.";

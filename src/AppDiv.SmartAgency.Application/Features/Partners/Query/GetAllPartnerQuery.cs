@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Utility.Contracts;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 {
@@ -35,18 +36,19 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
     public class GetAllPartnerHandler : IRequestHandler<GetAllPartnerQuery, SearchModel<GetAllPartnerResponseDTO>>
     {
         private readonly IPartnerRepository _partnerRepository;
+        private readonly ISmartAgencyDbContext _dbContext;
 
-        public GetAllPartnerHandler(IPartnerRepository partnerQueryRepository)
+        public GetAllPartnerHandler(IPartnerRepository partnerQueryRepository, ISmartAgencyDbContext dbContext)
         {
             _partnerRepository = partnerQueryRepository;
+            _dbContext = dbContext;
         }
         public async Task<SearchModel<GetAllPartnerResponseDTO>> Handle(GetAllPartnerQuery request, CancellationToken cancellationToken)
         {
-            var partnerList = await _partnerRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Address","Address.Country");
+            var partnerList = await _partnerRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, prtnr => prtnr.CreatedBy == _dbContext.GetCurrentUserId(), "Address", "Address.Country");
             var partnerResponse = CustomMapper.Mapper.Map<SearchModel<GetAllPartnerResponseDTO>>(partnerList);
             return partnerResponse;
 
-            // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
     }
-} 
+}

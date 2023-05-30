@@ -22,7 +22,7 @@ public class AttachmentController : ControllerBase
         _mediator = mediator;
     }
     [HttpPost("create")]
-    public async Task<ActionResult<CreateAttachmentResponseDTO>> CreateAttachment(CreateAttachmentCommand attachmentRequest, CancellationToken token)
+    public async Task<ActionResult<ServiceResponse<int>>> CreateAttachment(CreateAttachmentCommand attachmentRequest, CancellationToken token)
     {
         var response = await _mediator.Send(attachmentRequest);
         return Ok(response);
@@ -33,13 +33,19 @@ public class AttachmentController : ControllerBase
         return Ok(await _mediator.Send(new GetAllAttachments(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<ActionResult<ServiceResponse<DeleteAttachmentCommand>>> DeleteAttachment(Guid id)
+    [HttpGet("get/{id}")]
+    public async Task<ActionResult<AttachmentResponseDTO>> GetByIdAsync(Guid id)
     {
-        var result = new ServiceResponse<List<AttachmentResponseDTO>>();
+        return Ok(await _mediator.Send(new GetAttachmentQuery(id)));
+    }
+
+    [HttpDelete("delete/{id}")]
+    public async Task<ActionResult<ServiceResponse<int>>> DeleteAttachment(Guid id)
+    {
+        var result = new ServiceResponse<int>();
         try
         {
-            result = await _mediator.Send(new DeleteAttachmentCommand { Id = id });
+            result = await _mediator.Send(new DeleteAttachmentCommand(id));
             result.Message = $"The attachment with id {id} is successfully deleted!";
             result.Success = true;
         }
@@ -57,19 +63,19 @@ public class AttachmentController : ControllerBase
     }
 
     [HttpPut("edit/{id}")]
-    public async Task<ActionResult<ServiceResponse<EditAttachmentCommand>>> EditAttachment(Guid id, [FromBody] EditAttachmentCommand request)
+    public async Task<ActionResult<ServiceResponse<int>>> EditAttachment(Guid id, [FromBody] EditAttachmentCommand request)
     {
+        var result = new ServiceResponse<int>();
         try
         {
             if (request.Id == id)
             {
-                var result = await _mediator.Send(new EditAttachmentCommand
+                result = await _mediator.Send(new EditAttachmentCommand
                 {
                     Id = request.Id,
-                    Code = request.Code,
-                    Description = request.Description,
-                    Category = request.Category,
-                    IsRequired = request.IsRequired,
+                    Title = request.Title,
+                    Type = request.Type,
+                    Required = request.Required,
                     ShowOnCv = request.ShowOnCv
                 }
                 );

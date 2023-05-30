@@ -8,11 +8,12 @@ using AppDiv.SmartAgency.Application.Features.LookUps.Query;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-
+    [AllowAnonymous]
     [ApiController]
     [Route("api/lookup")]
     public class LookUpController : ControllerBase
@@ -57,10 +58,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-
-
-
-
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditLookUpCommand command)
         {

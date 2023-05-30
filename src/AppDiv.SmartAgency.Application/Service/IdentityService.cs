@@ -1,217 +1,259 @@
 ﻿
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Domain.Entities;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using AppDiv.SmartAgency.Application.Common;
-using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Application.Service
 {
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<IdentityService> _logger;
-        private readonly IConfiguration _configuration;
-        // private readonly TokenGeneratorService _tokenGeneratorService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, ILogger<IdentityService> logger)
+        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-            _logger = logger;
-            // _tokenGeneratorService = tokenGeneratorService;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
         }
-        public async Task<(Result result, IList<string>? roles, ApplicationUser? user)> AuthenticateUser(string email, string password)
+
+        public async Task<bool> AssignUserToRole(string userName, IList<string> roles)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, password))
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            if (user == null)
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
-                // var tokenString = _tokenGeneratorService.GenerateJWTToken((userId:user.Id , userName:user.UserName , roles:userRoles));
-                return (Result.Success(), userRoles, user);
-
-
+                throw new NotFoundException("User not found");
             }
-            string[] errors = new string[] { "Invalid login" };
-            return (Result.Failure(errors), null, null);
 
+            var result = await _userManager.AddToRolesAsync(user, roles);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> CreateRoleAsync(IList<string> roleNames)
+        {
+            var success = false;
+            if (roleNames.Count > 0)
+            {
+                foreach (var roleName in roleNames)
+                {
+                    var role = new IdentityRole(roleName);
+
+                    var result = await _roleManager.CreateAsync(role);
+                    success = result.Succeeded;
+                    if (!result.Succeeded)
+                    {
+                        throw new ValidationException(result.Errors);
+                    }
+                }
+            }
+            return success;
+        }
+
+        // Return multiple value
+        public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string fullName, List<string> roles)
+        {
+            var user = new ApplicationUser()
+            {
+                FullName = fullName,
+                UserName = userName,
+                Email = email
+            };
+
+            var result = await _userManager.CreateAsync(user, password);
+
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
+            await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id.ToString()));
+
+            var addUserRole = await _userManager.AddToRolesAsync(user, roles);
+            if (!addUserRole.Succeeded)
+            {
+                throw new ValidationException(addUserRole.Errors);
+            }
+            return (result.Succeeded, user.Id);
+        }
+
+        public async Task<bool> DeleteRoleAsync(string roleId)
+        {
+            var roleDetails = await _roleManager.FindByIdAsync(roleId);
+            if (roleDetails == null)
+            {
+                throw new NotFoundException("Role not found");
+            }
+
+            if (roleDetails.Name == "Administrator")
+            {
+                throw new BadRequestException("You can not delete Administrator Role");
+            }
+            var result = await _roleManager.DeleteAsync(roleDetails);
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
+            return result.Succeeded;
+        }
+
+        public async Task<bool> DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            if (user.UserName == "system" || user.UserName == "admin")
+            {
+                throw new Exception("You can not delete system or admin user");
+            }
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
+        }
+
+        public async Task<List<(string id, string fullName, string userName, string email)>> GetAllUsersAsync()
+        {
+            var users = await _userManager.Users.Select(x => new
+            {
+                x.Id,
+                x.FullName,
+                x.UserName,
+                x.Email
+            }).ToListAsync();
+
+            return users.Select(user => (user.Id, user.FullName, user.UserName, user.Email)).ToList();
+        }
+
+        public Task<List<(string id, string userName, string email, IList<string> roles)>> GetAllUsersDetailsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<(string id, string roleName)>> GetRolesAsync()
+        {
+            var roles = await _roleManager.Roles.Select(x => new
+            {
+                x.Id,
+                x.Name
+            }).ToListAsync();
+
+            return roles.Select(role => (role.Id, role.Name)).ToList();
+        }
+        public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            return (user.Id, user.FullName, user.UserName, user.Email, roles);
+        }
+
+        public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            return (user.Id, user.FullName, user.UserName, user.Email, roles);
+        }
+
+        public async Task<string> GetUserIdAsync(string userName)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+            return await _userManager.GetUserIdAsync(user);
         }
 
         public async Task<string> GetUserNameAsync(string userId)
         {
-            var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
-
-
-            return user.UserName;
-        }
-        public string GetUserGroupId(string userId)
-        {
-            return _userManager.Users.First(u => u.Id == userId).UserGroupId;
-        }
-        public async Task<(Result, string)> createUser(string userName, string email, string personalInfoId, string userGroupId)
-        {
-            var existingUser = await _userManager.FindByEmailAsync(email);
-            if (existingUser != null)
-            {
-                return (Result.Failure(new string[] { "user with the given email already exists" }), string.Empty);
-            }
-            existingUser = await _userManager.FindByNameAsync(userName);
-            if (existingUser != null)
-            {
-                return (Result.Failure(new string[] { "username is already taken" }), string.Empty);
-            }
-            var newUser = new ApplicationUser()
-            {
-                UserName = userName,
-                Email = email,
-                UserGroupId = userGroupId,
-                PersonalInfoId = personalInfoId
-            };
-            string password = GeneratePassword();
-            var result = await _userManager.CreateAsync(newUser, password);
-            if (!result.Succeeded)
-            {
-                return (result.ToApplicationResult(), string.Empty);
-            }
-            return (Result.Success(), password);
-        }
-
-        public async Task<(Result, string)> ForgotPassword(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return (Result.Failure(new string[] { "could not find user with the given email" }), string.Empty);
+                throw new NotFoundException("User not found");
             }
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            return (Result.Success(), token);
+            return await _userManager.GetUserNameAsync(user);
         }
-        public async Task<Result> ResetPassword(string email, string password, string token)
+
+        public async Task<List<string>> GetUserRolesAsync(string userId)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return Result.Failure(new string[] { "user not found" });
+                throw new NotFoundException("User not found");
             }
-            var resetPassResult = await _userManager.ResetPasswordAsync(user, token, password);
-            if (!resetPassResult.Succeeded)
-            {
-                var errors = resetPassResult.Errors.Select(e => e.Description);
-                throw new Exception($"password reset failed! \n {resetPassResult.Errors}");
-            }
-            return Result.Success();
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.ToList();
         }
 
-        public async Task<Result> ChangePassword(string email, string oldPassword, string newPassword)
+        public async Task<bool> IsInRoleAsync(string userId, string role)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return Result.Failure(new string[] { "could not find user with the given email" });
-            }
-            var response = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
-            if (!response.Succeeded)
-            {
-                throw new Exception($"Change password failed! \n {response.Errors}");
-            }
-            return Result.Success();
-        }
-
-        public async Task<Result> UpdateUser(Guid id, string userName, string email, string personalInfoId, string userGroupId)
-        {
-
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user == null)
             {
-                return Result.Failure(new string[] { "could not find user with the given id" });
+                throw new NotFoundException("User not found");
             }
+            return await _userManager.IsInRoleAsync(user, role);
+        }
 
+        public async Task<bool> IsUniqueUserName(string userName)
+        {
+            return await _userManager.FindByNameAsync(userName) == null;
+        }
 
-            user.UserName = userName;
+        public async Task<bool> SigninUserAsync(string userName, string password)
+        {
+            var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> UpdateUserProfile(string id, string fullName, string email, IList<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            user.FullName = fullName;
             user.Email = email;
-            user.UserGroupId = userGroupId;
-            user.PersonalInfoId = personalInfoId;
+            var result = await _userManager.UpdateAsync(user);
 
-            var response = await _userManager.UpdateAsync(user);
-
-            if (!response.Succeeded)
-            {
-                throw new Exception($"User Updating failed! \n {response.Errors}");
-            }
-
-            return Result.Success();
-
+            return result.Succeeded;
         }
-        public async Task<Result> DeleteUser(string userId)
+
+        public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return Result.Failure(new string[] { "could not find user with the given id" });
-            }
-            var response = await _userManager.DeleteAsync(user);
-
-            if (!response.Succeeded)
-            {
-                throw new Exception($"User Deleting failed! \n {response.Errors}");
-            }
-
-            return Result.Success();
+            var role = await _roleManager.FindByIdAsync(id);
+            return (role.Id, role.Name);
         }
 
-        private string GeneratePassword()
+        public async Task<bool> UpdateRole(string id, string roleName)
         {
-            var options = _userManager.Options.Password;
-
-            int length = options.RequiredLength;
-
-            bool nonAlphanumeric = options.RequireNonAlphanumeric;
-            bool digit = options.RequireDigit;
-            bool lowercase = options.RequireLowercase;
-            bool uppercase = options.RequireUppercase;
-
-            StringBuilder password = new StringBuilder();
-            Random random = new Random();
-
-            while (password.Length < length)
+            if (roleName != null)
             {
-                char c = (char)random.Next(32, 126);
-
-                password.Append(c);
-
-                if (char.IsDigit(c))
-                    digit = false;
-                else if (char.IsLower(c))
-                    lowercase = false;
-                else if (char.IsUpper(c))
-                    uppercase = false;
-                else if (!char.IsLetterOrDigit(c))
-                    nonAlphanumeric = false;
+                var role = await _roleManager.FindByIdAsync(id);
+                role.Name = roleName;
+                var result = await _roleManager.UpdateAsync(role);
+                return result.Succeeded;
             }
-
-            if (nonAlphanumeric)
-                password.Append((char)random.Next(33, 48));
-            if (digit)
-                password.Append((char)random.Next(48, 58));
-            if (lowercase)
-                password.Append((char)random.Next(97, 123));
-            if (uppercase)
-                password.Append((char)random.Next(65, 91));
-
-
-            return password.ToString();
+            return false;
         }
-        public IQueryable<ApplicationUser> AllUsers()
+
+        public async Task<bool> UpdateUsersRole(string userName, IList<string> usersRole)
         {
-            return _userManager.Users;
-        }
+            var user = await _userManager.FindByNameAsync(userName);
+            var existingRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, existingRoles);
+            result = await _userManager.AddToRolesAsync(user, usersRole);
 
+            return result.Succeeded;
+        }
     }
 }

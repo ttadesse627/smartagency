@@ -16,7 +16,7 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
 
         public Guid Id { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public string Category { get; set; }
 
         public string Value { get; set; }
     }
@@ -35,20 +35,21 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
             LookUp lookUpEntity = new LookUp
             {
                 Id = request.Id,
-                CategoryId = request.CategoryId,
+                Category = request.Category,
                 Value = request.Value
 
             };
 
-        var lookUpResponse= new LookUpResponseDTO();
+            var lookUpResponse = new LookUpResponseDTO();
 
             try
             {
-              var res=  await _lookUpRepository.UpdateAsync(lookUpEntity);
+                var res = await _lookUpRepository.UpdateAsync(lookUpEntity);
 
-                if(res>=1){
-                    var modifiedLookUp =await _lookUpRepository.GetWithPredicateAsync(l=>l.Id==request.Id, "Category");
-                    lookUpResponse= CustomMapper.Mapper.Map<LookUpResponseDTO>(modifiedLookUp);
+                if (res >= 1)
+                {
+                    var modifiedLookUp = await _lookUpRepository.GetWithPredicateAsync(l => l.Id == request.Id, "Category");
+                    lookUpResponse = CustomMapper.Mapper.Map<LookUpResponseDTO>(modifiedLookUp);
                 }
             }
             catch (Exception exp)
@@ -56,7 +57,7 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
                 throw new ApplicationException(exp.Message);
             }
 
-           
+
             return lookUpResponse;
         }
     }
