@@ -7,10 +7,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
-public record EditProcessCommand(EditProcessRequest request) : IRequest<ServiceResponse<Int32>>
-{
-
-}
+public record EditProcessCommand(EditProcessRequest request) : IRequest<ServiceResponse<Int32>> { }
 public class EditProcessCommandHandler : IRequestHandler<EditProcessCommand, ServiceResponse<Int32>>
 {
     private readonly IProcessRepository _processRepository;

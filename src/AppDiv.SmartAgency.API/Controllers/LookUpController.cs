@@ -1,11 +1,12 @@
 
 
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.LookUps;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Create;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
 using AppDiv.SmartAgency.Application.Features.LookUps.Query;
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +26,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<CreateLookUpResponseDTO>> CreateLookUp(CreateLookUpCommand lookUpRequest, CancellationToken token)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateLookUp(CreateLookUpRequest lookUpRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(lookUpRequest);
+            var response = await _mediator.Send(new CreateLookUpCommand(lookUpRequest));
             return Ok(response);
         }
 
@@ -37,14 +38,14 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(await _mediator.Send(new GetAllLookUps(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<LookUpResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetLookUpByIdQuery(id));
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteLookUp(Guid id)
         {
             try
@@ -58,7 +59,7 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-        [HttpPut("Edit/{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditLookUpCommand command)
         {
             try
@@ -77,7 +78,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
-
         }
     }
 

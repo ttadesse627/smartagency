@@ -1,5 +1,6 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
@@ -22,9 +23,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<PartnerResponseDTO>> CreatePartner(CreatePartnerCommand partnerRequest, CancellationToken token)
+        public async Task<ActionResult<PartnerResponseDTO>> CreatePartner(CreatePartnerRequest partnerRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(partnerRequest);
+            var response = await _mediator.Send(new CreatePartnerCommand(partnerRequest));
             return Ok(response);
         }
 

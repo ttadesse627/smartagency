@@ -1,10 +1,8 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
@@ -15,7 +13,7 @@ public class EditAttachmentCommand : IRequest<ServiceResponse<Int32>>
 
     public Guid Id { get; set; }
     public string? Title { get; set; }
-    public AttachmentCategory Type { get; set; }
+    public AttachmentType Type { get; set; }
     public bool Required { get; set; }
     public bool ShowOnCv { get; set; }
 }

@@ -18,7 +18,6 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 // using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
 // using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
 // using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
-using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
@@ -32,7 +31,6 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
 using AppDiv.SmartAgency.Application.Features.Pages.Command.Update;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Create;
-using AppDiv.SmartAgency.Application.Features.Customers.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
@@ -50,6 +48,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
+using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -58,8 +57,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
         public SmartAgencyMappingProfile()
         {
             CreateMap<Customer, CustomerResponseDTO>().ReverseMap();
-            CreateMap<Customer, CreateCustomerCommand>().ReverseMap();
-            CreateMap<Customer, EditCustomerCommand>().ReverseMap();
 
             CreateMap<Attachment, CreateAttachmentResponseDTO>().ReverseMap();
             CreateMap<Attachment, CreateAttachmentCommand>().ReverseMap();
@@ -253,9 +250,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CreateProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditProcessRequest, Process>();
             CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
-
-
-
+            CreateMap<EditLookUpCommand, LookUp>();
 
         }
     }

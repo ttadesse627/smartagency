@@ -2,6 +2,7 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Attachments;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
@@ -22,9 +23,9 @@ public class AttachmentController : ControllerBase
         _mediator = mediator;
     }
     [HttpPost("create")]
-    public async Task<ActionResult<ServiceResponse<int>>> CreateAttachment(CreateAttachmentCommand attachmentRequest, CancellationToken token)
+    public async Task<ActionResult<ServiceResponse<int>>> CreateAttachment(CreateAttachmentRequest attachmentRequest, CancellationToken token)
     {
-        var response = await _mediator.Send(attachmentRequest);
+        var response = await _mediator.Send(new CreateAttachmentCommand(attachmentRequest));
         return Ok(response);
     }
     [HttpGet("get-all")]
@@ -70,15 +71,7 @@ public class AttachmentController : ControllerBase
         {
             if (request.Id == id)
             {
-                result = await _mediator.Send(new EditAttachmentCommand
-                {
-                    Id = request.Id,
-                    Title = request.Title,
-                    Type = request.Type,
-                    Required = request.Required,
-                    ShowOnCv = request.ShowOnCv
-                }
-                );
+                result = await _mediator.Send(request);
                 return Ok(result);
             }
             else
