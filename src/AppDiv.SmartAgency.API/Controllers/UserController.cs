@@ -15,16 +15,16 @@ namespace AppDiv.SmartAgency.API.Controllers
     public class UserController : ApiControllerBase
     {
 
-        [HttpPost("create")]
-        // [ProducesDefaultResponseType(typeof(int))]
-        public async Task<ActionResult> CreateUser(AddUserRequest request)
-        {
-            if (request.ConfirmationPassword != request.Password)
-            {
-                return BadRequest("The password is not confirmed. Please try again!");
-            }
-            return Ok(await Mediator.Send(new CreateUserCommand(request)));
-        }
+        // [HttpPost("create")]
+        // // [ProducesDefaultResponseType(typeof(int))]
+        // public async Task<ActionResult> CreateUser(AddUserRequest request)
+        // {
+        //     if (request.ConfirmationPassword != request.Password)
+        //     {
+        //         return BadRequest("The password is not confirmed. Please try again!");
+        //     }
+        //     return Ok(await Mediator.Send(new CreateUserCommand(request)));
+        // }
 
 
         //         [HttpGet("get-user-details-by-username/{userName}")]

@@ -1,4 +1,4 @@
-﻿using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230602131155_InitialCreate")]
+    [Migration("20230601123152_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -786,8 +786,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("BranchId");
 
@@ -1701,9 +1700,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("EnjazRequired")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<bool>("IsVisaRequired")
                         .HasColumnType("tinyint(1)");
 
@@ -1719,9 +1715,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<int>("Step")
                         .HasColumnType("int");
-
-                    b.Property<bool>("TicketRequired")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -1777,7 +1770,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 2, 16, 11, 54, 497, DateTimeKind.Local).AddTicks(3393));
+                        .HasDefaultValue(new DateTime(2023, 6, 1, 15, 31, 52, 676, DateTimeKind.Local).AddTicks(1966));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1831,7 +1824,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserGroups");
+                    b.ToTable("UserGroup");
                 });
 
             modelBuilder.Entity("ApplicationUserUserGroup", b =>
@@ -2308,8 +2301,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
-                        .WithOne("ApplicationUser")
-                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", "AddressId")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2737,8 +2730,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.Address", b =>
                 {
                     b.Navigation("Applicant");
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("CompanyInformation");
 

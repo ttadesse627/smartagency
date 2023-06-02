@@ -134,7 +134,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 2, 16, 11, 54, 497, DateTimeKind.Local).AddTicks(3393)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 1, 15, 31, 52, 676, DateTimeKind.Local).AddTicks(1966)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -148,7 +148,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UserGroups",
+                name: "UserGroup",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -167,7 +167,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGroups", x => x.Id);
+                    table.PrimaryKey("PK_UserGroup", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -336,8 +336,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Step = table.Column<int>(type: "int", nullable: false),
                     IsVisaRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    EnjazRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    TicketRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -1308,9 +1306,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserUserGroup_UserGroups_UserGroupsId",
+                        name: "FK_ApplicationUserUserGroup_UserGroup_UserGroupsId",
                         column: x => x.UserGroupsId,
-                        principalTable: "UserGroups",
+                        principalTable: "UserGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -1808,8 +1806,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_AddressId",
                 table: "AspNetUsers",
-                column: "AddressId",
-                unique: true);
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_BranchId",
@@ -2224,7 +2221,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "ProcessDefinitions");
 
             migrationBuilder.DropTable(
-                name: "UserGroups");
+                name: "UserGroup");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

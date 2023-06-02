@@ -726,6 +726,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid?>("BranchId")
                         .HasColumnType("char(36)");
 
@@ -1267,6 +1270,45 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ApplicantId");
 
                     b.ToTable("Deposits");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Enjaz", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ApplicationNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("SponsorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("TransactionCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationNumber")
+                        .IsUnique();
+
+                    b.HasIndex("SponsorId")
+                        .IsUnique();
+
+                    b.ToTable("Enjazs");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.LookUp", b =>
@@ -2328,6 +2370,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("Address");
 
+                    b.Navigation("Address");
+
                     b.Navigation("Branch");
 
                     b.Navigation("Partner");
@@ -2438,6 +2482,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Enjaz", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Sponsor", "Sponsor")
+                        .WithOne("Enjaz")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Enjaz", "SponsorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Sponsor");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.OnlineApplicant", b =>
@@ -2619,6 +2673,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Process");
+                });
+
+            modelBuilder.Entity("ApplicationUserUserGroup", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", null)
+                        .WithMany()
+                        .HasForeignKey("UserGroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ApplicationUserUserGroup", b =>
@@ -2853,6 +2922,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Payment");
 
                     b.Navigation("Sponsor");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Sponsor", b =>
+                {
+                    b.Navigation("Enjaz");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Partner", b =>
