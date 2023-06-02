@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
+using AppDiv.SmartAgency.Application.Contracts.Request.Enjazs;
 
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
@@ -251,6 +252,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditProcessRequest, Process>();
             CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditLookUpCommand, LookUp>();
+            CreateMap<AddEnjazRequest, Enjaz>();
 
         }
     }
