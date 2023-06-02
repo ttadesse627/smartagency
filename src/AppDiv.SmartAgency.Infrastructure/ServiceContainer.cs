@@ -71,10 +71,11 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IPageRepository, PageRepository>();
             services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();
             services.AddTransient<IProcessRepository, ProcessRepository>();
+            services.AddTransient<IProcessDefinitionRepository, ProcessDefinitionRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
             //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
-
             return services;
         }
     }

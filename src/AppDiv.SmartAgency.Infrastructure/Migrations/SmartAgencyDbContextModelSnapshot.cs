@@ -89,6 +89,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("ProcessId")
                         .HasColumnType("char(36)");
 
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicantId");
@@ -720,6 +723,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid?>("BranchId")
                         .HasColumnType("char(36)");
 
@@ -777,6 +783,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.HasIndex("BranchId");
 
@@ -1690,6 +1699,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("EnjazRequired")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("IsVisaRequired")
                         .HasColumnType("tinyint(1)");
 
@@ -1705,6 +1717,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<int>("Step")
                         .HasColumnType("int");
+
+                    b.Property<bool>("TicketRequired")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -1760,7 +1775,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 30, 15, 58, 20, 820, DateTimeKind.Local).AddTicks(4453));
+                        .HasDefaultValue(new DateTime(2023, 6, 2, 16, 11, 54, 497, DateTimeKind.Local).AddTicks(3393));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1781,6 +1796,55 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Suffixes");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.UserGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptionStr")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RolesStr")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserGroups");
+                });
+
+            modelBuilder.Entity("ApplicationUserUserGroup", b =>
+                {
+                    b.Property<string>("ApplicationUsersId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("UserGroupsId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("ApplicationUsersId", "UserGroupsId");
+
+                    b.HasIndex("UserGroupsId");
+
+                    b.ToTable("ApplicationUserUserGroup");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -2241,6 +2305,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
                 {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
+                        .WithOne("ApplicationUser")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", "AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Branch")
                         .WithMany("UserBranch")
                         .HasForeignKey("BranchId")
@@ -2255,6 +2325,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .WithMany("UserPosition")
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Address");
 
                     b.Navigation("Branch");
 
@@ -2549,6 +2621,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Process");
                 });
 
+            modelBuilder.Entity("ApplicationUserUserGroup", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", null)
+                        .WithMany()
+                        .HasForeignKey("UserGroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -2648,6 +2735,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.Address", b =>
                 {
                     b.Navigation("Applicant");
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("CompanyInformation");
 

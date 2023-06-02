@@ -53,6 +53,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Process> Processes { get; set; }
         public DbSet<ProcessDefinition> ProcessDefinitions { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {

@@ -2,7 +2,7 @@
 // using AppDiv.SmartAgency.Application.Contracts.DTOs;
 // using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
-// using AppDiv.SmartAgency.Application.Features.Users.Command.Create;
+using AppDiv.SmartAgency.Application.Features.Users.Command.Create;
 // using AppDiv.SmartAgency.Application.Features.Users.Query;
 // using AppDiv.SmartAgency.Domain;
 // using MediatR;
