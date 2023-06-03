@@ -37,13 +37,6 @@ public class ProcessController : ControllerBase
         return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
     }
 
-    [HttpGet("get-initial")]
-    public async Task<ActionResult<ServiceResponse<List<GetApplProcessResponseDTO>>>> GetInitialApplicant()
-    {
-        // return Ok(await _mediator.Send(new GetApplProcessQuery()));
-        return Ok();
-    }
-
     [HttpPut("edit")]
     public async Task<ActionResult<ServiceResponse<Int32>>> EditProcess(EditProcessRequest request)
     {
