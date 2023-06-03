@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 
-[Authorize()]
+// [Authorize()]
 [ApiController]
 [Route("api/applicant")]
 public class ApplicantController : ControllerBase

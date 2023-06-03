@@ -2,6 +2,7 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
@@ -16,6 +17,7 @@ public record GetApplProcessQuery : IRequest<ApplicantProcessResponseDTO>
     public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
     public GetApplProcessQuery(Guid id, int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
     {
+        Id = id;
         PageNumber = pageNumber;
         PageSize = pageSize;
         SearchTerm = searchTerm;
@@ -49,16 +51,55 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
                 var notStartedApplicants = await _applicantRepository.GetAllApplWithPredicateSrchAsync(
                     query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
                     appl => appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0, applicantLoadedProperties);
+                var initAppls = new List<GetApplProcessResponseDTO>();
+                foreach (var notStrtAppl in notStartedApplicants.Items)
+                {
+                    initAppls.Add(new GetApplProcessResponseDTO()
+                    {
+                        PassportNumber = notStrtAppl.PassportNumber,
+                        FullName = notStrtAppl.FirstName + " " + notStrtAppl.MiddleName + " " + notStrtAppl.LastName,
+                        OrderNumber = notStrtAppl.Order?.OrderNumber!,
+                        SponsorName = notStrtAppl.Order?.Sponsor?.FullName!
+                    });
+                }
+
+                response.NotStartedApplicants = initAppls;
 
                 var onProcessApplicants = await _definitionRepository.GetAllWithPredicateSearchAsync(
                     query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
                     null, processLoadedProperties);
+
+                // foreach (var proDef in onProcessApplicants.Items)
+                // {
+                //     var pdApplicants = new List<GetApplProcessResponseDTO>();
+                //     foreach (var applicant in proDef.ApplicantProcesses)
+                //     {
+                //         pdApplicants.Add(new GetApplProcessResponseDTO()
+                //         {
+                //             PassportNumber = applicant.Applicant.PassportNumber,
+                //             FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
+                //             OrderNumber = applicant.Applicant.Order?.OrderNumber!,
+                //             SponsorName = applicant.Applicant.Order?.Sponsor?.FullName!
+                //         });
+                //     }
+                //     response.ProcessDefinitions?.Add(new GetProcessDefinitionResponseDTO()
+                //     {
+                //         Id = proDef.Id,
+                //         Name = proDef.Name,
+                //         Step = proDef.Step,
+                //         ApplicantProcesses = pdApplicants
+                //     });
+                // }
+
+                response.ProcessDefinitions = CustomMapper.Mapper.Map<List<GetProcessDefinitionResponseDTO>>(onProcessApplicants.Items);
             }
             else
             {
                 var onProcessApplicants = await _definitionRepository.GetAllWithPredicateSearchAsync(
                     query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
                     null, processLoadedProperties);
+
+                response.ProcessDefinitions = CustomMapper.Mapper.Map<List<GetProcessDefinitionResponseDTO>>(onProcessApplicants.Items);
             }
         }
         else { }

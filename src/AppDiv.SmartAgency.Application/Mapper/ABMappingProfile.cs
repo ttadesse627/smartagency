@@ -254,7 +254,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditLookUpCommand, LookUp>();
             CreateMap<AddEnjazRequest, Enjaz>();
-
+            CreateMap<Applicant, GetApplProcessResponseDTO>();
+            CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
 
             CreateMap<AddUserRequest, ApplicationUser>()
                 .ForMember(dest => dest.UserGroups, src => src.Ignore());
