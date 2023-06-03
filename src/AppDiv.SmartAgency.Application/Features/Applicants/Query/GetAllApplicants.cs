@@ -34,7 +34,12 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
     }
     public async Task<SearchModel<ApplicantsResponseDTO>> Handle(GetAllApplicants request, CancellationToken cancellationToken)
     {
-        var applicantList = await _applicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, appl => appl.CreatedBy == _dbContext.GetCurrentUserId(), "Partner");
+        var applicantList = await _applicantRepository.GetAllWithSearchAsync(
+            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, 
+            appl => appl.CreatedBy == _dbContext.GetCurrentUserId() 
+            || appl.CreatedBy == "00000000-0000-0000-0000-000000000000"
+            || appl.CreatedBy == null, 
+            "Partner");
         var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
 
         return response;
