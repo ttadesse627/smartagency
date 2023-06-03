@@ -15,4 +15,5 @@ public interface IApplicantRepository : IBaseRepository<Applicant>
     public Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber);
     public Task<int> AddApplicantAsync(Applicant applicant);
     public Task<SearchModel<Applicant>> GetAllApplWithPredicateAsync(int pageNumber, int pageSize, string orderBy, SortingDirection sortingDirection, List<Expression<Func<Applicant, bool>>>? predicate = null, params string[] eagerLoadedProperties);
+    public Task<SearchModel<Applicant>> GetAllApplWithPredicateSrchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<Applicant, bool>>? predicate = null, params string[] eagerLoadedProperties);
 }

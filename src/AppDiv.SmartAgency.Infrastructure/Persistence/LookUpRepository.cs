@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -28,9 +29,22 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         public async Task<Int32> UpdateAsync(LookUp lookUp)
         {
 
-                   _context.LookUps.Update(lookUp);  
-                   return await _context.SaveChangesAsync();
-                     
+            _context.LookUps.Update(lookUp);
+            return await _context.SaveChangesAsync();
+
+        }
+
+        public async Task<List<LookUp>> GetAllKeysAsync(List<string> keys)
+        {
+            var query = _context.LookUps.AsQueryable();
+
+            if (keys != null && keys.Count > 0)
+            {
+                query = query.Where(lk => keys.Contains(lk.Category));
+            }
+
+            var result = await query.ToListAsync();
+            return result;
         }
 
     }

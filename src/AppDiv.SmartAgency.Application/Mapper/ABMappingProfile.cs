@@ -50,6 +50,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
+using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -254,6 +255,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditLookUpCommand, LookUp>();
             CreateMap<AddEnjazRequest, Enjaz>();
+
+
+            CreateMap<AddUserRequest, ApplicationUser>()
+                .ForMember(dest => dest.UserGroups, src => src.Ignore());
 
         }
     }

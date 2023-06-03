@@ -1,13 +1,16 @@
 ﻿using System.Security.Claims;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces
 {
     public interface IIdentityService
     {
         // User section
-        Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string fullName, List<string> roles);
+        Task<ServiceResponse<int>> CreateUserAsync(ApplicationUser user, string password);
         Task<bool> SigninUserAsync(string userName, string password);
         Task<string> GetUserIdAsync(string userName);
+        Task<ApplicationUser> GetByUsernameAsync(string userName);
         Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId);
         Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName);
         Task<string> GetUserNameAsync(string userId);

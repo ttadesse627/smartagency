@@ -44,6 +44,12 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             return await _mediator.Send(new GetLookUpByIdQuery(id));
         }
+        [HttpGet("get/categories")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<List<LookUpResponseDTO>> Get([FromQuery] List<string> category)
+        {
+            return await _mediator.Send(new GetLookUpByCategoryQuery(category));
+        }
 
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteLookUp(Guid id)

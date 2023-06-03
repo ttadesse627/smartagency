@@ -134,4 +134,52 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         };
     }
 
+    public async Task<SearchModel<Applicant>> GetAllApplWithPredicateSrchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<Applicant, bool>>? predicate = null, params string[] eagerLoadedProperties)
+    {
+        long maxPage = 1, totalItems = 0;
+
+        var query = _context.Set<Applicant>().AsQueryable();
+        if (predicate != null)
+        {
+            query = query.Where(predicate);
+        }
+
+        foreach (var nav_property in eagerLoadedProperties)
+        {
+            query = query.Include(nav_property);
+        }
+
+        totalItems = query.LongCount();
+        if (totalItems > 0)
+        {
+            maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
+            if (pageNumber >= maxPage)
+            {
+                pageNumber = Convert.ToInt32(maxPage);
+            }
+        }
+
+        // Sorting
+        if (!string.IsNullOrEmpty(orderBy))
+        {
+            var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
+            query = query.OrderBy(orderExpression);
+        }
+
+        // Pagination
+        var skipAmount = (pageNumber - 1) * pageSize;
+        query = query.Skip(skipAmount).Take(pageSize);
+        var result = await query.ToListAsync();
+        return new SearchModel<Applicant>
+        {
+            CurrentPage = pageNumber,
+            MaxPage = maxPage,
+            PagingSize = pageSize,
+            SearchKeyWord = searchTerm,
+            Items = result,
+            TotalCount = totalItems,
+            SortingColumn = orderBy,
+            SortingDirection = sortingDirection
+        };
+    }
 }

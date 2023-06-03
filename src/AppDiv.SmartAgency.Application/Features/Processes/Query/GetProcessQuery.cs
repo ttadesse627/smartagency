@@ -18,7 +18,7 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ServiceRe
     public async Task<ServiceResponse<List<GetProcessResponseDTO>>> Handle(GetProcessQuery query, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<List<GetProcessResponseDTO>>();
-        var processes = await _processRepository.GetAllWithAsync("ProcessDefinitions");
+        var processes = await _processRepository.GetAllWithAsync();
         if (processes.Count() > 0)
         {
             response.Success = true;

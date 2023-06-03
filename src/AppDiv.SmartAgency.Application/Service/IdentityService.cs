@@ -1,5 +1,6 @@
 ﻿
 using System.Security.Claims;
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -54,29 +55,27 @@ namespace AppDiv.SmartAgency.Application.Service
         }
 
         // Return multiple value
-        public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string fullName, List<string> roles)
+        public async Task<ServiceResponse<int>> CreateUserAsync(ApplicationUser user, string password)
         {
-            var user = new ApplicationUser()
+            var response = new ServiceResponse<int>();
+            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            if (existingUser != null)
             {
-                FullName = fullName,
-                UserName = userName,
-                Email = email
-            };
-
+                response.Errors?.Add("user with the given email already exists");
+            }
+            existingUser = await _userManager.FindByNameAsync(user.UserName);
+            if (existingUser != null)
+            {
+                response.Errors?.Add("username is already taken");
+            }
             var result = await _userManager.CreateAsync(user, password);
-
             if (!result.Succeeded)
             {
-                throw new ValidationException(result.Errors);
+                response.Errors = result.ToApplicationResult().Errors.ToList();
             }
-            await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id.ToString()));
-
-            var addUserRole = await _userManager.AddToRolesAsync(user, roles);
-            if (!addUserRole.Succeeded)
-            {
-                throw new ValidationException(addUserRole.Errors);
-            }
-            return (result.Succeeded, user.Id);
+            string userId = await _userManager.GetUserIdAsync(user);
+            response.Message = $"Successfully created with new Id {userId}";
+            return response;
         }
 
         public async Task<bool> DeleteRoleAsync(string roleId)
@@ -152,6 +151,12 @@ namespace AppDiv.SmartAgency.Application.Service
             }
             var roles = await _userManager.GetRolesAsync(user);
             return (user.Id, user.FullName, user.UserName, user.Email, roles);
+        }
+
+        public async Task<ApplicationUser> GetByUsernameAsync(string userName)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            return user;
         }
 
         public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName)

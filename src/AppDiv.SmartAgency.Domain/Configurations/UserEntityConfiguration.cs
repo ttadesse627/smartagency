@@ -23,6 +23,14 @@ namespace AppDiv.SmartAgency.Domain.Configurations
                 .WithMany(lk => lk.Users)
                 .HasForeignKey(fk => fk.PartnerId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(user => user.Address)
+                .WithOne(addr => addr.ApplicationUser)
+                .HasForeignKey<ApplicationUser>(fk => fk.AddressId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(user => user.UserGroups)
+                .WithMany(ug => ug.ApplicationUsers);
         }
     }
 }
