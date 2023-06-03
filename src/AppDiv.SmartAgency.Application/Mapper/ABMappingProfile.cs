@@ -75,6 +75,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
                 .ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
+            
             CreateMap<EducationRequest, Education>()
                 .ForMember(dest => dest.QualificationTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.LevelOfQualifications, opt => opt.Ignore())
