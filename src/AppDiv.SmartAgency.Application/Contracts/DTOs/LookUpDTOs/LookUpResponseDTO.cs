@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs
 {
-    public class LookUpResponseDTO
+    public record LookUpResponseDTO
     {
         public Guid Id { get; set; }
         public string Category { get; set; }
