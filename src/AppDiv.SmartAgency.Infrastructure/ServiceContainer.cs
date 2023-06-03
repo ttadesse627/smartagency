@@ -72,6 +72,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();
             services.AddTransient<IProcessRepository, ProcessRepository>();
             services.AddTransient<IProcessDefinitionRepository, ProcessDefinitionRepository>();
+            services.AddTransient<IApplicantProcessRepository, ApplicantProcessRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IEnjazRepository, EnjazRepository>();
             // services.AddTransient<IGroupRepository, GroupRepository>();
