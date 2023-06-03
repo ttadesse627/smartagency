@@ -7,6 +7,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
 {
     public class GetAllPartnerResponseDTO
     {
+        public Guid Id { get; set; }
         public string PartnerName { get; set; }
         public string PartnerType { get; set; }
         public string ContactPerson { get; set; }
