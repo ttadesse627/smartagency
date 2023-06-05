@@ -1,6 +1,6 @@
 using Newtonsoft.Json.Linq;
 
-namespace AppDiv.CRVS.Application.Contracts.DTOs
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs
 {
     public class FetchGroupDTO
     {

@@ -4,8 +4,6 @@ using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using MediatR;
@@ -49,21 +47,19 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
             user.PositionId = request.PositionId;
             user.BranchId = request.BranchId;
             user.PartnerId = request.PartnerId;
-            user.Address = CustomMapper.Mapper.Map<Address>(request.Address);
+            user.Address = new Address
+            {
+                CountryId = request.Address?.CountryId,
+                AddressRegionId = request.Address?.AddressRegionId,
+                Zone = request.Address?.Zone,
+                Woreda = request.Address?.Woreda,
+                Kebele = request.Address?.Kebele,
+                PhoneNumber = request.Address?.PhoneNumber,
+                Email = request.Address?.Email,
+                Website = request.Address?.Website
+            };
             user.UserGroups = listGroup;
         }
-        // var person = new ApplicationUser
-        // {
-        //     FullName = request.FullName,
-        //     Email = request.Email,
-        //     UserName = request.UserName,
-        //     PositionId = request.PositionId,
-        //     BranchId = request.BranchId,
-        //     PartnerId = request.PartnerId,
-        //     Address = CustomMapper.Mapper.Map<Address>(request.Address),
-        //     UserGroups = listGroup
-
-        // };
 
         try
         {
@@ -71,7 +67,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
         }
         catch (Exception ex)
         {
-            response.Errors.Add(ex.Message);
+            response.Errors?.Add(ex.Message);
         }
         return response;
     }

@@ -1,40 +1,31 @@
-// using AppDiv.CRVS.Application.Common;
-// using AppDiv.CRVS.Application.Contracts.DTOs;
-// using AppDiv.CRVS.Application.Interfaces.Persistence;
-// using AppDiv.CRVS.Application.Mapper;
-// using AppDiv.CRVS.Domain.Entities;
-// using AppDiv.CRVS.Domain.Repositories;
-// using MediatR;
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Text;
-// using System.Threading.Tasks;
 
-// namespace AppDiv.CRVS.Application.Features.Groups.Query.GetAllGroup
 
-// {
-//     // Customer query with List<Customer> response
-//     public record GetDropDownGroups : IRequest<List<DropDownDto>>
-//     {
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using MediatR;
 
-//     }
+namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup
+{
+    public record GetDropDownGroups : IRequest<List<DropDownDto>> { }
 
-//     public class GetDropDownGroupsHandler : IRequestHandler<GetDropDownGroups, List<DropDownDto>>
-//     {
-//         private readonly IGroupRepository _groupRepository;
+    public class GetDropDownGroupsHandler : IRequestHandler<GetDropDownGroups, List<DropDownDto>>
+    {
+        private readonly IGroupRepository _groupRepository;
 
-//         public GetDropDownGroupsHandler(IGroupRepository groupRepository)
-//         {
-//             _groupRepository = groupRepository;
-//         }
-//         public async Task<List<DropDownDto>> Handle(GetDropDownGroups request, CancellationToken cancellationToken)
-//         {
-//             return _groupRepository.GetAll().Select(g => new DropDownDto{
-//                 Key= g.Id,
-//                 Value = g.GroupName
-//             }).ToList();
+        public GetDropDownGroupsHandler(IGroupRepository groupRepository)
+        {
+            _groupRepository = groupRepository;
+        }
+        public async Task<List<DropDownDto>> Handle(GetDropDownGroups request, CancellationToken cancellationToken)
+        {
+            var grpdropDowns = await _groupRepository.GetAllWithAsync();
+            var dropDownResponse = new List<DropDownDto>();
+            foreach (var grItem in grpdropDowns)
+            {
+                dropDownResponse.Add(new DropDownDto { Key = grItem.Id, Value = grItem.GroupName });
+            }
+            return dropDownResponse;
 
-//         }
-//     }
-// }
+        }
+    }
+}

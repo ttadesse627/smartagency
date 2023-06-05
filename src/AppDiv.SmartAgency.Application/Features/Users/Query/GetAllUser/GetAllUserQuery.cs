@@ -20,10 +20,10 @@ namespace AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string SearchTerm { get; set; } = string.Empty;
-        public string OrderBy { get; set; } = string.Empty;
+        public string? SearchTerm { get; set; } = string.Empty;
+        public string? OrderBy { get; set; } = string.Empty;
         public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-        public GetAllUserQuery(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
+        public GetAllUserQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;
@@ -49,7 +49,7 @@ namespace AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser
 
             var userList = await _userRepository.GetAllWithSearchAsync
                             (
-                                request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy,
+                                request.PageNumber, request.PageSize, request.SearchTerm!, request.OrderBy!,
                                 request.SortingDirection, user => user.UserName != null, eagerLoadedProperties
                             );
             var userResponse = CustomMapper.Mapper.Map<SearchModel<UserResponseDTO>>(userList);

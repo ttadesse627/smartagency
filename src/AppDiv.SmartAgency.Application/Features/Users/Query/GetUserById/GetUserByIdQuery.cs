@@ -1,4 +1,5 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Interfaces;

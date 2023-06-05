@@ -1,4 +1,6 @@
 ﻿
+using AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 using AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser;
@@ -69,20 +71,20 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
         }
 
-        //         [HttpDelete("delete/{id}")]
-        //         public async Task<ActionResult> DeleteUser(string id)
-        //         {
-        //             try
-        //             {
-        //                 string result = string.Empty;
-        //                 result = await Mediator.Send(new DeleteUserCommand(id));
-        //                 return Ok(result);
-        //             }
-        //             catch (Exception exp)
-        //             {
-        //                 return BadRequest(exp.Message);
-        //             }
-        //         }
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<ServiceResponse<int>>> DeleteUser(Guid id)
+        {
+            try
+            {
+                var result = new ServiceResponse<int>();
+                result = await Mediator.Send(new DeleteUserCommand(id));
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
+        }
 
     }
 }

@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Query
 {
