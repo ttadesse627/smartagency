@@ -73,6 +73,7 @@ namespace AppDiv.SmartAgency.Application.Service
             {
                 response.Errors = result.ToApplicationResult().Errors.ToList();
             }
+            var userClaim = await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id));
             string userId = await _userManager.GetUserIdAsync(user);
             response.Message = $"Successfully created with new Id {userId}";
             return response;
@@ -159,15 +160,24 @@ namespace AppDiv.SmartAgency.Application.Service
             return user;
         }
 
-        public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName)
+        public async Task<ApplicationUser> GetUserDetailsByUserNameAsync(string userName)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            var user = await _userManager.Users
+                    .Include(usr => usr.UserGroups)
+                    .Include(usr => usr.Position)
+                    .Include(usr => usr.Branch)
+                    .Include(usr => usr.Partner)
+                    .Include(usr => usr.Address)
+                        .ThenInclude(addr => addr.Country)
+                    .Include(usr => usr.Address)
+                        .ThenInclude(addr => addr.AddressRegion)
+                    .FirstOrDefaultAsync(x => x.UserName == userName);
             if (user == null)
             {
                 throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return (user.Id, user.FullName, user.UserName, user.Email, roles);
+            return user;
         }
 
         public async Task<string> GetUserIdAsync(string userName)

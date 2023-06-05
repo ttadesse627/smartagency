@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 
-namespace AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+namespace AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 
-public class AddressResponseDTO
+public class UpdateAddressRequest
 {
     public Guid Id { get; set; }
-    public LookUpItemResponseDTO Country { get; set; }
-    public LookUpItemResponseDTO AddressRegion { get; set; }
+    public Guid CountryId { get; set; }
+    public Guid AddressRegionId { get; set; }
     public string Zone { get; set; }
     public string Woreda { get; set; }
     public string Kebele { get; set; }

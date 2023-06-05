@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces
@@ -12,7 +13,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces
         Task<string> GetUserIdAsync(string userName);
         Task<ApplicationUser> GetByUsernameAsync(string userName);
         Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId);
-        Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName);
+        Task<ApplicationUser> GetUserDetailsByUserNameAsync(string userName);
         Task<string> GetUserNameAsync(string userId);
         Task<bool> DeleteUserAsync(string userId);
         Task<bool> IsUniqueUserName(string userName);

@@ -12,8 +12,8 @@ public record ApplicantsResponseDTO
     public DateTime? CreatedAt { get; set; }
     public string? PassportNumber { get; set; }
     public Gender? Gender { get; set; }
-    public LookUpResponseDTO? MaritalStatus { get; set; }
-    public LookUpResponseDTO? Religion { get; set; }
-    public LookUpResponseDTO? BrokerName { get; set; }
+    public string MaritalStatus { get; set; }
+    public string? Religion { get; set; }
+    public string? BrokerName { get; set; }
     public decimal? Expense { get; set; }
 }

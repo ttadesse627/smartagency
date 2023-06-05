@@ -75,7 +75,8 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IApplicantProcessRepository, ApplicantProcessRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IEnjazRepository, EnjazRepository>();
-            // services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
             //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
