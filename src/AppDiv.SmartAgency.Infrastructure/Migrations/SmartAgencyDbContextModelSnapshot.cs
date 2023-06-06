@@ -895,6 +895,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("AddressRegionId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid?>("AddressRegionId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("AlternativePhone")
                         .HasColumnType("longtext");
 
@@ -1812,7 +1815,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 3, 16, 36, 16, 286, DateTimeKind.Local).AddTicks(1372));
+                        .HasDefaultValue(new DateTime(2023, 5, 31, 21, 16, 30, 451, DateTimeKind.Local).AddTicks(2696));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2645,6 +2648,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
                         .WithOne("Partner")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Partner", "AddressId")
+                        .OnDelete(DeleteBehavior.SetNull);
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Address");
