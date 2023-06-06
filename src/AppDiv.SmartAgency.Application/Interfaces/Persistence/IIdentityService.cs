@@ -20,6 +20,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces
         Task<List<(string id, string fullName, string userName, string email)>> GetAllUsersAsync();
         Task<List<(string id, string userName, string email, IList<string> roles)>> GetAllUsersDetailsAsync();
         Task<bool> UpdateUserProfile(string id, string fullName, string email, IList<string> roles);
+        Task<ServiceResponse<int>> UpdateUserAsync(string id, string username, string email, string fullName, string otpCode, DateTime expirySecond);
 
         // Role Section
         Task<bool> CreateRoleAsync(IList<string> roleNames);
@@ -33,6 +34,8 @@ namespace AppDiv.SmartAgency.Application.Interfaces
         Task<List<string>> GetUserRolesAsync(string userId);
         Task<bool> AssignUserToRole(string userName, IList<string> roles);
         Task<bool> UpdateUsersRole(string userName, IList<string> usersRole);
+        Task<(Result result, IList<string>? roles, string? userId)> AuthenticateUser(string userName, string password);
+        Task<ServiceResponse<int>> ChangePassword(string userName, string oldPassword, string newPassword);
     }
 }
 

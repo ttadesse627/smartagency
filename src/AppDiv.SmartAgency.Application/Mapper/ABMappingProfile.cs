@@ -259,12 +259,15 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AddEnjazRequest, Enjaz>();
             CreateMap<Applicant, GetApplProcessResponseDTO>();
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
-            CreateMap<AddUserRequest, ApplicationUser>();
+            CreateMap<AddUserRequest, ApplicationUser>()
+                .ForMember(dest => dest.UserGroups, opt => opt.Ignore());
             CreateMap<UserAddressRequest, Address>();
             CreateMap<ApplicationUser, UserResponseDTO>();
             CreateMap<ApplicationUser, UserDetailsResponseDTO>();
             CreateMap<SearchModel<ApplicationUser>, SearchModel<UserResponseDTO>>();
             CreateMap<SearchModel<UserGroup>, SearchModel<FetchGroupDTO>>();
+            CreateMap<UserGroup, FetchGroupDTO>();
+            CreateMap<UserGroup, GroupDTO>();
 
         }
     }

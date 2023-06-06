@@ -7,6 +7,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+        public string? Otp { get; set; }
+        public DateTime? OtpExpiredDate { get; set; }
         public string? FullName { get; set; }
         public Guid? PositionId { get; set; }
         public Guid? BranchId { get; set; }
