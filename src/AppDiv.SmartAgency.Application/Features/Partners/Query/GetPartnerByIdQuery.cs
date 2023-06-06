@@ -35,13 +35,10 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
     {
         private readonly IPartnerRepository _partnerRepository;
         private readonly IFileService _fileService;
-        private readonly IFileService _fileService;
 
-        public GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService)
         public GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService)
         {
             _partnerRepository = partnerRepository;
-            _fileService = fileService;
             _fileService = fileService;
         }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
@@ -77,7 +74,6 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
                     BankAccount=selectedPartner.BankAccount,
                     HeaderLogo=fileContent,
                     ReferenceNumber=selectedPartner.ReferenceNumber,
-                    AddressId= (Guid)selectedPartner.AddressId,
                     Address=CustomMapper.Mapper.Map<PartnerAddressResponseDTO>(selectedPartner.Address)
                 };  
 

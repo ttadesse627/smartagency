@@ -895,9 +895,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("AddressRegionId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("AddressRegionId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("AlternativePhone")
                         .HasColumnType("longtext");
 
@@ -2648,7 +2645,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
                         .WithOne("Partner")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Partner", "AddressId")
-                        .OnDelete(DeleteBehavior.SetNull);
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Address");

@@ -41,7 +41,8 @@ public class GetAllOnlineApplicantHandler : IRequestHandler<GetAllOnlineApplican
     }
     public async Task<SearchModel<OnlineApplicantResponseDTO>> Handle(GetAllOnlineApplicantQuery request, CancellationToken cancellationToken)
     {
-        var onlineApplicantList = await _onlineApplicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, oApp => oApp.CreatedBy == _dbContext.GetCurrentUserId(), "MaritalStatus", "DesiredCountry", "Experience");
+        var explLoaded = new string[]{"MaritalStatus", "DesiredCountry", "Experience"};
+        var onlineApplicantList = await _onlineApplicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, oApp => oApp.CreatedBy == _dbContext.GetCurrentUserId(), explLoaded);
         var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<OnlineApplicantResponseDTO>>(onlineApplicantList);
         return paginatedListResp;
     }
