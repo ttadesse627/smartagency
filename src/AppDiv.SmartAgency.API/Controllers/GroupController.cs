@@ -10,6 +10,9 @@ using AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup;
 using AppDiv.SmartAgency.Application.Features.Groups.Commands.Create;
 using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
 using AppDiv.SmartAgency.Application.Features.Groups.Query.GetGroupById;
+using AppDiv.SmartAgency.Application.Features.Groups.Commands.Update;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Features.Groups.Commands.Delete;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
@@ -28,12 +31,11 @@ namespace AppDiv.SmartAgency.API.Controllers
             _Ilog = Ilog; ;
         }
 
-
         [HttpGet("get-all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<SearchModel<FetchGroupDTO>> Get([FromQuery] GetAllGroupQuery query)
+        public async Task<SearchModel<FetchGroupDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
-            return await _mediator.Send(query);
+            return await _mediator.Send(new GetAllGroupQuery(pageNumber, pageSize, searchTerm!, orderBy!, sortingDirection));
         }
         [HttpGet("lookup")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -45,9 +47,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         [HttpPost("create")]
         // [ProducesResponseType(StatusCodes.Status200OK)]
         // [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<GroupDTO>> CreateGroup([FromBody] AddGroupRequest request)
+        public async Task<ActionResult<GroupDTO>> CreateGroup([FromBody] CreateGroupCommand request)
         {
-            var result = await _mediator.Send(new CreateGroupCommand(request));
+            var result = await _mediator.Send(request);
             if (result.Success)
             {
                 return Ok(result);
@@ -65,49 +67,30 @@ namespace AppDiv.SmartAgency.API.Controllers
             return await _mediator.Send(new GetGroupbyId(id));
         }
 
-        // [HttpPut("Edit/{id}")]
-        // public async Task<ActionResult> Edit(Guid id, [FromBody] GroupUpdateCommand command)
-        // {
-        //     try
-        //     {
-        //         if (command.group.Id == id)
-        //         {
-        //             var result = await _mediator.Send(command);
-        //             return Ok(result);
-        //         }
-        //         else
-        //         {
-        //             return BadRequest();
-        //         }
-        //     }
-        //     catch (Exception exp)
-        //     {
-        //         return BadRequest(exp.Message);
-        //     }
-        // }
-
-
-        // [HttpDelete("Delete/{id}")]
-        // public async Task<BaseResponse> DeleteLookup(Guid id)
-        // {
-        //     try
-        //     {
-        //         string result = string.Empty;
-        //         return await _mediator.Send(new DeleteGroupCommands { Id = id });
-        //     }
-        //     catch (Exception exp)
-        //     {
-        //         var res = new BaseResponse
-        //         {
-        //             Success = false,
-        //             Message = exp.Message
-        //         };
-        //         return res;
-        //     }
-        // }
-
-
-
-
+        [HttpPut("edit/{id}")]
+        public async Task<ActionResult> Edit(Guid id, [FromBody] UpdateGroupRequest request)
+        {
+            try
+            {
+                if (request.Id == id)
+                {
+                    var result = await _mediator.Send(new GroupUpdateCommand(request));
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
+        }
+        [HttpDelete("delete/{id}")]
+        public async Task<ServiceResponse<int>> DeleteLookup(Guid id)
+        {
+            return await _mediator.Send(new DeleteGroupCommand { Id = id });
+        }
     }
 }

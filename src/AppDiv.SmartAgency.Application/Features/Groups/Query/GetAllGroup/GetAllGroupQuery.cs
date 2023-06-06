@@ -4,11 +4,6 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
 
@@ -43,7 +38,8 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
         public async Task<SearchModel<FetchGroupDTO>> Handle(GetAllGroupQuery request, CancellationToken cancellationToken)
         {
 
-            var groups = await _groupRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection);
+            var groups = await _groupRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, gr => gr.Id != null);
+
             var groupResponse = CustomMapper.Mapper.Map<SearchModel<FetchGroupDTO>>(groups);
             return groupResponse;
         }
