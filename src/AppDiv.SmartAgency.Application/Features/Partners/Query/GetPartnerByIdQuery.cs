@@ -25,8 +25,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
             this.Id = Id;
             this.fileType= fileType;
             this.folderType= folderType;
-            this.fileType= fileType;
-            this.folderType= folderType;
+           
         }
 
     }
