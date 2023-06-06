@@ -70,6 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IApplicantFollowupStatusRepository, ApplicantFollowupStatusRepository>();
             services.AddTransient<IPageRepository, PageRepository>();
             services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();
+            services.AddTransient<IFileService, FileService>();
             services.AddTransient<IProcessRepository, ProcessRepository>();
             services.AddTransient<IProcessDefinitionRepository, ProcessDefinitionRepository>();
             services.AddTransient<IApplicantProcessRepository, ApplicantProcessRepository>();

@@ -50,6 +50,8 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -74,7 +76,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CreateApplicantRequest, Applicant>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
                 .ForMember(dest => dest.Witnesses, opt => opt.Ignore())
-                .ForMember(dest => dest.Representative, opt => opt.Ignore());
+                .ForMember(dest => dest.Representative, opt => opt.Ignore())
+                .ForMember(dest => dest.LanguageSkills, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
 
@@ -235,24 +238,20 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-
             CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
-          
+
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
-            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
-            CreateMap<Address, CompanyAddressResponseDTO>();
             // CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
                 .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
                 .ForMember(dest => dest.LetterBackGround, opt => opt.Ignore());
-            CreateMap<Address, CompanyAddressResponseDTO>(); 
+            CreateMap<Address, CompanyAddressResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CountryOperation, CountryOperationResponseDTO>();
-
             CreateMap<EditCompanyAddressRequest, Address>();
             CreateMap<EditCompanyInformationCommand, CompanyInformation>().ReverseMap();
             CreateMap<EditCompanyWitnessRequest, Witness>();
