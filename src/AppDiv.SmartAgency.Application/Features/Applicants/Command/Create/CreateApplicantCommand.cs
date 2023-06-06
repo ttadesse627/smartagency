@@ -37,7 +37,7 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         applicantEntity.Witnesses = witnessList;
         applicantEntity.Representative = representativeEntity;
 
-        
+
 
         ICollection<LookUp> levelOfQualifications = new List<LookUp>();
         ICollection<LookUp> qualificationTypes = new List<LookUp>();
@@ -86,9 +86,9 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             }
 
         }
-        if (request.Skills != null)
+        if (request.Skill?.Skills != null)
         {
-            foreach (var skillId in request.Skills!)
+            foreach (var skillId in request.Skill.Skills!)
             {
                 var skill = await _lookUpRepository.GetAsync(skillId);
                 if (skill == null)
@@ -142,6 +142,7 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
                 skls.Add(skl);
             }
             applicantEntity.Skills = skls;
+            applicantEntity.LanguageSkills = CustomMapper.Mapper.Map<List<LanguageSkill>>(request.Skill?.LanguageSkills);
         }
 
         // Apply the update to the database

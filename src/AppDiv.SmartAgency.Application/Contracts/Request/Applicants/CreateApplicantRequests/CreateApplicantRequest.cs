@@ -47,8 +47,7 @@ public record CreateApplicantRequest
     public Guid? BrokerNameId { get; set; }
     public Guid? BranchId { get; set; }
     public Guid? PartnerId { get; set; } = null;
-    public ICollection<LanguageSkillRequest>? LanguageSkills { get; set; }
-    public ICollection<Guid>? Skills { get; set; }
+    public SkillRequest? Skill { get; set; }
     public ICollection<ExperienceRequest>? Experiences { get; set; }
     public EducationRequest? Education { get; set; }
     public BankAccountRequest? BankAccount { get; set; }

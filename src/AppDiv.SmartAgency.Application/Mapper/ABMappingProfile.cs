@@ -74,7 +74,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CreateApplicantRequest, Applicant>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
                 .ForMember(dest => dest.Witnesses, opt => opt.Ignore())
-                .ForMember(dest => dest.Representative, opt => opt.Ignore());
+                .ForMember(dest => dest.Representative, opt => opt.Ignore())
+                .ForMember(dest => dest.LanguageSkills, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
 
@@ -237,7 +238,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
 
             CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
-          
+
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
@@ -249,7 +250,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
                 .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
                 .ForMember(dest => dest.LetterBackGround, opt => opt.Ignore());
-            CreateMap<Address, CompanyAddressResponseDTO>(); 
+            CreateMap<Address, CompanyAddressResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CountryOperation, CountryOperationResponseDTO>();
 
