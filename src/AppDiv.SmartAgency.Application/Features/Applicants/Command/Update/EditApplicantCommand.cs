@@ -1,6 +1,7 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -35,7 +36,6 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
         if (applicantEntity != null)
         {
             CustomMapper.Mapper.Map(command.request, applicantEntity);
-            var editedApplicant = CustomMapper.Mapper.Map<Applicant>(command.request);
 
             ICollection<LookUp> qualificationTypesLookup = new List<LookUp>();
             ICollection<LookUp> levelOfQualificationsLookup = new List<LookUp>();
@@ -86,7 +86,7 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                         }
                         else
                         {
-                            exceptions.Add(new Exception($"The Applicant is already up-to-date with a QualificationType with Id {qualificationTypeId}"));
+                            exceptions.Add(new BadRequestException($"The Applicant is already up-to-date with a QualificationType with Id {qualificationTypeId}"));
                         }
                     }
                 }
@@ -115,7 +115,7 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                         }
                         else
                         {
-                            exceptions.Add(new Exception($"The Applicant is already up-to-date with a LevelOfQualification with Id {levelOfQualificationId}"));
+                            exceptions.Add(new BadRequestException($"The Applicant is already up-to-date with a LevelOfQualification with Id {levelOfQualificationId}"));
                         }
                     }
                 }
@@ -144,7 +144,7 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                         }
                         else
                         {
-                            exceptions.Add(new Exception($"The Applicant is already up-to-date with an Award with Id {award.Id}"));
+                            exceptions.Add(new BadRequestException($"The Applicant is already up-to-date with an Award with Id {award.Id}"));
                         }
                     }
                 }
@@ -173,7 +173,7 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                         }
                         else
                         {
-                            exceptions.Add(new Exception($"The Applicant is already up-to-date with a Skill with Id {skill.Id}"));
+                            exceptions.Add(new BadRequestException($"The Applicant is already up-to-date with a Skill with Id {skill.Id}"));
                         }
                     }
                 }
@@ -182,12 +182,9 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
             // Save changes to the database
             try
             {
-                serviceResponse = await _applicantRepository.SaveDbUpdateAsync();
-
-
-                if (serviceResponse.Data >= 1)
+                serviceResponse.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+                if (serviceResponse.Success)
                 {
-                    serviceResponse.Success = true;
                     serviceResponse.Message = "Successfully updated the applicant.";
                 }
             }
@@ -197,7 +194,6 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                 exceptions.Add(ex);
             }
         }
-
         // Handle any exceptions
         if (exceptions.Count > 0)
         {

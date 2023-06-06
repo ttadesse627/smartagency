@@ -45,7 +45,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await list.ToListAsync();
         }
 
-        public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, params string[] eagerLoadedProperties)
+        public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
 
@@ -70,6 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
             var list = _dbContext.Set<T>().Where(lambda);
+            list = list.Where(predicate);
 
             foreach (var nav_property in eagerLoadedProperties)
             {
@@ -90,7 +91,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
                 list = list.OrderBy(orderExpression);
-                
+
             }
 
             // Pagination
@@ -103,91 +104,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = pageNumber,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Entities = list,
-                TotalItems = totalItems,
+                Items = list,
+                TotalCount = totalItems,
                 SearchKeyWord = searchTerm,
                 SortingColumn = orderBy,
                 SortingDirection = sortingDirection
             };
         }
-
-        // public virtual async Task<SearchModel<T>> GetAllWithSearchAsync1(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, params string[] eagerLoadedProperties)
-        // {
-        //     long maxPage = 1, totalItems = 0;
-
-        //     var parameter = Expression.Parameter(typeof(T), "x");
-        //     var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
-
-        //     var stringProperties = typeof(T).GetProperties()
-        //         .Where(p => p.PropertyType == typeof(string))
-        //         .ToList();
-
-        //     foreach (var prop in stringProperties)
-        //     {
-        //         var propertyExpr = Expression.Property(parameter, prop);
-        //         var containsExpr = Expression.Call(
-        //                                 propertyExpr,
-        //                                 typeof(string).GetMethod("Contains", new[] { typeof(string) })!,
-        //                                 Expression.Constant(searchTerm));
-
-        //         var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
-        //         body = Expression.Or(body, binaryExpr);
-        //     }
-
-        //     foreach (var propertyName in collection)
-        //     {
-
-        //     }
-
-        //     var propertyExpr = Expression.Property(parameter, propertyName);
-        //     var containsExpr = Expression.Call(
-        //         propertyExpr,
-        //         typeof(object).GetMethod("ToString", new Type[0]),
-        //         Expression.Constant(CultureInfo.InvariantCulture));
-        //     var searchTermExpr = Expression.Constant(searchTerm);
-        //     var equalsExpr = Expression.Equal(containsExpr, searchTermExpr);
-
-        //     var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
-        //     var list = _dbContext.Set<T>().Where(lambda);
-
-        //     foreach (var nav_property in eagerLoadedProperties)
-        //     {
-        //         list = list.Include(nav_property);
-        //     }
-        //     totalItems = list.LongCount();
-        //     if (totalItems > 0)
-        //     {
-        //         maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
-        //         if (pageNumber >= maxPage)
-        //         {
-        //             pageNumber = Convert.ToInt32(maxPage);
-        //         }
-        //     }
-
-        //     // Sorting
-        //     if (!string.IsNullOrEmpty(orderBy))
-        //     {
-        //         var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
-        //         list = list.OrderBy(orderExpression);
-        //     }
-
-        //     // Pagination
-        //     var skipAmount = (pageNumber - 1) * pageSize;
-        //     list = list.Skip(skipAmount).Take(pageSize);
-
-        //     var result = await list.ToListAsync();
-        //     return new SearchModel<T>
-        //     {
-        //         CurrentPage = pageNumber,
-        //         MaxPage = maxPage,
-        //         PagingSize = pageSize,
-        //         Entities = list,
-        //         TotalItems = totalItems,
-        //         SearchKeyWord = searchTerm,
-        //         SortingColumn = orderBy,
-        //         SortingDirection = sortingDirection
-        //     };
-        // }
         public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
@@ -252,8 +175,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = pageNumber,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Entities = result,
-                TotalItems = totalItems,
+                Items = result,
+                TotalCount = totalItems,
                 SearchKeyWord = searchTerm,
                 SortingColumn = orderBy,
                 SortingDirection = sortingDirection
@@ -828,8 +751,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = page,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Entities = list,
-                TotalItems = total_items
+                Items = list,
+                TotalCount = total_items
             };
         }
 
@@ -906,7 +829,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return new SearchModel<T>
             {
-                Entities = list,
+                Items = list,
             };
         }
 
@@ -1007,8 +930,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = page,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Entities = list,
-                TotalItems = total_items,
+                Items = list,
+                TotalCount = total_items,
                 SortingColumn = propertyExpression.Member.Name,
                 SortingDirection = sorting_direction
             };
@@ -1092,7 +1015,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return new SearchModel<T>
             {
-                Entities = list
+                Items = list
             };
         }
 
@@ -1189,8 +1112,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = page,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Entities = list,
-                TotalItems = total_items
+                Items = list,
+                TotalCount = total_items
             };
         }
 
@@ -1280,8 +1203,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = page,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Entities = list,
-                TotalItems = total_items
+                Items = list,
+                TotalCount = total_items
             };
         }
 
@@ -1305,6 +1228,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             // Get all the entities that inherit from AuditableEntity
             // and have a state of Added or Modified
+            bool success = false;
             var entries = _dbContext.ChangeTracker
                 .Entries()
                 .Where(e => e.Entity is BaseAuditableEntity && (
@@ -1319,7 +1243,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 if (entityEntry.State == EntityState.Added)
                 {
                     ((BaseAuditableEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
-                    // ((BaseAuditableEntity)entityEntry.Entity).CreatedBy = _dbContext.GetCurrentUserId();
+                    ((BaseAuditableEntity)entityEntry.Entity).CreatedBy = _dbContext.GetCurrentUserId();
                 }
                 else
                 {
@@ -1333,14 +1257,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 // In any case we always want to set the properties
                 // ModifiedAt and ModifiedBy
                 ((BaseAuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.UtcNow;
-                // ((BaseAuditableEntity)entityEntry.Entity).ModifiedBy = _dbContext.GetCurrentUserId();
+                ((BaseAuditableEntity)entityEntry.Entity).ModifiedBy = _dbContext.GetCurrentUserId();
             }
 
             // After we set all the needed properties
             // we call the base implementation of SaveChangesAsync
             // to actually save our entities in the database
-            await _dbContext.SaveChangesAsync(cancellationToken);
-            return true;
+            int count = await _dbContext.SaveChangesAsync(cancellationToken);
+            if (count >= 1)
+            {
+                success = true;
+            }
+            return success;
         }
 
         public async Task<T> GetFirstEntryWithAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, SortingDirection sorting_direction, params string[] eagerLoadedProperties)

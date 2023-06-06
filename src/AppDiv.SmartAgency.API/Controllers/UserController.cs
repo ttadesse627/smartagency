@@ -1,35 +1,89 @@
-﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
+﻿
+using AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
+using AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser;
+using AppDiv.SmartAgency.Application.Features.User.Command.Update;
+using AppDiv.SmartAgency.Application.Features.User.Query.GetUserById;
 using AppDiv.SmartAgency.Application.Features.Users.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Users.Query;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using AppDiv.SmartAgency.Utility.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    // [Authorize(Roles = "Admin, Management")]
     public class UserController : ApiControllerBase
     {
-        [HttpPost("Create")]
-        [ProducesDefaultResponseType(typeof(int))]
-        public async Task<ActionResult> CreateUser(CreateUserCommand command)
+
+        [HttpPost("create")]
+        public async Task<ActionResult> CreateUser(AddUserRequest request)
         {
-            return Ok(await Mediator.Send(command));
+            if (request.ConfirmationPassword != request.Password)
+            {
+                return BadRequest("The password is not confirmed. Please try again!");
+            }
+            return Ok(await Mediator.Send(new CreateUserCommand(request)));
         }
 
 
-        [HttpGet("GetUserDetailsByUserName/{userName}")]
+        [HttpGet("get-user-details-by-username/{username}")]
         [ProducesDefaultResponseType(typeof(UserDetailsResponseDTO))]
-        public async Task<IActionResult> GetUserDetailsByUserName(string userName)
+        public async Task<IActionResult> GetUserDetailsByUserName(string username)
         {
-            var result = await Mediator.Send(new GetUserDetailsByUserNameQuery() { UserName = userName });
+            var result = await Mediator.Send(new GetUserDetailsByUserNameQuery(username));
             return Ok(result);
+        }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<SearchModel<UserResponseDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        {
+            return await Mediator.Send(new GetAllUserQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection));
+        }
+
+        [HttpGet("get/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<UserDetailsResponseDTO> Get(Guid id)
+        {
+            return await Mediator.Send(new GetUserByIdQuery(id));
+        }
+
+
+        [HttpPut("edit/{id}")]
+        public async Task<ActionResult> Edit(Guid id, [FromBody] UpdateUserRequest request)
+        {
+            try
+            {
+                if (request.Id == id)
+                {
+                    var result = await Mediator.Send(new UpdateUserCommand(request));
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<ServiceResponse<int>>> DeleteUser(Guid id)
+        {
+            try
+            {
+                var result = new ServiceResponse<int>();
+                result = await Mediator.Send(new DeleteUserCommand(id));
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
         }
 
     }

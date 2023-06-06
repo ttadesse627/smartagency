@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusDTOs;
 
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Query
 {
-    public class GetAllApplicantFollowupStatusQuery: IRequest<SearchModel<ApplicantFollowupStatusResponseDTO>>
+    public class GetAllApplicantFollowupStatusQuery : IRequest<SearchModel<ApplicantFollowupStatusResponseDTO>>
     {
 
-         public int PageNumber { get; set; }
+        public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public string SearchTerm { get; set; } = string.Empty;
         public string OrderBy { get; set; } = string.Empty;
@@ -33,14 +34,16 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Que
     public class GetAllApplicantFollowupStatusHandler : IRequestHandler<GetAllApplicantFollowupStatusQuery, SearchModel<ApplicantFollowupStatusResponseDTO>>
     {
         private readonly IApplicantFollowupStatusRepository _applicantFollowupStatusRepository;
+        private readonly ISmartAgencyDbContext _dbContext;
 
-        public GetAllApplicantFollowupStatusHandler(IApplicantFollowupStatusRepository applicantFollowupStatusRepository)
+        public GetAllApplicantFollowupStatusHandler(IApplicantFollowupStatusRepository applicantFollowupStatusRepository, ISmartAgencyDbContext dbContext)
         {
-            _applicantFollowupStatusRepository = applicantFollowupStatusRepository ;
+            _applicantFollowupStatusRepository = applicantFollowupStatusRepository;
+            _dbContext = dbContext;
         }
         public async Task<SearchModel<ApplicantFollowupStatusResponseDTO>> Handle(GetAllApplicantFollowupStatusQuery request, CancellationToken cancellationToken)
         {
-            var followupList = await _applicantFollowupStatusRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, "Applicant","FollowupStatus");
+            var followupList = await _applicantFollowupStatusRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, appf => appf.CreatedBy == _dbContext.GetCurrentUserId(), "Applicant", "FollowupStatus");
             var followupResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantFollowupStatusResponseDTO>>(followupList);
             return followupResponse;
 

@@ -1,6 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
@@ -17,15 +18,21 @@ public class RequestApplicantCommandHandler : IRequestHandler<RequestApplicantCo
     {
         var response = new ServiceResponse<Int32>();
         var applicant = await _applicantRepository.GetAsync(request.id);
-        if (!applicant.IsRequested)
+        if (applicant != null)
         {
-            applicant.IsRequested = true;
-            response = await _applicantRepository.SaveDbUpdateAsync();
+            if (!applicant.IsRequested)
+            {
+                applicant.IsRequested = true;
+                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+            }
+            if (response.Success)
+            {
+                response.Message = "Request Successful!";
+            }
         }
-        if (response.Data > 0)
+        else
         {
-            response.Message = "Request Successful!";
-            response.Success = true;
+            throw new NotFoundException($"The applicant with Id {request.id} is not found!");
         }
         return response;
     }

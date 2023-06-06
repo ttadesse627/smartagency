@@ -31,7 +31,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public Address? Address { get; set; }
         public ICollection<Applicant>? Applicants { get; set; }
         public ICollection<Order>? Orders { get; set; }
+        public ICollection<ApplicationUser>? Users { get; set; }
 
-        
+
     }
 }

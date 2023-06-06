@@ -7,7 +7,7 @@ public class Address : BaseAuditableEntity
     public string? Region { get; set; }
     public string? City { get; set; }
     public string? SubCity { get; set; }
-    public string? SubCityArabic { get; set; } 
+    public string? SubCityArabic { get; set; }
     public string? District { get; set; }
     public string? DistrictArabic { get; set; }
     public string? Zone { get; set; }
@@ -22,7 +22,7 @@ public class Address : BaseAuditableEntity
     public string? Mobile { get; set; }
     public string? AlternativePhone { get; set; }
     public string? Fax { get; set; }
-    public string Adress { get; set; } = string.Empty;
+    public string Addres { get; set; } = string.Empty;
     public string? PostCode { get; set; }
     public string? Email { get; set; }
     public string? Website { get; set; }
@@ -41,6 +41,8 @@ public class Address : BaseAuditableEntity
     public Partner? Partner { get; set; }
     public Sponsor? Sponsor { get; set; }
     public CompanyInformation? CompanyInformation { get; set; }
+    public ApplicationUser? ApplicationUser { get; set; }
+
 
 
 

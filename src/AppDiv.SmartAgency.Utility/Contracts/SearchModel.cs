@@ -5,10 +5,10 @@ namespace AppDiv.SmartAgency.Utility.Contracts
 {
     public class SearchModel<T> where T : class
     {
-        public IEnumerable<T> Entities { get; set; } = new List<T> { };
+        public IEnumerable<T> Items { get; set; } = new List<T> { };
         public int CurrentPage { get; set; }
         public long MaxPage { get; set; }
-        public long TotalItems { get; set; }
+        public long TotalCount { get; set; }
         public string SearchKeyWord { get; set; } = String.Empty;
         public int PagingSize { get; set; }
         public Dictionary<string, string> Filters { get; set; } = new Dictionary<string, string> { };

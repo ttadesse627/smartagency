@@ -3,14 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Utility.Config;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Infrastructure.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
-using AppDiv.SmartAgency.Application.Interfaces;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {
@@ -18,18 +16,12 @@ namespace AppDiv.SmartAgency.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
-            // services.AddDbContext<CRVSDbContext>(
-            //     options => options.UseSqlServer(
-            //         configuration.GetConnectionString("CRVSConnectionString"),
-            //         o => o.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)
-            //     ).EnableSensitiveDataLogging()
-            // );
             services.AddDbContext<SmartAgencyDbContext>(
                 options =>
             options.UseMySql(configuration.GetConnectionString("ConnectionString"),
                 ServerVersion.AutoDetect(configuration.GetConnectionString("ConnectionString")),
                 mySqlOptions => mySqlOptions.EnableRetryOnFailure()).EnableSensitiveDataLogging());
-            
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<SmartAgencyDbContext>()
@@ -71,17 +63,29 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IPartnerRepository, PartnerRepository>();
             services.AddTransient<IApplicantRepository, ApplicantRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IAddressRepository, AddressRepository>(); 
-            services.AddTransient<IOnlineApplicantRepository, OnlineApplicantRepository>(); 
-            services.AddTransient<IDepositRepository, DepositRepository>(); 
+            services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IOnlineApplicantRepository, OnlineApplicantRepository>();
+            services.AddTransient<IDepositRepository, DepositRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IApplicantFollowupStatusRepository, ApplicantFollowupStatusRepository>();
             services.AddTransient<IPageRepository, PageRepository>();
             services.AddTransient<ICompanyInformationRepository, CompanyInformationRepository>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IProcessRepository, ProcessRepository>();
+            services.AddTransient<IProcessDefinitionRepository, ProcessDefinitionRepository>();
+            services.AddTransient<IApplicantProcessRepository, ApplicantProcessRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IEnjazRepository, EnjazRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
+
+            services.AddSingleton<IMailService, MailKitService>();
+            // services.AddSingleton<ISmsService, TwilioService>();
+            services.AddSingleton<ISmsService, AfroMessageService>();
+            services.AddTransient<IFileService, FileService>();
             //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
-
             return services;
         }
     }

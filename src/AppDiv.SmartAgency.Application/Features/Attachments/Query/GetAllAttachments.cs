@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 
 namespace AppDiv.SmartAgency.Application.Features.Query.Attachments
 {
@@ -28,14 +29,16 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Attachments
     public class GetAllAttachmentsHandler : IRequestHandler<GetAllAttachments, SearchModel<AttachmentResponseDTO>>
     {
         private readonly IAttachmentRepository _attachmentRepository;
+        private readonly ISmartAgencyDbContext _dbContext;
 
-        public GetAllAttachmentsHandler(IAttachmentRepository attachmentRepository)
+        public GetAllAttachmentsHandler(IAttachmentRepository attachmentRepository, ISmartAgencyDbContext dbContext)
         {
             _attachmentRepository = attachmentRepository;
+            _dbContext = dbContext;
         }
         public async Task<SearchModel<AttachmentResponseDTO>> Handle(GetAllAttachments request, CancellationToken cancellationToken)
         {
-            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection);
+            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, attch => attch.CreatedBy == _dbContext.GetCurrentUserId());
             var attachmentResponse = CustomMapper.Mapper.Map<SearchModel<AttachmentResponseDTO>>(attachmentList);
             return attachmentResponse;
         }

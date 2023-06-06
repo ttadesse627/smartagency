@@ -53,8 +53,7 @@ public record CreateApplicantRequest
     public EducationRequest? Education { get; set; }
     public BankAccountRequest? BankAccount { get; set; }
     public EmergencyContactRequest? EmergencyContact { get; set; }
-    public RepresentativeRequest? Representative { get; set; }
-    public ICollection<WitnessRequest>? Witnesses { get; set; }
+    public WitnesRequest? Witness { get; set; }
     public ICollection<BeneficiaryRequest>? Beneficiaries { get; set; }
     public ICollection<AttachmentFileRequest>? AttachmentFiles { get; set; }
     public AddressRequest? Address { get; set; }

@@ -17,11 +17,11 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Query
         public GetLookUpByIdQueryHandler(ILookUpRepository lookUpRepository)
         {
             _lookUpRepository = lookUpRepository;
-           
+
         }
         public async Task<LookUpResponseDTO> Handle(GetLookUpByIdQuery request, CancellationToken cancellationToken)
         {
-            var lookUp = await _lookUpRepository.GetWithPredicateAsync(l=>l.Id== request.Id, "Category");
+            var lookUp = await _lookUpRepository.GetWithPredicateAsync(l => l.Id == request.Id);
             return CustomMapper.Mapper.Map<LookUpResponseDTO>(lookUp);
         }
     }

@@ -1,5 +1,6 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -24,6 +25,8 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
             this.Id = Id;
             this.fileType= fileType;
             this.folderType= folderType;
+            this.fileType= fileType;
+            this.folderType= folderType;
         }
 
     }
@@ -32,10 +35,13 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
     {
         private readonly IPartnerRepository _partnerRepository;
         private readonly IFileService _fileService;
+        private readonly IFileService _fileService;
 
+        public GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService)
         public GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService)
         {
             _partnerRepository = partnerRepository;
+            _fileService = fileService;
             _fileService = fileService;
         }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)

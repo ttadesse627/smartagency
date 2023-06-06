@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Base;
-public class AttachmentFile
+public class AttachmentFile : BaseAuditableEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string? FilePath { get; set; }
