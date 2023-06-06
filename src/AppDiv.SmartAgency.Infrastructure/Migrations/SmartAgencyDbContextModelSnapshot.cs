@@ -2649,7 +2649,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .WithOne("Partner")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Partner", "AddressId")
                         .OnDelete(DeleteBehavior.SetNull);
-                        .OnDelete(DeleteBehavior.SetNull);
+                        
 
                     b.Navigation("Address");
                 });
