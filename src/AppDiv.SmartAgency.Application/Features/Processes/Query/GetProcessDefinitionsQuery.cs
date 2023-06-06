@@ -20,8 +20,8 @@ public class GetProcessDefinitionsQueryHandler : IRequestHandler<GetProcessDefin
     {
         var explicitLoadedProperties = new string[]
         {
-            "ApplicantProcess", "ApplicantProcess.Applicant",
-            "ApplicantProcess.Applicant.Order", "ApplicantProcess.Applicant.Order.Sponsor",
+            "ApplicantProcesses", "ApplicantProcesses.Applicant",
+            "ApplicantProcesses.Applicant.Order", "ApplicantProcesses.Applicant.Order.Sponsor",
         };
         var response = new ServiceResponse<List<GetProcessDefinitionResponseDTO>>();
         var processes = await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == query.id, explicitLoadedProperties);

@@ -72,7 +72,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
 
             CreateMap<CreateApplicantRequest, Applicant>()
-                .ForMember(dest => dest.Skills, opt => opt.Ignore());
+                .ForMember(dest => dest.Skills, opt => opt.Ignore())
+                .ForMember(dest => dest.Witnesses, opt => opt.Ignore())
+                .ForMember(dest => dest.Representative, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
             
@@ -255,7 +257,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditLookUpCommand, LookUp>();
             CreateMap<AddEnjazRequest, Enjaz>();
-            CreateMap<Applicant, GetApplProcessResponseDTO>();
+            CreateMap<ApplicantProcess, GetApplProcessResponseDTO>();
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
 
             CreateMap<AddUserRequest, ApplicationUser>()

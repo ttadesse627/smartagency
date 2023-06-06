@@ -55,6 +55,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<Enjaz> Enjazs { get; set; }
+        public DbSet<ApplicantProcess> ApplicantProcesses { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
@@ -101,6 +102,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new ProcessDefinitionEntityConfig());
                 modelBuilder.ApplyConfiguration(new ProcessEntityConfig());
                 modelBuilder.ApplyConfiguration(new EnjazEntityConfig());
+                modelBuilder.ApplyConfiguration(new ApplicantProcessEntityConfig());
                 modelBuilder.Ignore<PersonalInfo>();
             }
             #endregion

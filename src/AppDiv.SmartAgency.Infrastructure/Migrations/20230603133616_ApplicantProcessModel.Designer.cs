@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230602203147_RemigratedModels")]
-    partial class RemigratedModels
+    [Migration("20230603133616_ApplicantProcessModel")]
+    partial class ApplicantProcessModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,7 +100,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ProcessId");
 
-                    b.ToTable("ApplicantProcess");
+                    b.ToTable("ApplicantProcesses");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -1743,9 +1743,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<bool>("EnjazRequired")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("IsVisaRequired")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -1760,6 +1757,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("TicketRequired")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("VisaRequired")
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
@@ -1816,7 +1816,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 2, 23, 31, 46, 820, DateTimeKind.Local).AddTicks(3606));
+                        .HasDefaultValue(new DateTime(2023, 6, 3, 16, 36, 16, 286, DateTimeKind.Local).AddTicks(1372));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2039,11 +2039,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
                         .WithMany("ApplicantProcesses")
-                        .HasForeignKey("ApplicantId");
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", "Process")
                         .WithMany("ApplicantProcesses")
-                        .HasForeignKey("ProcessId");
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Applicant");
 

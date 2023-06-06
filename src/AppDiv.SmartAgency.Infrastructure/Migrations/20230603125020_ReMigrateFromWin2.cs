@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class RemigratedModels : Migration
+    public partial class ReMigrateFromWin2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -134,7 +134,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 2, 23, 31, 46, 820, DateTimeKind.Local).AddTicks(3606)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 3, 15, 50, 20, 774, DateTimeKind.Local).AddTicks(8076)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -335,7 +335,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Step = table.Column<int>(type: "int", nullable: false),
-                    IsVisaRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    VisaRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     EnjazRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     TicketRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),

@@ -3,6 +3,7 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
@@ -39,14 +40,23 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
     public async Task<ApplicantProcessResponseDTO> Handle(GetApplProcessQuery query, CancellationToken cancellationToken)
     {
         var applicantLoadedProperties = new string[] { "ApplicantProcesses", "Order", "Order.Sponsor" };
-        var processLoadedProperties = new string[] { "ApplicantProcesses", "ApplicantProcesses.Applicant",
+        var processLoadedProperties = new string[] { "ProcessDefinitions", "ProcessDefinitions.ApplicantProcesses",
                                     "ApplicantProcesses.Applicant.Order", "ApplicantProcesses.Applicant.Order.Sponsor" };
+        var navPropTypes = new Dictionary<string, NavigationPropertyType>();
+        navPropTypes.Add("ProcessDefinitions",NavigationPropertyType.COLLECTION);
+        navPropTypes.Add("ProcessDefinitions.ApplicantProcesses",NavigationPropertyType.COLLECTION);
+        navPropTypes.Add("ProcessDefinitions.ApplicantProcesses.Applicant",NavigationPropertyType.REFERENCE);
         var response = new ApplicantProcessResponseDTO();
 
         if (query.Id != null)
         {
-            var process = await _processRepository.GetAsync(query.Id);
-            if (process.Step == 1)
+            var processEntity = new Process();
+            var process = await _processRepository.GetAllWithPredicateAsync(pro => pro.Id == query.Id, processLoadedProperties);
+            if (process.Count > 0)
+            {
+                processEntity = process.First();
+            }
+            if (processEntity.Step == 1)
             {
                 var notStartedApplicants = await _applicantRepository.GetAllApplWithPredicateSrchAsync(
                     query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,

@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603125020_ReMigrateFromWin2")]
+    partial class ReMigrateFromWin2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,7 +100,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ProcessId");
 
-                    b.ToTable("ApplicantProcesses");
+                    b.ToTable("ApplicantProcess");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -1814,7 +1816,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 3, 16, 36, 16, 286, DateTimeKind.Local).AddTicks(1372));
+                        .HasDefaultValue(new DateTime(2023, 6, 3, 15, 50, 20, 774, DateTimeKind.Local).AddTicks(8076));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2037,13 +2039,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
                         .WithMany("ApplicantProcesses")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicantId");
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", "Process")
                         .WithMany("ApplicantProcesses")
-                        .HasForeignKey("ProcessId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProcessId");
 
                     b.Navigation("Applicant");
 

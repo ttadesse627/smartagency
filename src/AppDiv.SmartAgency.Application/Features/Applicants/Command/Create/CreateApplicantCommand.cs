@@ -27,11 +27,23 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         var request = applicantRequest.applicantRequest;
 
         var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
+        var representativeEntity = CustomMapper.Mapper.Map<Representative>(request.Witness.Representative);
+        var witnessList = new List<Witness>();
+        foreach (var wtns in request.Witness.Witnesses)
+        {
+            var witnessEntity = CustomMapper.Mapper.Map<Witness>(wtns);
+            witnessList.Add(witnessEntity);
+        }
+        applicantEntity.Witnesses = witnessList;
+        applicantEntity.Representative = representativeEntity;
+
+        
 
         ICollection<LookUp> levelOfQualifications = new List<LookUp>();
         ICollection<LookUp> qualificationTypes = new List<LookUp>();
         ICollection<LookUp> awards = new List<LookUp>();
         ICollection<LookUp> technicalSkills = new List<LookUp>();
+
 
         if (request.Education != null)
         {

@@ -21,10 +21,10 @@ public class ApplProcessController : ControllerBase
         _mediator = mediator;
     }
     [HttpPost("create")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> CreateProcess(CreateProcessRequest request)
+    public async Task<ActionResult<ServiceResponse<Int32>>> CreateProcess(ApplicantProcessRequest request)
     {
         var response = new ServiceResponse<Int32>();
-        response = await _mediator.Send(new CreateProcessCommand(request));
+        response = await _mediator.Send(new ApplicantProcessCommand(request));
         return Ok(response);
     }
     [HttpGet("get")]

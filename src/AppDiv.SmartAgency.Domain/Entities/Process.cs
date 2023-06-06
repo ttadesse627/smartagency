@@ -7,7 +7,7 @@ public class Process : BaseAuditableEntity
 {
     public string Name { get; set; } = string.Empty;
     public int Step { get; set; }
-    public bool IsVisaRequired { get; set; }
+    public bool VisaRequired { get; set; }
     public bool EnjazRequired { get; set; }
     public bool TicketRequired { get; set; }
     public Guid? CountryId { get; set; }

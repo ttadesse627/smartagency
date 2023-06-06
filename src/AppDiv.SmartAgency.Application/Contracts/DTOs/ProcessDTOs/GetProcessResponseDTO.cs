@@ -8,6 +8,6 @@ public record GetProcessResponseDTO
     public Guid Id { get; set; }
     public string Name { get; set; }
     public int Step { get; set; }
-    // public LookUpResponseDTO? Country { get; set; }
-    // public ICollection<GetProcessDefinitionResponseDTO>? ProcessDefinitions { get; set; }
+    public LookUpResponseDTO? Country { get; set; }
+    public ICollection<GetProcessDefinitionResponseDTO>? ProcessDefinitions { get; set; }
 }
