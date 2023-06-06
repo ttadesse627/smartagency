@@ -1,54 +1,57 @@
 
 
-// using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.Request.Attachments;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
-public class CreateAttachmentCommandHandler : IRequestHandler<CreateAttachmentCommand, CreateAttachmentCommandResponse>
+public record CreateAttachmentCommand(CreateAttachmentRequest attachment) : IRequest<ServiceResponse<Int32>> { }
+public class CreateAttachmentCommandHandler : IRequestHandler<CreateAttachmentCommand, ServiceResponse<Int32>>
 {
-        private readonly IAttachmentRepository _attachmentRepository;
-        public CreateAttachmentCommandHandler(IAttachmentRepository attachmentRepository)
+    private readonly IAttachmentRepository _attachmentRepository;
+    public CreateAttachmentCommandHandler(IAttachmentRepository attachmentRepository)
+    {
+        _attachmentRepository = attachmentRepository;
+    }
+    public async Task<ServiceResponse<Int32>> Handle(CreateAttachmentCommand request, CancellationToken cancellationToken)
+    {
+
+        var response = new ServiceResponse<Int32>();
+
+        var validator = new CreateAttachmentCommandValidator(_attachmentRepository);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        //Check and log validation errors
+        if (validationResult.Errors.Count > 0)
         {
-            _attachmentRepository = attachmentRepository;
+            response.Success = false;
+            response.Errors = new List<string>();
+            foreach (var error in validationResult.Errors)
+                response.Errors.Add(error.ErrorMessage);
+            response.Message = response.Errors[0];
         }
-        public async Task<CreateAttachmentCommandResponse> Handle(CreateAttachmentCommand request, CancellationToken cancellationToken)
+        if (validationResult.IsValid)
         {
-           // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
-
-            var createAttachmentCommandResponse = new CreateAttachmentCommandResponse();
-
-            var validator = new CreateAttachmentCommandValidator(_attachmentRepository);
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-            //Check and log validation errors
-            if (validationResult.Errors.Count > 0)
+            //can use this instead of automapper
+            var attachment = new Attachment()
             {
-                createAttachmentCommandResponse.Success = false;
-                createAttachmentCommandResponse.ValidationErrors = new List<string>();
-                foreach (var error in validationResult.Errors)
-                    createAttachmentCommandResponse.ValidationErrors.Add(error.ErrorMessage);
-                createAttachmentCommandResponse.Message = createAttachmentCommandResponse.ValidationErrors[0];
-            }
-            if (createAttachmentCommandResponse.Success)
+                Title = request.attachment.Title,
+                Type = request.attachment.Type,
+                Required = request.attachment.Required,
+                ShowOnCv = request.attachment.ShowOnCv
+            };
+            //
+            await _attachmentRepository.InsertAsync(attachment, cancellationToken);
+            response.Success = await _attachmentRepository.SaveChangesAsync(cancellationToken);
+            if (response.Success)
             {
-                //can use this instead of automapper
-                var attachment = new Attachment()
-                {
-                    Code=request.attachment.Code,
-                    Description=request.attachment.Description,
-                    Category=request.attachment.Category,
-                    IsRequired=request.attachment.IsRequired,
-                    ShowOnCv=request.attachment.ShowOnCv
-                };
-                //
-                await _attachmentRepository.InsertAsync(attachment, cancellationToken);
-                await _attachmentRepository.SaveChangesAsync(cancellationToken);
-
-                //var customerResponse = CustomerMapper.Mapper.Map<CustomerResponseDTO>(customer);
-               // createCustomerCommandResponse.Customer = customerResponse;          
+                response.Message = "Successfully added!";
             }
-            return createAttachmentCommandResponse;
+            else throw new ValidationException();
         }
+        return response;
+    }
 }

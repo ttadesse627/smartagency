@@ -48,9 +48,9 @@ public class OrderController : ControllerBase
     }
 
     [HttpPut("edit")]
-    public async Task<ActionResult> Edit(EditOrderCommand request)
+    public async Task<ActionResult> Edit(EditOrderRequest request)
     {
-        return Ok(await _mediator.Send(request));
+        return Ok(await _mediator.Send(new EditOrderCommand(request)));
     }
 
     [HttpGet("get-for-assignment")]
@@ -60,14 +60,14 @@ public class OrderController : ControllerBase
     }
 
     [HttpPut("assign")]
-    public async Task<ActionResult> AssignOrder(AssignOrderCommand request)
+    public async Task<ActionResult> AssignOrder(OrderAssignmentRequest request)
     {
-        return Ok(await _mediator.Send(request));
+        return Ok(await _mediator.Send(new AssignOrderCommand(request)));
     }
     [HttpPut("unassign")]
-    public async Task<ActionResult> UnassignOrder(UnassignOrderCommand request)
+    public async Task<ActionResult> UnassignOrder(UnassignOrderRequest request)
     {
-        return Ok(await _mediator.Send(request));
+        return Ok(await _mediator.Send(new UnassignOrderCommand(request)));
     }
 
 

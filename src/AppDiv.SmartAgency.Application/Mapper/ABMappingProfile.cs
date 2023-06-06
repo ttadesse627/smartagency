@@ -10,15 +10,10 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
+using AppDiv.SmartAgency.Application.Contracts.Request.Enjazs;
 
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
-// using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
-// using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
-// using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
-// using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
-// using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
-using AppDiv.SmartAgency.Application.Features.Customers.Command.Update;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
@@ -32,7 +27,6 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
 using AppDiv.SmartAgency.Application.Features.Pages.Command.Update;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Create;
-using AppDiv.SmartAgency.Application.Features.Customers.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Update;
@@ -48,6 +42,12 @@ using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
+using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
+using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 
@@ -58,8 +58,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
         public SmartAgencyMappingProfile()
         {
             CreateMap<Customer, CustomerResponseDTO>().ReverseMap();
-            CreateMap<Customer, CreateCustomerCommand>().ReverseMap();
-            CreateMap<Customer, EditCustomerCommand>().ReverseMap();
 
             CreateMap<Attachment, CreateAttachmentResponseDTO>().ReverseMap();
             CreateMap<Attachment, CreateAttachmentCommand>().ReverseMap();
@@ -71,11 +69,13 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<LookUp, CreateLookUpResponseDTO>().ReverseMap();
             CreateMap<LookUp, CreateLookUpCommand>().ReverseMap();
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
+            CreateMap<LookUp, LookUpItemResponseDTO>().ReverseMap();
 
             CreateMap<CreateApplicantRequest, Applicant>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
+
             CreateMap<EducationRequest, Education>()
                 .ForMember(dest => dest.QualificationTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.LevelOfQualifications, opt => opt.Ignore())
@@ -87,6 +87,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<BeneficiaryRequest, Beneficiary>();
             CreateMap<AttachmentFileRequest, AttachmentFile>();
             CreateMap<AddressRequest, Address>();
+            CreateMap<UpdateAddressRequest, Address>();
             CreateMap<RepAddressRequest, Address>();
 
             // Get Single Applicant Mapper
@@ -137,7 +138,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Partner, PartnerApplRespDTO>();
             CreateMap<Representative, RepresentativeResponseDTO>();
             CreateMap<Witness, WitnessResponseDTO>();
-            CreateMap<Applicant, ApplicantsResponseDTO>();
+            CreateMap<Applicant, ApplicantsResponseDTO>()
+                .ForMember(dest => dest.MaritalStatus, opt => opt.Ignore())
+                .ForMember(dest => dest.Religion, opt => opt.Ignore())
+                .ForMember(dest => dest.BrokerName, opt => opt.Ignore());
             CreateMap<Applicant, ApplSearchResponseDTO>();
             CreateMap<SearchModel<Applicant>, SearchModel<ApplSearchResponseDTO>>();
 
@@ -229,13 +233,16 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
+
             CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
           
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
-            CreateMap<CompanyWitnessRequest,Witness>().ReverseMap();
+            CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
+            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
+            CreateMap<Address, CompanyAddressResponseDTO>();
             // CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
                 .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
@@ -243,6 +250,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Address, CompanyAddressResponseDTO>(); 
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CountryOperation, CountryOperationResponseDTO>();
+
             CreateMap<EditCompanyAddressRequest, Address>();
             CreateMap<EditCompanyInformationCommand, CompanyInformation>().ReverseMap();
             CreateMap<EditCompanyWitnessRequest, Witness>();
@@ -253,14 +261,30 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-           
+
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
-
-
-
+            CreateMap<Process, GetProcessResponseDTO>();
+            CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
+            CreateMap<CreateProcessRequest, Process>();
+            CreateMap<CreateProcessDefinitionRequest, ProcessDefinition>();
+            CreateMap<EditProcessRequest, Process>();
+            CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
+            CreateMap<EditLookUpCommand, LookUp>();
+            CreateMap<AddEnjazRequest, Enjaz>();
+            CreateMap<Applicant, GetApplProcessResponseDTO>();
+            CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
+            CreateMap<AddUserRequest, ApplicationUser>()
+                .ForMember(dest => dest.UserGroups, opt => opt.Ignore());
+            CreateMap<UserAddressRequest, Address>();
+            CreateMap<ApplicationUser, UserResponseDTO>();
+            CreateMap<ApplicationUser, UserDetailsResponseDTO>();
+            CreateMap<SearchModel<ApplicationUser>, SearchModel<UserResponseDTO>>();
+            CreateMap<SearchModel<UserGroup>, SearchModel<FetchGroupDTO>>();
+            CreateMap<UserGroup, FetchGroupDTO>();
+            CreateMap<UserGroup, GroupDTO>();
 
         }
     }

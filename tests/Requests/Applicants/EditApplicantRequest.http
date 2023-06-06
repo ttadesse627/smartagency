@@ -1,8 +1,8 @@
 
 
-@host = http://127.0.0.1:5120/api/applicant
+@host = http://127.0.0.1:5120/api/
 
-PUT {{host}}/edit/1200b439-ac65-48ec-b5b5-3805cdc716a8
+PUT {{host}}/applicant/edit/1200b439-ac65-48ec-b5b5-3805cdc716a8
 Content-Type: application/json
 
 {
@@ -195,6 +195,10 @@ Content-Type: application/json
   }
 }
 
+###
+PUT http://127.0.0.1:5120/api/applicant/request/1200b439-ac65-48ec-b5b5-3805cdc716a8 
 
 ###
-GET http://localhost:5120/api/lookup/get-all-lookup HTTP/1.1
+GET http://127.0.0.1:5120/api/applicant/get/1200b439-ac65-48ec-b5b5-3805cdc716a8 
+###
+GET http://localhost:5120/api/applicant/get-all-requested HTTP/1.1

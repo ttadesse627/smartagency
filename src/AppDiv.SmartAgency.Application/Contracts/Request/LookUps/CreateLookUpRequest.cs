@@ -5,7 +5,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.LookUps
 {
     public class CreateLookUpRequest
     {
-        public Guid CategoryId { get; set; }
+        public string Category { get; set; }
         public string Value { get; set; }
 
     }

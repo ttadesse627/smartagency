@@ -1,3 +1,4 @@
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -5,7 +6,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
-    public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, CreateLookUpCommandResponse>
+    public class CreateLookUpCommandHandler : IRequestHandler<CreateLookUpCommand, ServiceResponse<int>>
     {
         private readonly ILookUpRepository _lookUpRepository;
         private readonly ICategoryRepository _categoryRepository;
@@ -14,43 +15,30 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
             _lookUpRepository = lookUpRepository;
             _categoryRepository = categoryRepository;
         }
-        public async Task<CreateLookUpCommandResponse> Handle(CreateLookUpCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<int>> Handle(CreateLookUpCommand request, CancellationToken cancellationToken)
         {
-            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
-            var createLookUpCommandResponse = new CreateLookUpCommandResponse();
+            var createLookUpCommandResponse = new ServiceResponse<int>();
             var validator = new CreateLookUpCommandValidator(_lookUpRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             //Check and log validation errors
             if (validationResult.Errors.Count > 0)
             {
-                createLookUpCommandResponse.Success = false;
-                createLookUpCommandResponse.ValidationErrors = new List<string>();
+                createLookUpCommandResponse.Errors = new List<string>();
                 foreach (var error in validationResult.Errors)
-                    createLookUpCommandResponse.ValidationErrors.Add(error.ErrorMessage);
-                createLookUpCommandResponse.Message = createLookUpCommandResponse.ValidationErrors[0];
+                    createLookUpCommandResponse.Errors.Add(error.ErrorMessage);
+                createLookUpCommandResponse.Message = createLookUpCommandResponse.Errors[0];
             }
-            if (createLookUpCommandResponse.Success)
+            if (validationResult.IsValid)
             {
                 var lookUp = new LookUp()
                 {
-                    CategoryId = request.lookUp.CategoryId,
+                    Category = request.lookUp.Category,
                     Value = request.lookUp.Value
                 };
 
                 await _lookUpRepository.InsertAsync(lookUp, cancellationToken);
                 createLookUpCommandResponse.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
-                IEnumerable<LookUp> lookUps = await _lookUpRepository.GetAllAsync();
-                Console.WriteLine(lookUp);
-
-                if (lookUp.CategoryId.ToString() == "8aec3c2a-96ba-46ce-8a4b-14cf557fd621")
-              
-              
-                {
-                    var category = new Category { Name = lookUp.Value };
-                    await _categoryRepository.InsertAsync(category, cancellationToken);
-                    await _categoryRepository.SaveChangesAsync(cancellationToken);
-                }
 
                 if (createLookUpCommandResponse.Success)
                 {

@@ -1,63 +1,55 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
 {
-    public class EditLookUpCommand : IRequest<LookUpResponseDTO>
+    public record EditLookUpCommand : IRequest<ServiceResponse<Int32>>
     {
-
-
         public Guid Id { get; set; }
-
-        public Guid CategoryId { get; set; }
-
+        public string Category { get; set; }
         public string Value { get; set; }
     }
 
 
-    public class EditLookUpCommandHandler : IRequestHandler<EditLookUpCommand, LookUpResponseDTO>
+    public class EditLookUpCommandHandler : IRequestHandler<EditLookUpCommand, ServiceResponse<Int32>>
     {
         private readonly ILookUpRepository _lookUpRepository;
         public EditLookUpCommandHandler(ILookUpRepository lookUpRepository)
         {
             _lookUpRepository = lookUpRepository;
         }
-        public async Task<LookUpResponseDTO> Handle(EditLookUpCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<Int32>> Handle(EditLookUpCommand request, CancellationToken cancellationToken)
         {
-            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request);
-            LookUp lookUpEntity = new LookUp
+            var response = new ServiceResponse<Int32>();
+            var lookUpEntity = await _lookUpRepository.GetAsync(request.Id);
+
+            if (lookUpEntity != null)
             {
-                Id = request.Id,
-                CategoryId = request.CategoryId,
-                Value = request.Value
-
-            };
-
-        var lookUpResponse= new LookUpResponseDTO();
-
-            try
-            {
-              var res=  await _lookUpRepository.UpdateAsync(lookUpEntity);
-
-                if(res>=1){
-                    var modifiedLookUp =await _lookUpRepository.GetWithPredicateAsync(l=>l.Id==request.Id, "Category");
-                    lookUpResponse= CustomMapper.Mapper.Map<LookUpResponseDTO>(modifiedLookUp);
+                var edited = CustomMapper.Mapper.Map(request, lookUpEntity);
+                lookUpEntity = edited;
+                try
+                {
+                    response.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
+                    if (response.Success)
+                    {
+                        response.Message = "Update Successful!";
+                    }
+                }
+                catch (Exception exp)
+                {
+                    response.Errors?.Add(exp.Message);
+                    throw new System.ApplicationException(exp.Message);
                 }
             }
-            catch (Exception exp)
+            else
             {
-                throw new ApplicationException(exp.Message);
+                response.Errors?.Add(new NotFoundException($"Lookup not found!").Message);
+                throw new NotFoundException($"Lookup not found!");
             }
-
-           
-            return lookUpResponse;
+            return response;
         }
     }
 

@@ -1,5 +1,6 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.OnlineApplicants;
 using AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Create;
 using AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.OnlineApplicants.Query;
@@ -21,9 +22,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(CreateOnlineApplicantCommand onlineApplicantRequest, CancellationToken token)
+        public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(OnlineApplicantRequest onlineApplicantRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(onlineApplicantRequest);
+            var response = await _mediator.Send(new CreateOnlineApplicantCommand(onlineApplicantRequest));
             return Ok(response);
         }
 

@@ -9,5 +9,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     {
         Task<LookUp> GetByIdAsync(Guid id);
         Task<Int32> UpdateAsync(LookUp lookUp);
+        Task<List<LookUp>> GetAllKeysAsync(List<string> keys);
     }
 }

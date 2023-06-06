@@ -1,5 +1,4 @@
-﻿using AppDiv.SmartAgency.Infrastructure;
-using AppDiv.SmartAgency.Infrastructure.Context;
+﻿using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.API.Helpers

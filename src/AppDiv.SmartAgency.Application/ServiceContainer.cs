@@ -18,7 +18,6 @@ namespace AppDiv.SmartAgency.Application
             services.AddMediatR(typeof(ServiceContainer).Assembly);
 
             services.AddScoped<IIdentityService, IdentityService>();
-            services.AddScoped<IRequestHandler<EditApplicantCommand, ServiceResponse<int>>, EditApplicantCommandHandler>();
 
             return services;
         }

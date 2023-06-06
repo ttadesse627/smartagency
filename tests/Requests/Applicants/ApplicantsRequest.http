@@ -1,5 +1,5 @@
 
-@host = http://127.0.0.1:5120/api/applicant
+@host = http://192.168.1.25:8000/api/applicant
 
 POST {{host}}/create
 Content-Type: application/json
@@ -30,19 +30,19 @@ Content-Type: application/json
   "isReserved": false,
   "isBlocked": false,
   "isDeleted": false,
-  "issuingCountryId": "e21f9284-c916-4b50-865f-fdeff0731ebc",
-  "passportIssuedPlaceId": "e77884eb-89db-49eb-8ffd-1579ffa607bb",
-  "maritalStatusId": "5da51288-d243-4882-acd5-66d9e21faeb9",
-  "healthId": "86bba764-a52e-4e1a-a767-1c64f4cc2353",
-  "religionId": "5255916b-7f80-47fb-9671-ef58e97dc4ba",
-  "jobtitleId": "d914296b-fb04-45e8-a127-26ca4ba17778",
-  "experienceId": "348ee93d-c1e2-44c7-93b8-2b5ad5116ef7",
-  "languageId": "fd472986-1cff-4d10-b421-8ded83039c37",
-  "salaryId": "809fbd76-6e42-48c9-9f4b-e6b8b58d3f9b",
-  "desiredCountryId": "e21f9284-c916-4b50-865f-fdeff0731ebc",
-  "brokerNameId": "578c7f2b-27b0-4b2a-9826-216b11652973",
-  "branchId": "d8571412-e0a0-436b-a18d-80b6ee4f6de6",
-  "partnerId": "01160ed8-18f4-4887-92ac-10d667f42868",
+  "issuingCountryId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "passportIssuedPlaceId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "maritalStatusId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "healthId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "religionId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "jobtitleId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "experienceId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "languageId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "salaryId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "desiredCountryId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "brokerNameId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "branchId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
+  "partnerId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
   "languageSkills": [
     {
       "canWrite": true,
@@ -50,17 +50,17 @@ Content-Type: application/json
       "canSpeak": true,
       "canListen": true,
       "proficiency": "Good",
-      "languageId": "fd472986-1cff-4d10-b421-8ded83039c37"
+      "languageId": "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     }
   ],
   "skills": [
-    "f38e9df7-edf3-44d8-9646-53c289c6daaa"
+    "a986b11b-9569-48f2-a49a-4e9f4193a41b"
   ],
   "experiences": [
     {
       "periodLength": 2,
       "position": "SW Developer",
-      "countryId": "e21f9284-c916-4b50-865f-fdeff0731ebc"
+      "countryId": "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     }
   ],
   "education": {
@@ -68,13 +68,13 @@ Content-Type: application/json
     "fieldOfStudy": "SE",
     "professionalSkill": "Programming",
     "qualificationTypes": [
-      "1a1f1de1-7253-4398-93ea-b16ef314656d"
+      "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     ],
     "levelofQualifications": [
-      "ee7d3a52-24e5-4dd5-81e2-964444f0fadb"
+      "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     ],
     "awards": [
-      "fef46287-75df-4bd4-9704-54ec0e60ef5e"
+      "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     ]
   },
   "bankAccount": {
@@ -90,7 +90,7 @@ Content-Type: application/json
     "birthDate": "1990-05-19T10:50:47.889Z",
     "gender": "Male",
     "arabicFullName": "ArabicFN",
-    "relationshipId": "c0fe6c0e-1512-4e3f-956d-46645844e167",
+    "relationshipId": "a986b11b-9569-48f2-a49a-4e9f4193a41b",
     "address": {
       "region": "Oromia",
       "city": "Dukem",
@@ -111,7 +111,7 @@ Content-Type: application/json
       "postCode": "string",
       "email": "string",
       "website": "string",
-      "addressRegionId": "6d030bc0-3dd3-40a3-a49e-abfcb222a47f"
+      "addressRegionId": "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     }
   },
   "representative": {
@@ -148,13 +148,13 @@ Content-Type: application/json
       "zone": "string",
       "woreda": "string",
       "rate": 13,
-      "relationshipId": "c0fe6c0e-1512-4e3f-956d-46645844e167"
+      "relationshipId": "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     }
   ],
   "attachmentFiles": [
     {
       "filePath": "D:\\Academic\\Test 1",
-      "attachmentId": "011f0ed8-18f4-4887-92ac-10d667f42868"
+      "attachmentId": "a986b11b-9569-48f2-a49a-4e9f4193a41b"
     }
   ],
   "address": {
@@ -177,7 +177,7 @@ Content-Type: application/json
       "postCode": "string",
       "email": "string",
       "website": "string",
-      "addressRegionId": "6d030bc0-3dd3-40a3-a49e-abfcb222a47f"
+      "addressRegionId": "a986b11b-9569-48f2-a49a-4e9f4193a41b"
   }
 }
 

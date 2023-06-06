@@ -7,11 +7,10 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class LookUp : BaseAuditableEntity
     {
-        public Guid? CategoryId { get; set; }
+        public string Category { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
 
         // Navigation properties
-        public Category? Category { get; set; }
         public ICollection<Applicant>? ApplIssuingCountries { get; set; }
         public ICollection<Applicant>? ApplPassportIssuedPlaces { get; set; }
         public ICollection<Applicant>? ApplMaritalStatuses { get; set; }
@@ -49,7 +48,10 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaReligions { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
-         public ICollection<Address>? Countries { get; set; }
-         public CountryOperation? CountryOperation { get; set; }
+        public ICollection<Address>? Countries { get; set; }
+        public CountryOperation? CountryOperation { get; set; }
+        public ICollection<Process>? ProcessCountries { get; set; }
+        public ICollection<ApplicationUser>? UserPosition { get; set; }
+        public ICollection<ApplicationUser>? UserBranch { get; set; }
     }
 }

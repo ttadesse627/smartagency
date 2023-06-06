@@ -1,19 +1,14 @@
 ﻿using AppDiv.SmartAgency.Application.Interfaces;
-using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
+using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Query
 {
-    public class GetUserDetailsByUserNameQuery : IRequest<UserDetailsResponseDTO>
-    {
-        public string UserName { get; set; }
-    }
-
+    public record GetUserDetailsByUserNameQuery(string username) : IRequest<UserDetailsResponseDTO> { }
     public class GetUserDetailsByUserNameQueryHandler : IRequestHandler<GetUserDetailsByUserNameQuery, UserDetailsResponseDTO>
     {
         private readonly IIdentityService _identityService;
@@ -24,9 +19,20 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Query
         }
         public async Task<UserDetailsResponseDTO> Handle(GetUserDetailsByUserNameQuery request, CancellationToken cancellationToken)
         {
-            // var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsByUserNameAsync(request.UserName);
-            return new UserDetailsResponseDTO() ;
-            // { Id = userId, FullName = fullName, UserName = userName, Email = email, Roles = roles };
+            var user = await _identityService.GetUserDetailsByUserNameAsync(request.username);
+            var response = new UserDetailsResponseDTO
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                UserName = user.UserName,
+                Email = user.Email,
+                Position = user.Position.Value,
+                Branch = user.Branch.Value,
+                Partner = CustomMapper.Mapper.Map<UserPartnerResponseDTO>(user.Partner),
+                Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address),
+                UserGroups = CustomMapper.Mapper.Map<List<GroupDTO>>(user.UserGroups)
+            };
+            return response;
         }
     }
 }
