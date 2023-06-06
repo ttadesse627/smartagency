@@ -32,7 +32,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
        public Guid? AddressId { get; set; }
        public CompanyAddressResponseDTO? Address { get; set; }
        public ICollection<WitnessRequest>? Witnesses { get; set; }
-       public CompanySettingRequest? CompanySetting {get; set;} 
+       public EditCompanySettingRequest? CompanySetting {get; set;} 
        public ICollection<CountryOperationResponseDTO>? CountryOperations { get; set; }
     }
 }

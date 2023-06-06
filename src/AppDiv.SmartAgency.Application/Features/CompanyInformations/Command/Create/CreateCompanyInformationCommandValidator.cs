@@ -17,7 +17,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Cr
             RuleFor(ci => ci.companyInformation.CompanyName )
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
+                .MaximumLength(80).WithMessage("{PropertyName} must not exceed 80 characters.");
         }
     }
 }

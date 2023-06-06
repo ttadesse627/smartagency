@@ -11,5 +11,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     {
         Task<CompanyInformation> GetByIdAsync(Guid id);
         Task<Int32> UpdateAsync(CompanyInformation companyInformation);
+        Task<CompanyInformation> GetByNameAsync(string name);
     }
 }

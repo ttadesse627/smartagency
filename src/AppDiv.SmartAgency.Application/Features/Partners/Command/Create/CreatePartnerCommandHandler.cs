@@ -12,9 +12,11 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
     public class CreatePartnerCommandHandler : IRequestHandler<CreatePartnerCommand, CreatePartnerCommandResponse>
 {
         private readonly IPartnerRepository _partnerRepository;
-        public CreatePartnerCommandHandler(IPartnerRepository partnerRepository)
+        private readonly IFileService _fileService;
+        public CreatePartnerCommandHandler(IPartnerRepository partnerRepository, IFileService fileService)
         {
             _partnerRepository = partnerRepository;
+            _fileService = fileService;
         }
         public async Task<CreatePartnerCommandResponse> Handle(CreatePartnerCommand request, CancellationToken cancellationToken)
         {
@@ -34,7 +36,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
                     createPartnerCommandResponse.ValidationErrors.Add(error.ErrorMessage);
                 createPartnerCommandResponse.Message = createPartnerCommandResponse.ValidationErrors[0];
             }
-            if (createPartnerCommandResponse.Success)
+         if (createPartnerCommandResponse.Success)
             {
                 //can use this instead of automapper
               /*  var partner = new Partner()
@@ -58,11 +60,25 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
                // await _partnerRepository.InsertAsync(partner, cancellationToken);
                 //await _partnerRepository.SaveChangesAsync(cancellationToken);
 
-                var partnerEntity = CustomMapper.Mapper.Map<Partner>(request.partner);
+            var partnerEntity = CustomMapper.Mapper.Map<Partner>(request.partner);
             await _partnerRepository.InsertAsync(partnerEntity, cancellationToken);
-            var result = await _partnerRepository.SaveChangesAsync(cancellationToken);      
-            }
-            return createPartnerCommandResponse;
+            var result = await _partnerRepository.SaveChangesAsync(cancellationToken);
+
+             if (result==true){
+                // save headerlogo
+                var file = request.partner.HeaderLogo;
+                var folderName = Path.Combine("Resources", "PartnersHeaderLogo");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                var fileName = partnerEntity.Id.ToString();
+                if(!string.IsNullOrEmpty(file)){
+
+                 await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
+             }     
+             }
+      
         }
-}
+          return createPartnerCommandResponse;
+ }
+
+  }
 }

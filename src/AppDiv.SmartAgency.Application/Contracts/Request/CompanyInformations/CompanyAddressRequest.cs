@@ -8,7 +8,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
     public class CompanyAddressRequest
 
      {
-        public Guid Id { get; set; }
          public Guid? AddressRegionId { get; set; }
         public string? City { get; set; }
         public string? SubCity { get; set; }
@@ -24,7 +23,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
          public string? AlternativePhone { get; set; } 
         public string? Fax { get; set; }
         public string? PostCode { get; set; }
-        public string? Addres { get; set; }
+        public string? Adress { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
        

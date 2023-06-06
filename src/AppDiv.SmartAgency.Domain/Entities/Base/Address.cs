@@ -42,6 +42,6 @@ public class Address : BaseAuditableEntity
     public Sponsor? Sponsor { get; set; }
     public CompanyInformation? CompanyInformation { get; set; }
 
-    public User? User { get; set; }
+
 
 }

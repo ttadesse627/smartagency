@@ -10,6 +10,6 @@ public class PartnerEntityConfig : IEntityTypeConfiguration<Partner>
         builder.HasOne(m => m.Address)
             .WithOne(n => n.Partner)
             .HasForeignKey<Partner>(fk => fk.AddressId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
