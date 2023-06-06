@@ -1,82 +1,59 @@
 
-// using AppDiv.CRVS.Application.Common;
-// using AppDiv.CRVS.Application.Contracts.DTOs;
-// using AppDiv.CRVS.Application.Interfaces;
-// using AppDiv.CRVS.Application.Interfaces.Persistence;
-// using AppDiv.CRVS.Application.Mapper;
-// using AppDiv.CRVS.Domain;
-// using AppDiv.CRVS.Domain.Entities;
-// using AppDiv.CRVS.Domain.Repositories;
-// using AutoMapper;
-// using MediatR;
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Text;
-// using System.Threading.Tasks;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
+using AppDiv.SmartAgency.Application.Interfaces;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Utility.Contracts;
+using AutoMapper;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-// namespace AppDiv.CRVS.Application.Features.Lookups.Query.GetAllUser
+namespace AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser
 
-// {
-//     // Customer query with List<Customer> response
-//     public record GetAllUserQuery : IRequest<PaginatedList<UserResponseDTO>>
-//     {
-//         public int? PageCount { set; get; } = 1!;
-//         public int? PageSize { get; set; } = 10!;
-//     }
+{
+    public record GetAllUserQuery : IRequest<SearchModel<UserResponseDTO>>
+    {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public string? SearchTerm { get; set; } = string.Empty;
+        public string? OrderBy { get; set; } = string.Empty;
+        public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
+        public GetAllUserQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
+        {
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+            SearchTerm = searchTerm;
+            OrderBy = orderBy;
+            SortingDirection = sortingDirection;
+        }
+    }
 
-//     public class GetAllUserQueryHandler : IRequestHandler<GetAllUserQuery, PaginatedList<UserResponseDTO>>
-//     {
-//         private readonly IIdentityService _identityService;
-//         // private readonly IMapper _mapper;
+    public class GetAllUserQueryHandler : IRequestHandler<GetAllUserQuery, SearchModel<UserResponseDTO>>
+    {
+        private readonly IIdentityService _identityService;
+        private readonly IUserRepository _userRepository;
 
-//         public GetAllUserQueryHandler(IIdentityService identityService)
-//         {
-//             _identityService = identityService;
-//             // _mapper = mapper;
-//         }
-//         public async Task<PaginatedList<UserResponseDTO>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
-//         {
-//             return await PaginatedList<UserResponseDTO>
-//              .CreateAsync(
-//                  _identityService
-//                 .AllUsersDetail()
-//                 .Select(user => new UserResponseDTO
-//                 {
-//                     Id = user.Id,
-//                     UserName = user.UserName,
-//                     Email = user.Email,
-//                     AddressId = user.AddressId,
-//                     PersonalInfo = new PersonalInfoDTO
-//                     {
-//                         Id = user.PersonalInfo.Id,
-//                         FirstName = user.PersonalInfo.FirstNameLang,
-//                         MiddleName = user.PersonalInfo.MiddleNameLang,
+        public GetAllUserQueryHandler(IIdentityService identityService, IUserRepository userRepository)
+        {
+            _identityService = identityService;
+            _userRepository = userRepository;
+        }
+        public async Task<SearchModel<UserResponseDTO>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
+        {
+            var eagerLoadedProperties = new string[] { "UserGroups" };
 
-//                         // LastName = user.PersonalInfo.LastNameLang,
-//                         BirthDate = user.PersonalInfo.BirthDate,
-//                         NationalId = user.PersonalInfo.NationalId,
-//                         // PlaceOfBirthLookup = user.PersonalInfo.PlaceOfBirthLookup.ValueLang,
-//                         NationalityLookup = user.PersonalInfo.NationalityLookup.ValueLang,
-//                         // TitleLookup = user.PersonalInfo.TitleLookup.ValueLang,
-//                         // ReligionLookup = user.PersonalInfo.ReligionLookup.ValueLang,
-//                         EducationalStatusLookup = user.PersonalInfo.EducationalStatusLookup.ValueLang,
-//                         // TypeOfWorkLookup = user.PersonalInfo.TypeOfWorkLookup.ValueLang,
-//                         MarraigeStatusLookup = user.PersonalInfo.MarraigeStatusLookup.ValueLang,
-//                         NationLookup = user.PersonalInfo.NationLookup.ValueLang,
-//                         CreatedDate = user.PersonalInfo.CreatedAt,
-//                         // ContactInfo = _mapper.Map<ContactInfoDTO>(user.PersonalInfo.ContactInfo)
-
-//                     }
-//                 }).ToList()
-
-//                 , request.PageCount ?? 1, request.PageSize ?? 10);
-
-
-
-
-
-//             // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
-//         }
-//     }
-// }
+            var userList = await _userRepository.GetAllWithSearchAsync
+                            (
+                                request.PageNumber, request.PageSize, request.SearchTerm!, request.OrderBy!,
+                                request.SortingDirection, user => user.UserName != null, eagerLoadedProperties
+                            );
+            var userResponse = CustomMapper.Mapper.Map<SearchModel<UserResponseDTO>>(userList);
+            return userResponse;
+        }
+    }
+}

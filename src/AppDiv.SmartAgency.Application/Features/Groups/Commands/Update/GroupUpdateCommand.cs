@@ -1,11 +1,41 @@
 
-// using AppDiv.CRVS.Application.Contracts.DTOs;
-// using AppDiv.CRVS.Application.Contracts.Request;
-// using MediatR;
-// namespace AppDiv.CRVS.Application.Features.Groups.Commands.Create
-// {
-//     public record GroupUpdateCommand(UpdateGroupRequest group) : IRequest<GroupDTO>
-//     {
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Entities;
+using MediatR;
+namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Update
+{
+    public record GroupUpdateCommand(UpdateGroupRequest group) : IRequest<ServiceResponse<int>> { }
+    public class GroupUpdateCommandsHandler : IRequestHandler<GroupUpdateCommand, ServiceResponse<int>>
+    {
+        private readonly IGroupRepository _groupRepository;
+        public GroupUpdateCommandsHandler(IGroupRepository groupRepository)
+        {
+            _groupRepository = groupRepository;
+        }
+        public async Task<ServiceResponse<int>> Handle(GroupUpdateCommand request, CancellationToken cancellationToken)
+        {
+            var response = new ServiceResponse<int>();
+            var groupEntity = new UserGroup
+            {
+                Id = request.group.Id,
+                GroupName = request.group.GroupName,
+                Description = request.group.Description,
+                Roles = request.group.Roles,
+            };
+            try
+            {
+                await _groupRepository.UpdateAsync(groupEntity, x => x.Id);
+                response.Success = await _groupRepository.SaveChangesAsync(cancellationToken);
 
-//     }
-// }
+            }
+            catch (Exception exp)
+            {
+                response.Errors?.Add(exp.Message);
+                throw new ApplicationException(exp.Message);
+            }
+            return response;
+        }
+    }
+}

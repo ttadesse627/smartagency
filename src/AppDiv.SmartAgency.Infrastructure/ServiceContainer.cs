@@ -75,8 +75,14 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IApplicantProcessRepository, ApplicantProcessRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IEnjazRepository, EnjazRepository>();
-            // services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
+
+            services.AddSingleton<IMailService, MailKitService>();
+            // services.AddSingleton<ISmsService, TwilioService>();
+            services.AddSingleton<ISmsService, AfroMessageService>();
+            services.AddTransient<IFileService, FileService>();
             //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
             return services;

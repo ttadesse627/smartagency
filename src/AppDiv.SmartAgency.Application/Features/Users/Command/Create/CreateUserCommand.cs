@@ -29,28 +29,34 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
                 throw new BadRequestException("The password should be confirmed");
             }
 
-            var validator = new CreateUserCommandValidator(_identityService);
-            var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            // var validator = new CreateUserCommandValidator(_identityService);
+            // var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
-            //Check and log validation errors
-            if (validationResult.Errors.Count > 0)
+            if ((request.PositionId != null || request.BranchId != null) && request.PartnerId != null)
             {
                 response.Success = false;
-                response.Errors = new List<string>();
-                foreach (var error in validationResult.Errors)
-                    response.Errors.Add(error.ErrorMessage);
-                response.Message = response.Errors[0];
+                throw new BadRequestException("The user should belong either only to main agency or partner; but not both.");
             }
+            else response.Success = true;
+            //Check and log validation errors
+            // if (validationResult.Errors.Count > 0)
+            // {
+            //     response.Success = false;
+            //     response.Errors = new List<string>();
+            //     foreach (var error in validationResult.Errors)
+            //         response.Errors.Add(error.ErrorMessage);
+            //     response.Message = response.Errors[0];
+            // }
             if (response.Success)
             {
+                var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>(request);
+                if (request.UserGroups.Count > 0)
+                {
+                    var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
+                    mappedUser.UserGroups = listGroup;
+                }
 
-                var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
-
-
-                var user = CustomMapper.Mapper.Map<ApplicationUser>(request);
-                user.UserGroups = listGroup;
-
-                var createResponse = await _identityService.CreateUserAsync(user, request.Password);
+                var createResponse = await _identityService.CreateUserAsync(mappedUser, request.Password);
                 if (!createResponse.Success)
                 {
                     throw new BadRequestException($"could not create user \n{string.Join(",", createResponse.Errors)}");

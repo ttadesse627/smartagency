@@ -73,6 +73,7 @@ namespace AppDiv.SmartAgency.Application.Service
             {
                 response.Errors = result.ToApplicationResult().Errors.ToList();
             }
+            var userClaim = await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id));
             string userId = await _userManager.GetUserIdAsync(user);
             response.Message = $"Successfully created with new Id {userId}";
             return response;
@@ -159,15 +160,24 @@ namespace AppDiv.SmartAgency.Application.Service
             return user;
         }
 
-        public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName)
+        public async Task<ApplicationUser> GetUserDetailsByUserNameAsync(string userName)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            var user = await _userManager.Users
+                    .Include(usr => usr.UserGroups)
+                    .Include(usr => usr.Position)
+                    .Include(usr => usr.Branch)
+                    .Include(usr => usr.Partner)
+                    .Include(usr => usr.Address)
+                        .ThenInclude(addr => addr.Country)
+                    .Include(usr => usr.Address)
+                        .ThenInclude(addr => addr.AddressRegion)
+                    .FirstOrDefaultAsync(x => x.UserName == userName);
             if (user == null)
             {
                 throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return (user.Id, user.FullName, user.UserName, user.Email, roles);
+            return user;
         }
 
         public async Task<string> GetUserIdAsync(string userName)
@@ -259,6 +269,73 @@ namespace AppDiv.SmartAgency.Application.Service
             result = await _userManager.AddToRolesAsync(user, usersRole);
 
             return result.Succeeded;
+        }
+
+        public async Task<(Result result, IList<string>? roles, string? userId)> AuthenticateUser(string userName, string password)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, password))
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                return (Result.Success(), userRoles, user.Id);
+
+
+            }
+            string[] errors = new string[] { "Invalid login" };
+
+            return (Result.Failure(errors), null, null);
+
+        }
+
+        public async Task<ServiceResponse<int>> ChangePassword(string userName, string oldPassword, string newPassword)
+        {
+            var response = new ServiceResponse<int>();
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                response.Message = "could't find user with the given username";
+                return response;
+            }
+            var changePResponse = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            if (!changePResponse.Succeeded)
+            {
+                response.Errors.Add("Change password failed!");
+                throw new Exception($"Change password failed! ");
+            }
+            return response;
+        }
+
+        public async Task<ServiceResponse<int>> UpdateUserAsync(string id, string username, string email, string fullName, string otpCode, DateTime expirySecond)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var response = new ServiceResponse<int>();
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "could not find user with the given id";
+                response.Errors?.Add("could not find user with the given id");
+            }
+
+
+            user.UserName = username;
+            user.Email = email;
+            user.Otp = otpCode;
+            user.OtpExpiredDate = expirySecond;
+            user.FullName = fullName;
+
+            var updateResponse = await _userManager.UpdateAsync(user);
+
+            if (!updateResponse.Succeeded)
+            {
+                response.Success = false;
+                response.Errors.Add($"User Updating failed! \n {response.Errors}");
+                throw new Exception($"User Updating failed! \n {response.Errors}");
+            }
+
+            return response;
         }
     }
 }

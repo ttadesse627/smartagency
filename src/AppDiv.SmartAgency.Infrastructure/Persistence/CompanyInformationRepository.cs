@@ -3,6 +3,7 @@
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
@@ -27,9 +28,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
    {
       
         _context.CompanyInformations.Update(companyInformation);
-        var response = await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
 
-        return response;
+        
     }
+
+    public async Task<CompanyInformation> GetByNameAsync(string name)
+        {
+
+    var companyInformation = await _context.CompanyInformations
+        .Include(ci => ci.Address)
+        .Include(ci =>ci.Address.AddressRegion)
+        .Include(ci=> ci.Witnesses)
+        .Include(ci => ci.CompanySetting)
+        .Include(ci => ci.CountryOperations)
+        .ThenInclude(co=> co.LookUpCountryOperation)
+        .FirstOrDefaultAsync(ci=>ci.CompanyName==name);
+       return  companyInformation;
+           
+        }
 }
 }

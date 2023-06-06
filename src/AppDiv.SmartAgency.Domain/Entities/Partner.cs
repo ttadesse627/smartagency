@@ -21,7 +21,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string? LicenseNumber { get; set; }
         public string? BankName { get; set; }
         public string? BankAccount { get; set; }
-        public string? HeaderLogo { get; set; }
+        //public string? HeaderLogo { get; set; }
         public string? ReferenceNumber { get; set; }
 
         // Foreign Keys

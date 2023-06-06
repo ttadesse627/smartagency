@@ -14,11 +14,6 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Enjazs;
 
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
-// using AppDiv.SmartAgency.Application.Features.Command.Create.Attachments;
-// using AppDiv.SmartAgency.Application.Features.Command.Create.Customers;
-// using AppDiv.SmartAgency.Application.Features.Command.Update.Attachments;
-// using AppDiv.SmartAgency.Application.Features.Command.Update.Deposits;
-// using AppDiv.SmartAgency.Application.Features.Command.Update.Partners;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Entities.Base;
@@ -51,6 +46,10 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -70,6 +69,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<LookUp, CreateLookUpResponseDTO>().ReverseMap();
             CreateMap<LookUp, CreateLookUpCommand>().ReverseMap();
             CreateMap<LookUp, LookUpResponseDTO>().ReverseMap();
+            CreateMap<LookUp, LookUpItemResponseDTO>().ReverseMap();
 
             CreateMap<CreateApplicantRequest, Applicant>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
@@ -77,7 +77,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
                 .ForMember(dest => dest.Representative, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
-            
+
             CreateMap<EducationRequest, Education>()
                 .ForMember(dest => dest.QualificationTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.LevelOfQualifications, opt => opt.Ignore())
@@ -89,6 +89,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<BeneficiaryRequest, Beneficiary>();
             CreateMap<AttachmentFileRequest, AttachmentFile>();
             CreateMap<AddressRequest, Address>();
+            CreateMap<UpdateAddressRequest, Address>();
             CreateMap<RepAddressRequest, Address>();
 
             // Get Single Applicant Mapper
@@ -139,7 +140,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Partner, PartnerApplRespDTO>();
             CreateMap<Representative, RepresentativeResponseDTO>();
             CreateMap<Witness, WitnessResponseDTO>();
-            CreateMap<Applicant, ApplicantsResponseDTO>();
+            CreateMap<Applicant, ApplicantsResponseDTO>()
+                .ForMember(dest => dest.MaritalStatus, opt => opt.Ignore())
+                .ForMember(dest => dest.Religion, opt => opt.Ignore())
+                .ForMember(dest => dest.BrokerName, opt => opt.Ignore());
             CreateMap<Applicant, ApplSearchResponseDTO>();
             CreateMap<SearchModel<Applicant>, SearchModel<ApplSearchResponseDTO>>();
 
@@ -232,6 +236,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
 
+            CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
+          
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
@@ -239,8 +245,21 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<Address, CompanyAddressResponseDTO>();
+            // CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
+            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
+                .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
+                .ForMember(dest => dest.LetterBackGround, opt => opt.Ignore());
+            CreateMap<Address, CompanyAddressResponseDTO>(); 
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CountryOperation, CountryOperationResponseDTO>();
+
+            CreateMap<EditCompanyAddressRequest, Address>();
+            CreateMap<EditCompanyInformationCommand, CompanyInformation>().ReverseMap();
+            CreateMap<EditCompanyWitnessRequest, Witness>();
+            CreateMap<EditCountryOperationRequest, CountryOperation>();
+            CreateMap<EditCompanySettingRequest, CompanySetting>().ReverseMap();
+
+
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
@@ -259,9 +278,15 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AddEnjazRequest, Enjaz>();
             CreateMap<ApplicantProcess, GetApplProcessResponseDTO>();
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
-
             CreateMap<AddUserRequest, ApplicationUser>()
-                .ForMember(dest => dest.UserGroups, src => src.Ignore());
+                .ForMember(dest => dest.UserGroups, opt => opt.Ignore());
+            CreateMap<UserAddressRequest, Address>();
+            CreateMap<ApplicationUser, UserResponseDTO>();
+            CreateMap<ApplicationUser, UserDetailsResponseDTO>();
+            CreateMap<SearchModel<ApplicationUser>, SearchModel<UserResponseDTO>>();
+            CreateMap<SearchModel<UserGroup>, SearchModel<FetchGroupDTO>>();
+            CreateMap<UserGroup, FetchGroupDTO>();
+            CreateMap<UserGroup, GroupDTO>();
 
         }
     }

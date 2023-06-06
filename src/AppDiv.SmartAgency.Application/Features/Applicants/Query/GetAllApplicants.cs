@@ -34,13 +34,30 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
     }
     public async Task<SearchModel<ApplicantsResponseDTO>> Handle(GetAllApplicants request, CancellationToken cancellationToken)
     {
+        var expLoadedProps = new string[] { "MaritalStatus", "Religion", "BrokerName" };
         var applicantList = await _applicantRepository.GetAllWithSearchAsync(
-            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, 
-            appl => appl.CreatedBy == _dbContext.GetCurrentUserId() 
+            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
+            appl => appl.CreatedBy == _dbContext.GetCurrentUserId()
             || appl.CreatedBy == "00000000-0000-0000-0000-000000000000"
-            || appl.CreatedBy == null, 
-            "Partner");
+            || appl.CreatedBy == null,
+            expLoadedProps);
         var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
+        var itemsArray = response.Items.ToArray();
+        var entitiesArray = applicantList.Items.ToArray();
+        for (var i = 0; i < itemsArray.Length; i++)
+        {
+            for (var j = 0; j < entitiesArray.Length; j++)
+            {
+                if (i == j)
+                {
+                    itemsArray[i].MaritalStatus = entitiesArray[j].MaritalStatus.Value;
+                    itemsArray[i].Religion = entitiesArray[j].Religion.Value;
+                    itemsArray[i].BrokerName = entitiesArray[j].BrokerName.Value;
+                }
+                if (i < j) break;
+            }
+        }
+        response.Items = itemsArray.AsEnumerable();
 
         return response;
     }

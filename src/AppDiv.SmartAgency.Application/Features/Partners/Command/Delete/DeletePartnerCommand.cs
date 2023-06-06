@@ -22,9 +22,12 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
     public class DeletePartnerCommmandHandler : IRequestHandler<DeletePartnerCommand, String>
     {
         private readonly IPartnerRepository _partnerRepository;
-         private readonly IAddressRepository _addressRepository;
-        public DeletePartnerCommmandHandler(IPartnerRepository partnerRepository, IAddressRepository addressRepository)
+        private readonly IAddressRepository _addressRepository;
+        private readonly IFileService _fileService;
+
+        public DeletePartnerCommmandHandler(IPartnerRepository partnerRepository, IAddressRepository addressRepository, IFileService fileService)
         {
+             _fileService = fileService;
             _partnerRepository= partnerRepository;
             _addressRepository= addressRepository;
         }
@@ -39,6 +42,11 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
                 await _addressRepository.DeleteAsync(AddressId);
                  await _partnerRepository.SaveChangesAsync(cancellationToken);
                   await _addressRepository.SaveChangesAsync(cancellationToken);
+
+        string fileName = request.Id.ToString() + "*"; // Replace "." with the actual file extension
+        var response = _fileService.DeleteFile(fileName, "PartnersHeaderLogo");
+
+  
 
             }
             catch (Exception exp)

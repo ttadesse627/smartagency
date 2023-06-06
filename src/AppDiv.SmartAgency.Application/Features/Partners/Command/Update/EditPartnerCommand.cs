@@ -9,7 +9,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
 {
-    public class EditPartnerCommand : IRequest<PartnerResponseDTO>
+    public class EditPartnerCommand : IRequest<string>
     {
         public Guid Id { get; set; }
         public string PartnerType { get; set; }
@@ -22,7 +22,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
         public string LicenseNumber { get; set; }
         public string BankName { get; set; }
         public string BankAccount { get; set; }
-        public string HeaderLogo { get; set; }
+        public string? HeaderLogo { get; set; }
         public string ReferenceNumber { get; set; }
          public Guid AddressId { get; set; }
 
@@ -34,39 +34,20 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
 
    
 
-    public class EditPartnerCommandHandler : IRequestHandler<EditPartnerCommand, PartnerResponseDTO>
+    public class EditPartnerCommandHandler : IRequestHandler<EditPartnerCommand, string>
     {
-   
+        private readonly IFileService _fileService;
         private readonly IPartnerRepository _partnerRepository;
         private readonly IPartnerRepository _partnerQueryRepository;
-        public EditPartnerCommandHandler(IPartnerRepository partnerRepository,IPartnerRepository partnerQueryRepository)
+        public EditPartnerCommandHandler(IPartnerRepository partnerRepository,IPartnerRepository partnerQueryRepository, IFileService fileService)
         {
             _partnerRepository = partnerRepository;
             _partnerQueryRepository=partnerQueryRepository;
+            _fileService = fileService;
         }
-        public async Task<PartnerResponseDTO> Handle(EditPartnerCommand request,  CancellationToken cancellationToken)
+        public async Task<string> Handle(EditPartnerCommand request,  CancellationToken cancellationToken)
         {
-            var partnerResponse = new PartnerResponseDTO();
-          //  Partner partnerEntity = new Partner
-          /*  {
-                Id = request.Id,
-                PartnerName = request.PartnerName,
-                PartnerType = request.PartnerType,
-                PartnerNameAmharic = request.PartnerNameAmharic,
-                PartnerNameArabic = request.PartnerNameArabic,
-                ContactPerson = request.ContactPerson,
-                IdNumber = request.IdNumber,
-                ManagerNameAmharic = request.ManagerNameAmharic,
-                LicenseNumber = request.LicenseNumber,
-                BankName = request.BankName,
-                BankAccount = request.BankAccount,
-                HeaderLogo = request.HeaderLogo,
-                ReferenceNumber = request.ReferenceNumber,
-                PartnerAddress = request.Address
-
-            };
-            
-*/
+           
             var partnerEntity = CustomMapper.Mapper.Map<Partner>(request);
             try
             {
@@ -75,9 +56,20 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
 
                 if(res>=1) {
 
-                    var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
-                    partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
-                  
+                    // save headerlogo
+                var file = request.HeaderLogo;
+                var folderName = Path.Combine("Resources", "PartnersHeaderLogo");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                var fileName = request.Id.ToString();
+                if(!string.IsNullOrEmpty(file)){
+
+                 await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
+             } 
+
+
+                   // var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
+                    //partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
+             
 
                 }
             }
@@ -90,7 +82,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
           //  var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
            // cd cvar partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
 
-            return partnerResponse;
+            return "sucessfully updated";
         }
     }
 
