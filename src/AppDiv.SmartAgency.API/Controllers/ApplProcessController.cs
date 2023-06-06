@@ -27,7 +27,7 @@ public class ApplProcessController : ControllerBase
         response = await _mediator.Send(new ApplicantProcessCommand(request));
         return Ok(response);
     }
-    [HttpGet("get")]
+    [HttpGet("get/{id}")]
     public async Task<ActionResult<ApplicantProcessResponseDTO>> GetApplicantProcessses([Required] Guid id, int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
         return Ok(await _mediator.Send(new GetApplProcessQuery(id, pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
