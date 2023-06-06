@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230529142953_DeletePartnerHeaderLogo")]
+    partial class DeletePartnerHeaderLogo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -830,12 +832,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Addres")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<Guid?>("AddressRegionId")
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("AlternativePhone")
                         .HasColumnType("longtext");
@@ -1018,6 +1020,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("GeneralManagerAmharic")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LetterBackGround")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LetterLogo")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -1644,7 +1652,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 31, 21, 16, 30, 451, DateTimeKind.Local).AddTicks(2696));
+                        .HasDefaultValue(new DateTime(2023, 5, 29, 17, 29, 52, 351, DateTimeKind.Local).AddTicks(4172));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1665,6 +1673,81 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Suffixes");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("BankAccount")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("BankName")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("HeaderLogo")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("ManageAllAppicant")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("PartnerId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("PostionId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ReferenceNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("PartnerId");
+
+                    b.HasIndex("PostionId");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -2379,9 +2462,40 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
                         .WithOne("Partner")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Partner", "AddressId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.User", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
+                        .WithOne("User")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.User", "AddressId");
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Partner", "Partner")
+                        .WithMany()
+                        .HasForeignKey("PartnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Postion")
+                        .WithMany()
+                        .HasForeignKey("PostionId");
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Partner");
+
+                    b.Navigation("Postion");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -2491,6 +2605,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Representative");
 
                     b.Navigation("Sponsor");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>

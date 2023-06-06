@@ -22,5 +22,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs
      
        public Guid  AddressId {get; set;}
       public PartnerAddressResponseDTO  Address {get; set;}
+
+      
     }
 }

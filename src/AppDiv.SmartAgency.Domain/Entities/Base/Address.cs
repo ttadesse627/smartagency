@@ -22,7 +22,7 @@ public class Address : BaseAuditableEntity
     public string? Mobile { get; set; }
     public string? AlternativePhone { get; set; }
     public string? Fax { get; set; }
-    public string Adress { get; set; } = string.Empty;
+    public string Addres { get; set; } = string.Empty;
     public string? PostCode { get; set; }
     public string? Email { get; set; }
     public string? Website { get; set; }
@@ -42,6 +42,6 @@ public class Address : BaseAuditableEntity
     public Sponsor? Sponsor { get; set; }
     public CompanyInformation? CompanyInformation { get; set; }
 
-    public User? User { get; set; }
+
 
 }

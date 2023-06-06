@@ -8,7 +8,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
     public class CompanyAddressRequest
 
      {
-        public Guid Id { get; set; }
          public Guid? AddressRegionId { get; set; }
         public string? City { get; set; }
         public string? SubCity { get; set; }

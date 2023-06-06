@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
 {
-    public class CountryOperationRequest
-    {
-        
-        public Guid? CountryId {get; set;}
-        public int? AmountPerPerson {get; set;}
+    public class EditCountryOperationRequest: CountryOperationRequest
+    {   
+         public Guid? Id {get; set;}
+         //public Guid? CompanyInformationId {get; set;}
     }
 }

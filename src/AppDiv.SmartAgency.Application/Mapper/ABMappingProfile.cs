@@ -48,6 +48,8 @@ using AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
+using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -227,18 +229,26 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
+            CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
           
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CompanyWitnessRequest,Witness>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
-            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
+            // CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
+            CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
+                .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
+                .ForMember(dest => dest.LetterBackGround, opt => opt.Ignore());
             CreateMap<Address, CompanyAddressResponseDTO>(); 
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CountryOperation, CountryOperationResponseDTO>();
-            
-        
+            CreateMap<EditCompanyAddressRequest, Address>();
+            CreateMap<EditCompanyInformationCommand, CompanyInformation>().ReverseMap();
+            CreateMap<EditCompanyWitnessRequest, Witness>();
+            CreateMap<EditCountryOperationRequest, CountryOperation>();
+            CreateMap<EditCompanySettingRequest, CompanySetting>().ReverseMap();
+
 
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();

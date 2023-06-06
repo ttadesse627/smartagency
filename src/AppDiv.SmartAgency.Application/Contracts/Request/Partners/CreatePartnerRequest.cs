@@ -19,7 +19,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
         public string LicenseNumber { get; set; }
         public string BankName { get; set; }
         public string BankAccount { get; set; }
-        public string HeaderLogo { get; set; }
+        public string? HeaderLogo { get; set; }
         public string ReferenceNumber { get; set; }
         public PartnerAddressRequest Address { get; set; }
     }
