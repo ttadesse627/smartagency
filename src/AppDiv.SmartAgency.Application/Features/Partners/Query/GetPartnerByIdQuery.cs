@@ -71,7 +71,6 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
                     BankAccount=selectedPartner.BankAccount,
                     HeaderLogo=fileContent,
                     ReferenceNumber=selectedPartner.ReferenceNumber,
-                    AddressId= (Guid)selectedPartner.AddressId,
                     Address=CustomMapper.Mapper.Map<PartnerAddressResponseDTO>(selectedPartner.Address)
                 };  
 
