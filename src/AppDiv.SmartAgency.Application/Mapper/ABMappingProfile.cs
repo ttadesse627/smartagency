@@ -52,6 +52,7 @@ using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ReportDTOs;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -258,11 +259,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditCountryOperationRequest, CountryOperation>();
             CreateMap<EditCompanySettingRequest, CompanySetting>().ReverseMap();
 
-
-
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>().ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
@@ -286,6 +284,20 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<SearchModel<UserGroup>, SearchModel<FetchGroupDTO>>();
             CreateMap<UserGroup, FetchGroupDTO>();
             CreateMap<UserGroup, GroupDTO>();
+            CreateMap<Applicant, ApplicantReportResponseDTO>()
+                .ForMember(dest => dest.FileNumber, opt => opt.Ignore())
+                .ForMember(dest => dest.FullName, opt => opt.Ignore())
+                .ForMember(dest => dest.RegistrationDate, opt => opt.Ignore())
+                .ForMember(dest => dest.DeletedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.PassportIssuedPlace, opt => opt.Ignore())
+                .ForMember(dest => dest.MaritalStatus, opt => opt.Ignore())
+                .ForMember(dest => dest.Religion, opt => opt.Ignore())
+                .ForMember(dest => dest.Profession, opt => opt.Ignore())
+                .ForMember(dest => dest.Experience, opt => opt.Ignore())
+                .ForMember(dest => dest.Language, opt => opt.Ignore())
+                .ForMember(dest => dest.BrokerName, opt => opt.Ignore());
+
+            CreateMap<SearchModel<Applicant>, SearchModel<ApplicantReportResponseDTO>>();
 
         }
     }

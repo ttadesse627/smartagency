@@ -99,7 +99,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ProcessId");
 
                     b.ToTable("ApplicantProcesses");
-                    b.ToTable("ApplicantProcesses");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
@@ -891,9 +890,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("Addres")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<Guid?>("AddressRegionId")
-                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("AddressRegionId")
                         .HasColumnType("char(36)");
@@ -1815,7 +1811,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 5, 31, 21, 16, 30, 451, DateTimeKind.Local).AddTicks(2696));
+                        .HasDefaultValue(new DateTime(2023, 6, 6, 17, 35, 23, 409, DateTimeKind.Local).AddTicks(6633));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2648,7 +2644,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Base.Address", "Address")
                         .WithOne("Partner")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Partner", "AddressId")
-                        .OnDelete(DeleteBehavior.SetNull);
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Address");

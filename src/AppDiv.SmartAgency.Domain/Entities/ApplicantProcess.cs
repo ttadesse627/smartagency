@@ -10,7 +10,7 @@ public class ApplicantProcess : BaseAuditableEntity
     public Guid? ProcessId { get; set; }
     public Guid? ApplicantId { get; set; }
     public DateTime? Date { get; set; }
-    public ProcessStatus? Status { get; set; } = ProcessStatus.Pending;
+    public ProcessStatus? Status { get; set; } = ProcessStatus.In;
     public ProcessDefinition? Process { get; set; }
     public Applicant? Applicant { get; set; }
 }

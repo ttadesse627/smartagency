@@ -8,8 +8,8 @@ using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
-public record ApplicantProcessCommand(ApplicantProcessRequest request) : IRequest<ServiceResponse<Int32>> { }
-public class ApplicantProcessCommandHandler : IRequestHandler<ApplicantProcessCommand, ServiceResponse<Int32>>
+public record SubmitApplicantProcessCommand(SubmitApplicantProcessRequest request) : IRequest<ServiceResponse<Int32>> { }
+public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantProcessCommand, ServiceResponse<Int32>>
 {
     private readonly IProcessDefinitionRepository _proDefRepository;
     private readonly IProcessRepository _processRepository;
@@ -23,7 +23,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<ApplicantProcessCo
         _applicantRepository = applicantRepository;
         _proDefRepository = proDefRepository;
     }
-    public async Task<ServiceResponse<int>> Handle(ApplicantProcessCommand command, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<int>> Handle(SubmitApplicantProcessCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
         var response = new ServiceResponse<Int32>();
@@ -31,13 +31,11 @@ public class ApplicantProcessCommandHandler : IRequestHandler<ApplicantProcessCo
                             {
                                 "ApplicantProcesses", "ApplicantProcesses.Process", "ApplicantProcesses.Process.Process"
                             };
-        var pdLoadedProps = new string[]
-                            {
-                                "Process"
-                            };
+        var pdLoadedProps = new string[] { "Process" };
 
         var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, appLoadedProps);
-        var proDef = await _proDefRepository.GetAllWithAsync(pdLoadedProps);
+        var currentPd = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id == request.ProcessId, "Process");
+        var proDef = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.Process!.Id == currentPd.Process!.Id, pdLoadedProps);
 
         if (applicant.ApplicantProcesses == null || applicant.ApplicantProcesses.Count == 0)
         {
@@ -45,16 +43,16 @@ public class ApplicantProcessCommandHandler : IRequestHandler<ApplicantProcessCo
             var processes = await _processRepository.GetAllWithPredicateAsync(pr => pr.Step == 1, "ProcessDefinitions");
             foreach (var process in processes)
             {
-                foreach (var pd in process.ProcessDefinitions)
+                foreach (var pd in process.ProcessDefinitions!)
                 {
-                    if (pd.Step == 1)
+                    if (pd.Step == currentPd.Step + 1)
                     {
                         var applProcess = new ApplicantProcess
                         {
                             Applicant = applicant,
                             Process = pd,
-                            Status = ProcessStatus.Processing,
-                            Date = request.Date
+                            Date = request.Date,
+                            Status = ProcessStatus.In
                         };
                         applProList.Add(applProcess);
                     }
@@ -68,11 +66,12 @@ public class ApplicantProcessCommandHandler : IRequestHandler<ApplicantProcessCo
                 if (response.Success)
                 {
                     response.Message = "Added Successfully!";
-                    response.Success = true;
                 }
             }
             catch (Exception ex)
             {
+                response.Success = false;
+                response.Errors?.Add(ex.Message);
                 throw new ApplicationException(ex.Message);
             }
         }

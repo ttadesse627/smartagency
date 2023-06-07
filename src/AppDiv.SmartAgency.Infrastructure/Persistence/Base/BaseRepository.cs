@@ -219,7 +219,64 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return entities;
         }
+        public virtual async Task<SearchModel<T>> GetAllWithFilterAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, List<Filter>? filters = null, params string[] eagerLoadedProperties)
+        {
+            long maxPage = 1, totalItems = 0;
 
+            var query = _dbContext.Set<T>().AsQueryable();
+            if (filters != null && filters.Count > 0)
+            {
+                foreach (var filter in filters)
+                {
+                    var property = typeof(T).GetProperty(filter.PropertyName);
+                    var parameter = Expression.Parameter(typeof(T), "x");
+                    var left = Expression.Property(parameter, property);
+                    var right = Expression.Constant(filter.Value);
+                    var body = Expression.Call(left, typeof(string).GetMethod(filter.MethodName), right);
+                    var predicate = Expression.Lambda<Func<T, bool>>(body, parameter);
+
+                    query = query.Where(predicate);
+                }
+            }
+
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                query = query.Include(nav_property);
+            }
+
+            totalItems = query.LongCount();
+            if (totalItems > 0)
+            {
+                maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
+                if (pageNumber >= maxPage)
+                {
+                    pageNumber = Convert.ToInt32(maxPage);
+                }
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
+                query = query.OrderBy(orderExpression);
+            }
+
+            // Pagination
+            var skipAmount = (pageNumber - 1) * pageSize;
+            query = query.Skip(skipAmount).Take(pageSize);
+
+            var result = await query.ToListAsync();
+            return new SearchModel<T>
+            {
+                CurrentPage = pageNumber,
+                MaxPage = maxPage,
+                PagingSize = pageSize,
+                Items = result,
+                TotalCount = totalItems,
+                SortingColumn = orderBy,
+                SortingDirection = sortingDirection
+            };
+        }
 
 
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
@@ -1347,6 +1404,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
             return await this._dbContext.Set<T>().AnyAsync(predicate);
+        }
+        public async Task<List<PropertyInfo>> GetProperties()
+        {
+            var stringProperties = typeof(T).GetProperties().ToList();
+            return stringProperties;
         }
 
     }

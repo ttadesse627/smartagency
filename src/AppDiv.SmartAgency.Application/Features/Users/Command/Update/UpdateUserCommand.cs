@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using MediatR;
@@ -36,7 +37,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
         {
             listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
         }
-        var explLoadedProps = new string[] { "Partner", "Address", "Address.AddressRegion", "Address.Country", "UserGroups" };
+        var explLoadedProps = new string[] { "Partner", "Address", "Address.AddressRegion", "UserGroups" };
         var user = await _userRepository.GetWithPredicateAsync(appl => appl.Id == request.Id.ToString(), explLoadedProps);
 
         if (user != null)
@@ -47,17 +48,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
             user.PositionId = request.PositionId;
             user.BranchId = request.BranchId;
             user.PartnerId = request.PartnerId;
-            user.Address = new Address
-            {
-                CountryId = request.Address?.CountryId,
-                AddressRegionId = request.Address?.AddressRegionId,
-                Zone = request.Address?.Zone,
-                Woreda = request.Address?.Woreda,
-                Kebele = request.Address?.Kebele,
-                PhoneNumber = request.Address?.PhoneNumber,
-                Email = request.Address?.Email,
-                Website = request.Address?.Website
-            };
+            user.Address = CustomMapper.Mapper.Map<Address>(request.Address);
             user.UserGroups = listGroup;
         }
 
