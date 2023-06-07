@@ -25,8 +25,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
             this.Id = Id;
             this.fileType = fileType;
             this.folderType = folderType;
-            this.fileType = fileType;
-            this.folderType = folderType;
+
         }
 
     }
@@ -39,7 +38,6 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
         public GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService)
         {
             _partnerRepository = partnerRepository;
-            _fileService = fileService;
             _fileService = fileService;
         }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)

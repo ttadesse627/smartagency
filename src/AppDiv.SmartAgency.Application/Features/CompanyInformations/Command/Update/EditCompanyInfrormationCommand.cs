@@ -55,17 +55,17 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Up
         }
         public async Task<string> Handle(EditCompanyInformationCommand request,  CancellationToken cancellationToken)
         {
-        var fetchedcompanyInformationEntity =await _companyInformationRepository.GetWithPredicateAsync(c => c.Id == request.Id, "Address", "Witnesses", "CountryOperations", "CompanySetting", "CountryOperations.LookUpCountryOperation", "Address.AddressRegion");
+        //var fetchedcompanyInformationEntity =await _companyInformationRepository.update(request.Id);
         var companyInformationEntity = CustomMapper.Mapper.Map<CompanyInformation>(request);
             try
             {
-                fetchedcompanyInformationEntity = companyInformationEntity;
-            var res= await _companyInformationRepository.SaveChangesAsync(cancellationToken);
+               // fetchedcompanyInformationEntity = companyInformationEntity;
+           // var res= await _companyInformationRepository.SaveChangesAsync(cancellationToken);
 
-            //var res =    await _companyInformationRepository.UpdateAsync(companyInformationEntity);
-            // await _partnerRepository.SaveChangesAsync(cancellationToken);
+            var res =    await _companyInformationRepository.UpdateAsync(companyInformationEntity);
+             await _companyInformationRepository.SaveChangesAsync(cancellationToken);
 
-            if(res==true) {
+            if(res>=1) {
 
                 // save headerlogo;
                 var file = request.LetterLogo;

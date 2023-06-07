@@ -70,7 +70,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
             var list = _dbContext.Set<T>().Where(lambda);
-            list = list.Where(predicate);
+            if(predicate !=null)
+            {
+                list = list.Where(predicate);
+            }
 
             foreach (var nav_property in eagerLoadedProperties)
             {

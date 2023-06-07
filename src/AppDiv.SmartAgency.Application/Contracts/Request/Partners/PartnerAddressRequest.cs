@@ -16,7 +16,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
         public string? PhoneNumber { get; set; }
         public string? Mobile { get; set; }
         public string? Fax { get; set; }
-        public string? Addres { get; set; }
+        public string? Adress { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
        
