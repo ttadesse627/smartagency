@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.DeletedInfos;
+namespace AppDiv.SmartAgency.Application.Features.DeletedInfos.Query;
 
 public class GetDeletedOrders : IRequest<SearchModel<GetOrdersResponseDTO>>
 {
