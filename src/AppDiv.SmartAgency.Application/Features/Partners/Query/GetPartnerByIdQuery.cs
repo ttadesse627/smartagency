@@ -28,7 +28,9 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
         }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
         {
+            
             var selectedPartner = await _partnerRepository.GetByIdAsync(request.Id);
+            
             // var postImageId= "postImage" + id.ToString();
             var headerLogoId = request.Id.ToString();
 
