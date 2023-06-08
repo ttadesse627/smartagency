@@ -14,21 +14,7 @@ using System.Threading.Tasks;
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 {
     // Customer GetCustomerByIdQuery with Customer response
-    public class GetPartnerByIdQuery : IRequest<PartnerResponseDTO>
-    {
-        public Guid Id { get; private set; }
-        public string fileType { get; private set; }
-        public string folderType { get; private set; }
-
-        public GetPartnerByIdQuery(Guid Id, string fileType, string folderType)
-        {
-            this.Id = Id;
-            this.fileType = fileType;
-            this.folderType = folderType;
-
-        }
-
-    }
+    public record GetPartnerByIdQuery(Guid Id) : IRequest<PartnerResponseDTO> { }
 
     public class GetPartnerByIdHandler : IRequestHandler<GetPartnerByIdQuery, PartnerResponseDTO>
     {
@@ -49,7 +35,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
             var fileType = "PartnersHeaderLogo";
 
             //string fileName = "Slider" + id.ToString() + ".jpg"; // Replace ".jpg" with the actual file extension
-            (byte[], string, string) fileResult = _fileService.getFile(headerLogoId, request.fileType, request.folderType);
+            (byte[], string, string) fileResult = _fileService.getFile(headerLogoId, fileType, null);
 
             // Convert the byte array of the image content to a Base64 encoded string
             string fileContent = Convert.ToBase64String(fileResult.Item1);
