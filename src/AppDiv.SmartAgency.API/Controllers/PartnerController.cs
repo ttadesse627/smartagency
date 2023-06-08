@@ -37,9 +37,9 @@ namespace AppDiv.SmartAgency.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<PartnerResponseDTO> Get(Guid id,  [FromQuery]string fileType ,[FromQuery] string? folderType)
+        public async Task<PartnerResponseDTO> Get(Guid id)
         {
-            return await _mediator.Send(new GetPartnerByIdQuery(id, fileType, folderType));
+            return await _mediator.Send(new GetPartnerByIdQuery(id));
         }
 
         [HttpDelete("Delete/{id}")]

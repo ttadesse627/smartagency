@@ -2,6 +2,7 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
@@ -39,7 +40,7 @@ public class ApplicantController : ControllerBase
     }
 
     [HttpGet("get/{id}")]
-    public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants(Guid id)
+    public async Task<ActionResult<GetApplicantResponseDTO>> GetAllApplicants(Guid id)
     {
         return Ok(await _mediator.Send(new GetSingleApplicantQuery(id)));
     }
@@ -73,12 +74,6 @@ public class ApplicantController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-    }
-
-    [HttpGet("get-for-assignment")]
-    public async Task<ActionResult<List<GetForAssignmentDTO>>> GetOrderForAssignment()
-    {
-        return Ok(await _mediator.Send(new GetForAssignmentQuery()));
     }
 
     [HttpGet("search-applicant")]

@@ -1,4 +1,3 @@
-using AppDiv.SmartAgency.API.Helpers;
 using AppDiv.SmartAgency.Application;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,7 +11,8 @@ using AppDiv.SmartAgency.Api.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddNewtonsoftJson();
 
 // For authentication
 var _key = builder.Configuration["Jwt:Key"];
