@@ -178,7 +178,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Order, GetForAssignmentOrderDTO>();
             CreateMap<OrderCriteria, GetOrderCriteriaRespDTO>();
             CreateMap<Sponsor, GetSponsorResponseDTO>();
-            CreateMap<Applicant, GetForAssignmentDTO>();
+            CreateMap<Applicant, GetApplForAssignmentDTO>();
 
             CreateMap<EditOrderRequest, Order>();
             CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
