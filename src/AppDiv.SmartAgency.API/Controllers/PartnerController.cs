@@ -1,4 +1,5 @@
 
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Create;
@@ -57,9 +58,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
         }
 
-
-
-
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditPartnerCommand command)
         {
@@ -75,7 +73,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                     return BadRequest();
                 }
 
-                //var result = await _mediator.Send(command,id);
             }
             catch (Exception exp)
             {
@@ -83,6 +80,12 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
 
 
+        }
+
+        [HttpGet("get-partner-dropdown")]
+        public async Task<ActionResult<GetOrderNumberResponseDTO>> GetPartnerDropdown()
+        {
+            return Ok(await _mediator.Send(new GetPartnerDropdownQuery()));
         }
     }
 

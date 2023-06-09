@@ -265,15 +265,19 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
+
             CreateMap<Process, GetProcessResponseDTO>();
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
+            CreateMap<ApplicantProcess, GetApplProcessResponseDTO>();
+            CreateMap<SearchModel<ApplicantProcess>, SearchModel<GetApplProcessResponseDTO>>();
+            
             CreateMap<CreateProcessRequest, Process>();
             CreateMap<CreateProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditProcessRequest, Process>();
             CreateMap<EditProcessDefinitionRequest, ProcessDefinition>();
             CreateMap<EditLookUpCommand, LookUp>();
             CreateMap<AddEnjazRequest, Enjaz>();
-            CreateMap<ApplicantProcess, GetApplProcessResponseDTO>();
+            
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
             CreateMap<AddUserRequest, ApplicationUser>()
                 .ForMember(dest => dest.UserGroups, opt => opt.Ignore());

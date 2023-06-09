@@ -70,5 +70,4 @@ public class OrderController : ControllerBase
         return Ok(await _mediator.Send(new UnassignOrderCommand(request)));
     }
 
-
 }

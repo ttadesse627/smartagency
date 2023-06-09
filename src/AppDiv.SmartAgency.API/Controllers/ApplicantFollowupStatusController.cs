@@ -83,8 +83,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
-
-
         }
     }
 }
