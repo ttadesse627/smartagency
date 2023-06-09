@@ -37,22 +37,30 @@ public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, (Se
     }
     public async Task<(SearchModel<ApplicantReportResponseDTO>, List<string>)> Handle(ApplicantReportQuery request, CancellationToken cancellationToken)
     {
+        var response = new SearchModel<ApplicantReportResponseDTO>();
         var expLoadedProps = new string[] { "MaritalStatus", "Religion", "BrokerName" };
         var filters = new List<Filter>();
+        foreach (var filter in request.Filters)
+        {
+            filters.Add(new Filter
+            {
+                PropertyName = filter.propertyName,
+                MethodName = filter.methodName,
+                Value = filter.value
+            }
+        );
+        }
 
         var properties = await _applicantRepository.GetProperties();
-        var stringProperties = new List<string>();
+        var propertyNames = new List<string>();
         foreach (var prop in properties)
         {
-            if (prop.PropertyType == typeof(string) || prop.PropertyType == typeof(int) || prop.PropertyType == typeof(float) || prop.PropertyType == typeof(DateTime))
-            {
-                stringProperties.Add(prop.ToString());
-            }
+            propertyNames.Add(prop.Name);
         }
-        var applicantList = await _applicantRepository.GetAllWithFilterAsync(
+        var applicantList = await _applicantRepository.GetAllWithPredicateFilterAsync(
             request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
-            filters, expLoadedProps);
-        var response = CustomMapper.Mapper.Map<SearchModel<ApplicantReportResponseDTO>>(applicantList);
+            filters, null, expLoadedProps);
+        response = CustomMapper.Mapper.Map<SearchModel<ApplicantReportResponseDTO>>(applicantList);
         var itemsArray = response.Items.ToArray();
         var entitiesArray = applicantList.Items.ToArray();
         for (var i = 0; i < itemsArray.Length; i++)
@@ -77,6 +85,6 @@ public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, (Se
         }
         response.Items = itemsArray.AsEnumerable();
 
-        return (response, stringProperties);
+        return (response, propertyNames);
     }
 }
