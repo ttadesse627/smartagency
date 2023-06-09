@@ -23,15 +23,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
         public async Task<OnlineApplicant> GetByIdAsync(Guid Id)
         {
-            return await base.GetAsync(Id);
-         /*  var onlineApplicant=   _context.OnlineApplicants
+            //return await base.GetAsync(Id);
+           var onlineApplicant=   _context.OnlineApplicants
                .Include(a => a.MaritalStatus)
                .Include(a => a.Experience)
                .Include(a => a.DesiredCountry)
                .FirstOrDefault(a => a.Id == Id);
                   
-            return onlineApplicant;
-            */
+            return  onlineApplicant;
+        
         }
 
 
