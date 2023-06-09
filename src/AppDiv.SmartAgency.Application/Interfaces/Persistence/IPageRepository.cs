@@ -13,5 +13,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
         //Task GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, string v);
         Task<Page> GetByIdAsync(Guid id);
         Task<Int32> UpdateAsync(Page page);
+      
     }
 }

@@ -13,6 +13,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
         Task DeleteAsync(IEnumerable<object> ids);
         Task DeleteAsync(object id);
         Task DeleteAsync(object[] id);
+        Task<Int32> DeleteMany(List<Guid> ids);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>> orderBy, int skip, int limit);
@@ -61,5 +62,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
         Task UpdateAsync(T entity, Func<T, object> getKey);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task<List<PropertyInfo>> GetProperties();
+        
     }
 }

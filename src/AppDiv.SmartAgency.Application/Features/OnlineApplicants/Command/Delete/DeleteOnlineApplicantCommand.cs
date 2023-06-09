@@ -7,14 +7,9 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Delete
 {
-    public class DeleteOnlineApplicantCommand: IRequest<String>
+    public record DeleteOnlineApplicantCommand(List<Guid> Ids): IRequest<String>
     {
-        public Guid Id { get; private set; }
-
-        public DeleteOnlineApplicantCommand(Guid Id)
-        {
-            this.Id = Id;
-        }
+        
     }
 
    
@@ -31,13 +26,10 @@ namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Delet
 
         public async Task<string> Handle(DeleteOnlineApplicantCommand request, CancellationToken cancellationToken)
         {
+             int response= 0;
             try
             {
-                var onlineApplicantEntity = await _onlineApplicantRepository.GetByIdAsync(request.Id);
-                
-                await _onlineApplicantRepository.DeleteAsync(onlineApplicantEntity.Id);
-                
-                 await _onlineApplicantRepository.SaveChangesAsync(cancellationToken);
+                response = await _onlineApplicantRepository.DeleteMany(request.Ids);
          
 
             }
@@ -46,7 +38,7 @@ namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Delet
                 throw (new ApplicationException(exp.Message));
             }
 
-            return "Online Applicant information has been deleted!";
+            return response + " Online Applicant information has been deleted!";
         }
     }
 }
