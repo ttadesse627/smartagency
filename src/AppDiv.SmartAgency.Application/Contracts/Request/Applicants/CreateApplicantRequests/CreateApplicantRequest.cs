@@ -30,10 +30,6 @@ public record CreateApplicantRequest
     public int ContractPeriod { get; set; }
     public string? AmharicJobTitle { get; set; }
     public string? Remark { get; set; }
-    public bool IsRequested { get; set; } = false;
-    public bool IsReserved { get; set; } = false;
-    public bool IsBlocked { get; set; } = false;
-    public bool IsDeleted { get; set; } = false;
     public Guid? IssuingCountryId { get; set; }
     public Guid? PassportIssuedPlaceId { get; set; }
     public Guid? MaritalStatusId { get; set; }

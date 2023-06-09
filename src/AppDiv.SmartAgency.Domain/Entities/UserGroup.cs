@@ -17,30 +17,29 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string? DescriptionStr { get; set; }
         public string RolesStr { get; set; }
         [NotMapped]
-        public Dictionary<string, List<string>> Description
+        public JObject Description
         {
             get
             {
-                return JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(string.IsNullOrEmpty(DescriptionStr) ? "{}" : DescriptionStr);
+                return JsonConvert.DeserializeObject<JObject>(string.IsNullOrEmpty(DescriptionStr) ? "{}" : DescriptionStr);
             }
             set
             {
-                DescriptionStr = JsonConvert.SerializeObject(value);
+                DescriptionStr = value.ToString();
             }
         }
         [NotMapped]
-        public List<string> Roles
+        public JArray Roles
         {
             get
             {
-                return JsonConvert.DeserializeObject<List<string>>(string.IsNullOrEmpty(RolesStr) ? "[]" : RolesStr);
+                return JsonConvert.DeserializeObject<JArray>(string.IsNullOrEmpty(RolesStr) ? "{}" : RolesStr);
             }
             set
             {
-                RolesStr = JsonConvert.SerializeObject(value);
+                RolesStr = value.ToString();
             }
         }
-
         public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
-public record ApplicantProcessRequest
+public record SubmitApplicantProcessRequest
 {
-    public Guid? ProcessId { get; set; }
+    public Guid? ProcessDefinitionId { get; set; }
     public Guid? ApplicantId { get; set; }
     public DateTime? Date { get; set; }
 }

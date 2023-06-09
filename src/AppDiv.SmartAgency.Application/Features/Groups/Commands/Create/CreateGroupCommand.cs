@@ -17,7 +17,6 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
         }
         public async Task<ServiceResponse<int>> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
-
             var response = new ServiceResponse<int>();
 
             // var validator = new CreateGroupComadValidetor(_groupRepository);

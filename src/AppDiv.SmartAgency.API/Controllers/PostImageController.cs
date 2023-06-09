@@ -32,9 +32,9 @@ namespace AppDiv.SmartAgency.API.Controllers
 
       [HttpGet("get-image")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get([FromQuery] Guid id , [FromQuery]string fileType ,[FromQuery] string? folderType)
+        public async Task<IActionResult> Get([FromQuery] string id )
         {
-             var postImageId= "postImage" + id.ToString();
+             var postImageId=  id;
 
 
              // var response = _fileService.getFile(id.ToString(),fileType , folderType);
@@ -43,9 +43,10 @@ namespace AppDiv.SmartAgency.API.Controllers
 
 try
     {
+      var fileType="sliders";
         
         //string fileName = "Slider" + id.ToString() + ".jpg"; // Replace ".jpg" with the actual file extension
-        (byte[], string, string) fileResult = _fileService.getFile(postImageId,fileType, folderType);
+        (byte[], string, string) fileResult = _fileService.getFile(postImageId,fileType, null);
 
         //(byte[], string, string) fileResult = _fileService.GetFile(fileName, "Sliders");
 
@@ -76,10 +77,11 @@ try
 
         [HttpGet("get-all-sliders")]
       [ProducesResponseType(StatusCodes.Status200OK)]
-      public IActionResult GetAllSliders(string folderType)
+      public IActionResult GetAllSliders()
       {
           try
           {
+            var folderType="sliders";
         List<(byte[], string, string)> sliderImages = _fileService.GetAllImages(folderType);
 
         // Create a list of anonymous objects with properties "FileName" and "FileContent"
@@ -101,11 +103,12 @@ try
             }
      [HttpDelete("delete-slider")]
      [ProducesResponseType(StatusCodes.Status204NoContent)]
-     public ActionResult<String> DeleteSlider([FromQuery] Guid id, string folderName)
+     public ActionResult<String> DeleteSlider([FromQuery] string id )
       {
         try
        {
-        string fileName = "postImage" + id.ToString() + "*"; // Replace "." with the actual file extension
+        var folderName="Sliders";
+        string fileName =  id + "*"; // Replace "." with the actual file extension
         var response = _fileService.DeleteFile(fileName, folderName);
          return response;
 

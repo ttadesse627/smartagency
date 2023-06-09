@@ -42,7 +42,7 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         }
         public async Task<SearchModel<DepositResponseDTO>> Handle(GetAllDepositQuery request, CancellationToken cancellationToken)
         {
-            var depositList = await _depositRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, dep => dep.CreatedBy == _dbContext.GetCurrentUserId(), "Applicant");
+            var depositList = await _depositRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, dep => dep.CreatedBy == _dbContext.GetCurrentUserId() || dep.CreatedBy == null, "Applicant");
             var depositResponse = CustomMapper.Mapper.Map<SearchModel<DepositResponseDTO>>(depositList);
             return depositResponse;
 

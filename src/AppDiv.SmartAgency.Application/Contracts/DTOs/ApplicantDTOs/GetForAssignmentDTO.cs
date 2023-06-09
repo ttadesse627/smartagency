@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
-public record GetForAssignmentDTO
+public record GetApplForAssignmentDTO
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;

@@ -26,10 +26,10 @@ namespace AppDiv.SmartAgency.Application.Features.PostImages.Command.Create
                 var folderName = Path.Combine("Resources", "Sliders");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-                Guid imgId=Guid.NewGuid();
-                var fileName = "postImage"+imgId;
+                var fileName=Guid.NewGuid().ToString();
+                
               //var  fileName="postImage1a2f32ad-63e7-4a4a-b665-20871842c978";
-
+            
         
                 if(!string.IsNullOrEmpty(file)){
 

@@ -14,9 +14,9 @@ public class ApplicantProcessEntityConfig : IEntityTypeConfiguration<ApplicantPr
             .HasForeignKey(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(pr => pr.Process)
+        builder.HasOne(pr => pr.ProcessDefinition)
             .WithMany(app => app.ApplicantProcesses)
-            .HasForeignKey(fk => fk.ProcessId)
+            .HasForeignKey(fk => fk.ProcessDefinitionId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -8,6 +8,7 @@ using System.Security.Authentication;
 using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.RoleDTOs;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login;
 public class AuthCommand : IRequest<AuthResponseDTO>
@@ -48,7 +49,7 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
         string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, response.roles)!);
 
         var userRoles = userData.UserGroups.SelectMany(ug => ug.Roles
-        .Select(r => JToken.Parse(r).Value<string>("Page") ?? "")
+        .Select(r => JToken.Parse(JsonConvert.SerializeObject(r)).Value<string>("Page") ?? "")
         .Select(page => new RoleDto
         {
             Page = page,

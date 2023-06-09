@@ -54,7 +54,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("get-for-assignment")]
-    public async Task<ActionResult<List<GetForAssignmentOrderDTO>>> GetOrderForAssignment()
+    public async Task<ActionResult<GetForAssignmentDTO>> GetOrderForAssignment()
     {
         return Ok(await _mediator.Send(new GetForAssignmentQuery()));
     }
