@@ -29,7 +29,7 @@ public class GetOnlineApplicantByIdHandler : IRequestHandler<GetOnlineApplicantB
     }
     public async Task<OnlineApplicantResponseDTO> Handle(GetOnlineApplicantByIdQuery request, CancellationToken cancellationToken)
     {
-        var selectedOnlineApplicant = await _onlineApplicantRepository.GetByIdAsync(request.Id);
+        var selectedOnlineApplicant = await _onlineApplicantRepository.GetWithPredicateAsync(oa=>oa.Id==request.Id, "MaritalStatus","Experience","DesiredCountry");
         return CustomMapper.Mapper.Map<OnlineApplicantResponseDTO>(selectedOnlineApplicant);
     }
 }

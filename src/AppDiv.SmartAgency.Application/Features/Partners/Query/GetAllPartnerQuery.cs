@@ -2,11 +2,6 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
@@ -45,7 +40,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
         }
         public async Task<SearchModel<GetAllPartnerResponseDTO>> Handle(GetAllPartnerQuery request, CancellationToken cancellationToken)
         {
-            var partnerList = await _partnerRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, prtnr => prtnr.CreatedBy == _dbContext.GetCurrentUserId(), "Address", "Address.Country");
+            var partnerList = await _partnerRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Address", "Address.Country");
             var partnerResponse = CustomMapper.Mapper.Map<SearchModel<GetAllPartnerResponseDTO>>(partnerList);
             return partnerResponse;
 

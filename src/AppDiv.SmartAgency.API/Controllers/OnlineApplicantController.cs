@@ -29,7 +29,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-online-applicant")]
-        public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants(int pageNumber = 1, int pageSize = 15, string? searchTerm = null, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        public async Task<ActionResult<OnlineApplicantResponseDTO>> GetAllOnlineApplicants(int pageNumber = 1, int pageSize = 15, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return Ok(await _mediator.Send(new GetAllOnlineApplicantQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
         }
@@ -41,7 +41,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             return await _mediator.Send(new GetOnlineApplicantByIdQuery(id));
         }
 
-        [HttpDelete("Delete/{id}")]
+      /*  [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteOnlineApplicant(Guid id)
         {
             try
@@ -54,7 +54,25 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
+        }*/
+
+       [HttpDelete("Delete")]
+        public async Task<ActionResult> DeleteOnlineApplicants([FromQuery]List<Guid> ids)
+        {
+
+            try
+            {
+                string result = string.Empty;
+                result= await _mediator.Send(new DeleteOnlineApplicantCommand(ids));
+                return Ok(result);
+            
+            }
+            catch( Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
         }
+
     }
 }
 

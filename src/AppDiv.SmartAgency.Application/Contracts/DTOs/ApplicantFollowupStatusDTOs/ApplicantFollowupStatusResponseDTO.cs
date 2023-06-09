@@ -9,7 +9,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusD
 {
     public class ApplicantFollowupStatusResponseDTO
     {
-        
+        public Guid Id {get; set;}
         public string PassportNumber{get; set;}
         public string? Remark{get; set;}
    

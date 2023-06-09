@@ -24,7 +24,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Update
         public string BankAccount { get; set; }
         public string? HeaderLogo { get; set; }
         public string ReferenceNumber { get; set; }
-         public Guid AddressId { get; set; }
+         //public Guid AddressId { get; set; }
 
         public EditPartnerAddressRequest Address { get; set; }
        
