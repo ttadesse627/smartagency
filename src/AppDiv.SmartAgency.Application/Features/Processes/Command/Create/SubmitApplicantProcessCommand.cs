@@ -26,64 +26,28 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
     public async Task<ServiceResponse<ApplicantProcessResponseDTO>> Handle(SubmitApplicantProcessCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
-        // var response = new ServiceResponse<ApplicantProcessResponseDTO>();
-        // var appLoadedProps = new string[]
-        //                     {
-        //                         "ApplicantProcesses", "ApplicantProcesses.Process", "ApplicantProcesses.Process.Process"
-        //                     };
-        // var pdLoadedProps = new string[] { "Process" };
-
-        // var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, appLoadedProps);
-        // var currentPd = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id == request.ProcessId, "Process");
-        // var proDef = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.Process!.Id == currentPd.Process!.Id, pdLoadedProps);
-
-        // if (applicant.ApplicantProcesses == null || applicant.ApplicantProcesses.Count == 0)
-        // {
-        //     var applProList = new List<ApplicantProcess>();
-        //     var processes = await _processRepository.GetAllWithPredicateAsync(pr => pr.Step == 1, "ProcessDefinitions");
-        //     foreach (var process in processes)
-        //     {
-        //         foreach (var pd in process.ProcessDefinitions!)
-        //         {
-        //             if (pd.Step == currentPd.Step + 1)
-        //             {
-        //                 var applProcess = new ApplicantProcess
-        //                 {
-        //                     Applicant = applicant,
-        //                     Process = pd,
-        //                     Date = request.Date,
-        //                     Status = ProcessStatus.In
-        //                 };
-        //                 applProList.Add(applProcess);
-        //             }
-        //         }
-        //     }
-
-        //     try
-        //     {
-        //         await _applicantProcessRepository.InsertAsync(applProList, cancellationToken);
-        //         response.Success = await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-        //         if (response.Success)
-        //         {
-        //             response.Message = "Added Successfully!";
-        //         }
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         response.Success = false;
-        //         response.Errors?.Add(ex.Message);
-        //         throw new ApplicationException(ex.Message);
-        //     }
-        // }
-
-        // return response;
-
 
         var response = new ServiceResponse<ApplicantProcessResponseDTO>();
 
-        var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcesses.Process.Process");
+        var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcesses", "Order.Sponsor");
         var currentPd = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id == request.ProcessDefinitionId, "Process");
-        var currentApplProcess = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.ProcessDefinitionId == request.ProcessDefinitionId);
+
+        // var currentApplProcess = await _applicantProcessRepository.GetWithPredicateAsync(applPr => applPr.ProcessDefinitionId == request.ProcessDefinitionId);
+
+        // currentApplProcess.ApplicantId = applicant.Id;
+        // currentApplProcess.ProcessDefinitionId = currentPd.Id;
+        // currentApplProcess.Status = ProcessStatus.Out;
+        // try
+        // {
+        //     response.Success = await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
+        // }
+        // catch (System.Exception ex)
+        // {
+        //     response.Message = "An error occured while updating the applicant process status.";
+        //     response.Errors.Add(ex.Message);
+        //     throw new System.ApplicationException(ex.Message);
+        // }
+
         var process = currentPd.Process;
         var pDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id);
         var processDefinitions = pDefs.OrderBy(pd => pd.Step).ToList();
@@ -104,7 +68,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             }
 
             // Set the applicant's status to 'In' for the first process definition of the next process
-            var firstPdOfNextProcess = nextProcess.ProcessDefinitions.OrderBy(pd => pd.Step).First();
+            var firstPdOfNextProcess = nextProcess.ProcessDefinitions?.OrderBy(pd => pd.Step).First();
             var applProcess = new ApplicantProcess
             {
                 Applicant = applicant,
@@ -139,7 +103,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             // This is not the last process definition for the current process,
             // update the status of any pending applicant processes for the current process definition
             var pendingApplProcesses = applicant.ApplicantProcesses
-                .Where(ap => ap.ProcessDefinitionId == currentPd.Id && ap.Status == ProcessStatus.In)
+                .Where(ap => ap.ProcessDefinitionId == currentPd.Id)
                 .ToList();
 
             foreach (var pendingApplProcess in pendingApplProcesses)
@@ -178,7 +142,6 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                 throw new System.ApplicationException(ex.Message);
             }
         }
-
         return response;
     }
 

@@ -110,6 +110,11 @@ public class ApplicantController : ControllerBase
     {
         var response = await _mediator.Send(new DeleteRequestedCommand(id));
         return Ok(response);
+    }
 
+    [HttpGet("get-unassigned")]
+    public async Task<ActionResult<List<GetApplForAssignmentDTO>>> GetUnassignedApplicants()
+    {
+        return Ok(await _mediator.Send(new GetUnassignedApplicantsQuery()));
     }
 }

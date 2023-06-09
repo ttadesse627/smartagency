@@ -1,15 +1,17 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using AppDiv.SmartAgency.Domain.Entities.Base;
+using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
-[Table("EmergencyContacts")]
-public class EmergencyContact : PersonalInfo
+public class EmergencyContact : BaseAuditableEntity
 {
-    public string? ArabicFullName { get; set; }
-    
-    // Foreign Keys
+    public string? NameOfContactPerson { get; set; }
+    public string? ArabicName { get; set; }
+    public DateTime? BirthDate { get; set; }
+    public Gender? Gender { get; set; }
     public Guid? RelationshipId { get; set; }
+
     public Guid? ApplicantId { get; set; }
     public Guid? AddressId { get; set; }
 
@@ -17,5 +19,5 @@ public class EmergencyContact : PersonalInfo
     public LookUp? Relationship { get; set; }
     public Applicant? Applicant { get; set; }
     public Address? Address { get; set; }
-    
+
 }

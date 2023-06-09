@@ -6,10 +6,11 @@ using AppDiv.SmartAgency.Domain.Enums;
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 public record RepresentativeRequest
 {
-    public string FirstName { get; set; } = string.Empty;
-    public string MiddleName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public DateTime? BirthDate { get; set; }
-    public Gender? Gender { get; set; }
-    public RepAddressRequest? Address { get; set; }
+    public string? FullName { get; set; }
+    public string? City { get; set; }
+    public string? Zone { get; set; }
+    public string? Woreda { get; set; }
+    public string? Kebele { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? HouseNumber { get; set; }
 }
