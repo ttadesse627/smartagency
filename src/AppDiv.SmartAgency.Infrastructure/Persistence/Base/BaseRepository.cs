@@ -1431,5 +1431,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return stringProperties;
         }
 
+        public Task<SearchModel<T>> GetAllWithPredicateFilterAsync(int pageNumber, int pageSize, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending, List<Filter>? filters = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
