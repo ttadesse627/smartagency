@@ -25,6 +25,7 @@ public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdown
 
         if (partnerList.Count() > 0)
         {
+            var partners = new List<GetPartnerDropDownDTO>();
             foreach (var partner in partnerList)
             {
                 var words = partner.PartnerName.Split(' ');
@@ -39,8 +40,9 @@ public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdown
                     PartnerName = partner.PartnerName,
                     OrderNumber = abbrName.ToString() + " 00" + partner.Orders.Count + 1
                 };
-                partnerResponse.partners?.Add(partResponse);
+                partners.Add(partResponse);
             }
+            partnerResponse.partners = partners;
         }
         return partnerResponse;
     }
