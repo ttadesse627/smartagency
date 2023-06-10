@@ -83,7 +83,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-partner-dropdown")]
-        public async Task<ActionResult<GetOrderNumberResponseDTO>> GetPartnerDropdown()
+        public async Task<ActionResult<PartnerDropdownContainerDTO>> GetPartnerDropdown()
         {
             return Ok(await _mediator.Send(new GetPartnerDropdownQuery()));
         }
