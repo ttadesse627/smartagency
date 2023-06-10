@@ -78,6 +78,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IEnjazRepository, EnjazRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IComplaintRepository, ComplaintRepository>();
             services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
 
             services.AddSingleton<IMailService, MailKitService>();
