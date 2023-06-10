@@ -70,7 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
             var list = _dbContext.Set<T>().Where(lambda);
-            if(predicate !=null)
+            if (predicate != null)
             {
                 list = list.Where(predicate);
             }
@@ -375,21 +375,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
 
         public virtual async Task<Int32> DeleteMany(List<Guid> ids)
+        {
+            var entities = new List<T>();
+            foreach (Guid id in ids)
             {
-                var entities = new List<T>();
-                foreach (Guid id in ids)
-                {
                 var entity = await _dbContext.Set<T>().FindAsync(id);
-                if(entity!= null)
+                if (entity != null)
                 {
                     entities.Add(entity);
                 }
 
-                }
-                    _dbContext.Set<T>().RemoveRange(entities);
-                    var response = await _dbContext.SaveChangesAsync();
-                    return response;
             }
+            _dbContext.Set<T>().RemoveRange(entities);
+            var response = await _dbContext.SaveChangesAsync();
+            return response;
+        }
 
         public virtual async Task DeleteAsync(object id)
         {
@@ -1427,9 +1427,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
         public async Task<List<PropertyInfo>> GetProperties()
         {
-            var stringProperties = typeof(T).GetProperties().ToList();
-            return stringProperties;
+            var properties = typeof(T).GetProperties().ToList();
+            foreach (var prop in properties)
+            {
+                Console.WriteLine(prop.GetGetMethod());
+            }
+            return properties;
         }
 
+        public Task<SearchModel<T>> GetAllWithPredicateFilterAsync(int pageNumber, int pageSize, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending, List<Filter>? filters = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

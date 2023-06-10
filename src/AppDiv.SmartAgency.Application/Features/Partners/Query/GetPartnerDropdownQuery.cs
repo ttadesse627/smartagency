@@ -3,11 +3,12 @@ using MediatR;
 using System.Text;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query;
-public class GetPartnerDropdownQuery : IRequest<List<GetPartnerDropDownDTO>> { }
+public class GetPartnerDropdownQuery : IRequest<PartnerDropdownContainerDTO> { }
 
-public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdownQuery, List<GetPartnerDropDownDTO>>
+public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdownQuery, PartnerDropdownContainerDTO>
 {
     private readonly IPartnerRepository _partnerRepository;
     private readonly ISmartAgencyDbContext _dbContext;
@@ -17,10 +18,11 @@ public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdown
         _partnerRepository = partnerQueryRepository;
         _dbContext = dbContext;
     }
-    public async Task<List<GetPartnerDropDownDTO>> Handle(GetPartnerDropdownQuery request, CancellationToken cancellationToken)
+    public async Task<PartnerDropdownContainerDTO> Handle(GetPartnerDropdownQuery request, CancellationToken cancellationToken)
     {
-        var partnerResponse = new List<GetPartnerDropDownDTO>();
+        var partnerResponse = new PartnerDropdownContainerDTO();
         var partnerList = await _partnerRepository.GetAllWithAsync("Orders");
+
         if (partnerList.Count() > 0)
         {
             foreach (var partner in partnerList)
@@ -37,7 +39,7 @@ public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdown
                     PartnerName = partner.PartnerName,
                     OrderNumber = abbrName.ToString() + " 00" + partner.Orders.Count + 1
                 };
-                partnerResponse.Add(partResponse);
+                partnerResponse.partners?.Add(partResponse);
             }
         }
         return partnerResponse;

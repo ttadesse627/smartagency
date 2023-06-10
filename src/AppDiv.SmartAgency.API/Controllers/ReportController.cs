@@ -18,16 +18,22 @@ public class ReportController : ControllerBase
     }
 
     [HttpGet("applicant-report")]
-    public async Task<ActionResult<(SearchModel<ApplicantReportResponseDTO>, List<string>)>> GetApplicantReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
-        [FromQuery] List<(string propertyName, string methodName, Object value)>? filters = null)
+    public async Task<ActionResult<ApplReportDTO>> GetApplicantReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
+        [FromQuery] List<FilterPropsRequest>? filters = null)
     {
         return Ok(await _mediator.Send(new ApplicantReportQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection, filters)));
     }
+    [HttpGet("not-assigned-applicant-report")]
+    public async Task<ActionResult<ApplReportDTO>> GetNotAssignedApplicantReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
+        [FromQuery] List<FilterPropsRequest>? filters = null)
+    {
+        return Ok(await _mediator.Send(new NotAssignedApplicantReportQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection, filters)));
+    }
 
     [HttpGet("visa-report")]
-    public async Task<ActionResult<(SearchModel<ApplicantReportResponseDTO>, List<string>)>> GetVisaReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
-        [FromQuery] List<(string propertyName, string methodName, Object value)>? filters = null)
+    public async Task<ActionResult<ApplReportDTO>> GetVisaReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
+        [FromQuery] List<FilterPropsRequest>? filters = null)
     {
-        return Ok(await _mediator.Send(new ApplicantReportQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection, filters)));
+        return Ok(await _mediator.Send(new NotAssignedApplicantReportQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection, filters)));
     }
 }

@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Reports;
-public class ApplicantReportQuery : IRequest<ApplReportDTO>
+public class NotAssignedApplicantReportQuery : IRequest<ApplReportDTO>
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
@@ -14,7 +14,7 @@ public class ApplicantReportQuery : IRequest<ApplReportDTO>
     public string? OrderBy { get; set; }
     public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
     public List<FilterPropsRequest>? Filters { get; set; }
-    public ApplicantReportQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection,
+    public NotAssignedApplicantReportQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection,
         List<FilterPropsRequest> filters)
     {
         PageNumber = pageNumber;
@@ -25,18 +25,19 @@ public class ApplicantReportQuery : IRequest<ApplReportDTO>
         Filters = filters;
     }
 }
-public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, ApplReportDTO>
+public class NotAssignedApplicantReportQueryHandler : IRequestHandler<NotAssignedApplicantReportQuery, ApplReportDTO>
 {
     private readonly IApplicantRepository _applicantRepository;
     // private readonly ISmartAgencyDbContext _dbContext;
 
-    public GetAllApplicantsHandler(IApplicantRepository applicantRepository)
+    public NotAssignedApplicantReportQueryHandler(IApplicantRepository applicantRepository)
     {
         _applicantRepository = applicantRepository;
         // _dbContext = dbContext;
     }
-    public async Task<ApplReportDTO> Handle(ApplicantReportQuery request, CancellationToken cancellationToken)
+    public async Task<ApplReportDTO> Handle(NotAssignedApplicantReportQuery request, CancellationToken cancellationToken)
     {
+
         var response = new ApplReportDTO();
         var applicantResponse = new SearchModel<ApplicantReportResponseDTO>();
         var expLoadedProps = new string[] { "MaritalStatus", "Religion", "BrokerName" };
@@ -85,6 +86,9 @@ public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, App
             }
         }
         applicantResponse.Items = itemsArray.AsEnumerable();
+        response.Applicants = applicantResponse;
+        response.FilterProperties = propertyNames;
+
         return response;
     }
 }
