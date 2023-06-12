@@ -10,18 +10,11 @@ public class ApplicantReportQuery : IRequest<ApplReportDTO>
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public string? SearchTerm { get; set; }
-    public string? OrderBy { get; set; }
-    public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
     public List<FilterPropsRequest>? Filters { get; set; }
-    public ApplicantReportQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection,
-        List<FilterPropsRequest> filters)
+    public ApplicantReportQuery(int pageNumber, int pageSize, List<FilterPropsRequest> filters)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
-        SearchTerm = searchTerm;
-        OrderBy = orderBy;
-        SortingDirection = sortingDirection;
         Filters = filters;
     }
 }
@@ -59,8 +52,7 @@ public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, App
             propertyNames.Add(prop.Name);
         }
         var applicantList = await _applicantRepository.GetAllWithPredicateFilterAsync(
-            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
-            filters, null, expLoadedProps);
+            request.PageNumber, request.PageSize, filters, null, expLoadedProps);
         applicantResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantReportResponseDTO>>(applicantList);
         var itemsArray = applicantResponse.Items.ToArray();
         var entitiesArray = applicantList.Items.ToArray();

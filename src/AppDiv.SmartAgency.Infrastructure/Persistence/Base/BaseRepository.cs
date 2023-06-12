@@ -1435,9 +1435,46 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return properties;
         }
 
-        public Task<SearchModel<T>> GetAllWithPredicateFilterAsync(int pageNumber, int pageSize, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending, List<Filter>? filters = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        public async Task<SearchModel<T>> GetAllWithPredicateFilterAsync(int pageNumber, int pageSize, List<Filter>? filters = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
-            throw new NotImplementedException();
+            // Construct the dynamic LINQ expression to apply sorting, filtering, and pagination
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            foreach (var excProp in eagerLoadedProperties)
+            {
+                query = query.Include(excProp);
+            }
+
+            // Apply the predicate
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            // Apply filters
+            if (filters != null)
+            {
+                foreach (var filter in filters)
+                {
+                    query = query.Where($"{filter.PropertyName}.{filter.MethodName}(@0)", filter.Value);
+                }
+            }
+
+            // Count total items
+            var totalItems = await query.CountAsync();
+
+            // Apply pagination
+            var skip = (pageNumber - 1) * pageSize;
+            var items = await query.Skip(skip).Take(pageSize).ToListAsync();
+
+            // Return the search result
+            return new SearchModel<T>
+            {
+                Items = items,
+                TotalCount = totalItems,
+                CurrentPage = pageNumber,
+                PagingSize = pageSize
+            };
         }
     }
 }

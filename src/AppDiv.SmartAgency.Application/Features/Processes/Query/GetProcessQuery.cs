@@ -11,17 +11,23 @@ public class GetProcessQuery : IRequest<ServiceResponse<List<GetProcessResponseD
 public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ServiceResponse<List<GetProcessResponseDTO>>>
 {
     private readonly IProcessRepository _processRepository;
-    public GetProcessQueryHandler(IProcessRepository processRepository)
+    private readonly IApplicantProcessRepository _applicantRepository;
+    public GetProcessQueryHandler(IProcessRepository processRepository, IApplicantProcessRepository applicantRepository)
     {
         _processRepository = processRepository;
+        _applicantRepository = applicantRepository;
     }
     public async Task<ServiceResponse<List<GetProcessResponseDTO>>> Handle(GetProcessQuery query, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<List<GetProcessResponseDTO>>();
-        var excLoadedProps = new string[]{"Country", "ProcessDefinitions", "ProcessDefinitions.ApplicantProcesses"};
+        var excLoadedProps = new string[] { "Country", "ProcessDefinitions" };
         var processes = await _processRepository.GetAllWithAsync(excLoadedProps);
         if (processes.Count() > 0)
         {
+            // foreach (var process in processes)
+            // {
+            //     var pdResponse = CustomMapper.Mapper.Map<GetPDResponseDTO>(process.ProcessDefinitions);
+            // }
             response.Success = true;
             response.Data = CustomMapper.Mapper.Map<List<GetProcessResponseDTO>>(processes);
             response.Message = $"{response.Data.Count} record/s is/are fetched!";

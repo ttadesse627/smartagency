@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
+
     public class UserController : ApiControllerBase
     {
 

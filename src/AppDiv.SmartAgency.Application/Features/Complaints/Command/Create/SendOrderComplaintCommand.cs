@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ComplaintDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
-using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
@@ -30,11 +25,17 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
         public async Task<List<GetComplaintResponseDTO>> Handle(SendOrderComplaintCommand request, CancellationToken cancellationToken)
         {
             var response = new List<GetComplaintResponseDTO>();
+
+            var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.Request.OrderId, "Employee");
+            if (order.Employee == null)
+            {
+                throw new BadRequestException("This order is not assigned. It should be assigned first.");
+            }
             var complint = new Complaint
             {
                 Message = request.Request.Message,
                 OrderId = request.Request.OrderId,
-                UserId = _context.GetCurrentUserId()
+                CreatedBy = _context.GetCurrentUserId()
             };
             await _complaintRepository.InsertAsync(complint, cancellationToken);
 

@@ -10,18 +10,11 @@ public class NotAssignedApplicantReportQuery : IRequest<ApplReportDTO>
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public string? SearchTerm { get; set; }
-    public string? OrderBy { get; set; }
-    public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
     public List<FilterPropsRequest>? Filters { get; set; }
-    public NotAssignedApplicantReportQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection,
-        List<FilterPropsRequest> filters)
+    public NotAssignedApplicantReportQuery(int pageNumber, int pageSize, List<FilterPropsRequest> filters)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
-        SearchTerm = searchTerm;
-        OrderBy = orderBy;
-        SortingDirection = sortingDirection;
         Filters = filters;
     }
 }
@@ -53,15 +46,9 @@ public class NotAssignedApplicantReportQueryHandler : IRequestHandler<NotAssigne
         );
         }
 
-        var properties = await _applicantRepository.GetProperties();
-        var propertyNames = new List<string>();
-        foreach (var prop in properties)
-        {
-            propertyNames.Add(prop.Name);
-        }
         var applicantList = await _applicantRepository.GetAllWithPredicateFilterAsync(
-            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
-            filters, null, expLoadedProps);
+            request.PageNumber, request.PageSize, filters, applicant => applicant.Order == null, expLoadedProps);
+
         applicantResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantReportResponseDTO>>(applicantList);
         var itemsArray = applicantResponse.Items.ToArray();
         var entitiesArray = applicantList.Items.ToArray();
@@ -87,6 +74,13 @@ public class NotAssignedApplicantReportQueryHandler : IRequestHandler<NotAssigne
         }
         applicantResponse.Items = itemsArray.AsEnumerable();
         response.Applicants = applicantResponse;
+
+        var properties = await _applicantRepository.GetProperties();
+        var propertyNames = new List<string>();
+        foreach (var prop in properties)
+        {
+            propertyNames.Add(prop.Name);
+        }
         response.FilterProperties = propertyNames;
 
         return response;

@@ -49,26 +49,25 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
         string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, response.roles)!);
 
         var userRoles = userData.UserGroups.SelectMany(ug => ug.Roles
-        .Select(r => JToken.Parse(JsonConvert.SerializeObject(r)).Value<string>("Page") ?? "")
-        .Select(page => new RoleDto
-        {
-            Page = page,
-            Title = JToken.Parse(page).Value<string>("Title") ?? "",
-            CanAdd = JToken.Parse(page).Value<bool>("CanAdd"),
-            CanDelete = JToken.Parse(page).Value<bool>("CanDelete"),
-            CanViewDetail = JToken.Parse(page).Value<bool>("CanViewDetail"),
-            CanView = JToken.Parse(page).Value<bool>("CanView"),
-            CanUpdate = JToken.Parse(page).Value<bool>("CanUpdate")
-        })).GroupBy(r => r.Page.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new RoleDto
-        {
-            Page = g.Key,
-            Title = g.FirstOrDefault()?.Title ?? "",
-            CanAdd = g.Aggregate(false, (acc, x) => acc || x.CanAdd),
-            CanDelete = g.Aggregate(false, (acc, x) => acc || x.CanDelete),
-            CanUpdate = g.Aggregate(false, (acc, x) => acc || x.CanUpdate),
-            CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
-            CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
-        });
+            .Select(r => new RoleDto
+            {
+                Page = r.Value<string>("Page") ?? "",
+                Title = r.Value<string>("Title") ?? "",
+                CanAdd = r.Value<bool>("CanAdd"),
+                CanDelete = r.Value<bool>("CanDelete"),
+                CanViewDetail = r.Value<bool>("CanViewDetail"),
+                CanView = r.Value<bool>("CanView"),
+                CanUpdate = r.Value<bool>("CanUpdate")
+            })).GroupBy(r => r.Page.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new RoleDto
+            {
+                Page = g.Key,
+                Title = g.FirstOrDefault()?.Title ?? "",
+                CanAdd = g.Aggregate(false, (acc, x) => acc || x.CanAdd),
+                CanDelete = g.Aggregate(false, (acc, x) => acc || x.CanDelete),
+                CanUpdate = g.Aggregate(false, (acc, x) => acc || x.CanUpdate),
+                CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
+                CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
+            });
         return new AuthResponseDTO()
         {
             UserId = userData.Id,

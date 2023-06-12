@@ -37,7 +37,6 @@ public class Address : BaseAuditableEntity
     public LookUp? AddressRegion { get; set; }
     public Applicant? Applicant { get; set; }
     public EmergencyContact? EmergencyContact { get; set; }
-    public Representative? Representative { get; set; }
     public Partner? Partner { get; set; }
     public Sponsor? Sponsor { get; set; }
     public CompanyInformation? CompanyInformation { get; set; }

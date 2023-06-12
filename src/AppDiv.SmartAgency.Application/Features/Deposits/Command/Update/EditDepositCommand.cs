@@ -10,57 +10,58 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Update
 {
-    public class EditDepositCommand: IRequest<GetDepositByIdResponseDTO>
+    public class EditDepositCommand : IRequest<GetDepositByIdResponseDTO>
     {
-        public Guid Id {get; set;}
-        public string PassportNumber {get; set;} 
-        public double DepositAmount {get; set;} 
-        public DateTime Month {get; set;}  
-        public string DepositedBy {get; set;} 
-        public Guid ApplicantId {get; set;}
+        public Guid Id { get; set; }
+        public string PassportNumber { get; set; }
+        public double DepositAmount { get; set; }
+        public DateTime Month { get; set; }
+        public string DepositedBy { get; set; }
+        public Guid ApplicantId { get; set; }
 
-       
+
     }
 
 
 
-   
+
 
     public class EditDepositCommandHandler : IRequestHandler<EditDepositCommand, GetDepositByIdResponseDTO>
     {
-   
+
         private readonly IDepositRepository _depositRepository;
         private readonly IDepositRepository _depositQueryRepository;
-        public EditDepositCommandHandler(IDepositRepository depositRepository,IDepositRepository depositQueryRepository)
+        public EditDepositCommandHandler(IDepositRepository depositRepository, IDepositRepository depositQueryRepository)
         {
             _depositRepository = depositRepository;
-            _depositQueryRepository=depositQueryRepository;
+            _depositQueryRepository = depositQueryRepository;
         }
-        public async Task<GetDepositByIdResponseDTO> Handle(EditDepositCommand request,  CancellationToken cancellationToken)
+        public async Task<GetDepositByIdResponseDTO> Handle(EditDepositCommand request, CancellationToken cancellationToken)
         {
             var depositResponse = new GetDepositByIdResponseDTO();
-          
+
             var depositEntity = CustomMapper.Mapper.Map<Deposit>(request);
             try
             {
-                var res =    await _depositRepository.UpdateAsync(depositEntity);
+                var res = await _depositRepository.UpdateAsync(depositEntity);
                 // await _partnerRepository.SaveChangesAsync(cancellationToken);
 
-                if(res>=1) {
+                if (res >= 1)
+                {
 
                     var modifiedDeposit = await _depositQueryRepository.GetByIdAsync(request.Id);
                     depositResponse = CustomMapper.Mapper.Map<GetDepositByIdResponseDTO>(modifiedDeposit);
-                 
+
                 }
             }
             catch (Exception exp)
             {
                 throw new ApplicationException(exp.Message);
             }
-           
-     
-          //  var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
-           // cd cvar partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
+
+
+            //  var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
+            // cd cvar partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
 
             return depositResponse;
         }

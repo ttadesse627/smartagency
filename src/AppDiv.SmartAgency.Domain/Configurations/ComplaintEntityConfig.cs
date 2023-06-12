@@ -11,7 +11,7 @@ namespace AppDiv.SmartAgency.Domain.Configurations
         {
             builder.HasOne(comp => comp.User)
                 .WithMany(user => user.Complaints)
-                .HasForeignKey(fk => fk.UserId)
+                .HasForeignKey(fk => fk.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(comp => comp.Order)

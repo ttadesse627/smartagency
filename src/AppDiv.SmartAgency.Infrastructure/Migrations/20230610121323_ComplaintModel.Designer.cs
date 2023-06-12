@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230610121323_ComplaintModel")]
+    partial class ComplaintModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -906,6 +908,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("Region")
                         .HasColumnType("longtext");
 
+                    b.Property<Guid?>("RepresentativeId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Street")
                         .HasColumnType("longtext");
 
@@ -935,6 +940,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("AddressRegionId");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("RepresentativeId");
 
                     b.ToTable("Addresses");
                 });
@@ -1102,7 +1109,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsClosed")
                         .HasColumnType("tinyint(1)");
@@ -1120,11 +1127,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
-
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Complaints");
                 });
@@ -1806,7 +1817,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 11, 22, 1, 27, 506, DateTimeKind.Local).AddTicks(2329));
+                        .HasDefaultValue(new DateTime(2023, 6, 10, 15, 13, 22, 541, DateTimeKind.Local).AddTicks(2832));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2373,9 +2384,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Representative", "Representative")
+                        .WithMany()
+                        .HasForeignKey("RepresentativeId");
+
                     b.Navigation("AddressRegion");
 
                     b.Navigation("Country");
+
+                    b.Navigation("Representative");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
@@ -2424,14 +2441,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Complaint", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", "User")
-                        .WithMany("Complaints")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "Order")
                         .WithMany("Complaints")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Complaints")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

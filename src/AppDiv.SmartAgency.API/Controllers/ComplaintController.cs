@@ -4,10 +4,13 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Features.Complaints.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Complaints.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
+    [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/complaint")]
     [ApiController]
     public class ComplaintController : Controller
@@ -24,9 +27,15 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-complaints")]
-        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetComplaints(OrderComplaintRequest request)
+        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetComplaints()
         {
             return Ok(await _mediator.Send(new GetAllComplaintsQuery()));
+        }
+
+        [HttpGet("get-order-complaints")]
+        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetOrderComplaints(Guid OrderId)
+        {
+            return Ok(await _mediator.Send(new GetOrderComplaintsQuery(OrderId)));
         }
     }
 }
