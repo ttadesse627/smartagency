@@ -10,15 +10,17 @@ public record GetOrderComplaintsQuery(Guid OrderId) : IRequest<GetOrderComplaint
 public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaintsQuery, GetOrderComplaintsResponseDTO>
 {
     private readonly IOrderRepository _orderRepository;
-    public GetOrderComplaintsQueryHandler(IOrderRepository orderRepository)
+    private readonly IComplaintRepository _complaintRepository;
+    public GetOrderComplaintsQueryHandler(IOrderRepository orderRepository, IComplaintRepository complaintRepository)
     {
         _orderRepository = orderRepository;
+        _complaintRepository = complaintRepository;
     }
 
     public async Task<GetOrderComplaintsResponseDTO> Handle(GetOrderComplaintsQuery request, CancellationToken cancellationToken)
     {
         var response = new GetOrderComplaintsResponseDTO();
-        var explLoadedProps = new string[] { "Employee", "Sponsor", "Partner", "Complaints", "Employee.Address", "Sponsor.Address" };
+        var explLoadedProps = new string[] { "Employee", "Sponsor", "Partner", "Complaints", "Complaints.User", "Employee.Address", "Sponsor.Address" };
         var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.OrderId, explLoadedProps);
 
         if (order != null)
@@ -34,6 +36,7 @@ public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaints
                     PhoneNumber = order.Employee.Address?.PhoneNumber,
                     MobileNumber = order.Employee.Address?.Mobile
                 };
+                response.EmployeeInfo = employeeInfo;
             }
             var sponsorInfo = new SponsorInfoDTO
             {
@@ -46,11 +49,13 @@ public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaints
                 MobilePhone = order.Sponsor?.Address?.Mobile
             };
 
-            if (order.Complaints != null || order.Complaints?.Count > 0)
-            {
-                var compRespList = new List<GetComplaintResponseDTO>();
+            response.SponsorInfo = sponsorInfo;
 
-                foreach (var complaint in order.Complaints)
+            var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.OrderId == request.OrderId, "User");
+            var compResponse = new List<GetComplaintResponseDTO>();
+            if (complaints.Count > 0 || complaints != null)
+            {
+                foreach (var complaint in complaints)
                 {
                     var comResponse = new GetComplaintResponseDTO
                     {
@@ -58,9 +63,11 @@ public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaints
                         SenderName = complaint.User.FullName,
                         Date = complaint.CreatedAt
                     };
-                    compRespList.Add(comResponse);
+                    compResponse.Add(comResponse);
                 }
             }
+
+            response.Complaints = compResponse;
         }
 
         return response;
