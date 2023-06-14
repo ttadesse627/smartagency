@@ -39,7 +39,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
               return response;
           }
-    
+          
+        public async Task DeleteAsync(IEnumerable<Guid> ids)
+         {
 
+
+              base.DeleteAsync(ids);
+            
+
+        }
+    
     }
 }
