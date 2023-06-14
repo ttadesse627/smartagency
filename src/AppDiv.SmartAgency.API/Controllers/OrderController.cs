@@ -1,5 +1,4 @@
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrdersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
@@ -69,6 +68,5 @@ public class OrderController : ControllerBase
     {
         return Ok(await _mediator.Send(new UnassignOrderCommand(request)));
     }
-
 
 }

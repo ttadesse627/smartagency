@@ -37,10 +37,7 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
         var expLoadedProps = new string[] { "MaritalStatus", "Religion", "BrokerName" };
         var applicantList = await _applicantRepository.GetAllWithSearchAsync(
             request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
-            appl => appl.CreatedBy == _dbContext.GetCurrentUserId()
-            || appl.CreatedBy == "00000000-0000-0000-0000-000000000000"
-            || appl.CreatedBy == null,
-            expLoadedProps);
+            null, expLoadedProps);
         var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
         var itemsArray = response.Items.ToArray();
         var entitiesArray = applicantList.Items.ToArray();

@@ -48,7 +48,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-        [HttpDelete("Delete/{id}")]
+       /* [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteDeposit(Guid id)
         {
             try
@@ -62,9 +62,23 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
+*/
+       
 
+        [HttpDelete("Delete")]
 
+         public async Task<ActionResult> DeletePages([FromQuery]List<Guid> ids){
 
+            try
+            {
+              string result= string.Empty;
+              result= await _mediator.Send(new DeleteDepositCommand(ids));
+              return Ok(result);
+            }
+            catch(Exception exp){
+                return BadRequest(exp.Message);
+            }
+         }
 
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)

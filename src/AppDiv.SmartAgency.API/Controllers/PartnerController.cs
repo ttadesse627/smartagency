@@ -1,4 +1,5 @@
 
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
 using AppDiv.SmartAgency.Application.Features.Partners.Command.Create;
@@ -42,7 +43,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             return await _mediator.Send(new GetPartnerByIdQuery(id));
         }
 
-        [HttpDelete("Delete/{id}")]
+       /* [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeletePartner(Guid id)
         {
             try
@@ -55,10 +56,22 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(exp.Message);
             }
+        }*/
+
+      /*  [HttpDelete("Delete")]
+        public async Task<ActionResult> DeletePartners([FromQuery]List<Guid> ids){
+            try
+            {
+                string result = string.Empty;
+                result= await _mediator.Send(new DeletePartnerCommand(ids)); 
+                return Ok(result);
+            }
+            catch(Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
         }
-
-
-
+        */
 
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditPartnerCommand command)
@@ -75,7 +88,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                     return BadRequest();
                 }
 
-                //var result = await _mediator.Send(command,id);
             }
             catch (Exception exp)
             {
@@ -83,6 +95,12 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
 
 
+        }
+
+        [HttpGet("get-partner-dropdown")]
+        public async Task<ActionResult<PartnerDropdownContainerDTO>> GetPartnerDropdown()
+        {
+            return Ok(await _mediator.Send(new GetPartnerDropdownQuery()));
         }
     }
 

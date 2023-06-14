@@ -40,7 +40,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
         }
         public async Task<SearchModel<GetAllPartnerResponseDTO>> Handle(GetAllPartnerQuery request, CancellationToken cancellationToken)
         {
-            var partnerList = await _partnerRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, prtnr => prtnr.CreatedBy == _dbContext.GetCurrentUserId(), "Address", "Address.Country");
+            var partnerList = await _partnerRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Address", "Address.Country");
             var partnerResponse = CustomMapper.Mapper.Map<SearchModel<GetAllPartnerResponseDTO>>(partnerList);
             return partnerResponse;
 

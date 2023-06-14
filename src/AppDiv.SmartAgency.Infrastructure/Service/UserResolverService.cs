@@ -20,13 +20,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
 
         public Guid GetUserId()
         {
-            var userIdClaim = httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId");
-            if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out Guid userId))
+            var userId = new Guid(httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId")?.Value);
+            if (string.IsNullOrEmpty(userId.ToString()))
             {
-                return userId;
+                userId = Guid.Empty;
             }
-            return Guid.Empty;
-            // return new Guid(httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId")?.Value);
+            // var userIdClaim = httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId");
+            // if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out Guid userId))
+            // {
+            //     return userId;
+            // }
+            // return Guid.Empty;
+            return userId;
         }
 
         public string GetLocale()

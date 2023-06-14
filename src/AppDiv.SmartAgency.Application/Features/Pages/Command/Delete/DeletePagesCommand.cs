@@ -7,11 +7,8 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Delete
 {
-    public class DeletePagesCommand: IRequest<String>
+    public record DeletePagesCommand(List<Guid> Ids): IRequest<String>
     {
-        public IEnumerable<Guid> Ids { get; set; }
-
-
     }
 
    
@@ -27,12 +24,13 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Delete
 
         public async Task<string> Handle(DeletePagesCommand request, CancellationToken cancellationToken)
         {
+              int response=  0;
             try
             {
-              //  var pageEntity = await _pageRepository.GetByIdAsync(request.Id);
+                //var pageEntity = await _pageRepository.GetByIdAsync(request.Id);
           
-                await _pageRepository.DeleteManyAsync((IEnumerable<object>)request.Ids);
-                 await _pageRepository.SaveChangesAsync(cancellationToken);
+              response= await _pageRepository.DeleteMany(request.Ids);
+                
 
 
             }
@@ -41,7 +39,7 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Delete
                 throw (new ApplicationException(exp.Message));
             }
 
-            return "Web page informations have been deleted!";
+            return response+ " "+"records deleted ";
         }
     }
 }

@@ -6,26 +6,19 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Reports;
-public class ApplicantReportQuery : IRequest<(SearchModel<ApplicantReportResponseDTO>, List<string>)>
+public class ApplicantReportQuery : IRequest<ApplReportDTO>
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public string? SearchTerm { get; set; }
-    public string? OrderBy { get; set; }
-    public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-    public List<(string propertyName, string methodName, Object value)>? Filters { get; set; }
-    public ApplicantReportQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection,
-        List<(string propertyName, string methodName, Object value)>? filters)
+    public List<FilterPropsRequest>? Filters { get; set; }
+    public ApplicantReportQuery(int pageNumber, int pageSize, List<FilterPropsRequest> filters)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
-        SearchTerm = searchTerm;
-        OrderBy = orderBy;
-        SortingDirection = sortingDirection;
         Filters = filters;
     }
 }
-public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, (SearchModel<ApplicantReportResponseDTO>, List<string>)>
+public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, ApplReportDTO>
 {
     private readonly IApplicantRepository _applicantRepository;
     // private readonly ISmartAgencyDbContext _dbContext;
@@ -35,25 +28,33 @@ public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, (Se
         _applicantRepository = applicantRepository;
         // _dbContext = dbContext;
     }
-    public async Task<(SearchModel<ApplicantReportResponseDTO>, List<string>)> Handle(ApplicantReportQuery request, CancellationToken cancellationToken)
+    public async Task<ApplReportDTO> Handle(ApplicantReportQuery request, CancellationToken cancellationToken)
     {
+        var response = new ApplReportDTO();
+        var applicantResponse = new SearchModel<ApplicantReportResponseDTO>();
         var expLoadedProps = new string[] { "MaritalStatus", "Religion", "BrokerName" };
         var filters = new List<Filter>();
+        foreach (var filter in request.Filters)
+        {
+            filters.Add(new Filter
+            {
+                PropertyName = filter.PropertyName,
+                MethodName = filter.MethodName,
+                Value = filter.Value
+            }
+        );
+        }
 
         var properties = await _applicantRepository.GetProperties();
-        var stringProperties = new List<string>();
+        var propertyNames = new List<string>();
         foreach (var prop in properties)
         {
-            if (prop.PropertyType == typeof(string) || prop.PropertyType == typeof(int) || prop.PropertyType == typeof(float) || prop.PropertyType == typeof(DateTime))
-            {
-                stringProperties.Add(prop.ToString());
-            }
+            propertyNames.Add(prop.Name);
         }
-        var applicantList = await _applicantRepository.GetAllWithFilterAsync(
-            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
-            filters, expLoadedProps);
-        var response = CustomMapper.Mapper.Map<SearchModel<ApplicantReportResponseDTO>>(applicantList);
-        var itemsArray = response.Items.ToArray();
+        var applicantList = await _applicantRepository.GetAllWithPredicateFilterAsync(
+            request.PageNumber, request.PageSize, filters, null, expLoadedProps);
+        applicantResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantReportResponseDTO>>(applicantList);
+        var itemsArray = applicantResponse.Items.ToArray();
         var entitiesArray = applicantList.Items.ToArray();
         for (var i = 0; i < itemsArray.Length; i++)
         {
@@ -75,8 +76,7 @@ public class GetAllApplicantsHandler : IRequestHandler<ApplicantReportQuery, (Se
                 if (i < j) break;
             }
         }
-        response.Items = itemsArray.AsEnumerable();
-
-        return (response, stringProperties);
+        applicantResponse.Items = itemsArray.AsEnumerable();
+        return response;
     }
 }

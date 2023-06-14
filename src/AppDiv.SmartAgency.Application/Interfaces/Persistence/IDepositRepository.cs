@@ -11,5 +11,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     {
         Task<Deposit> GetByIdAsync(Guid id);
         Task<Int32> UpdateAsync(Deposit deposit);
+        
     }
 }

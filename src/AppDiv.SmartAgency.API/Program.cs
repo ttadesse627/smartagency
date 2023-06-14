@@ -93,6 +93,16 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Bearer", policy =>
+    {
+        policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("UserId");
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

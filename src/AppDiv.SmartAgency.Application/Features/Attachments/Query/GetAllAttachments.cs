@@ -38,7 +38,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Attachments
         }
         public async Task<SearchModel<AttachmentResponseDTO>> Handle(GetAllAttachments request, CancellationToken cancellationToken)
         {
-            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, attch => attch.CreatedBy == _dbContext.GetCurrentUserId());
+            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null);
             var attachmentResponse = CustomMapper.Mapper.Map<SearchModel<AttachmentResponseDTO>>(attachmentList);
             return attachmentResponse;
         }

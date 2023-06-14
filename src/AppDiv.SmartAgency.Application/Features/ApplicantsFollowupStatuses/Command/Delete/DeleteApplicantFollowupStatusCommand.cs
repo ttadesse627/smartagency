@@ -7,14 +7,9 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Delete
 {
-    public class DeleteApplicantFollowupStatusCommand: IRequest<String>
+    public record DeleteApplicantFollowupStatusCommand(List<Guid> Ids): IRequest<String>
     {
-        public Guid Id { get; private set; }
-
-        public DeleteApplicantFollowupStatusCommand(Guid Id)
-        {
-            this.Id = Id;
-        }
+       
     }
 
    
@@ -31,12 +26,10 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Com
 
         public async Task<string> Handle(DeleteApplicantFollowupStatusCommand request, CancellationToken cancellationToken)
         {
+            int response = 0;
             try
             {
-                var applicantFollowupStatusEntity = await _applicantFollowupStatusRepository.GetByIdAsync(request.Id);
-                await _applicantFollowupStatusRepository.DeleteAsync(applicantFollowupStatusEntity.Id);
-                 await _applicantFollowupStatusRepository.SaveChangesAsync(cancellationToken);
-                
+              response= await _applicantFollowupStatusRepository.DeleteMany(request.Ids);                   
 
             }
             catch (Exception exp)
@@ -44,7 +37,7 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Com
                 throw (new ApplicationException(exp.Message));
             }
 
-            return "Applicant followup status information has been deleted!";
+            return response + " Applicant followup status information have been deleted!";
         }
     }
 }

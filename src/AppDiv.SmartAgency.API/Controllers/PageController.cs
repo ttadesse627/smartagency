@@ -46,13 +46,28 @@ namespace AppDiv.SmartAgency.API.Controllers
             return await _mediator.Send(new GetPageByIdQuery(id));
         }
 
-        [HttpDelete("Delete/{id}")]
+        /*[HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeletePage(Guid id)
         {
             try
             {
                 string result = string.Empty;
                 result = await _mediator.Send(new DeletePageCommand(id));
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
+        }*/
+        
+          [HttpDelete("Delete")]
+        public async Task<ActionResult> DeletePages([FromQuery]List<Guid> ids)
+        {
+            try
+            {
+                string result = string.Empty;
+                result = await _mediator.Send(new DeletePagesCommand(ids));
                 return Ok(result);
             }
             catch (Exception exp)

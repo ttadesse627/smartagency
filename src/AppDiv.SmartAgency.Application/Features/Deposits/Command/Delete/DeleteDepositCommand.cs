@@ -7,14 +7,9 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete
 {
-    public class DeleteDepositCommand: IRequest<String>
+    public record DeleteDepositCommand(List<Guid> Ids): IRequest<String>
     {
-        public Guid Id { get; private set; }
 
-        public DeleteDepositCommand(Guid Id)
-        {
-            this.Id = Id;
-        }
     }
 
    
@@ -31,20 +26,18 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete
 
         public async Task<string> Handle(DeleteDepositCommand request, CancellationToken cancellationToken)
         {
+            int response= 0;
             try
             {
-                var depositEntity = await _depositRepository.GetByIdAsync(request.Id);
-                await _depositRepository.DeleteAsync(depositEntity.Id);
-                 await _depositRepository.SaveChangesAsync(cancellationToken);
+                 response = await _depositRepository.DeleteMany(request.Ids);
                 
-
             }
             catch (Exception exp)
             {
                 throw (new ApplicationException(exp.Message));
             }
 
-            return "Deposit information has been deleted!";
+            return response+" "+"deleted!";
         }
     }
 }

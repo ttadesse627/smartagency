@@ -70,7 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
             var list = _dbContext.Set<T>().Where(lambda);
-            if(predicate !=null)
+            if (predicate != null)
             {
                 list = list.Where(predicate);
             }
@@ -372,6 +372,23 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         public virtual async Task InsertAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
         {
             await _dbContext.Set<T>().AddRangeAsync(entities, cancellationToken);
+        }
+
+        public virtual async Task<Int32> DeleteMany(List<Guid> ids)
+        {
+            var entities = new List<T>();
+            foreach (Guid id in ids)
+            {
+                var entity = await _dbContext.Set<T>().FindAsync(id);
+                if (entity != null)
+                {
+                    entities.Add(entity);
+                }
+
+            }
+            _dbContext.Set<T>().RemoveRange(entities);
+            var response = await _dbContext.SaveChangesAsync();
+            return response;
         }
 
         public virtual async Task DeleteAsync(object id)
@@ -1426,9 +1443,54 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
         public async Task<List<PropertyInfo>> GetProperties()
         {
-            var stringProperties = typeof(T).GetProperties().ToList();
-            return stringProperties;
+            var properties = typeof(T).GetProperties().ToList();
+            foreach (var prop in properties)
+            {
+                Console.WriteLine(prop.GetGetMethod());
+            }
+            return properties;
         }
 
+        public async Task<SearchModel<T>> GetAllWithPredicateFilterAsync(int pageNumber, int pageSize, List<Filter>? filters = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        {
+            // Construct the dynamic LINQ expression to apply sorting, filtering, and pagination
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            foreach (var excProp in eagerLoadedProperties)
+            {
+                query = query.Include(excProp);
+            }
+
+            // Apply the predicate
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            // Apply filters
+            if (filters != null)
+            {
+                foreach (var filter in filters)
+                {
+                    query = query.Where($"{filter.PropertyName}.{filter.MethodName}(@0)", filter.Value);
+                }
+            }
+
+            // Count total items
+            var totalItems = await query.CountAsync();
+
+            // Apply pagination
+            var skip = (pageNumber - 1) * pageSize;
+            var items = await query.Skip(skip).Take(pageSize).ToListAsync();
+
+            // Return the search result
+            return new SearchModel<T>
+            {
+                Items = items,
+                TotalCount = totalItems,
+                CurrentPage = pageNumber,
+                PagingSize = pageSize
+            };
+        }
     }
 }

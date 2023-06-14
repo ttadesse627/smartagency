@@ -17,7 +17,9 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public LookUp? Position { get; set; }
         public LookUp? Branch { get; set; }
         public Partner? Partner { get; set; }
+        public ICollection<Complaint>? Complaints { get; set; }
         public virtual Address Address { get; set; }
         public virtual ICollection<UserGroup> UserGroups { get; set; }
+
     }
 }
