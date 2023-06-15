@@ -49,28 +49,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
         if (query.Id != null)
         {
             var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.Id, "ProcessDefinitions");
-            // if (processEntity.Step == 1)
-            // {
-            //     var notStartedApplicants = await _applicantRepository.GetAllApplWithPredicateSrchAsync(
-            //         query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
-            //         appl => appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0, applicantLoadedProperties);
-            //     var initAppls = new List<GetApplProcessResponseDTO>();
-            //     foreach (var notStrtAppl in notStartedApplicants.Items)
-            //     {
-            //         initAppls.Add(new GetApplProcessResponseDTO()
-            //         {
-            //             Id = notStrtAppl.Id,
-            //             PassportNumber = notStrtAppl.PassportNumber,
-            //             FullName = notStrtAppl.FirstName + " " + notStrtAppl.MiddleName + " " + notStrtAppl.LastName,
-            //             OrderNumber = notStrtAppl.Order?.OrderNumber!,
-            //             SponsorName = notStrtAppl.Order?.Sponsor?.FullName!
-            //         });
-            //     }
 
-            //     response.ProcessReadyApplicants = initAppls;
-            // }
-            // else
-            // {
             var onProcessApplicants = await _definitionRepository.GetAllWithPredicateSearchAsync(
                 query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
                 pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == query.Id, pdLoadedProperties);
@@ -98,7 +77,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
                 });
             }
 
-            response = CustomMapper.Mapper.Map<List<GetProcessDefinitionResponseDTO>>(onProcessApplicants.Items);
+            // response = CustomMapper.Mapper.Map<List<GetProcessDefinitionResponseDTO>>(onProcessApplicants.Items.ToList());
             // }
         }
         return response;

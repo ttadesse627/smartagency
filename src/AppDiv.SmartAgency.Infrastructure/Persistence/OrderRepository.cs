@@ -44,8 +44,9 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
                     .Include("Sponsor")
                     .Include("Sponsor.AttachmentFile")
                     .Include("Sponsor.Address")
-                    .Include("Sponsor.Address.AddressRegion")
+                    .Include("Sponsor.Address.Region")
                     .Include("Sponsor.Address.Country")
+                    .Include("Sponsor.Address.City")
                     .Include("Payment")
                     .Include("Employee")
                     .Include("Partner").FirstOrDefaultAsync(ord => ord.Id == id);
@@ -70,7 +71,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
     public ServiceResponse<String> UpdateOrder(Order updatedOrder)
     {
-        var response =  new ServiceResponse<String>();
+        var response = new ServiceResponse<String>();
         try
         {
             _context.Orders.Update(updatedOrder);

@@ -12,5 +12,10 @@ public record GetRepresentativeResponseDTO
     public string LastName { get; set; }
     public DateTime? BirthDate { get; set; }
     public Gender? Gender { get; set; }
-    public GetRepAddressResponseDTO? Address { get; set; }
+    public string? City { get; set; }
+    public string? Zone { get; set; }
+    public string? Woreda { get; set; }
+    public string? Kebele { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? HouseNumber { get; set; }
 }

@@ -12,6 +12,8 @@ using AppDiv.SmartAgency.Domain.Configurations;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
+using AppDiv.SmartAgency.Infrastructure.Seed;
+using AppDiv.SmartAgency.Domain.Entities.TicketData;
 
 namespace AppDiv.SmartAgency.Infrastructure.Context
 {
@@ -57,6 +59,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Enjaz> Enjazs { get; set; }
         public DbSet<ApplicantProcess> ApplicantProcesses { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<TicketReady> TicketReadies { get; set; }
+        public DbSet<TicketRegistration> TicketRegistrations { get; set; }
+        public DbSet<TicketRefund> TicketRefunds { get; set; }
+        public DbSet<TicketRebook> TicketRebooks { get; set; }
+        public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
@@ -105,15 +112,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new EnjazEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantProcessEntityConfig());
                 modelBuilder.ApplyConfiguration(new ComplaintEntityConfig());
+                modelBuilder.ApplyConfiguration(new TicketReadyEntityConfig());
+                modelBuilder.ApplyConfiguration(new TicketRegistrationEntityConfig());
+                modelBuilder.ApplyConfiguration(new TicketRefundEntityConfig());
+                modelBuilder.ApplyConfiguration(new TicketRebookEntityConfig());
+                modelBuilder.ApplyConfiguration(new TicketRebookRegEntityConfig());
+                modelBuilder.ApplyConfiguration(new TraveledApplicantEntityConfig());
                 modelBuilder.Ignore<PersonalInfo>();
             }
             #endregion
             base.OnModelCreating(modelBuilder);
-            // SeedData.SeedRoles(modelBuilder);
-            // SeedData.SeedUsers(modelBuilder);
-            // SeedData.SeedUserRoles(modelBuilder);
-            // SeedData.SeedGender(modelBuilder);
-            // SeedData.SeedSuffix(modelBuilder);
+            SeedData.Seedprocesses(modelBuilder);
+            SeedData.SeedprocessDefinitions(modelBuilder);
 
             #region Audit Config
             Audit.Core.Configuration.Setup()

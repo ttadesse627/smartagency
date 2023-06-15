@@ -31,8 +31,8 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                                         "OrderCriteria.Salary","OrderCriteria.Religion",
                                         "OrderCriteria.Experience","OrderCriteria.Language",
                                         "Sponsor","Sponsor.AttachmentFile","Sponsor.Address",
-                                        "Sponsor.Address.AddressRegion","Sponsor.Address.Country",
-                                        "Payment","Employee","Partner"
+                                        "Sponsor.Address.Region","Sponsor.Address.Country",
+                                        "Sponsor.Address.City","Payment","Employee","Partner"
                                     };
         var serviceResponse = await _orderRepository.GetWithPredicateAsync(order => order.Id == editOrderRequest.Id, eagerLoadedProperties);
 

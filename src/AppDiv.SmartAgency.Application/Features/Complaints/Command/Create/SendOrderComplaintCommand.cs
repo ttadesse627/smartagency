@@ -38,7 +38,6 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
                 CreatedBy = _context.GetCurrentUserId()
             };
             await _complaintRepository.InsertAsync(complint, cancellationToken);
-
             try
             {
                 var success = await _complaintRepository.SaveChangesAsync(cancellationToken);

@@ -37,7 +37,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
         {
             listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
         }
-        var explLoadedProps = new string[] { "Partner", "Address", "Address.AddressRegion", "UserGroups" };
+        var explLoadedProps = new string[] { "Partner", "Address", "Address.Region", "UserGroups" };
         var user = await _userRepository.GetWithPredicateAsync(appl => appl.Id == request.Id.ToString(), explLoadedProps);
 
         if (user != null)

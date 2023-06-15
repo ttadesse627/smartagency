@@ -39,7 +39,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
         [HttpGet("lookup")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<List<DropDownDto>> GetDropdown()
+        public async Task<UserGroupResponseDTO> GetDropdown()
         {
             return await _mediator.Send(new GetDropDownGroups());
         }

@@ -1,5 +1,4 @@
 
-
 namespace AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 public record SubmitApplicantProcessRequest
 {

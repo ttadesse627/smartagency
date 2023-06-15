@@ -6,6 +6,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs
     {
         public Guid Id { get; set; }
         public string GroupName { get; set; }
-        public Dictionary<string, List<string>> Description { get; set; }
+        public string DescriptionStr { get; set; }
     }
 }
