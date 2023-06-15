@@ -17,7 +17,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
 
         public string? ContractNumber{ get; set; }
 
-        public string?  licenseNumber { get; set; }
+       public string?  licenseNumber { get; set; }
        public string AssurancePolicyNumber { get; set; }
 
        public string GeneralManager { get; set; }

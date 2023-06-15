@@ -23,17 +23,16 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
        public string AssurancePolicyNumber { get; set; }
 
        public string GeneralManager { get; set; }
-       public string? GeneralManagerAmharic { get; set; }
-       public string? ViceManager { get; set; }
-       public string? ViceManagerAmharic { get; set; }
-       public string? CountriesOperation { get; set; }
+        public string? GeneralManagerAmharic { get; set; }
+        public string? ViceManager { get; set; }
+        public string? ViceManagerAmharic { get; set; }
+        public string? CountriesOperation { get; set; }
         public string? LetterLogo { get; set; }
        public string? LetterBackGround{ get; set; }
        public CompanyAddressRequest? Address { get; set; }
       
-      public ICollection<CompanyWitnessRequest>? Witnesses { get; set; }
-      public ICollection<CountryOperationRequest>? CountryOperations { get; set; }
-      public CompanySettingRequest? CompanySetting {get; set;}
+       public ICollection<CompanyWitnessRequest>? Witnesses { get; set; }
+       public CompanySettingRequest? CompanySetting {get; set;}
      
     }
 }

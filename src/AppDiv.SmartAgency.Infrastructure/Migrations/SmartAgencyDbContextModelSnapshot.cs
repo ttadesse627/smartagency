@@ -1057,6 +1057,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("AmountOfDeposit")
                         .HasColumnType("int");
 
+                    b.Property<string>("AuthorizedPerson")
+                        .HasColumnType("longtext");
+
                     b.Property<Guid?>("CompanyInformationId")
                         .HasColumnType("char(36)");
 
@@ -1069,9 +1072,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("FileNumberStartFrom")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Manager")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -1080,9 +1080,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<int>("PrintedDocumentSubmitDays")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ViseManager")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -1806,7 +1803,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 11, 22, 1, 27, 506, DateTimeKind.Local).AddTicks(2329));
+                        .HasDefaultValue(new DateTime(2023, 6, 14, 16, 28, 26, 718, DateTimeKind.Local).AddTicks(9487));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
