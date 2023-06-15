@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
+using AppDiv.SmartAgency.Domain.Entities.TicketData;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 [Table("Applicants")]
@@ -74,4 +75,9 @@ public class Applicant : PersonalInfo
     public ICollection<Deposit>? Deposits { get; set; }
     public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses { get; set; }
     public ICollection<ApplicantProcess>? ApplicantProcesses { get; set; }
+    public TicketReady? TicketReady { get; set; }
+    public TicketRegistration? TicketRegistration { get; set; }
+    public TicketRefund? TicketRefund { get; set; }
+    public TicketRebook? TicketRebook { get; set; }
+    public TicketRebookReg? TicketRebookRegistration { get; set; }
 }

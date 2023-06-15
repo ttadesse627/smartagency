@@ -7,7 +7,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Query;
 public record GetSingleApplicantQuery(Guid id) : IRequest<GetApplicantResponseDTO>
-{}
+{ }
 public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicantQuery, GetApplicantResponseDTO>
 {
     private readonly IMediator _mediator;
@@ -27,9 +27,8 @@ public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicant
                                         "LanguageSkills.Language","Skills.LookUp","Experiences.Country",
                                         "Education.QualificationTypes.LookUp","Education.LevelOfQualifications.LookUp",
                                         "Education.Awards.LookUp","BankAccount","EmergencyContact.Relationship",
-                                        "EmergencyContact.Address.AddressRegion","Representative.Address.AddressRegion",
-                                        "Witnesses","Beneficiaries.Relationship","AttachmentFiles.Attachment",
-                                        "Address.AddressRegion"
+                                        "EmergencyContact.Address.Region","Witnesses","Beneficiaries.Relationship",
+                                        "AttachmentFiles.Attachment","Address.Region"
                                     };
         var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.id && appl.IsDeleted == false, eagerLoadedProperties);
         var applicantResponse = CustomMapper.Mapper.Map<GetApplicantResponseDTO>(applicantEntity);

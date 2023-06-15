@@ -9,5 +9,5 @@ public class UpdateAddressRequest
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     public string Website { get; set; }
-    public Guid AddressRegionId { get; set; }
+    public Guid RegionId { get; set; }
 }

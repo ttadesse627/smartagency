@@ -17,18 +17,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public string? DescriptionStr { get; set; }
         public string RolesStr { get; set; }
         [NotMapped]
-        public JObject Description
-        {
-            get
-            {
-                return JsonConvert.DeserializeObject<JObject>(string.IsNullOrEmpty(DescriptionStr) ? "{}" : DescriptionStr);
-            }
-            set
-            {
-                DescriptionStr = value.ToString();
-            }
-        }
-        [NotMapped]
         public JArray Roles
         {
             get

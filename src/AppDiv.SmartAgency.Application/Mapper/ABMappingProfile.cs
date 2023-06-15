@@ -107,7 +107,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Witness, GetWitnessResponseDTO>();
             CreateMap<Beneficiary, GetBeneficiaryResponseDTO>();
             CreateMap<Address, GetAddressResponseDTO>();
-            CreateMap<Address, GetRepAddressResponseDTO>();
             CreateMap<Beneficiary, GetBeneficiaryResponseDTO>();
             CreateMap<Skill, GetSkillResponseDTO>();
             CreateMap<QualificationType, GetQualificationTypeResponseDTO>();

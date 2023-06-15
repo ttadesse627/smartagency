@@ -6,9 +6,9 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup
 {
-    public record GetDropDownGroups : IRequest<List<DropDownDto>> { }
+    public record GetDropDownGroups : IRequest<UserGroupResponseDTO> { }
 
-    public class GetDropDownGroupsHandler : IRequestHandler<GetDropDownGroups, List<DropDownDto>>
+    public class GetDropDownGroupsHandler : IRequestHandler<GetDropDownGroups, UserGroupResponseDTO>
     {
         private readonly IGroupRepository _groupRepository;
 
@@ -16,15 +16,18 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup
         {
             _groupRepository = groupRepository;
         }
-        public async Task<List<DropDownDto>> Handle(GetDropDownGroups request, CancellationToken cancellationToken)
+        public async Task<UserGroupResponseDTO> Handle(GetDropDownGroups request, CancellationToken cancellationToken)
         {
             var grpdropDowns = await _groupRepository.GetAllWithAsync();
+            var userGroups = new UserGroupResponseDTO();
             var dropDownResponse = new List<DropDownDto>();
             foreach (var grItem in grpdropDowns)
             {
                 dropDownResponse.Add(new DropDownDto { Key = grItem.Id, Value = grItem.GroupName });
             }
-            return dropDownResponse;
+
+            userGroups.UserGroups = dropDownResponse;
+            return userGroups;
 
         }
     }

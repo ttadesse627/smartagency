@@ -10,7 +10,8 @@ public class AddressResponseDTO
 {
     public Guid Id { get; set; }
     public LookUpItemResponseDTO Country { get; set; }
-    public LookUpItemResponseDTO AddressRegion { get; set; }
+    public LookUpItemResponseDTO Region { get; set; }
+    public string SubCity { get; set; }
     public string Zone { get; set; }
     public string Woreda { get; set; }
     public string Kebele { get; set; }

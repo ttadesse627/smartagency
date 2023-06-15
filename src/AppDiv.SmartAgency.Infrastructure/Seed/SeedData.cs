@@ -1,86 +1,36 @@
-﻿using AppDiv.SmartAgency.Domain;
-using AppDiv.SmartAgency.Domain;
-using AppDiv.SmartAgency.Domain.Entities.Settings;
-using Microsoft.AspNetCore.Identity;
+﻿using AppDiv.SmartAgency.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Infrastructure.Seed
 {
     internal class SeedData
     {
-        internal static void SeedUsers(ModelBuilder builder)
+        internal static void Seedprocesses(ModelBuilder builder)
         {
-            //     ApplicationUser user = new ApplicationUser()
-            //     {
-            //         Id = "b74ddd14-6340-4840-95c2-db12554843e5",
-            //         UserName = "Admin",
-            //         NormalizedUserName = "ADMIN",
-            //         Email = "admin@gmail.com",
-            //         NormalizedEmail = "ADMIN@GMAIL.COM",
-            //         LockoutEnabled = false,
-            //         PhoneNumber = "1234567890"
-            //     };
+            var staticProcess = new Process
+            {
+                Id = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"),
+                Name = "Ticket Process",
+                Step = 100,
+                VisaRequired = true,
+                EnjazRequired = false
+            };
 
-            //     var passwordHasher = new PasswordHasher<ApplicationUser>();
-            //     user.PasswordHash = passwordHasher.HashPassword(user, "Admin@123");
-
-            //     builder.Entity<ApplicationUser>().HasData(user);
+            builder.Entity<Process>().HasData(staticProcess);
         }
 
-        internal static void SeedRoles(ModelBuilder builder)
+        internal static void SeedprocessDefinitions(ModelBuilder builder)
         {
-            builder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Id = "fab4fac1-c546-41de-aebc-a14da6895711", Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
-                new IdentityRole() { Id = "c7b013f0-5201-4317-abd8-c211f91b7330", Name = "HR", ConcurrencyStamp = "2", NormalizedName = "Human Resource" }
-                );
+            var pDefs = new List<ProcessDefinition>
+            {
+                new ProcessDefinition {Id = Guid.Parse("00fa1a8e-ac70-400e-8f37-20010f81a27a"), Name = "Ready to Issue Ticket", Step = 0, RequestApproval = false, ProcessId = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86") },
+                new ProcessDefinition {Id = Guid.Parse("1dc479ab-fe84-4ca8-828f-9a21de7434e7"), Name = "Register Ticket", Step = 1, RequestApproval = false, ProcessId = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86") },
+                new ProcessDefinition {Id = Guid.Parse("2d9ef769-6d03-4406-9849-430ff9723778"), Name = "Refund Ticket", Step = 2, RequestApproval = false, ProcessId = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86") },
+                new ProcessDefinition {Id = Guid.Parse("3048b353-039d-41b6-8690-a9aaa2e679cf"), Name = "Rebook Ticket", Step = 3, RequestApproval = false, ProcessId = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86") },
+                new ProcessDefinition {Id = Guid.Parse("4048b353-039d-41b6-8690-a9aaa2e679cf"), Name = "Register Rebook Ticket", Step = 3, RequestApproval = false, ProcessId = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86") },
+                new ProcessDefinition {Id = Guid.Parse("5b912c00-9df3-47a1-a525-410abf239616"), Name = "Travel", Step = 2, RequestApproval = true, ProcessId = Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86") }
+            };
+            builder.Entity<ProcessDefinition>().HasData(pDefs);
         }
-
-        // internal static void SeedUserRoles(ModelBuilder builder)
-        // {
-        //     builder.Entity<IdentityUserRole<string>>().HasData(
-        //         new IdentityUserRole<string>() { RoleId = "fab4fac1-c546-41de-aebc-a14da6895711", UserId = "b74ddd14-6340-4840-95c2-db12554843e5" }
-        //         );
-        // }
-
-        // internal static void SeedGender(ModelBuilder builder)
-        // {
-        //     builder.Entity<Gender>().HasData(
-        //         new Gender()
-        //         {
-        //             Name = "Male",
-        //             Code = "M",
-        //             CreatedAt = DateTime.Now
-        //         },
-        //         new Gender()
-        //         {
-        //             Name = "Female",
-        //             Code = "F",
-        //             CreatedAt= DateTime.Now
-        //         }
-        //   );
-        // }
-        // internal static void SeedSuffix(ModelBuilder builder)
-        // {
-        //     builder.Entity<Suffix>().HasData(             
-
-        //         new Suffix()
-        //         {
-        //             Name = "Mr.",
-        //             CreatedAt= DateTime.Now,
-        //         },
-        //         new Suffix()
-        //         {
-        //             Name="Mrs.",
-        //             CreatedAt= DateTime.Now,
-
-        //         }
-
-        //   );
-        // }
     }
 }

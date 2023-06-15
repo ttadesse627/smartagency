@@ -21,7 +21,7 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Update
             {
                 Id = request.group.Id,
                 GroupName = request.group.GroupName,
-                Description = request.group.Description,
+                DescriptionStr = request.group.Description,
                 Roles = request.group.Roles,
             };
             try

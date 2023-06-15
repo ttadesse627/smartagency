@@ -30,8 +30,8 @@ public class GetDeletedOrderQueryHandler : IRequestHandler<GetDeletedOrderQuery,
                                         "OrderCriteria.Salary","OrderCriteria.Religion",
                                         "OrderCriteria.Experience","OrderCriteria.Language",
                                         "Sponsor","Sponsor.AttachmentFile","Sponsor.Address",
-                                        "Sponsor.Address.AddressRegion","Sponsor.Address.Country",
-                                        "Payment","Employee","Partner"
+                                        "Sponsor.Address.Region","Sponsor.Address.Country",
+                                        "Sponsor.Address.City","Payment","Employee","Partner"
                                     };
         orderResponse.Data = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.id && order.IsDeleted == true, eagerLoadedProperties);
 

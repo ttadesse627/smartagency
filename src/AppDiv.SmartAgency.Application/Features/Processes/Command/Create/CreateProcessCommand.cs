@@ -31,6 +31,7 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         var request = command.request;
         var response = new ServiceResponse<Int32>();
         var process = CustomMapper.Mapper.Map<Process>(request);
+        var maxStep = await _processRepository.GetMaximumStepAsync(pr => !(pr.Name.ToLower().Contains(("ticket"))));
         try
         {
             await _processRepository.InsertAsync(process, cancellationToken);
@@ -73,6 +74,21 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         {
 
             throw new ApplicationException(ex.Message);
+        }
+
+        if (maxStep < request.Step)
+        {
+            maxStep = request.Step;
+        }
+        var ticketProcess = await _processRepository.GetWithPredicateAsync(pro => pro.Name.ToLower().Contains("ticket"));
+        ticketProcess.Step = maxStep + 1;
+        try
+        {
+            await _processRepository.SaveChangesAsync(cancellationToken);
+        }
+        catch (System.Exception ex)
+        {
+            throw new ApplicationException($"Unknown error occurred while updating the {ticketProcess.Name}'s step.");
         }
         return response;
     }

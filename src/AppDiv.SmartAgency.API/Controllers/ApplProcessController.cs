@@ -1,6 +1,7 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Features.Processes.Create;
@@ -20,14 +21,15 @@ public class ApplProcessController : ControllerBase
         _mediator = mediator;
     }
     [HttpPost("create")]
-    public async Task<ActionResult<ApplicantProcessResponseDTO>> CreateProcess(SubmitApplicantProcessRequest request)
+    public async Task<ActionResult<ServiceResponse<ApplicantProcessResponseDTO>>> CreateProcess(SubmitApplicantProcessRequest request)
     {
         var response = await _mediator.Send(new SubmitApplicantProcessCommand(request));
-        return Ok(response.Data);
+        return Ok(response);
     }
     [HttpGet("get/{id}")]
     public async Task<ActionResult<List<GetProcessDefinitionResponseDTO>>> GetApplicantProcessses([Required] Guid id, int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetApplProcessQuery(id, pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+        var response = await _mediator.Send(new GetApplProcessQuery(id, pageNumber, pageSize, searchTerm, orderBy, sortingDirection));
+        return Ok(response);
     }
 }
