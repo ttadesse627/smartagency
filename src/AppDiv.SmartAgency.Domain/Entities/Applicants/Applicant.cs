@@ -80,4 +80,5 @@ public class Applicant : PersonalInfo
     public TicketRefund? TicketRefund { get; set; }
     public TicketRebook? TicketRebook { get; set; }
     public TicketRebookReg? TicketRebookRegistration { get; set; }
+    public TraveledApplicant? TraveledApplicant { get; set; }
 }

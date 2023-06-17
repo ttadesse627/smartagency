@@ -37,10 +37,15 @@ public class ProcessController : ControllerBase
         return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
     }
 
-    [HttpPut("edit")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> EditProcess(EditProcessRequest request)
+    [HttpPut("edit/{id}")]
+    public async Task<ActionResult<ServiceResponse<Int32>>> EditProcess(Guid id, EditProcessRequest request)
     {
         var response = new ServiceResponse<Int32>();
+        if (request.Id != id)
+        {
+            response.Message = $"The query id {id} and the body id {request.Id} must be the same.";
+            return BadRequest(response);
+        }
         response = await _mediator.Send(new EditProcessCommand(request));
         return Ok(response);
     }

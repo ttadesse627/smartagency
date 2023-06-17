@@ -9,6 +9,6 @@ public record GetProcessDefinitionResponseDTO
     public string Name { get; set; }
     public int Step { get; set; }
     public bool RequestApproval { get; set; }
-    public SearchModel<GetApplProcessResponseDTO>? ApplicantProcesses { get; set; }
+    public ICollection<GetApplProcessResponseDTO>? ApplicantProcesses { get; set; }
 
 }
