@@ -29,13 +29,29 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
         var representativeEntity = CustomMapper.Mapper.Map<Representative>(request.Witness.Representative);
         var witnessList = new List<Witness>();
+        var experienceList = new List<Experience>();
+        var beneficiaryList = new List<Beneficiary>();
         foreach (var wtns in request.Witness.Witnesses)
         {
             var witnessEntity = CustomMapper.Mapper.Map<Witness>(wtns);
             witnessList.Add(witnessEntity);
         }
+
+        foreach (var bnf in request.Beneficiary.Beneficiaries)
+        {
+            var beneficiaryEntity = CustomMapper.Mapper.Map<Beneficiary>(bnf);
+            beneficiaryList.Add(beneficiaryEntity);
+        }
+
+        foreach (var exp in request.ApplicantExperience.Experiences)
+        {
+            var expEntity = CustomMapper.Mapper.Map<Experience>(exp);
+            experienceList.Add(expEntity);
+        }
         applicantEntity.Witnesses = witnessList;
         applicantEntity.Representative = representativeEntity;
+        applicantEntity.Experiences = experienceList;
+        applicantEntity.Beneficiaries = beneficiaryList;
 
 
 

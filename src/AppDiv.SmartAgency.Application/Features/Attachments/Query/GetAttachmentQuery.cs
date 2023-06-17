@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Attachments
+namespace AppDiv.SmartAgency.Application.Features.Attachments.Query
 {
     public record GetAttachmentQuery(Guid id) : IRequest<AttachmentResponseDTO> { }
 

@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Attachments;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
-using AppDiv.SmartAgency.Application.Features.Query.Attachments;
+using AppDiv.SmartAgency.Application.Features.Attachments.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -83,5 +83,12 @@ public class AttachmentController : ControllerBase
         {
             return BadRequest(exp.Message);
         }
+    }
+
+    [HttpGet("lookup")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<AttachmntResponseDTO> GetDropdown()
+    {
+        return await _mediator.Send(new GetDropDownAttachmentsQuery());
     }
 }

@@ -5,302 +5,161 @@ POST {{host}}/create
 Content-Type: application/json
 
 {
-    "firstName": "Abebe",
-    "middleName": "Balcha",
-    "lastName": "Firomsa",
-    "gender": "Male",
-    "birthDate": "2023-04-30T18:27:18.967Z",
-    "passportNumber": "EP00000001",
-    "issuingCountry": "Ethiopia",
-    "issuedDate": "2023-04-30T18:27:18.967Z",
-    "issuedPlace": "Addis Ababa",
-    "passportExpiryDate": "2023-04-30T18:27:18.967Z",
-    "placeOfBirth": "Finfinne",
-    "amharicFullName": "አበበ ባልቻ ፊሮምሳ",
-    "arabicFullName": "string",
-    "maritalStatus": "Single",
-    "complexion": "Brown",
-    "numberOfChildren": 0,
-    "health": "Fit",
-    "religionId": "23a74439-3837-4927-87b7-6d3a6747937d",
-    "jobTitles": [
-        {
-            "lookUpJobtitleId": "b9343614-09f8-4254-90ca-c2eb2fc352be"
-        }
+  "firstName": "Abebe",
+  "middleName": "Lemma",
+  "lastName": "Koricho",
+  "birthDate": "2023-06-15T18:36:08.321Z",
+  "gender": "Male",
+  "passportNumber": "EP0001",
+  "issuedDate": "2023-06-15T18:36:08.321Z",
+  "passportExpiryDate": "2023-06-15T18:36:08.321Z",
+  "placeOfBirth": "Finfinne",
+  "amharicFullName":"አበበ ለማ ቆሪቾ",
+  "arabicFullName": "string",
+  "complexion": "Brown",
+  "numberOfChildren": 0,
+  "motherName": "Tigist",
+  "previousNationality": "Eritrea",
+  "currentNationality": "Ethiopia",
+  "height": 172,
+  "weight": 62,
+  "contractPeriod": 2,
+  "amharicJobTitle": "የቤት ሰራተኛ",
+  "remark": "That is all about!",
+  "issuingCountryId": "4788226b-3a2d-468f-9ad5-1388c74a20ef",
+  "passportIssuedPlaceId": "3fbc7760-1673-467d-9892-db37fd48189b",
+  "maritalStatusId": "29d9d6c9-c7f6-4880-a813-2db392b63cf2",
+  "healthId": "97f74bda-9679-4701-b0c5-3cd23c84ade9",
+  "religionId": "ab96fae6-99de-4fb5-8163-388faf9c4d6a",
+  "jobtitleId": "8e846e5f-6b18-4643-adda-b0a7d0e730dc",
+  "experienceId": "9792c804-ecf1-4204-96f8-e81ec17f5e98",
+  "languageId": "ebc83e36-2fef-4e59-a34b-8026a6e2b1c1",
+  "salaryId": "f106c7a0-bf91-4faa-bf08-8c6f44ee49aa",
+  "desiredCountryId": "4788226b-3a2d-468f-9ad5-1388c74a20ef",
+  "brokerNameId": "961dd3f5-7c3f-488e-af00-9cfe16f56840",
+  "branchId": "e753a3a0-3517-422a-97eb-cf3a45688fc0",
+  "partnerId": null,
+  "skill": {
+    "languageSkills": [
+      {
+        "canWrite": true,
+        "canRead": true,
+        "canSpeak": true,
+        "canListen": true,
+        "proficiency": "Good",
+        "languageId": "ebc83e36-2fef-4e59-a34b-8026a6e2b1c1"
+      }
     ],
-    "salary": 875,
-    "desiredCountry": "Saudi Arabia",
-    "motherFullName": "Toltu Regassa",
-    "previousCountry": "Ethiopia",
-    "currentNationality": "Ethiopian",
-    "height": 165,
-    "contractPeriod": 3,
-    "jobTitleAmharic": "የቤት ሰራተኛ",
-    "brokerName": "ABH",
-    "branch": "Bishoftu",
-    "remark": "He is a good employee!",
-    "languages": [
-        {
-        "languageId": "057bb66f-7ed7-424f-82c2-6d7f2839c6fc",
-        "ability": {
-                "canWrite": true,
-                "canRead": true,
-                "canSpeak": true,
-                "canListen": true,
-                "proficiency": "Good"
-            }
-        }
-    ],
-    "technicalSkills": [
-        {
-            "lookUpTechnicalSkillId": "94ce553f-a83d-48ce-a6f5-1cce33f91c3f"
-        }
-    ],
+    "skills": [
+      "6b9366ab-26ca-4be3-a953-f029c03c381a"
+    ]
+  },
+  "applicantExperience": {
     "experiences": [
-        {
-            "countryLookupId": "8d276319-ad7b-4281-8b17-b3e01ac00fd1",
-            "periodLength": 5,
-            "position": "House Maid"
-        }
+      {
+        "periodLength": 2,
+        "position": "Software Engineering",
+        "countryId": "4788226b-3a2d-468f-9ad5-1388c74a20ef"
+      }
+    ]
+  },
+  "education": {
+    "yearCompleted": 2022,
+    "fieldOfStudy": "SE",
+    "professionalSkill": "Software Development",
+    "qualificationTypes": [
+      "e7fe69e5-29e5-4e28-8a0c-720610fad41a"
     ],
-    "education": {
-        "educationLevelofQualifications": [
-            {
-                "levelOfQualificationLookUpId": "fe458d72-0902-4df4-9117-99e8fb0e15a5"
-            }
-        ],
-        "educationQualificationTypes": [
-            {
-                "qualificationTypeLookUpId": "8cf5cb30-77e4-4959-9426-ad82c4d8a030"
-            }
-        ],
-        "educationAawards": [
-            {
-                "awardLookUpId": "e6a800df-2db3-4412-b81b-10e42f5c9941"
-            }
-        ],
-        "yearCompleted": 2022,
-        "fieldOfStudy": "SE",
-        "professionalSkill": "Software Development"
-    },
-    "bankAccount": {
-        "bankName": "CBE",
-        "accountNumber": 1000263339413,
-        "branchName": "Oda Nebe",
-        "swiftCode": "CBEETTAA"
-    },
-    "emergencyContact": {
-        "firstName": "Abebe",
-        "middleName": "Lemma",
-        "lastName": "Gutema",
-        "relationship": "Uncle",
-        "address": {
-            "country": "Ethiopia",
-            "region": "Oromia",
-            "zone": "East Shoa",
-            "woreda": "Akaki",
-            "kebele": "Koticha",
-            "phoneNumber": "+251912345678",
-            "email": "abebe@email.com",
-            "website": "abc.com"
-        }
-    },
-    "repersentative": {
-        "firstName": "Geresu",
-        "middleName": "Hagos",
-        "lastName": "Beressa",
-        "address": {
-            "country": "Ethiopia",
-            "region": "Oromia",
-            "zone": "East Shoa",
-            "woreda": "Akaki",
-            "kebele": "Koticha",
-            "phoneNumber": "+251912345678",
-            "email": "abebe@email.com",
-            "website": "abc.com"
-        }
+    "levelofQualifications": [
+      "077ab8a3-1a76-4955-94f4-6e3a21ef21fd"
+    ],
+    "awards": [
+      "53bb10a0-a778-4f9d-93ba-aae8b742c057"
+    ]
+  },
+  "bankAccount": {
+    "bankName": "CBE",
+    "accountNumber": 1000263339413,
+    "branchName": "Dukem",
+    "swiftCode": "CBEETTAA"
+  },
+  "emergencyContact": {
+    "nameOfContactPerson": "Tolcha",
+    "arabicName": "string",
+    "birthDate": "2023-06-15T18:36:08.321Z",
+    "gender": "Male",
+    "relationshipId": "96aa5fa6-12b9-43a7-a0b7-e0ed6c8fa4cb",
+    "address": {
+      "subCity": "Dukem",
+      "zone": "East Shoa",
+      "woreda": "Melka Dukem",
+      "kebele": "01",
+      "phoneNumber": "0912345678",
+      "houseNumber": "MK001",
+      "officePhone": "0912345678",
+      "mobile": "0912345678",
+      "alternativePhone": "0912345678",
+      "fax": "04512345678",
+      "adress": "Dukem, Ethio-Djibouti Railways",
+      "postCode": "10001",
+      "email": "abebe@email.com",
+      "website": "abebe.com",
+      "regionId": "46cb8844-0ac8-4c85-849e-5a616eeb8c5d"
+    }
+  },
+  "witness": {
+    "representative": {
+      "fullName": "string",
+      "city": "string",
+      "zone": "string",
+      "woreda": "string",
+      "kebele": "string",
+      "phoneNumber": "string",
+      "houseNumber": "string"
     },
     "witnesses": [
-        {
-            "firstName": "Jenbere",
-            "middleName": "Bonsa",
-            "lastName": "Lemmi",
-            "address": "Addis Ababa",
-            "phoneNumber": "+251987654321"
-        }
-    ],
+      {
+        "fullName": "string",
+        "address": "string",
+        "phoneNumber": "string"
+      }
+    ]
+  },
+  "beneficiary": {
     "beneficiaries": [
-        {
-            "firstName": "Jitu",
-            "middleName": "Getachew",
-            "lastName": "Talema",
-            "region": "Addis Ababa",
-            "zone": "Kality",
-            "woreda": "Akaki",
-            "relationshipId": "f8f8d467-6821-4eab-a186-25876744c21c",
-            "rate": 35
-        }
-    ],
-    "address": {
-        "country": "Ethiopia",
-        "region": "Oromia",
-        "zone": "East Shoa",
-        "woreda": "Akaki",
-        "kebele": "Koticha",
-        "phoneNumber": "+251912345678",
-        "email": "abebe@email.com",
-        "website": "abc.com"
-    }
+      {
+        "fullName": "string",
+        "region": "string",
+        "zone": "string",
+        "woreda": "string",
+        "rate": 0,
+        "relationshipId": "96aa5fa6-12b9-43a7-a0b7-e0ed6c8fa4cb"
+      }
+    ]
+  },
+  "attachment": {
+    "attachmentFiles": [
+      {
+        "attachmentFile": "string",
+        "attachmentId": null
+      }
+    ]
+  },
+  "address": {
+      "subCity": "Dukem",
+      "zone": "East Shoa",
+      "woreda": "Melka Dukem",
+      "kebele": "01",
+      "phoneNumber": "0912345678",
+      "houseNumber": "MK001",
+      "officePhone": "0912345678",
+      "mobile": "0912345678",
+      "alternativePhone": "0912345678",
+      "fax": "04512345678",
+      "adress": "Dukem, Ethio-Djibouti Railways",
+      "postCode": "10001",
+      "email": "abebe@email.com",
+      "website": "abebe.com",
+      "regionId": "46cb8844-0ac8-4c85-849e-5a616eeb8c5d"
+  }
 }
-
-
-###
-# POST {{host}}/create
-
-# {
-#     "firstName": "string",
-#     "middleName": "string",
-#     "lastName": "string",
-#     "gender": "Male",
-#     "birthDate": "2023-05-07T13:41:06.179Z",
-#     "passportNumber": "string",
-#     "issuedDate": "2023-05-07T13:41:06.179Z",
-#     "passportExpiryDate": "2023-05-07T13:41:06.179Z",
-#     "placeOfBirth": "string",
-#     "amharicFullName": "string",
-#     "arabicFullName": "string",
-#     "complexion": "string",
-#     "numberOfChildren": 0,
-#     "motherFullName": "string",
-#     "previousCountry": "string",
-#     "currentNationality": "string",
-#     "height": 1.65,
-#     "weight": 59.87,
-#     "contractPeriod": 2,
-#     "jobTitleAmharic": "string",
-#     "remark": "string",
-#     "isRequested": false,
-#     "isReserved": false,
-#     "isBlocked": false,
-#     "isDeleted": false,
-#     "applicantBrokerNameId": "3c0afa94-4d60-47fb-804a-92624785d035",
-#     "applicantBranchId": "9da90c6e-9bee-4b66-bf4b-f16161c87f8a",
-#     "applicantJobtitleId": "90774ffc-e2f5-48f1-a20a-5fac0bfaacee",
-#     "applicantReligionId": "68ccacf6-c656-4447-b8cb-9a2f102f7e93",
-#     "applicantIssuingCountryId": "7d33be1d-1ee9-40b0-83b6-97f1f79c846d",
-#     "applicantIssuedPlaceId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#     "applicantHealthId": "fec9e7d4-af9c-408e-8771-8db9edecd452",
-#     "applicantSalaryId": "da86ba94-de5c-4f3d-a04f-e4ee0c2c7b1d",
-#     "applicantDesiredCountryId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#     "applicantMaritalStatusId": "6a886b95-15a4-4294-b3a2-b87e790dfdeb",
-#     "technicalSkillIds": [
-#         "f38e9df7-edf3-44d8-9646-53c289c6daaa"
-#     ],
-#     "applicantWitnesses": [
-#         {
-#         "firstName": "string",
-#         "middleName": "string",
-#         "lastName": "string",
-#         "address": "string",
-#         "phoneNumber": "string"
-#         }
-#     ],
-#     "applicantBeneficiaries": [
-#         {
-#         "firstName": "string",
-#         "middleName": "string",
-#         "lastName": "string",
-#         "region": "string",
-#         "zone": "string",
-#         "woreda": "string",
-#         "relationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07",
-#         "rate": 0
-#         }
-#     ],
-#     "applicantFileCollections": [
-#         {
-#         "fileCollectionAttachmentId": "c946852c-98a0-4590-9e4b-5c613c30d47f",
-#         "filePath": "C:\\Users\\Tesfaye\\abc"
-#         }
-#     ],
-#     "applicantLanguages": [
-#         {
-#         "languageId": "57f779bc-bbd4-457e-9737-1dbb2623bd3c",
-#         "canWrite": true,
-#         "canRead": true,
-#         "canSpeak": true,
-#         "canListen": true,
-#         "proficiency": "No"
-#         }
-#     ],
-#     "applicantExperiences": [
-#         {
-#         "countryLookupId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#         "periodLength": 0,
-#         "position": "string"
-#         }
-#     ],
-#     "applicantRepersentative": {
-#         "firstName": "string",
-#         "middleName": "string",
-#         "lastName": "string",
-#         "address": {
-#             "addressCountryId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#             "region": "string",
-#             "zone": "string",
-#             "woreda": "string",
-#             "kebele": "string",
-#             "phoneNumber": "string",
-#             "email": "string",
-#             "website": "string"
-#         }
-#     },
-#     "applicantAddress": {
-#         "addressCountryId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#         "region": "string",
-#         "zone": "string",
-#         "woreda": "string",
-#         "kebele": "string",
-#         "phoneNumber": "string",
-#         "email": "string",
-#         "website": "string"
-#     },
-#     "applicantEducation": {
-#         "educationLevelofQualificationIds": [
-#             "dbb51fc9-c0f3-40c7-9468-4fafc977782f"
-#         ],
-#         "educationQualificationTypeIds": [
-#             "a8bf96de-8c09-4e4e-a667-326bc84b8372"
-#         ],
-#         "educationAawardIds": [
-#             "2141ba2b-93fc-4939-b501-45adebba0754"
-#         ],
-#         "yearCompleted": 0,
-#         "fieldOfStudy": "string",
-#         "professionalSkill": "string"
-#     },
-#     "applicantBankAccount": {
-#         "bankName": "string",
-#         "accountNumber": 0,
-#         "branchName": "string",
-#         "swiftCode": "string"
-#     },
-#     "applicantEmergencyContact": {
-#         "firstName": "string",
-#         "middleName": "string",
-#         "lastName": "string",
-#         "arabicFullName": "string",
-#         "emergencyContactRelationshipId": "7c652443-e3cd-4547-8ca0-f1a4af73bc07",
-#         "emergencyContactRegionId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#         "address": {
-#             "addressCountryId": "a4ed4757-1c27-4ef8-a9d4-a4f18bee906e",
-#             "region": "string",
-#             "zone": "string",
-#             "woreda": "string",
-#             "kebele": "string",
-#             "phoneNumber": "string",
-#             "email": "string",
-#             "website": "string"
-#         }
-#     }
-# }
