@@ -54,7 +54,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
         var tickRefund = new TicketRefund
         {
             DateInterval = request.DateInterval,
-            ApplicantProcess = applPro
+            Applicant = applicant
         };
 
         try
@@ -95,7 +95,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
         var tkRebRegApplicants = new List<GetTicketRegistrationApplicantsResponseDTO>();
         var traveledApplicants = new List<GetTraveledApplicantsResponseDTO>();
 
-        foreach (var appl in ticketReady.ApplicantProcesses)
+        foreach (var appl in ticketReady.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
         {
             tkReadyApplicants.Add(new GetTicketReadyApplicantsResponseDTO()
             {
@@ -109,7 +109,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             });
         }
 
-        foreach (var appl in ticketRegistration.ApplicantProcesses)
+        foreach (var appl in ticketRegistration.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
         {
             tkRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
             {
@@ -118,7 +118,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             });
         }
 
-        foreach (var appl in ticketRefund.ApplicantProcesses)
+        foreach (var appl in ticketRefund.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
         {
             tkRefundApplicants.Add(new GetTicketRefundApplicantsResponseDTO()
             {
@@ -130,7 +130,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             });
         }
 
-        foreach (var appl in ticketRebook.ApplicantProcesses)
+        foreach (var appl in ticketRebook.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
         {
             tkRebookApplicants.Add(new GetTicketRebookApplicantsResponseDTO()
             {
@@ -142,7 +142,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             });
         }
 
-        foreach (var appl in ticketRebookReg.ApplicantProcesses)
+        foreach (var appl in ticketRebookReg.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
         {
             tkRebRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
             {
@@ -151,7 +151,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             });
         }
 
-        foreach (var appl in traveled.ApplicantProcesses)
+        foreach (var appl in traveled.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
         {
             tkRebRegApplicants.Add(new GetTraveledApplicantsResponseDTO()
             {

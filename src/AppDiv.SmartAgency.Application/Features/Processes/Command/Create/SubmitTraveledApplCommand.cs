@@ -9,60 +9,49 @@ using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
-public record SubmitTicketRebookCommand(SubmitTicketRebookRequest request) : IRequest<TicketProcessResponseDTO> { }
-public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebookCommand, TicketProcessResponseDTO>
+public record SubmitTraveledApplCommand(SubmitTraveledApplRequest request) : IRequest<TicketProcessResponseDTO> { }
+public class SubmitTraveledApplCommandHandler : IRequestHandler<SubmitTraveledApplCommand, TicketProcessResponseDTO>
 {
     private readonly IProcessDefinitionRepository _proDefRepository;
     private readonly IApplicantProcessRepository _applicantProcessRepository;
     private readonly IApplicantRepository _applicantRepository;
-    private readonly ITicketRebookRepository _ticketRebookRepository;
+    private readonly ITraveledApplicantRepository _traveledApplicantRepository;
     private readonly ILookUpRepository _lookupRepository;
 
-    public SubmitTicketRebookCommandHandler(IApplicantProcessRepository applicantProcessRepository,
+    public SubmitTraveledApplCommandHandler(IApplicantProcessRepository applicantProcessRepository,
     IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository,
-    IProcessDefinitionRepository proDefRepository, ITicketRebookRepository ticketRebookRepository)
+    IProcessDefinitionRepository proDefRepository, ITraveledApplicantRepository traveledApplicantRepository)
     {
         _applicantProcessRepository = applicantProcessRepository;
         _applicantRepository = applicantRepository;
         _proDefRepository = proDefRepository;
-        _ticketRebookRepository = ticketRebookRepository;
+        _traveledApplicantRepository = traveledApplicantRepository;
         _lookupRepository = lookUpRepository;
     }
-    public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRebookCommand command, CancellationToken cancellationToken)
+    public async Task<TicketProcessResponseDTO> Handle(SubmitTraveledApplCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
         var response = new TicketProcessResponseDTO();
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
+        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "Applicant");
         var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
-        // var airLine = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.AirLineId);
 
 
         // Update the applicant status on the ApplicantProcess table
         applPro.Status = ProcessStatus.Out;
 
-        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "ApplicantProcesses", "ApplicantProcesses.Applicant");
-        var appProList = new List<ApplicantProcess>();
-        var applTickRebookProcess = new ApplicantProcess
+        var traveledApplicant = new TraveledApplicant
         {
-            Applicant = applicant,
-            ProcessDefinition = tktRebook,
-            Date = request.Date,
-            Status = ProcessStatus.In
-        };
-
-        var tickRebook = new TicketRebook
-        {
-            DateInterval = request.DateInterval,
+            Remark = request.Remark,
             Applicant = applicant
         };
 
         try
         {
-            await _applicantProcessRepository.InsertAsync(applTickRebookProcess, cancellationToken);
-            await _ticketRebookRepository.InsertAsync(tickRebook, cancellationToken);
+            // await _applicantProcessRepository.InsertAsync(applProcess, cancellationToken);
+            await _traveledApplicantRepository.InsertAsync(traveledApplicant, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-            await _ticketRebookRepository.SaveChangesAsync(cancellationToken);
+            await _traveledApplicantRepository.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -78,6 +67,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
                 "ApplicantProcesses.Applicant.Order.PortOfArrival",
             };
 
+
         var ticketProcessApplicants = await _proDefRepository.GetAllWithPredicateAsync(
             pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"), pdLoadedProperties);
 
@@ -89,6 +79,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
         var traveled = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616").First();
 
         var tkReadyApplicants = new List<GetTicketReadyApplicantsResponseDTO>();
+        // var tkReadyApplicants = ticketReady.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In);
         var tkRegApplicants = new List<GetTicketRegistrationApplicantsResponseDTO>();
         var tkRefundApplicants = new List<GetTicketRefundApplicantsResponseDTO>();
         var tkRebookApplicants = new List<GetTicketRebookApplicantsResponseDTO>();

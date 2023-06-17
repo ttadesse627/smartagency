@@ -10,8 +10,8 @@ namespace AppDiv.SmartAgency.Domain.Entities.TicketData
         public Guid Id { get; set; } = Guid.NewGuid();
         public string? DateInterval { get; set; }
         public Guid? TicketOfficeId { get; set; }
-        public Guid? ApplicantProcessId { get; set; }
-        public ApplicantProcess? ApplicantProcess { get; set; }
+        public Guid? ApplicantId { get; set; }
+        public Applicant? Applicant { get; set; }
         public LookUp? TicketOffice { get; set; }
     }
 }

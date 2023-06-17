@@ -427,22 +427,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 Delete(entities);
             }
         }
-       public virtual async Task<Int32> DeleteMany(List<Guid> ids)
-            {
-                var entities = new List<T>();
-                foreach (Guid id in ids)
-                {
-                var entity = await _dbContext.Set<T>().FindAsync(id);
-                if(entity!= null)
-                {
-                    entities.Add(entity);
-                }
-
-                }
-                    _dbContext.Set<T>().RemoveRange(entities);
-                    var response = await _dbContext.SaveChangesAsync();
-                    return response;
-            }
 
         public virtual async Task DeleteAsync(object[] id)
         {

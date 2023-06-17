@@ -10,9 +10,9 @@ public class TicketReadyEntityConfig : IEntityTypeConfiguration<TicketReady>
 {
     public void Configure(EntityTypeBuilder<TicketReady> builder)
     {
-        builder.HasOne(pr => pr.ApplicantProcess)
+        builder.HasOne(pr => pr.Applicant)
             .WithOne(app => app.TicketReady)
-            .HasForeignKey<TicketReady>(fk => fk.ApplicantProcessId)
+            .HasForeignKey<TicketReady>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

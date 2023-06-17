@@ -10,9 +10,9 @@ public class TicketRefundEntityConfig : IEntityTypeConfiguration<TicketRefund>
 {
     public void Configure(EntityTypeBuilder<TicketRefund> builder)
     {
-        builder.HasOne(pr => pr.ApplicantProcess)
+        builder.HasOne(pr => pr.Applicant)
             .WithOne(app => app.TicketRefund)
-            .HasForeignKey<TicketRefund>(fk => fk.ApplicantProcessId)
+            .HasForeignKey<TicketRefund>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

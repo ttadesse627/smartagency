@@ -10,9 +10,9 @@ public class TicketRebookRegEntityConfig : IEntityTypeConfiguration<TicketRebook
 {
     public void Configure(EntityTypeBuilder<TicketRebookReg> builder)
     {
-        builder.HasOne(pr => pr.ApplicantProcess)
-            .WithOne(app => app.TicketRebookReg)
-            .HasForeignKey<TicketRebookReg>(fk => fk.ApplicantProcessId)
+        builder.HasOne(pr => pr.Applicant)
+            .WithOne(app => app.TicketRebookRegistration)
+            .HasForeignKey<TicketRebookReg>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
