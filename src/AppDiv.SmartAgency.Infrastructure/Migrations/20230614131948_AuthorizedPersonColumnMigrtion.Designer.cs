@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230609062809_Mod3")]
-    partial class Mod3
+    [Migration("20230614131948_AuthorizedPersonColumnMigrtion")]
+    partial class AuthorizedPersonColumnMigrtion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -908,9 +908,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("Region")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("RepresentativeId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Street")
                         .HasColumnType("longtext");
 
@@ -940,8 +937,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("AddressRegionId");
 
                     b.HasIndex("CountryId");
-
-                    b.HasIndex("RepresentativeId");
 
                     b.ToTable("Addresses");
                 });
@@ -1097,6 +1092,43 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("CompanySettings");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Complaint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Complaints");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.CountryOperation", b =>
@@ -1776,7 +1808,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 9, 9, 28, 8, 452, DateTimeKind.Local).AddTicks(7611));
+                        .HasDefaultValue(new DateTime(2023, 6, 14, 16, 19, 45, 750, DateTimeKind.Local).AddTicks(8879));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2343,15 +2375,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Representative", "Representative")
-                        .WithMany()
-                        .HasForeignKey("RepresentativeId");
-
                     b.Navigation("AddressRegion");
 
                     b.Navigation("Country");
-
-                    b.Navigation("Representative");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
@@ -2396,6 +2422,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("CompanyInformation");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Complaint", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Complaints")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "Order")
+                        .WithMany("Complaints")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.CountryOperation", b =>
@@ -2739,6 +2783,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("QualificationTypes");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Complaints");
+                });
+
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Attachment", b =>
                 {
                     b.Navigation("AttachmentFiles");
@@ -2857,6 +2906,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Order", b =>
                 {
                     b.Navigation("AttachmentFile");
+
+                    b.Navigation("Complaints");
 
                     b.Navigation("OrderCriteria");
 

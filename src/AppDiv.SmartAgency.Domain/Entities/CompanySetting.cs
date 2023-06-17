@@ -11,8 +11,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public int FileNumberStartFrom {get; set;}=0;
         public int PrintedDocumentSubmitDays {get; set;}=2;
         public int AmountOfDeposit {get; set;}
-        public bool ViseManager {get; set;}=false;
-        public bool Manager {get; set;}=true;
+        public string? AuthorizedPerson {get; set;}
+        
 
         public Guid? CompanyInformationId {get; set;}
 

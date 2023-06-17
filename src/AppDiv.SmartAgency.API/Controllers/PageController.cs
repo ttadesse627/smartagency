@@ -78,9 +78,6 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-
-
-
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditPageCommand command)
         {

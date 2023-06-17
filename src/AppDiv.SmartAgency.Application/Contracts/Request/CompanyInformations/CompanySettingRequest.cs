@@ -10,8 +10,9 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
         public int FileNumberStartFrom {get; set;}
         public int PrintedDocumentSubmitDays {get; set;}
         public int AmountOfDeposit {get; set;}
-        public bool ViseManager {get; set;}
-        public bool Manager {get; set;}
+        public string AuthorizedPerson {get; set;}
+        
+        public ICollection<CountryOperationRequest>? CountryOperations { get; set; }
     
     }
 }

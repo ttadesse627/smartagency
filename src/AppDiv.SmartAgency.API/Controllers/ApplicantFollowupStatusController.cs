@@ -23,7 +23,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<ApplicantFollowupStatusResponseDTO>> CreateDeposit(CreateApplicantFollowupStatusRequest applicantFollowupStatusRequest, CancellationToken token)
+        public async Task<ActionResult<ApplicantFollowupStatusResponseDTO>> CreateApplicantFollowup(CreateApplicantFollowupStatusRequest applicantFollowupStatusRequest, CancellationToken token)
         {
             var response = await _mediator.Send(new CreateApplicantFollowupStatusCommand(applicantFollowupStatusRequest));
             return Ok(response);

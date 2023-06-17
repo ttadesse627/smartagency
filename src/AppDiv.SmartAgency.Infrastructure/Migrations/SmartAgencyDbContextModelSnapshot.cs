@@ -1044,6 +1044,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("AmountOfDeposit")
                         .HasColumnType("int");
 
+                    b.Property<string>("AuthorizedPerson")
+                        .HasColumnType("longtext");
+
                     b.Property<Guid?>("CompanyInformationId")
                         .HasColumnType("char(36)");
 
@@ -1056,9 +1059,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("FileNumberStartFrom")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Manager")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -1067,9 +1067,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<int>("PrintedDocumentSubmitDays")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ViseManager")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
