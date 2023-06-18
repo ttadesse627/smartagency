@@ -30,7 +30,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
         public string? LetterLogo { get; set; }
        public string? LetterBackGround{ get; set; }
        public CompanyAddressRequest? Address { get; set; }
-      
+       public ICollection<CountryOperationRequest>? CountryOperations { get; set; }
        public ICollection<CompanyWitnessRequest>? Witnesses { get; set; }
        public CompanySettingRequest? CompanySetting {get; set;}
      

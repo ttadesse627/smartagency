@@ -12,7 +12,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
         public int AmountOfDeposit {get; set;}
         public string AuthorizedPerson {get; set;}
         
-        public ICollection<CountryOperationRequest>? CountryOperations { get; set; }
+        
     
     }
 }
