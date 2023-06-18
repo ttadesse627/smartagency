@@ -17,7 +17,7 @@ namespace AppDiv.SmartAgency.Domain.Entities.TicketData
         public string? TicketPrice { get; set; }
         public LookUp? AirLine { get; set; }
         public Guid? AirLineId { get; set; }
-        public Guid? ApplicantProcessId { get; set; }
-        public ApplicantProcess? ApplicantProcess { get; set; }
+        public Guid? ApplicantId { get; set; }
+        public Applicant? Applicant { get; set; }
     }
 }

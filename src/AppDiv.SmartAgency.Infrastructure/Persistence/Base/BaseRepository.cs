@@ -427,7 +427,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 Delete(entities);
             }
         }
-    
+
         public virtual async Task DeleteAsync(object[] id)
         {
             T entityToDelete = await _dbContext.Set<T>().FindAsync(id);

@@ -1,6 +1,3 @@
-
-
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,9 +7,9 @@ public class TraveledApplicantEntityConfig : IEntityTypeConfiguration<TraveledAp
 {
     public void Configure(EntityTypeBuilder<TraveledApplicant> builder)
     {
-        builder.HasOne(pr => pr.ApplicantProcess)
+        builder.HasOne(pr => pr.Applicant)
             .WithOne(app => app.TraveledApplicant)
-            .HasForeignKey<TraveledApplicant>(fk => fk.ApplicantProcessId)
+            .HasForeignKey<TraveledApplicant>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

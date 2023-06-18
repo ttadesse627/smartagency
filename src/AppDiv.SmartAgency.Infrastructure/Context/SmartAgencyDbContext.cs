@@ -64,6 +64,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<TicketRefund> TicketRefunds { get; set; }
         public DbSet<TicketRebook> TicketRebooks { get; set; }
         public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
+        public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
