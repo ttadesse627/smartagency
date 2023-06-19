@@ -44,7 +44,7 @@ public class ApplicantController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetSingleApplicantQuery(id)));
     }
-    [HttpPut("delete/{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> DeleteApplicant(Guid id)
     {
         try
@@ -105,7 +105,7 @@ public class ApplicantController : ControllerBase
         return Ok(await _mediator.Send(new GetAllRequestedQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
 
-    [HttpPut("request/delete/{id}")]
+    [HttpDelete("request/delete/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> DeleteRequested(Guid id)
     {
         var response = await _mediator.Send(new DeleteRequestedCommand(id));

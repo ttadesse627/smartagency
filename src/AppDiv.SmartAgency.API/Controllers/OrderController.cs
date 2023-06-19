@@ -40,7 +40,7 @@ public class OrderController : ControllerBase
         return Ok(await _mediator.Send(new GetAllOrders(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
 
-    [HttpPut("delete/{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
         return Ok(await _mediator.Send(new DeleteOrderCommand(id)));
