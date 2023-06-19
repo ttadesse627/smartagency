@@ -11,13 +11,13 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Command.Update
 {
-    public class EditApplicantFollowupStatusCommand: IRequest<GetApplicantFollowupStatusByIdResponseDTO>
+    public class EditApplicantFollowupStatusCommand: IRequest<string>
     {
         public Guid Id {get; set;}
         public string PassportNumber {get; set;} 
         public DateTime Month {get; set;}  
         public string Remark {get; set;} 
-        public Guid ApplicantId {get; set;}
+        
         public Guid FollowupStatusId {get; set;}
 
        
@@ -27,38 +27,54 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Com
 
    
 
-    public class EditApplicantFollowupStatusCommandHandler : IRequestHandler<EditApplicantFollowupStatusCommand, GetApplicantFollowupStatusByIdResponseDTO>
+    public class EditApplicantFollowupStatusCommandHandler : IRequestHandler<EditApplicantFollowupStatusCommand, string>
     {
-        
+          private readonly IApplicantRepository _applicantRepository;
         private readonly IApplicantFollowupStatusRepository _applicantFollowupStatusRepository;
-        public EditApplicantFollowupStatusCommandHandler(IApplicantFollowupStatusRepository applicantFollowupStatusRepository)
+        public EditApplicantFollowupStatusCommandHandler(IApplicantFollowupStatusRepository applicantFollowupStatusRepository, IApplicantRepository applicantRepository)
         {
             _applicantFollowupStatusRepository = applicantFollowupStatusRepository;
+            _applicantRepository = applicantRepository;
             
         }
-        public async Task<GetApplicantFollowupStatusByIdResponseDTO> Handle(EditApplicantFollowupStatusCommand request,  CancellationToken cancellationToken)
+        public async Task<string> Handle(EditApplicantFollowupStatusCommand request,  CancellationToken cancellationToken)
         {
-            var applicantFollowupStatusResponse = new GetApplicantFollowupStatusByIdResponseDTO();
-          
-            var applicantFollowupStatusEntity = CustomMapper.Mapper.Map<ApplicantFollowupStatus>(request);
+           int response = 0;
+    
             try
             {
-                var res =    await _applicantFollowupStatusRepository.UpdateAsync(applicantFollowupStatusEntity);
+                
+                var serviceResponse= await _applicantRepository.GetApplicantByPassportNumber(request.PassportNumber);
+                if (serviceResponse.Data!= null)
+                {
+                   var followupStatus = new ApplicantFollowupStatus()
+                {
+                     Id=request.Id,
+                     PassportNumber=request.PassportNumber,
+                     FollowupStatusId=request.FollowupStatusId,
+                     Month= request.Month,
+                     Remark= request.Remark,
+                     ApplicantId= serviceResponse.Data.Id
+                     
+                };
+                var res =    await _applicantFollowupStatusRepository.UpdateAsync(followupStatus);
 
                 if(res>=1) {
 
-                    var modifiedApplicantFollowupStatus = await _applicantFollowupStatusRepository.GetByIdAsync(request.Id);
-                    applicantFollowupStatusResponse = CustomMapper.Mapper.Map<GetApplicantFollowupStatusByIdResponseDTO>(modifiedApplicantFollowupStatus);
-                 
+                  response= res;
                 }
+                }else{
+                    return "No data found with "+ request.PassportNumber+ " passport number";
+                }
+                
+               
             }
             catch (Exception exp)
             {
                 throw new ApplicationException(exp.Message);
             }
-        
+         return response + " record updated";
 
-            return applicantFollowupStatusResponse;
         }
     }
 }
