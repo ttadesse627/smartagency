@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class userAndGroupMigrtion : Migration
+    public partial class RecreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -134,7 +134,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 14, 15, 53, 45, 955, DateTimeKind.Local).AddTicks(8333)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 18, 13, 2, 31, 657, DateTimeKind.Local).AddTicks(7365)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -201,29 +201,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Region = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    City = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     SubCity = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SubCityArabic = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     District = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DistrictArabic = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Zone = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Woreda = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    WoredaArabic = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Kebele = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Street = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    StreetArabic = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -245,8 +233,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Website = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AddressRegionId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    RegionId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    CityId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
@@ -258,14 +247,20 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_LookUps_AddressRegionId",
-                        column: x => x.AddressRegionId,
+                        name: "FK_Addresses_LookUps_CityId",
+                        column: x => x.CityId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Addresses_LookUps_CountryId",
                         column: x => x.CountryId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Addresses_LookUps_RegionId",
+                        column: x => x.RegionId,
                         principalTable: "LookUps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
@@ -337,7 +332,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Step = table.Column<int>(type: "int", nullable: false),
                     VisaRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     EnjazRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    TicketRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CountryId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -453,13 +447,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PartnerName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PartnerNameAmharic = table.Column<string>(type: "longtext", nullable: false)
+                    PartnerNameAmharic = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PartnerNameArabic = table.Column<string>(type: "longtext", nullable: false)
+                    PartnerNameArabic = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ContactPerson = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IdNumber = table.Column<string>(type: "longtext", nullable: false)
+                    IdNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ManagerNameAmharic = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -496,7 +490,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Step = table.Column<int>(type: "int", nullable: false),
                     RequestApproval = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -528,8 +522,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     FileNumberStartFrom = table.Column<int>(type: "int", nullable: false),
                     PrintedDocumentSubmitDays = table.Column<int>(type: "int", nullable: false),
                     AmountOfDeposit = table.Column<int>(type: "int", nullable: false),
-                    ViseManager = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Manager = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AuthorizedPerson = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CompanyInformationId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -1235,6 +1229,171 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "TicketReadies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    DateInterval = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TicketOfficeId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketReadies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketReadies_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketReadies_LookUps_TicketOfficeId",
+                        column: x => x.TicketOfficeId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TicketRebookRegistrations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    TicketNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FlightDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DepartureTime = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Transit = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ArrivalTime = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Remark = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TicketPrice = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AirLineId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketRebookRegistrations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketRebookRegistrations_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketRebookRegistrations_LookUps_AirLineId",
+                        column: x => x.AirLineId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TicketRebooks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    DateInterval = table.Column<int>(type: "int", nullable: false),
+                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketRebooks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketRebooks_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TicketRefunds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    DateInterval = table.Column<int>(type: "int", nullable: false),
+                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketRefunds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketRefunds_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TicketRegistrations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RegiteredDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TicketNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FlightDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DepartureTime = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Transit = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ArrivalTime = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Remark = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TicketPrice = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AirLineId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketRegistrations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketRegistrations_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketRegistrations_LookUps_AirLineId",
+                        column: x => x.AirLineId,
+                        principalTable: "LookUps",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TraveledApplicants",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Remark = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ApplicantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TraveledApplicants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TraveledApplicants_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Witnesses",
                 columns: table => new
                 {
@@ -1706,15 +1865,38 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.InsertData(
+                table: "Processes",
+                columns: new[] { "Id", "CountryId", "CreatedAt", "CreatedBy", "EnjazRequired", "ModifiedAt", "ModifiedBy", "Name", "Step", "VisaRequired" },
+                values: new object[] { new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), null, new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(3662), null, false, null, null, "Ticket Process", 100, true });
+
+            migrationBuilder.InsertData(
+                table: "ProcessDefinitions",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "Name", "ProcessId", "RequestApproval", "Step" },
+                values: new object[,]
+                {
+                    { new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4098), null, null, null, "Ready to Issue Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 0 },
+                    { new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4134), null, null, null, "Register Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 1 },
+                    { new Guid("2d9ef769-6d03-4406-9849-430ff9723778"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4144), null, null, null, "Refund Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 2 },
+                    { new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4154), null, null, null, "Rebook Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 3 },
+                    { new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4221), null, null, null, "Register Rebook Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 4 },
+                    { new Guid("5b912c00-9df3-47a1-a525-410abf239616"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4234), null, null, null, "Travel", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), true, 2 }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_AddressRegionId",
+                name: "IX_Addresses_CityId",
                 table: "Addresses",
-                column: "AddressRegionId");
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CountryId",
                 table: "Addresses",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_RegionId",
+                table: "Addresses",
+                column: "RegionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantFollowupStatuses_ApplicantId",
@@ -2181,6 +2363,57 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_TicketReadies_ApplicantId",
+                table: "TicketReadies",
+                column: "ApplicantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketReadies_TicketOfficeId",
+                table: "TicketReadies",
+                column: "TicketOfficeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketRebookRegistrations_AirLineId",
+                table: "TicketRebookRegistrations",
+                column: "AirLineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketRebookRegistrations_ApplicantId",
+                table: "TicketRebookRegistrations",
+                column: "ApplicantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketRebooks_ApplicantId",
+                table: "TicketRebooks",
+                column: "ApplicantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketRefunds_ApplicantId",
+                table: "TicketRefunds",
+                column: "ApplicantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketRegistrations_AirLineId",
+                table: "TicketRegistrations",
+                column: "AirLineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketRegistrations_ApplicantId",
+                table: "TicketRegistrations",
+                column: "ApplicantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TraveledApplicants_ApplicantId",
+                table: "TraveledApplicants",
+                column: "ApplicantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Witnesses_ApplicantId",
                 table: "Witnesses",
                 column: "ApplicantId");
@@ -2279,6 +2512,24 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Skills");
+
+            migrationBuilder.DropTable(
+                name: "TicketReadies");
+
+            migrationBuilder.DropTable(
+                name: "TicketRebookRegistrations");
+
+            migrationBuilder.DropTable(
+                name: "TicketRebooks");
+
+            migrationBuilder.DropTable(
+                name: "TicketRefunds");
+
+            migrationBuilder.DropTable(
+                name: "TicketRegistrations");
+
+            migrationBuilder.DropTable(
+                name: "TraveledApplicants");
 
             migrationBuilder.DropTable(
                 name: "Witnesses");
