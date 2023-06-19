@@ -4,9 +4,9 @@ using AppDiv.SmartAgency.Domain.Entities.Base;
 namespace AppDiv.SmartAgency.Domain.Entities;
 public class Enjaz : BaseAuditableEntity
 {
-    public string ApplicationNumber { get; set; }
+    public string? ApplicationNumber { get; set; }
     public int TransactionCode { get; set; }
-    public Guid? SponsorId { get; set; }
-    public Sponsor? Sponsor { get; set; }
+    public Guid? OrderId { get; set; }
+    public Order? Order { get; set; }
 
 }

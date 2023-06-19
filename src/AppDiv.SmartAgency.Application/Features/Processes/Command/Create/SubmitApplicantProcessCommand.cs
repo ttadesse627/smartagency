@@ -71,7 +71,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             // This is not the last process definition for the current process,
             // update the status of applicant processes for the current process definition
             var updatedApplicantProcess = await _applicantProcessRepository.GetWithPredicateAsync(appPro => appPro.ApplicantId == applicant.Id && appPro.ProcessDefinitionId == currentPd.Id && appPro.Status == ProcessStatus.In);
-            updatedApplicantProcess.Status = ProcessStatus.In;
+            updatedApplicantProcess.Status = ProcessStatus.Out;
 
             // Create a new applicant process for the next process definition
             var nextPd = processDefinitions[nextPdIndex];

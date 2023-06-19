@@ -22,6 +22,6 @@ public class Sponsor
     public AttachmentFile? AttachmentFile { get; set; }
     public Order? Order { get; set; }
     public Address? Address { get; set; }
-    public Enjaz? Enjaz { get; set; }
+    
 
 }

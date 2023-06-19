@@ -1,15 +1,12 @@
 
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
-using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
-public record GetApplProcessQuery(Guid Id) : IRequest<List<GetProcessDefinitionResponseDTO>> { }
+public record GetApplProcessQuery(Guid ProcessId) : IRequest<List<GetProcessDefinitionResponseDTO>> { }
 public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, List<GetProcessDefinitionResponseDTO>>
 {
     private readonly IProcessRepository _processRepository;
@@ -31,40 +28,34 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
 
         var response = new List<GetProcessDefinitionResponseDTO>();
 
-        if (query.Id != null)
+        if (query.ProcessId != null)
         {
             var applicantProcessList = new List<ApplicantProcess>();
             try
             {
-                var pros = await _processRepository.GetAllWithPredicateAsync(pro => pro.Step == 1, "ProcessDefinitions");
+                var pros = await _processRepository.GetAllWithPredicateAsync(null, "ProcessDefinitions");
                 if (pros.Count > 0 || pros != null)
                 {
+                    var pro = pros.OrderBy(pr => pr.Step).ToList()[0];
                     var appls = await _applicantRepository.GetAllWithPredicateAsync(appl => appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0);
-                    foreach (var pro in pros)
-                    {
-                        if (appls.Count > 0 && pro.ProcessDefinitions?.Count > 0)
-                        {
-                            foreach (var pd in pro.ProcessDefinitions)
-                            {
-                                if (pd.Step == 0)
-                                {
-                                    foreach (var appl in appls)
-                                    {
-                                        var applicantProcess = new ApplicantProcess
-                                        {
-                                            Applicant = appl,
-                                            ProcessDefinition = pd,
-                                            Date = null,
-                                            Status = ProcessStatus.In
-                                        };
 
-                                        applicantProcessList.Add(applicantProcess);
-                                    }
-                                }
-                            }
+                    if (appls.Count > 0 && pro.ProcessDefinitions?.Count > 0)
+                    {
+                        var sortedPds = pro.ProcessDefinitions.OrderBy(pd => pd.Step).ToList();
+                        var firstPd = sortedPds[0];
+                        foreach (var appl in appls)
+                        {
+                            var applicantProcess = new ApplicantProcess
+                            {
+                                Applicant = appl,
+                                ProcessDefinition = firstPd,
+                                Date = appl.CreatedAt,
+                                Status = ProcessStatus.In
+                            };
+
+                            applicantProcessList.Add(applicantProcess);
                         }
                     }
-
                 }
 
                 await _applicantProcessRepository.InsertAsync(applicantProcessList, cancellationToken);
@@ -76,16 +67,16 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
                 throw new ApplicationException(ex.Message);
             }
 
-
-            var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.Id, "ProcessDefinitions");
+            // var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.ProcessId, "ProcessDefinitions");
 
             var onProcessApplicants = await _definitionRepository.GetAllWithPredicateAsync(
-                pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == query.Id, pdLoadedProperties);
+                pd => pd.ProcessId == query.ProcessId, pdLoadedProperties);
 
             foreach (var proDef in onProcessApplicants)
             {
+                var applicantProcesses = await _applicantProcessRepository.GetAllWithPredicateAsync(ap => ap.ProcessDefinitionId == proDef.Id);
                 var pdApplicants = new List<GetApplProcessResponseDTO>();
-                foreach (var applicant in proDef.ApplicantProcesses)
+                foreach (var applicant in applicantProcesses)
                 {
                     pdApplicants.Add(new GetApplProcessResponseDTO()
                     {
