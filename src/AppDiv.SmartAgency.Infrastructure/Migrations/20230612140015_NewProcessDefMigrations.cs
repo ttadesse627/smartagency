@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class AuthorizedPersonColumnMigrtion : Migration
+    public partial class NewProcessDefMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,10 +14,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 6, 14, 16, 19, 45, 750, DateTimeKind.Local).AddTicks(8879),
+                defaultValue: new DateTime(2023, 6, 12, 17, 0, 15, 446, DateTimeKind.Local).AddTicks(9551),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 6, 14, 15, 53, 45, 955, DateTimeKind.Local).AddTicks(8333));
+                oldDefaultValue: new DateTime(2023, 6, 10, 11, 16, 18, 88, DateTimeKind.Local).AddTicks(9403));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -27,10 +27,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 6, 14, 15, 53, 45, 955, DateTimeKind.Local).AddTicks(8333),
+                defaultValue: new DateTime(2023, 6, 10, 11, 16, 18, 88, DateTimeKind.Local).AddTicks(9403),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 6, 14, 16, 19, 45, 750, DateTimeKind.Local).AddTicks(8879));
+                oldDefaultValue: new DateTime(2023, 6, 12, 17, 0, 15, 446, DateTimeKind.Local).AddTicks(9551));
         }
     }
 }

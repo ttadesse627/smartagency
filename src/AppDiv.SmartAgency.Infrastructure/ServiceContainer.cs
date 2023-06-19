@@ -90,6 +90,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             // services.AddSingleton<ISmsService, TwilioService>();
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IGetReportsRepository, GetReportsRepository>();
             //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
             return services;

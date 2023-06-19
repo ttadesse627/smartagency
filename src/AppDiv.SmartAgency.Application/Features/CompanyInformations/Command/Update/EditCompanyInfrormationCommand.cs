@@ -1,14 +1,9 @@
 
-using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
-using AppDiv.SmartAgency.Application.Contracts.Request.Partners;
-using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using FluentValidation;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
@@ -41,15 +37,15 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Create
                 
 
                 var serviceResponse = await _applicantRepository.GetApplicantByPassportNumber(request.deposit.PassportNumber);
-                var ApplicantId = serviceResponse.Data.Id;
-
-                var deposit = new Deposit()
+               if (serviceResponse.Data != null)
+               {
+                   var deposit = new Deposit()
                 {
                     PassportNumber = request.deposit.PassportNumber,
                     DepositAmount = request.deposit.DepositAmount,
                     DepositedBy = request.deposit.DepositedBy,
                     Month = request.deposit.Month,
-                    ApplicantId = ApplicantId
+                    ApplicantId = serviceResponse.Data.Id
 
                 };
 
@@ -57,6 +53,11 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Create
                 //  var depositEntity = CustomMapper.Mapper.Map<Deposit>(request.deposit);
                 await _depositRepository.InsertAsync(deposit, cancellationToken);
                 var result = await _depositRepository.SaveChangesAsync(cancellationToken);
+               }else{
+                   createDepositCommandResponse.Message= "No data found with "+ request.deposit.PassportNumber+ " passport number";
+                   createDepositCommandResponse.Success= false;
+               }
+               
             }
             return createDepositCommandResponse;
         }

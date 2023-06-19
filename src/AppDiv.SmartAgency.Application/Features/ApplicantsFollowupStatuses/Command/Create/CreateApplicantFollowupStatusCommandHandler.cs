@@ -39,22 +39,27 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Com
             {
 
                 var serviceResponse = await _applicantRepository.GetApplicantByPassportNumber(request.applicantFollowupStatus.PassportNumber);
-                var ApplicantId = serviceResponse.Data.Id;
+                 if(serviceResponse.Data!=null)
+                 {
+                    var applicantFollowupStatus = new ApplicantFollowupStatus()
+                    {
+                        PassportNumber = request.applicantFollowupStatus.PassportNumber,
+                        FollowupStatusId = request.applicantFollowupStatus.FollowupStatusId,
+                        Remark = request.applicantFollowupStatus.Remark,
+                        Month = request.applicantFollowupStatus.Month,
+                        ApplicantId = serviceResponse.Data.Id
 
-                var applicantFollowupStatus = new ApplicantFollowupStatus()
-                {
-                    PassportNumber = request.applicantFollowupStatus.PassportNumber,
-                    FollowupStatusId = request.applicantFollowupStatus.FollowupStatusId,
-                    Remark = request.applicantFollowupStatus.Remark,
-                    Month = request.applicantFollowupStatus.Month,
-                    ApplicantId = ApplicantId
-
-                };
+                    };
 
 
-            
-                await _applicantFollowupStatusRepository.InsertAsync(applicantFollowupStatus, cancellationToken);
-                var result = await _applicantFollowupStatusRepository.SaveChangesAsync(cancellationToken);
+                
+                    await _applicantFollowupStatusRepository.InsertAsync(applicantFollowupStatus, cancellationToken);
+                    var result = await _applicantFollowupStatusRepository.SaveChangesAsync(cancellationToken);
+                }else{
+                    createApplicantFollowupStatusCommandResponse.Message= "No Record Found with " + request.applicantFollowupStatus.PassportNumber + " passport number";
+                    createApplicantFollowupStatusCommandResponse.Success= false;
+                }
+                
             }
             return createApplicantFollowupStatusCommandResponse;
         }

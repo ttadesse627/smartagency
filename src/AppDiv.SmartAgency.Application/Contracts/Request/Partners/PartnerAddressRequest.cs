@@ -8,7 +8,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
     public class PartnerAddressRequest
     {
         public Guid? CountryId { get; set; }
-        public string? City { get; set; }
+        public Guid? CityId { get; set; }  
         public string? District { get; set; }
         public string? Street { get; set; }
         public string? PhoneNumber { get; set; }
@@ -17,6 +17,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Partners
         public string Adress { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
+        
 
     }
 }

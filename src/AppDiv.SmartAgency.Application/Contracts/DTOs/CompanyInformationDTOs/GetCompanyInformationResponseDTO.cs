@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
+
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
@@ -29,9 +26,9 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
        public string? LetterLogo { get; set; }
        public string? LetterBackGround{ get; set; }
        
-       public Guid? AddressId { get; set; }
+      // public Guid? AddressId { get; set; }
        public CompanyAddressResponseDTO? Address { get; set; }
-       public ICollection<WitnessRequest>? Witnesses { get; set; }
+       public ICollection<WitnessResponseDTO>? Witnesses { get; set; }
        public EditCompanySettingRequest? CompanySetting {get; set;} 
        public ICollection<CountryOperationResponseDTO>? CountryOperations { get; set; }
     }
