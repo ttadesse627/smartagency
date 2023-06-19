@@ -14,16 +14,16 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Command.Update
         public string? DepositedBy {get; set;} 
         //public Guid ApplicantId {get; set;}
 
-       
+
     }
 
 
 
-   
+
 
     public class EditDepositCommandHandler : IRequestHandler<EditDepositCommand, string>
     {
-   
+
         private readonly IDepositRepository _depositRepository;
         private readonly IApplicantRepository _applicantRepository;
         

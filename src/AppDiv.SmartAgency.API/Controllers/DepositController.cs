@@ -67,7 +67,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
         [HttpDelete("Delete")]
 
-         public async Task<ActionResult> DeletePages([FromQuery]List<Guid> ids){
+         public async Task<ActionResult> DeleteDeposits([FromQuery]List<Guid> ids){
 
             try
             {

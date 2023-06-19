@@ -5,12 +5,8 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 public record GetSponsorAddressRespDTO
 {
-    public string? Region { get; set; }
-    public string? City { get; set; }
     public string? District { get; set; }
-    public string? DistrictArabic { get; set; }
     public string? Street { get; set; }
-    public string? StreetArabic { get; set; }
     public string? PhoneNumber { get; set; }
     public string? HouseNumber { get; set; }
     public string? OfficePhone { get; set; }
@@ -21,7 +17,7 @@ public record GetSponsorAddressRespDTO
     public string? PostCode { get; set; }
     public string? Email { get; set; }
     public string? Website { get; set; }
-
     public LookUpResponseDTO? Country { get; set; }
-    public LookUpResponseDTO? AddressRegion { get; set; }
+    public LookUpResponseDTO? Region { get; set; }
+    public LookUpResponseDTO? City { get; set; }
 }

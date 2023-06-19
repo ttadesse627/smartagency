@@ -1,6 +1,7 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ReportDTOs;
 using AppDiv.SmartAgency.Application.Features.Reports;
+using AppDiv.SmartAgency.Application.Features.Reports.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +18,34 @@ public class ReportController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("applicant-report")]
-    public async Task<ActionResult<(SearchModel<ApplicantReportResponseDTO>, List<string>)>> GetApplicantReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
-        [FromQuery] List<(string propertyName, string methodName, Object value)>? filters = null)
+    [HttpPost("applicant-report")]
+    // public async Task<ActionResult<ApplReportDTO>> GetApplicantReport(int pageNumber = 1, int pageSize = 10, List<FilterPropsRequest>? filters = null)
+    // {
+    //     return Ok(await _mediator.Send(new ApplicantReportQuery(pageNumber, pageSize, filters)));
+    // }
+    public async Task<ActionResult<ApplicantReportResponseDTO>> GetApplicantReport(int pageNumber=1, int pageSize= 10, string? searchTerm= "")
     {
-        return Ok(await _mediator.Send(new ApplicantReportQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection, filters)));
+
+       return Ok(await _mediator.Send(new GetApplicantReportQuery(pageNumber, pageSize, searchTerm)));
     }
 
-    [HttpGet("visa-report")]
-    public async Task<ActionResult<(SearchModel<ApplicantReportResponseDTO>, List<string>)>> GetVisaReport(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
-        [FromQuery] List<(string propertyName, string methodName, Object value)>? filters = null)
+    /*[HttpGet("not-assigned-applicant-report")]
+    public async Task<ActionResult<ApplReportDTO>> GetNotAssignedApplicantReport(int pageNumber = 1, int pageSize = 10, [FromQuery] List<FilterPropsRequest>? filters = null)
     {
-        return Ok(await _mediator.Send(new ApplicantReportQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection, filters)));
+        return Ok(await _mediator.Send(new NotAssignedApplicantReportQuery(pageNumber, pageSize, filters)));
+    }
+    */
+
+  [HttpPost("not-assigned-applicant-report")]
+  public async Task<ActionResult<ApplicantReportResponseDTO>> GetNotAssignedApplicant(int pageNumber=1, int pagSize=10 , string? searchTerm="")
+  {
+        return Ok(await _mediator.Send(new GetNotAssignedApplicantReportQuery(pageNumber, pagSize, searchTerm)));
+  }
+
+
+    [HttpPost("unassigned-visa-report")]
+    public async Task<ActionResult<ApplReportDTO>> GetVisaReport(int pageNumber = 1, int pageSize = 10, List<FilterPropsRequest>? filters = null)
+    {
+        return Ok(await _mediator.Send(new NotAssignedApplicantReportQuery(pageNumber, pageSize, filters)));
     }
 }

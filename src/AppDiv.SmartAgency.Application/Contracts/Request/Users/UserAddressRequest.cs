@@ -11,5 +11,5 @@ public record UserAddressRequest
     public string? HouseNumber { get; set; }
     public string Adress { get; set; }
     public string? Website { get; set; }
-    public Guid? AddressRegionId { get; set; }
+    public Guid? RegionId { get; set; }
 }

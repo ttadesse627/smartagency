@@ -2,7 +2,7 @@
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Common;
 public record AddressRequest
 {
-        public string? City { get; set; }
+        public string? SubCity { get; set; }
         public string? Zone { get; set; }
         public string? Woreda { get; set; }
         public string? Kebele { get; set; }
@@ -16,5 +16,5 @@ public record AddressRequest
         public string? PostCode { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
-        public Guid? AddressRegionId { get; set; }
+        public Guid? RegionId { get; set; }
 }

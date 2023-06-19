@@ -3,6 +3,7 @@ using MediatR;
 using System.Text;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query;
 public class GetPartnerDropdownQuery : IRequest<PartnerDropdownContainerDTO> { }
@@ -21,6 +22,7 @@ public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdown
     {
         var partnerResponse = new PartnerDropdownContainerDTO();
         var partnerList = await _partnerRepository.GetAllWithAsync("Orders");
+
         if (partnerList.Count() > 0)
         {
             var partners = new List<GetPartnerDropDownDTO>();

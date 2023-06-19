@@ -6,14 +6,14 @@ using MediatR;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 
-namespace AppDiv.SmartAgency.Application.Features.Query.Attachments
+namespace AppDiv.SmartAgency.Application.Features.Attachments.Query
 {
     public class GetAllAttachments : IRequest<SearchModel<AttachmentResponseDTO>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string SearchTerm { get; set; } = string.Empty;
-        public string OrderBy { get; set; } = string.Empty;
+        public string SearchTerm { get; set; }
+        public string OrderBy { get; set; }
         public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
         public GetAllAttachments(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
         {
@@ -38,7 +38,7 @@ namespace AppDiv.SmartAgency.Application.Features.Query.Attachments
         }
         public async Task<SearchModel<AttachmentResponseDTO>> Handle(GetAllAttachments request, CancellationToken cancellationToken)
         {
-            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, attch => attch.CreatedBy == _dbContext.GetCurrentUserId());
+            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null);
             var attachmentResponse = CustomMapper.Mapper.Map<SearchModel<AttachmentResponseDTO>>(attachmentList);
             return attachmentResponse;
         }

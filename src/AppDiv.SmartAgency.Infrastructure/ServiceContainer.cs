@@ -78,6 +78,12 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IEnjazRepository, EnjazRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IComplaintRepository, ComplaintRepository>();
+            services.AddTransient<ITicketReadyRepository, TicketReadyRepository>();
+            services.AddTransient<ITicketRefundRepository, TicketRefundRepository>();
+            services.AddTransient<ITicketRebookRepository, TicketRebookRepository>();
+            services.AddTransient<ITicketRegistrationRepository, TicketRegistrationRepository>();
+            services.AddTransient<ITraveledApplicantRepository, TraveledApplicantRepository>();
             services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
 
             services.AddSingleton<IMailService, MailKitService>();

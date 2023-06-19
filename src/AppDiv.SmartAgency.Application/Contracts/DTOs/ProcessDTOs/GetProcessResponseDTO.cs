@@ -9,5 +9,5 @@ public record GetProcessResponseDTO
     public string Name { get; set; }
     public int Step { get; set; }
     public LookUpResponseDTO? Country { get; set; }
-    public ICollection<GetProcessDefinitionResponseDTO>? ProcessDefinitions { get; set; }
+    public ICollection<GetPDResponseDTO>? ProcessDefinitions { get; set; }
 }

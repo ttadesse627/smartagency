@@ -44,12 +44,12 @@ public record CreateApplicantRequest
     public Guid? BranchId { get; set; }
     public Guid? PartnerId { get; set; } = null;
     public SkillRequest? Skill { get; set; }
-    public ICollection<ExperienceRequest>? Experiences { get; set; }
+    public ApplicantExperienceRequest? ApplicantExperience { get; set; }
     public EducationRequest? Education { get; set; }
     public BankAccountRequest? BankAccount { get; set; }
     public EmergencyContactRequest? EmergencyContact { get; set; }
     public WitnesRequest? Witness { get; set; }
-    public ICollection<BeneficiaryRequest>? Beneficiaries { get; set; }
-    public ICollection<AttachmentFileRequest>? AttachmentFiles { get; set; }
+    public ApplicantBeneficiaryRequest? Beneficiary { get; set; }
+    public ApplicantAttachmentRequest? Attachment { get; set; }
     public AddressRequest? Address { get; set; }
 }

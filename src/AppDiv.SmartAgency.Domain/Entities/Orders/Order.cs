@@ -24,7 +24,7 @@ public class Order : BaseAuditableEntity
     public Guid? PartnerId { get; set; }
 
     // Navigation properties
-    
+
     public LookUp? PortOfArrival { get; set; }
     public LookUp? Priority { get; set; }
     public LookUp? VisaType { get; set; }
@@ -34,5 +34,6 @@ public class Order : BaseAuditableEntity
     public Payment? Payment { get; set; }
     public Sponsor? Sponsor { get; set; }
     public Partner? Partner { get; set; }
+    public ICollection<Complaint>? Complaints { get; set; }
 
 }

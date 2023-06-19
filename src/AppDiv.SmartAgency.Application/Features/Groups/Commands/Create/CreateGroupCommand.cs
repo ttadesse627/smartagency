@@ -35,7 +35,7 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
             {
                 Id = Guid.NewGuid(),
                 GroupName = request.group.GroupName,
-                Description = request.group.Description,
+                DescriptionStr = request.group.Description,
                 Roles = request.group.Roles
             };
 

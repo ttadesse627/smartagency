@@ -113,7 +113,7 @@ public class ApplicantController : ControllerBase
     }
 
     [HttpGet("get-unassigned")]
-    public async Task<ActionResult<List<GetApplForAssignmentDTO>>> GetUnassignedApplicants()
+    public async Task<ActionResult<GetUnAssignedApplicantsDTO>> GetUnassignedApplicants()
     {
         return Ok(await _mediator.Send(new GetUnassignedApplicantsQuery()));
     }

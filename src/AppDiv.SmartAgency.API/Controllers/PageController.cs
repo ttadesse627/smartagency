@@ -60,14 +60,15 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }*/
-        
-          [HttpDelete("Delete")]
-        public async Task<ActionResult> DeletePages([FromQuery]List<Guid> ids)
+        [HttpDelete("delete")]
+        public async Task<ActionResult> DeletePages([FromBody] DeletePagesCommand cmd)
         {
             try
             {
                 string result = string.Empty;
-                result = await _mediator.Send(new DeletePagesCommand(ids));
+                // Call the appropriate command or service method to delete the entities with the specified IDs
+                // For example, using MediatR:
+                result = await _mediator.Send(cmd);
                 return Ok(result);
             }
             catch (Exception exp)
@@ -75,8 +76,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-
-
 
 
         [HttpPut("Edit/{id}")]

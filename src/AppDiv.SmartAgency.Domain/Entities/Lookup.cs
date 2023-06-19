@@ -31,8 +31,9 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<Award>? Awards { get; set; }
         public ICollection<EmergencyContact>? ECRelationships { get; set; }
         public ICollection<Beneficiary>? BenRelationShips { get; set; }
-        public ICollection<Address>? AddressRegions { get; set; }
-
+        public ICollection<Address>? Countries { get; set; }
+        public ICollection<Address>? Regions { get; set; }
+        public ICollection<Address>? Cities { get; set; }
         public ICollection<OnlineApplicant>? MaritalStatus { get; set; }
         public ICollection<OnlineApplicant>? Experience { get; set; }
         public ICollection<ApplicantFollowupStatus>? FollowupStatus { get; set; }
@@ -48,7 +49,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaReligions { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaExperiences { get; set; }
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
-        public ICollection<Address>? Countries { get; set; }
         public CountryOperation? CountryOperation { get; set; }
         public ICollection<Process>? ProcessCountries { get; set; }
         public ICollection<ApplicationUser>? UserPosition { get; set; }

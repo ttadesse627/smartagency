@@ -170,7 +170,7 @@ namespace AppDiv.SmartAgency.Application.Service
                     .Include(usr => usr.Address)
                         .ThenInclude(addr => addr.Country)
                     .Include(usr => usr.Address)
-                        .ThenInclude(addr => addr.AddressRegion)
+                        .ThenInclude(addr => addr.Region)
                     .FirstOrDefaultAsync(x => x.UserName == userName);
             if (user == null)
             {

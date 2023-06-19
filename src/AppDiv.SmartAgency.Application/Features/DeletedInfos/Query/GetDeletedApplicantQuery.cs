@@ -25,9 +25,8 @@ public class GetDeletedApplicantQueryHandler : IRequestHandler<GetDeletedApplica
                                         "LanguageSkills.Language","Skills.LookUp","Experiences.Country",
                                         "Education.QualificationTypes.LookUp","Education.LevelOfQualifications.LookUp",
                                         "Education.Awards.LookUp","BankAccount","EmergencyContact.Relationship",
-                                        "EmergencyContact.Address.AddressRegion","Representative.Address.AddressRegion",
-                                        "Witnesses","Beneficiaries.Relationship","AttachmentFiles.Attachment",
-                                        "Address.AddressRegion"
+                                        "EmergencyContact.Address.Region","Witnesses","Beneficiaries.Relationship",
+                                        "AttachmentFiles.Attachment","Address.Region"
                                     };
         var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.Id && appl.IsDeleted == true, eagerLoadedProperties);
         var applicantResponse = CustomMapper.Mapper.Map<GetApplicantResponseDTO>(applicantEntity);

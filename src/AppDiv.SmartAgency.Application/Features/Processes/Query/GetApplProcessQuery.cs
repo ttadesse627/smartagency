@@ -9,35 +9,20 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
-public record GetApplProcessQuery : IRequest<List<GetProcessDefinitionResponseDTO>>
-{
-    public Guid Id { get; set; }
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
-    public string SearchTerm { get; set; } = string.Empty;
-    public string OrderBy { get; set; } = string.Empty;
-    public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-    public GetApplProcessQuery(Guid id, int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
-    {
-        Id = id;
-        PageNumber = pageNumber;
-        PageSize = pageSize;
-        SearchTerm = searchTerm;
-        OrderBy = orderBy;
-        SortingDirection = sortingDirection;
-    }
-}
+public record GetApplProcessQuery(Guid Id) : IRequest<List<GetProcessDefinitionResponseDTO>> { }
 public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, List<GetProcessDefinitionResponseDTO>>
 {
     private readonly IProcessRepository _processRepository;
     private readonly IProcessDefinitionRepository _definitionRepository;
     private readonly IApplicantRepository _applicantRepository;
+    private readonly IApplicantProcessRepository _applicantProcessRepository;
 
-    public GetApplProcessQueryHandler(IApplicantRepository applicantRepository, IProcessRepository processRepository, IProcessDefinitionRepository definitionRepository)
+    public GetApplProcessQueryHandler(IApplicantRepository applicantRepository, IProcessRepository processRepository, IProcessDefinitionRepository definitionRepository, IApplicantProcessRepository applicantProcessRepository)
     {
         _applicantRepository = applicantRepository;
         _processRepository = processRepository;
         _definitionRepository = definitionRepository;
+        _applicantProcessRepository = applicantProcessRepository;
     }
     public async Task<List<GetProcessDefinitionResponseDTO>> Handle(GetApplProcessQuery query, CancellationToken cancellationToken)
     {
@@ -48,39 +33,61 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
 
         if (query.Id != null)
         {
-            var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.Id, "ProcessDefinitions");
-            // if (processEntity.Step == 1)
-            // {
-            //     var notStartedApplicants = await _applicantRepository.GetAllApplWithPredicateSrchAsync(
-            //         query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
-            //         appl => appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0, applicantLoadedProperties);
-            //     var initAppls = new List<GetApplProcessResponseDTO>();
-            //     foreach (var notStrtAppl in notStartedApplicants.Items)
-            //     {
-            //         initAppls.Add(new GetApplProcessResponseDTO()
-            //         {
-            //             Id = notStrtAppl.Id,
-            //             PassportNumber = notStrtAppl.PassportNumber,
-            //             FullName = notStrtAppl.FirstName + " " + notStrtAppl.MiddleName + " " + notStrtAppl.LastName,
-            //             OrderNumber = notStrtAppl.Order?.OrderNumber!,
-            //             SponsorName = notStrtAppl.Order?.Sponsor?.FullName!
-            //         });
-            //     }
+            var applicantProcessList = new List<ApplicantProcess>();
+            try
+            {
+                var pros = await _processRepository.GetAllWithPredicateAsync(pro => pro.Step == 1, "ProcessDefinitions");
+                if (pros.Count > 0 || pros != null)
+                {
+                    var appls = await _applicantRepository.GetAllWithPredicateAsync(appl => appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0);
+                    foreach (var pro in pros)
+                    {
+                        if (appls.Count > 0 && pro.ProcessDefinitions?.Count > 0)
+                        {
+                            foreach (var pd in pro.ProcessDefinitions)
+                            {
+                                if (pd.Step == 0)
+                                {
+                                    foreach (var appl in appls)
+                                    {
+                                        var applicantProcess = new ApplicantProcess
+                                        {
+                                            Applicant = appl,
+                                            ProcessDefinition = pd,
+                                            Date = null,
+                                            Status = ProcessStatus.In
+                                        };
 
-            //     response.ProcessReadyApplicants = initAppls;
-            // }
-            // else
-            // {
-            var onProcessApplicants = await _definitionRepository.GetAllWithPredicateSearchAsync(
-                query.PageNumber, query.PageSize, query.SearchTerm, query.OrderBy, query.SortingDirection,
+                                        applicantProcessList.Add(applicantProcess);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                await _applicantProcessRepository.InsertAsync(applicantProcessList, cancellationToken);
+                await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
+
+
+            var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.Id, "ProcessDefinitions");
+
+            var onProcessApplicants = await _definitionRepository.GetAllWithPredicateAsync(
                 pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == query.Id, pdLoadedProperties);
 
-            foreach (var proDef in onProcessApplicants.Items)
+            foreach (var proDef in onProcessApplicants)
             {
-                var pdApplicants = new SearchModel<GetApplProcessResponseDTO>();
+                var pdApplicants = new List<GetApplProcessResponseDTO>();
                 foreach (var applicant in proDef.ApplicantProcesses)
                 {
-                    pdApplicants.Items.Append(new GetApplProcessResponseDTO()
+                    pdApplicants.Add(new GetApplProcessResponseDTO()
                     {
                         Id = applicant.Applicant.Id,
                         PassportNumber = applicant.Applicant.PassportNumber,
@@ -97,9 +104,6 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
                     ApplicantProcesses = pdApplicants
                 });
             }
-
-            response = CustomMapper.Mapper.Map<List<GetProcessDefinitionResponseDTO>>(onProcessApplicants.Items);
-            // }
         }
         return response;
     }

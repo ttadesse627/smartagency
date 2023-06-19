@@ -1,11 +1,12 @@
 
 
 using AppDiv.SmartAgency.Domain.Entities.Base;
+using AppDiv.SmartAgency.Domain.Entities.TicketData;
 
 namespace AppDiv.SmartAgency.Domain.Entities;
 public class ProcessDefinition : BaseAuditableEntity
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public int Step { get; set; }
     public bool RequestApproval { get; set; }
     public Guid? ProcessId { get; set; }
