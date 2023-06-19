@@ -9,6 +9,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs
     public class GetDepositByIdResponseDTO : CreateDepositRequest
     {
         public Guid Id {get; set;} 
-        public Guid ApplicantId {get; set;} 
+       
     }
 }

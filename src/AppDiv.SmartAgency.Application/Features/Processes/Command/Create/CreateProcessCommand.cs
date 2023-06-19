@@ -26,7 +26,7 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         _applicantProcessRepository = applicantProcessRepository;
         _applicantRepository = applicantRepository;
     }
-    public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, CancellationToken cancellationToken)
+public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
         var response = new ServiceResponse<Int32>();

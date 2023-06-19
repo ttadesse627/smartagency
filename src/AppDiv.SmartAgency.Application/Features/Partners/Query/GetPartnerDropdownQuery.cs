@@ -32,11 +32,12 @@ public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdown
                 {
                     abbrName.Append(word.First());
                 }
+                var orderCount = partner.Orders.Count + 1;
                 var partResponse = new GetPartnerDropDownDTO
                 {
                     Id = partner.Id,
                     PartnerName = partner.PartnerName,
-                    OrderNumber = abbrName.ToString() + " 00" + partner.Orders.Count + 1
+                    OrderNumber = abbrName.ToString() + " 00" + orderCount
                 };
                 partners.Add(partResponse);
             }
