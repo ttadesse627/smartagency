@@ -65,7 +65,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<TicketRebook> TicketRebooks { get; set; }
         public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
         public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
+        public DbSet<dynamic> partner_view { get; set; }
 
+   /* protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<dynamic>().HasNoKey().ToView("DynamicView");
+    }
+*/
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = false;

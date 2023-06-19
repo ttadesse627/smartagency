@@ -86,7 +86,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("ProcessDefinitionId")
+                  
                     b.Property<Guid?>("ProcessDefinitionId")
                         .HasColumnType("char(36)");
 
