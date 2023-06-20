@@ -250,7 +250,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
                 .ForMember(dest => dest.LetterBackGround, opt => opt.Ignore());
             CreateMap<Address, CompanyAddressResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
-            CreateMap<CountryOperation, CountryOperationResponseDTO>();
+            // CreateMap<CountryOperation, CountryOperationResponseDTO>();
             CreateMap<EditCompanyAddressRequest, Address>();
             CreateMap<EditCompanyInformationCommand, CompanyInformation>().ReverseMap();
             CreateMap<EditCompanyWitnessRequest, Witness>();
