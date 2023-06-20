@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Enjazs.Command.Create;
-public record CreateEnjazCommand(AddEnjazRequest request) : IRequest<ServiceResponse<Int32>>
+public record CreateEnjazCommand(CreateEnjazRequest request) : IRequest<ServiceResponse<Int32>>
 { }
 public class CreateEnjazCommandHandler : IRequestHandler<CreateEnjazCommand, ServiceResponse<Int32>>
 {
@@ -18,18 +18,26 @@ public class CreateEnjazCommandHandler : IRequestHandler<CreateEnjazCommand, Ser
     }
     public async Task<ServiceResponse<Int32>> Handle(CreateEnjazCommand command, CancellationToken cancellationToken)
     {
-        var createEnjazCommandResponse = new ServiceResponse<Int32>();
-        
-        var enjazEntity = CustomMapper.Mapper.Map<Enjaz>(command.request);
+        var response = new ServiceResponse<Int32>();
+        var enjazEntities = new List<Enjaz>();
 
-        await _enjazRepository.InsertAsync(enjazEntity, cancellationToken);
-        createEnjazCommandResponse.Success = await _enjazRepository.SaveChangesAsync(cancellationToken);
-        if (createEnjazCommandResponse.Success)
+        if (command.request.Enjazs.Count > 0)
         {
-            createEnjazCommandResponse.Data = enjazEntity.GetHashCode();
-            createEnjazCommandResponse.Message = $"Operation Succeeded: {createEnjazCommandResponse.Data} entity is created!";
-        }         
+            foreach (var enjaz in command.request.Enjazs)
+            {
+                var enjazEntity = CustomMapper.Mapper.Map<Enjaz>(enjaz);
+                enjazEntities.Add(enjazEntity);
+            }
+        }
 
-        return createEnjazCommandResponse;
+        await _enjazRepository.InsertAsync(enjazEntities, cancellationToken);
+        response.Success = await _enjazRepository.SaveChangesAsync(cancellationToken);
+        if (response.Success)
+        {
+            response.Data = enjazEntities.GetHashCode();
+            response.Message = $"Operation Succeeded: {response.Data} entity is created!";
+        }
+
+        return response;
     }
 }

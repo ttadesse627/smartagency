@@ -55,7 +55,7 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
                         EnjazNumber = enjaz.ApplicationNumber,
                         OrderNumber = enjaz.Order.OrderNumber,
                         VisaNumber = enjaz.Order.VisaNumber,
-                        OrderId = enjaz.OrderId.ToString(),
+                        OrderId = enjaz.OrderId,
                         PassportNumber = enjaz.Order.Employee.PassportNumber,
                         FirstName = enjaz.Order.Employee.FirstName,
                         MiddleName = enjaz.Order.Employee.MiddleName,

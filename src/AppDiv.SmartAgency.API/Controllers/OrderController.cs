@@ -1,4 +1,5 @@
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrdersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
@@ -73,6 +74,12 @@ public class OrderController : ControllerBase
     public async Task<ActionResult> ShowOrderStatus(Guid OrderId)
     {
         return Ok(await _mediator.Send(new ShowOrderStatusQuery(OrderId)));
+    }
+
+    [HttpGet("get-for-enjaz")]
+    public async Task<ActionResult<List<DropdownEnjazResponseDTO>>> GetOrderForEnjaz()
+    {
+        return Ok(await _mediator.Send(new GetForEnjazQuery()));
     }
 
 }

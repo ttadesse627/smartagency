@@ -25,7 +25,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateEnjaz(AddEnjazRequest request, CancellationToken token)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateEnjaz(CreateEnjazRequest request, CancellationToken token)
         {
             var response = await _mediator.Send(new CreateEnjazCommand(request));
             return Ok(response);
