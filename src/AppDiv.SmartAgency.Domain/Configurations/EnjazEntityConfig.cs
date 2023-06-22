@@ -11,6 +11,9 @@ public class EnjazEntityConfig : IEntityTypeConfiguration<Enjaz>
         builder.HasIndex(enj => enj.ApplicationNumber)
             .IsUnique();
 
+        builder.HasIndex(enj => enj.OrderId)
+            .IsUnique();
+
         builder.HasOne(enj => enj.Order)
             .WithOne(sp => sp.Enjaz)
             .HasForeignKey<Enjaz>(fk => fk.OrderId)

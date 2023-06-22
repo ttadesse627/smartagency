@@ -10,7 +10,6 @@ using AppDiv.SmartAgency.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
