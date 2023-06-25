@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class RecreateDatabase : Migration
+    public partial class InitialCreate202306201212 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -134,7 +134,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 18, 13, 2, 31, 657, DateTimeKind.Local).AddTicks(7365)),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 6, 20, 12, 14, 8, 215, DateTimeKind.Local).AddTicks(1900)),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -1707,6 +1707,34 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Enjazs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ApplicationNumber = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TransactionCode = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Enjazs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Enjazs_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "OrderCriterias",
                 columns: table => new
                 {
@@ -1837,50 +1865,22 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Enjazs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ApplicationNumber = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TransactionCode = table.Column<int>(type: "int", nullable: false),
-                    SponsorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ModifiedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Enjazs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Enjazs_Sponsors_SponsorId",
-                        column: x => x.SponsorId,
-                        principalTable: "Sponsors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.InsertData(
                 table: "Processes",
                 columns: new[] { "Id", "CountryId", "CreatedAt", "CreatedBy", "EnjazRequired", "ModifiedAt", "ModifiedBy", "Name", "Step", "VisaRequired" },
-                values: new object[] { new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), null, new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(3662), null, false, null, null, "Ticket Process", 100, true });
+                values: new object[] { new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), null, new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4088), null, false, null, null, "Ticket Process", 100, true });
 
             migrationBuilder.InsertData(
                 table: "ProcessDefinitions",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "Name", "ProcessId", "RequestApproval", "Step" },
                 values: new object[,]
                 {
-                    { new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4098), null, null, null, "Ready to Issue Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 0 },
-                    { new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4134), null, null, null, "Register Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 1 },
-                    { new Guid("2d9ef769-6d03-4406-9849-430ff9723778"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4144), null, null, null, "Refund Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 2 },
-                    { new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4154), null, null, null, "Rebook Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 3 },
-                    { new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4221), null, null, null, "Register Rebook Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 4 },
-                    { new Guid("5b912c00-9df3-47a1-a525-410abf239616"), new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4234), null, null, null, "Travel", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), true, 2 }
+                    { new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"), new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4281), null, null, null, "Ready to Issue Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 0 },
+                    { new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"), new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4293), null, null, null, "Register Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 1 },
+                    { new Guid("2d9ef769-6d03-4406-9849-430ff9723778"), new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4299), null, null, null, "Refund Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 2 },
+                    { new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"), new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4304), null, null, null, "Rebook Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 3 },
+                    { new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"), new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4308), null, null, null, "Register Rebook Ticket", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), false, 4 },
+                    { new Guid("5b912c00-9df3-47a1-a525-410abf239616"), new DateTime(2023, 6, 20, 12, 14, 8, 220, DateTimeKind.Local).AddTicks(4316), null, null, null, "Travel", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), true, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -2178,9 +2178,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enjazs_SponsorId",
+                name: "IX_Enjazs_OrderId",
                 table: "Enjazs",
-                column: "SponsorId",
+                column: "OrderId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2514,6 +2514,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "Skills");
 
             migrationBuilder.DropTable(
+                name: "Sponsors");
+
+            migrationBuilder.DropTable(
                 name: "TicketReadies");
 
             migrationBuilder.DropTable(
@@ -2550,19 +2553,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 name: "Suffixes");
 
             migrationBuilder.DropTable(
-                name: "Sponsors");
+                name: "Educations");
 
             migrationBuilder.DropTable(
-                name: "Educations");
+                name: "AttachmentFiles");
 
             migrationBuilder.DropTable(
                 name: "CompanyInformations");
 
             migrationBuilder.DropTable(
                 name: "Processes");
-
-            migrationBuilder.DropTable(
-                name: "AttachmentFiles");
 
             migrationBuilder.DropTable(
                 name: "Attachments");

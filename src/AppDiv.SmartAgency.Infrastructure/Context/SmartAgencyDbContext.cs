@@ -65,12 +65,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<TicketRebook> TicketRebooks { get; set; }
         public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
         public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
+        public DbSet<dynamic> DynamicEntities { get; set; }
 
-        /* protected override void OnModelCreating(ModelBuilder modelBuilder)
-         {
-             modelBuilder.Entity<dynamic>().HasNoKey().ToView("DynamicView");
-         }
-     */
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
@@ -130,6 +126,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
             SeedData.Seedprocesses(modelBuilder);
             SeedData.SeedprocessDefinitions(modelBuilder);
+            modelBuilder.Entity<dynamic>().HasNoKey();
 
             #region Audit Config
             Audit.Core.Configuration.Setup()
@@ -170,6 +167,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     }
                 }).IgnoreMatchedProperties(true));
             #endregion
+
         }
         public static JsonSerializerSettings GetJsonSerializerSettings()
         {

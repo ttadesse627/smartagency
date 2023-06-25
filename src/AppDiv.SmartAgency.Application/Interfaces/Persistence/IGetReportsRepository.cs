@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppDiv.SmartAgency.Application.Contracts.Request.ReportRequests;
 
+using AppDiv.SmartAgency.Utility.Contracts;
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
     public interface IGetReportsRepository
     {
-        // Task<List<Object>> GetReport(ReportsQueryRequest query);
+        public List<string> GetObjectTypes();
+        public Task<(IEnumerable<Dictionary<string, object>>, List<String>)> GetReportData(string reportName, List<string>? columns = null, List<Filter>? filters = null, List<Aggregate>? aggregates = null);
+        Task<List<DbTable>> GetDatabaseTablesAsync();
+        Task<IEnumerable<Dictionary<string, object>>> GetTestData();
     }
 }
