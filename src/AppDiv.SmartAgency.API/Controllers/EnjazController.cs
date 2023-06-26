@@ -2,16 +2,14 @@
 
 
 
-using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Enjazs;
 using AppDiv.SmartAgency.Application.Features.Enjazs.Command.Create;
-using AppDiv.SmartAgency.Application.Features.Deposits.Command.Delete;
-using AppDiv.SmartAgency.Application.Features.Deposits.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Deposits.Query;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
@@ -27,18 +25,18 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateEnjaz(AddEnjazRequest request, CancellationToken token)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateEnjaz(CreateEnjazRequest request, CancellationToken token)
         {
             var response = await _mediator.Send(new CreateEnjazCommand(request));
             return Ok(response);
         }
 
-        // [HttpGet("get-all-deposits")]
-        // public async Task<ActionResult<DepositResponseDTO>> GetAllDeposits(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
-        // {
-        //     return Ok(await _mediator.Send(new GetAllDepositQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+        [HttpGet("get-all")]
+        public async Task<ActionResult<SearchModel<EnjazResponseDTO>>> GetAllEnjazs(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        {
+            return Ok(await _mediator.Send(new GetAllEnjazsQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
 
-        // }
+        }
 
 
         // [HttpGet("{id}")]

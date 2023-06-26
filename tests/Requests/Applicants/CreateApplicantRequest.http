@@ -1,5 +1,5 @@
 
-@host = http://localhost:5120/api/applicant
+@host = http://192.168.1.5:8000/api/applicant
 
 POST {{host}}/create
 Content-Type: application/json

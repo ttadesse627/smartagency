@@ -5,4 +5,5 @@ public record ProcessStatusResponseDTO
 {
     public string? StatusName { get; set; }
     public DateTime? Date { get; set; }
+    public EnjazResponseDTO? EnjazResponse { get; set; }
 }

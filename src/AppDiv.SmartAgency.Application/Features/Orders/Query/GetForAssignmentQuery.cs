@@ -1,9 +1,6 @@
 
-
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
@@ -21,33 +18,37 @@ public class GetForAssignmentQueryHandler : IRequestHandler<GetForAssignmentQuer
 
     public async Task<GetForAssignmentDTO> Handle(GetForAssignmentQuery request, CancellationToken cancellationToken)
     {
-        var applicantResponse = new List<GetApplForAssignmentDTO>();
         var orderResponse = new List<GetForAssignmentOrderDTO>();
-        var applEagerLoadedProps = new string[] { "Order", "Jobtitle", "Language", "Religion", "Salary" };
+        var response = new GetForAssignmentDTO();
         var ordEagerLoadedProps = new string[]
                                     {
-                                        "OrderCriteria.Salary",  "OrderCriteria.JobTitle",
+                                        "OrderCriteria","OrderCriteria.JobTitle","Sponsor",
                                         "OrderCriteria.Language","OrderCriteria.Religion",
                                     };
-
-        var applicantList = await _applicantRepository.GetAllWithPredicateAsync
-                        (
-                            applicant => applicant.IsDeleted == false && applicant.Order == null, applEagerLoadedProps
-                        );
         var orderList = await _orderRepository.GetAllWithPredicateAsync
                         (
                             order => order.IsDeleted == false && order.EmployeeId == null, ordEagerLoadedProps
                         );
 
-        applicantResponse = CustomMapper.Mapper.Map(applicantList, applicantResponse);
-        orderResponse = CustomMapper.Mapper.Map(orderList, orderResponse);
-        var response = new GetForAssignmentDTO
+        if (orderList.Count > 0 || orderList != null)
         {
-            UnAssignedApplicants = applicantResponse,
-            UnAssignedOrders = orderResponse
-        };
-
-
+            foreach (var order in orderList)
+            {
+                var ordResp = new GetForAssignmentOrderDTO
+                {
+                    OrderId = order.Id,
+                    OrderNumber = order.OrderNumber,
+                    VisaNumber = order.VisaNumber,
+                    FullName = order.Sponsor.FullName,
+                    JobTitle = order.OrderCriteria.JobTitle.Value,
+                    Religion = order.OrderCriteria.Religion.Value,
+                    Language = order.OrderCriteria.JobTitle.Value,
+                    Age = order.OrderCriteria.Age
+                };
+                orderResponse.Add(ordResp);
+            }
+        }
+        response.UnAssignedOrders = orderResponse;
         return response;
     }
 }

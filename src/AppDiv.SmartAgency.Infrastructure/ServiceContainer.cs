@@ -55,9 +55,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             #region Repositories DI         
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IAttachmentRepository, AttaachmentRepository>();
             services.AddTransient<ILookUpRepository, LookUpRepository>();
             services.AddTransient<IPartnerRepository, PartnerRepository>();
@@ -90,6 +88,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             // services.AddSingleton<ISmsService, TwilioService>();
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IGetReportsRepository, GetReportsRepository>();
             //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
             #endregion Repositories DI
             return services;

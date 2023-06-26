@@ -33,6 +33,7 @@ public class Order : BaseAuditableEntity
     public OrderCriteria? OrderCriteria { get; set; }
     public Payment? Payment { get; set; }
     public Sponsor? Sponsor { get; set; }
+    public Enjaz? Enjaz { get; set; }
     public Partner? Partner { get; set; }
     public ICollection<Complaint>? Complaints { get; set; }
 

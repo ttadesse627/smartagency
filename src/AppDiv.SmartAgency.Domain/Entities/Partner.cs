@@ -13,10 +13,10 @@ namespace AppDiv.SmartAgency.Domain.Entities
     {
         public string PartnerType { get; set; }
         public string PartnerName { get; set; }
-        public string PartnerNameAmharic { get; set; }
-        public string PartnerNameArabic { get; set; }
+        public string? PartnerNameAmharic { get; set; }
+        public string? PartnerNameArabic { get; set; }
         public string ContactPerson { get; set; }
-        public string IdNumber { get; set; }
+        public string? IdNumber { get; set; }
         public string? ManagerNameAmharic { get; set; }
         public string? LicenseNumber { get; set; }
         public string? BankName { get; set; }

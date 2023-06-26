@@ -1,7 +1,6 @@
 
 
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using AppDiv.SmartAgency.Domain.Enums;
 
 namespace AppDiv.SmartAgency.Domain.Entities.TicketData
 {
