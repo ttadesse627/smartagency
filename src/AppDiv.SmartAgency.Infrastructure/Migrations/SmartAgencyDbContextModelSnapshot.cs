@@ -87,7 +87,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("ProcessDefinitionId")
-                    b.Property<Guid?>("ProcessDefinitionId")
                         .HasColumnType("char(36)");
 
                     b.Property<int?>("Status")
@@ -97,7 +96,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.HasIndex("ApplicantId");
 
-                    b.HasIndex("ProcessDefinitionId");
                     b.HasIndex("ProcessDefinitionId");
 
                     b.ToTable("ApplicantProcesses");
@@ -241,21 +239,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<Guid?>("SalaryId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("TicketReadyId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TicketRebookId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TicketRebookRegistrationId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TicketRefundId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TicketRegistrationId")
-                        .HasColumnType("char(36)");
-
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(65,30)");
 
@@ -292,16 +275,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ReligionId");
 
                     b.HasIndex("SalaryId");
-
-                    b.HasIndex("TicketReadyId");
-
-                    b.HasIndex("TicketRebookId");
-
-                    b.HasIndex("TicketRebookRegistrationId");
-
-                    b.HasIndex("TicketRefundId");
-
-                    b.HasIndex("TicketRegistrationId");
 
                     b.ToTable("Applicants");
                 });
@@ -872,9 +845,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("AddressRegionId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Adress")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -882,8 +852,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("AlternativePhone")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("CityId")
-                        .HasColumnType("char(36)");
                     b.Property<Guid?>("CityId")
                         .HasColumnType("char(36)");
 
@@ -929,8 +897,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("PostCode")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Region")
-                        .HasColumnType("longtext");
+                    b.Property<Guid?>("RegionId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Street")
                         .HasColumnType("longtext");
@@ -950,11 +918,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
-                    b.HasIndex("CityId");
 
                     b.HasIndex("CountryId");
 
-                    b.HasIndex("RepresentativeId");
+                    b.HasIndex("RegionId");
 
                     b.ToTable("Addresses");
                 });
@@ -1776,18 +1743,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 6, 16, 16, 22, 7, 18, DateTimeKind.Local).AddTicks(9670),
-                            EnjazRequired = false,
-                            Name = "Ticket Process",
-                            Step = 100,
-                            VisaRequired = true
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 6, 15, 10, 39, 12, 814, DateTimeKind.Local).AddTicks(7982),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7478),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1830,6 +1786,62 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("ProcessId");
 
                     b.ToTable("ProcessDefinitions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7655),
+                            Name = "Ready to Issue Ticket",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = false,
+                            Step = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7669),
+                            Name = "Register Ticket",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = false,
+                            Step = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7686),
+                            Name = "Refund Ticket",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = false,
+                            Step = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7691),
+                            Name = "Rebook Ticket",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = false,
+                            Step = 3
+                        },
+                        new
+                        {
+                            Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7699),
+                            Name = "Register Rebook Ticket",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = false,
+                            Step = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
+                            CreatedAt = new DateTime(2023, 6, 19, 8, 52, 22, 936, DateTimeKind.Local).AddTicks(7706),
+                            Name = "Travel",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = true,
+                            Step = 2
+                        });
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Settings.Suffix", b =>
@@ -1841,7 +1853,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 12, 17, 0, 15, 446, DateTimeKind.Local).AddTicks(9551));
+                        .HasDefaultValue(new DateTime(2023, 6, 19, 8, 52, 22, 931, DateTimeKind.Local).AddTicks(6835));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1862,6 +1874,180 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Suffixes");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketReady", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("DateInterval")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("TicketOfficeId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.HasIndex("TicketOfficeId");
+
+                    b.ToTable("TicketReadies");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebook", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("DateInterval")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.ToTable("TicketRebooks");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebookReg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AirLineId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ArrivalTime")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DepartureTime")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("FlightDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TicketNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TicketPrice")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Transit")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AirLineId");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.ToTable("TicketRebookRegistrations");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRefund", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("DateInterval")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.ToTable("TicketRefunds");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRegistration", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AirLineId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ArrivalTime")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DepartureTime")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("FlightDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("RegiteredDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TicketNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TicketPrice")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Transit")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AirLineId");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.ToTable("TicketRegistrations");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TraveledApplicant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ApplicantId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.ToTable("TraveledApplicants");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.UserGroup", b =>
@@ -2149,26 +2335,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("SalaryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketReady", "TicketReady")
-                        .WithMany()
-                        .HasForeignKey("TicketReadyId");
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebook", "TicketRebook")
-                        .WithMany()
-                        .HasForeignKey("TicketRebookId");
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebookReg", "TicketRebookRegistration")
-                        .WithMany()
-                        .HasForeignKey("TicketRebookRegistrationId");
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRefund", "TicketRefund")
-                        .WithMany()
-                        .HasForeignKey("TicketRefundId");
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRegistration", "TicketRegistration")
-                        .WithMany()
-                        .HasForeignKey("TicketRegistrationId");
-
                     b.Navigation("Address");
 
                     b.Navigation("Branch");
@@ -2196,16 +2362,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Religion");
 
                     b.Navigation("Salary");
-
-                    b.Navigation("TicketReady");
-
-                    b.Navigation("TicketRebook");
-
-                    b.Navigation("TicketRebookRegistration");
-
-                    b.Navigation("TicketRefund");
-
-                    b.Navigation("TicketRegistration");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Award", b =>
@@ -2438,15 +2594,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Representative", "Representative")
-                        .WithMany()
-                        .HasForeignKey("RepresentativeId");
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "Region")
+                        .WithMany("Regions")
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("AddressRegion");
+                    b.Navigation("City");
 
                     b.Navigation("Country");
 
-                    b.Navigation("Representative");
+                    b.Navigation("Region");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Base.AttachmentFile", b =>
@@ -2746,6 +2903,84 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Process");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketReady", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithOne("TicketReady")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketReady", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "TicketOffice")
+                        .WithMany()
+                        .HasForeignKey("TicketOfficeId");
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("TicketOffice");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebook", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithOne("TicketRebook")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebook", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebookReg", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "AirLine")
+                        .WithMany()
+                        .HasForeignKey("AirLineId");
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithOne("TicketRebookRegistration")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRebookReg", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AirLine");
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRefund", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithOne("TicketRefund")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRefund", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRegistration", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.LookUp", "AirLine")
+                        .WithMany()
+                        .HasForeignKey("AirLineId");
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithOne("TicketRegistration")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketRegistration", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AirLine");
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TraveledApplicant", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                        .WithOne("TraveledApplicant")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.TicketData.TraveledApplicant", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Applicant");
+                });
+
             modelBuilder.Entity("ApplicationUserUserGroup", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
@@ -2810,21 +3045,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.ApplicantProcess", b =>
-                {
-                    b.Navigation("TicketReady");
-
-                    b.Navigation("TicketRebook");
-
-                    b.Navigation("TicketRebookReg");
-
-                    b.Navigation("TicketRefund");
-
-                    b.Navigation("TicketRegistration");
-
-                    b.Navigation("TraveledApplicant");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", b =>
