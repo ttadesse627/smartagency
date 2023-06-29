@@ -89,7 +89,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             // services.AddSingleton<ISmsService, TwilioService>();
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
-            services.AddTransient<IGetReportsRepository, GetReportsRepository>();
+            services.AddTransient<IReportsRepository, ReportsRepository>();
 
             services.AddHttpContextAccessor();
 

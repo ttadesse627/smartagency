@@ -1,16 +1,16 @@
 
-@host = http://localhost:5120/api/applicant
+@host = http://192.168.1.10:8000/api/applicant
 
 POST {{host}}/create
 Content-Type: application/json
 
 {
-  "firstName": "Abebe1",
-  "middleName": "Lemma1",
-  "lastName": "Koricho1",
+  "firstName": "Chala",
+  "middleName": "Abebe",
+  "lastName": "Abebe",
   "birthDate": "2023-06-15T18:36:08.321Z",
   "gender": "Male",
-  "passportNumber": "EP0002",
+  "passportNumber": "EP0003",
   "issuedDate": "2023-06-15T18:36:08.321Z",
   "passportExpiryDate": "2023-06-15T18:36:08.321Z",
   "placeOfBirth": "Addis Ababa",
