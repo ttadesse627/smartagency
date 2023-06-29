@@ -1,12 +1,13 @@
 
 
+using AppDiv.SmartAgency.Utility.Contracts;
 using Newtonsoft.Json;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.ReportRequests;
 public record ReportsQueryRequest
 {
-    public string? ObjectName { get; set; }
-    public ICollection<FilterQuery> Filters { get; set; }
-    public ICollection<AggregateQuery> Aggregates { get; set; }
+    public List<string>? Columns { get; set; }
+    public List<Filter>? Filters { get; set; }
+    public List<Aggregate>? Aggregates { get; set; }
 
 }

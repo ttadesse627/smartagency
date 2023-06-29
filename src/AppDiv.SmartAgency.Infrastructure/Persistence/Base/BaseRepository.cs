@@ -235,7 +235,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     var parameter = Expression.Parameter(typeof(T), "x");
                     var left = Expression.Property(parameter, property);
                     var right = Expression.Constant(filter.Value);
-                    var body = Expression.Call(left, typeof(string).GetMethod(filter.MethodName), right);
+                    var body = Expression.Call(left, typeof(string).GetMethod(filter.Operator.ToString()), right);
                     var predicate = Expression.Lambda<Func<T, bool>>(body, parameter);
 
                     query = query.Where(predicate);
@@ -1428,10 +1428,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         public async Task<List<PropertyInfo>> GetProperties()
         {
             var properties = typeof(T).GetProperties().ToList();
-            foreach (var prop in properties)
-            {
-                Console.WriteLine(prop.GetGetMethod());
-            }
+            // foreach (var prop in properties)
+            // {
+            //     var stringProps = prop.Name;
+            // }
             return properties;
         }
 
@@ -1456,7 +1456,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 foreach (var filter in filters)
                 {
-                    query = query.Where($"{filter.PropertyName}.{filter.MethodName}(@0)", filter.Value);
+                    query = query.Where($"{filter.PropertyName}.{filter.Operator}(@0)", filter.Value);
                 }
             }
 

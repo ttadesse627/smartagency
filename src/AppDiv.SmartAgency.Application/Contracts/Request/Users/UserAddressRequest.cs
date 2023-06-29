@@ -3,7 +3,7 @@
 namespace AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 public record UserAddressRequest
 {
-    public string? City { get; set; }
+    public string? SubCity { get; set; }
     public string? Zone { get; set; }
     public string? Woreda { get; set; }
     public string? Kebele { get; set; }

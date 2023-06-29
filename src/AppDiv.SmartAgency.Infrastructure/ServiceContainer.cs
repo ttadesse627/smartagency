@@ -9,6 +9,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.AspNetCore.Http;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {
@@ -20,7 +21,7 @@ namespace AppDiv.SmartAgency.Infrastructure
                 options =>
             options.UseMySql(configuration.GetConnectionString("ConnectionString"),
                 ServerVersion.AutoDetect(configuration.GetConnectionString("ConnectionString")),
-                mySqlOptions => mySqlOptions.EnableRetryOnFailure()).EnableSensitiveDataLogging());
+                mySqlOptions => mySqlOptions.EnableRetryOnFailure()).EnableSensitiveDataLogging(), ServiceLifetime.Scoped);
 
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -88,8 +89,10 @@ namespace AppDiv.SmartAgency.Infrastructure
             // services.AddSingleton<ISmsService, TwilioService>();
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
-            services.AddTransient<IGetReportsRepository, GetReportsRepository>();
-            //services.AddScoped(typeof(ICompanyInformationRepository<>), typeof(BaseRepository<>))  
+            services.AddTransient<IReportsRepository, ReportsRepository>();
+
+            services.AddHttpContextAccessor();
+
             #endregion Repositories DI
             return services;
         }

@@ -1,5 +1,5 @@
 
-@host = http://192.168.1.5:8000/api/applicant
+@host = http://localhost:5120/api/applicant/
 
 POST {{host}}/create
 Content-Type: application/json
@@ -22,10 +22,10 @@ Content-Type: application/json
     "complexion": "Brown",
     "numberOfChildren": 0,
     "health": "Fit",
-    "religionId": "abb7ffd6-eb11-4d1f-84c6-68a70bec5195",
+    "religionId": "85f05995-f9bc-4e86-8da8-2e0478940970",
     "jobTitles": [
         {
-            "lookUpJobtitleId": "ba0164b4-023f-4d56-ba7c-65534c316e95"
+            "lookUpJobtitleId": "85f05995-f9bc-4e86-8da8-2e0478940970"
         }
     ],
     "salary": 875,
@@ -41,7 +41,7 @@ Content-Type: application/json
     "remark": "He is a good employee!",
     "languages": [
         {
-        "languageId": "d099cdd8-3e9b-48ec-b1cd-0568a3b08c88",
+        "languageId": "85f05995-f9bc-4e86-8da8-2e0478940970",
         "ability": {
                 "canWrite": true,
                 "canRead": true,
@@ -53,12 +53,12 @@ Content-Type: application/json
     ],
     "technicalSkills": [
         {
-            "lookUpTechnicalSkillId": "19d82e96-4241-4d68-b19d-ce8bf04bb4a9"
+            "lookUpTechnicalSkillId": "85f05995-f9bc-4e86-8da8-2e0478940970"
         }
     ],
     "experiences": [
         {
-            "countryLookupId": "d20343aa-8573-4f56-a04e-28c62bdb2083",
+            "countryLookupId": "85f05995-f9bc-4e86-8da8-2e0478940970",
             "periodLength": 5,
             "position": "House Maid"
         }
@@ -66,17 +66,17 @@ Content-Type: application/json
     "education": {
         "educationLevelofQualifications": [
             {
-                "levelOfQualificationLookUpId": "49593992-c2ec-43e3-93a1-00fb3930d457"
+                "levelOfQualificationLookUpId": "85f05995-f9bc-4e86-8da8-2e0478940970"
             }
         ],
         "educationQualificationTypes": [
             {
-                "qualificationTypeLookUpId": "7a8984ac-518c-428b-aaa5-fd65dc01056a"
+                "qualificationTypeLookUpId": "85f05995-f9bc-4e86-8da8-2e0478940970"
             }
         ],
         "educationAawards": [
             {
-                "awardLookUpId": "99235b08-76b4-44cf-8946-700970da9bf5"
+                "awardLookUpId": "85f05995-f9bc-4e86-8da8-2e0478940970"
             }
         ],
         "yearCompleted": 2022,
@@ -137,7 +137,7 @@ Content-Type: application/json
             "region": "Addis Ababa",
             "zone": "Kality",
             "woreda": "Akaki",
-            "relationshipId": "5e5c227d-1242-4aa1-a64a-e2f5a54ac015",
+            "relationshipId": "85f05995-f9bc-4e86-8da8-2e0478940970",
             "rate": 35
         }
     ],
@@ -152,3 +152,8 @@ Content-Type: application/json
         "website": "abc.com"
     }
 }
+
+###
+
+
+GET http://127.0.0.1:5120/api/lookup/get-all-lookup?pageNumber=1&pageSize=10&searchTerm=a&orderBy=Value&sortingDirection=Ascending HTTP/1.1

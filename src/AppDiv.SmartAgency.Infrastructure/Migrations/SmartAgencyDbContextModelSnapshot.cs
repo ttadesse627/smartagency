@@ -86,6 +86,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
+
+
                     b.Property<Guid?>("ProcessDefinitionId")
                         .HasColumnType("char(36)");
 
@@ -1269,7 +1271,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("TransactionCode")
@@ -1739,7 +1741,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6140),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8226),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1787,7 +1789,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6310),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8590),
                             Name = "Ready to Issue Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1796,7 +1798,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6325),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8612),
                             Name = "Register Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1805,7 +1807,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6329),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8623),
                             Name = "Refund Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1814,7 +1816,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6343),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8634),
                             Name = "Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1823,7 +1825,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6347),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8644),
                             Name = "Register Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1832,7 +1834,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6353),
+                            CreatedAt = new DateTime(2023, 6, 28, 7, 29, 3, 670, DateTimeKind.Local).AddTicks(8657),
                             Name = "Travel",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = true,
@@ -1849,7 +1851,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 26, 10, 30, 49, 382, DateTimeKind.Local).AddTicks(7004));
+                        .HasDefaultValue(new DateTime(2023, 6, 28, 7, 29, 3, 662, DateTimeKind.Local).AddTicks(6621));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2078,6 +2080,222 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserGroups");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Views.ApplicantInfo", b =>
+                {
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("AirLine")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("AlternativePhone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ArrivalTime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Branch")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("BrokerName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ContractNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ContractPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrentNationality")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DepartureTime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DesiredCountry")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Experience")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Fax")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("FlightDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Health")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Height")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("IssuedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("IssuedPlace")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("IssuingCountry")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Kebele")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("MaritalStatus")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Mobile")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("MotherName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("NumberOfChildren")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OfficePhone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("PassportExpiryDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PlaceOfBirth")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PreviousNationality")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Profession")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RegisteredDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Religion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Salary")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SponsorFullName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SubCity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TicketNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TicketPrice")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Transit")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Website")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Woreda")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.ToView("ApplicantInfo");
                 });
 
             modelBuilder.Entity("ApplicationUserUserGroup", b =>
@@ -2713,7 +2931,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "Order")
                         .WithOne("Enjaz")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Enjaz", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
                 });

@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
+using AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
@@ -35,6 +36,13 @@ namespace AppDiv.SmartAgency.API.Controllers
         public async Task<ActionResult<SearchModel<EnjazResponseDTO>>> GetAllEnjazs(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return Ok(await _mediator.Send(new GetAllEnjazsQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<ServiceResponse<int>>> DeleteEnjaz(Guid id)
+        {
+            return Ok(await _mediator.Send(new DeleteEnjazCommand(id)));
 
         }
 

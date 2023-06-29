@@ -8,6 +8,6 @@ public record EditProcessRequest
     public string? Name { get; set; }
     public int Step { get; set; }
     public bool IsVisaRequired { get; set; }
-    public Guid? CountryId { get; set; } = null;
+    public Guid? CountryId { get; set; }
     public ICollection<EditProcessDefinitionRequest>? ProcessDefinitions { get; set; }
 }

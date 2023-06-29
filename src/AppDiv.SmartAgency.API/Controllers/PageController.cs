@@ -60,8 +60,8 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }*/
-        [HttpDelete("delete")]
-        public async Task<ActionResult> DeletePages([FromBody] DeletePagesCommand cmd)
+        [HttpDelete("delete/{ids}")]
+        public async Task<ActionResult> DeletePages([FromQuery] DeletePagesCommand cmd)
         {
             try
             {

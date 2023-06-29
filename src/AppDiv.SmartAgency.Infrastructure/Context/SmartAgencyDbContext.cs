@@ -14,6 +14,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Infrastructure.Seed;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Context
 {
@@ -66,11 +67,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
         public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
 
-        /* protected override void OnModelCreating(ModelBuilder modelBuilder)
-         {
-             modelBuilder.Entity<dynamic>().HasNoKey().ToView("DynamicView");
-         }
-     */
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
@@ -131,6 +127,42 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             SeedData.Seedprocesses(modelBuilder);
             SeedData.SeedprocessDefinitions(modelBuilder);
 
+            // // get all entity types
+            // var entityTypes = modelBuilder.Model.GetEntityTypes();
+
+            // // loop through each entity type
+            // foreach (var entityType in entityTypes)
+            // {
+            //     // create a new DbTable entity for the current entity type
+            //     var dbTable = new DbTable { Name = entityType.Name };
+
+            //     // get all properties for the current entity type
+            //     var properties = entityType.GetProperties();
+
+            //     // loop through each property
+            //     foreach (var property in properties)
+            //     {
+            //         // create a new DbColumn entity for the current property
+            //         var dbColumn = new DbColumn
+            //         {
+            //             Name = property.Name,
+            //             Type = property.ClrType,
+            //             IsForeignKey = property.IsForeignKey(),
+            //             PrincipalEntity = property.GetContainingForeignKeys().FirstOrDefault()?.PrincipalEntityType.Name
+            //         };
+
+            //         // add the DbColumn entity to the context
+            //         modelBuilder.Entity<DbColumn>().HasData(dbColumn);
+
+            //         // add the DbColumn entity to the DbTable entity
+            //         dbTable.Columns = dbTable.Columns.Append(dbColumn);
+            //     }
+
+            //     // add the DbTable entity to the context
+            //     modelBuilder.Entity<DbTable>().HasData(dbTable);
+            // }
+
+
             #region Audit Config
             Audit.Core.Configuration.Setup()
                 .UseEntityFramework(config => config
@@ -170,6 +202,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                     }
                 }).IgnoreMatchedProperties(true));
             #endregion
+
         }
         public static JsonSerializerSettings GetJsonSerializerSettings()
         {
@@ -181,7 +214,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 Formatting = Newtonsoft.Json.Formatting.Indented
             };
         }
-
         public string GetCurrentUserId()
         {
             return _userResolverService.GetUserId().ToString();

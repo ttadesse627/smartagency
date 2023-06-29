@@ -6,7 +6,7 @@ public class Enjaz : BaseAuditableEntity
 {
     public string? ApplicationNumber { get; set; }
     public int TransactionCode { get; set; }
-    public Guid? OrderId { get; set; }
-    public Order? Order { get; set; }
+    public Guid OrderId { get; set; }
+    public Order Order { get; set; }
 
 }
