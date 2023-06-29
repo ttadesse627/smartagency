@@ -24,9 +24,10 @@ namespace AppDiv.SmartAgency.API.Controllers
 
        [HttpGet("get")]
 
-       public async Task<ActionResult<List<DashbourdResponseDTO>>> GetDashbourdInformation()
-       {
-           return await _mediator.Send(new GetDashbourdQuery());
+       public async Task<ActionResult<Dictionary<string, Object>>> GetDashbourdInformation([FromQuery]DateTime? startDate = null, DateTime? endDate=null)
+       { 
+          
+           return await _mediator.Send(new GetDashbourdQuery(startDate, endDate));
      
        } 
 
