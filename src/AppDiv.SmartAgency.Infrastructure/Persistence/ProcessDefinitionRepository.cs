@@ -1,7 +1,9 @@
 
+using System.Reflection.PortableExecutable;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IProcessDefinitionRepository
@@ -21,5 +23,12 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
             count = await _context.SaveChangesAsync();
         }
         return count;
+    }
+    public async Task<List<Object>> GetDashbourd()
+    {
+        var response= await _context.ProcessDefinitions
+          .Include(pd=>pd.ApplicantProcesses)
+          .FirstOrDefaultAsync(pd=> pd.ApplicantProcesses!=null);
+          return null;
     }
 }
