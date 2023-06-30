@@ -26,7 +26,8 @@ public class ProcessRepository : BaseRepository<Process>, IProcessRepository
     }
 
     public async Task<Int32> GetMaximumStepAsync(Expression<Func<Process, bool>> predicate)
-    {
+    {  
+        
         int maxStep = await _context.Processes.Where(predicate).MaxAsync(pr => pr.Step);
         return maxStep;
     }

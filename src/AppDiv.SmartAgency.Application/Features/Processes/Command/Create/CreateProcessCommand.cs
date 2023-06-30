@@ -28,8 +28,12 @@ public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, Can
         var request = command.request;
         var response = new ServiceResponse<Int32>();
         var process = CustomMapper.Mapper.Map<Process>(request);
-
-        var maxStep = await _processRepository.GetMaximumStepAsync(pr => !(pr.Name.ToLower().Contains("ticket")));
+        var processes = await _processRepository.GetAllAsync();
+        var maxStep = 1;
+        if (processes.Count() > 1)
+        {
+            maxStep = await _processRepository.GetMaximumStepAsync(pr => !(pr.Name.ToLower().Contains("ticket")));
+        }
         if (maxStep < request.Step)
         {
             maxStep = request.Step;
@@ -38,7 +42,10 @@ public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, Can
         ticketProcess.Step = maxStep + 1;
         try
         {
+            
+            await _processRepository.InsertAsync(process, cancellationToken);
             await _processRepository.SaveChangesAsync(cancellationToken);
+
         }
         catch (System.Exception ex)
         {
