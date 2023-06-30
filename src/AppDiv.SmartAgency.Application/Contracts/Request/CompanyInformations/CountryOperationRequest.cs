@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
     {
         
         public Guid? CountryId {get; set;}
-        public int? AmountPerPerson {get; set;}
+       public string? LicenseNumber {get; set;}
+        public int VisaExpiryDays {get; set;}
     }
 }

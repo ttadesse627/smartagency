@@ -44,7 +44,8 @@ namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
                   var response = new Dictionary<string, object>
                             {
                                 { "thisWeekSummary", null },
-                                { "thisMonthSummary", null }
+                                { "thisMonthSummary", null },
+                                { "quickLinks", null},
                             };
                                   DateTime today = DateTime.Today;
                               DateTime startOfMonth = new DateTime(today.Year, today.Month, 1);
@@ -66,6 +67,7 @@ namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
            var  ThisWeekSummary = await _applicantProcessRepository.GetDashbourdResult(startOfWeek, endOfWeek); 
            
            var ThisMonthSummary = await _applicantProcessRepository.GetDashbourdResult(request.StartDate, request.EndDate); 
+           var  QuickLinks= await _applicantProcessRepository.GetQuickLinks();
 
 
                response["thisWeekSummary"] = ThisWeekSummary;

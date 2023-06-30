@@ -11,6 +11,8 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
         public int PrintedDocumentSubmitDays { get; set; }
         public int AmountOfDeposit { get; set; }
         public string? AuthorizedPerson { get; set; }
+        public int PenalityInterval {get; set;}
+        public int PenalityAmount {get; set;}
 
     }
 }

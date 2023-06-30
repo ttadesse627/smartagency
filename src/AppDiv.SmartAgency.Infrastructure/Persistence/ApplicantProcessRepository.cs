@@ -62,7 +62,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                             }
                             else
                             {
-                               // groupedApplicantProcesses = new List<object> { assignedVisa };
+                            
                                 response.Add(assignedVisa);
                             }
 
@@ -72,6 +72,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
                   return response;
 
+
+                  
 
 
 
@@ -100,5 +102,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
 
         }
+
+
+                   public Task<object> GetQuickLinks()
+                    {
+                        var response= new List<Object>();
+
+
+                        throw new NotImplementedException();
+
+                        return null;
+                    }
+
+      
     }
 }
