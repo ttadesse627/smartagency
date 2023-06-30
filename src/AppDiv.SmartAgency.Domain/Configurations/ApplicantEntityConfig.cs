@@ -39,6 +39,11 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .HasForeignKey(appl => appl.PartnerId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasOne(appl => appl.Order)
+            .WithMany(rep => rep.Employees)
+            .HasForeignKey(appl => appl.OrderId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasOne(appl => appl.IssuingCountry)
             .WithMany(lk => lk.ApplIssuingCountries)
             .HasForeignKey(appl => appl.IssuingCountryId)

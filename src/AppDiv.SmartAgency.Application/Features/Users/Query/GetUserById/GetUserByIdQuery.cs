@@ -24,7 +24,7 @@ namespace AppDiv.SmartAgency.Application.Features.User.Query.GetUserById
         public async Task<UserDetailsResponseDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var explLoadedProps = new string[] { "Partner", "Address.Region", "Address.Country", "UserGroups" };
-            var user = await _userRepository.GetWithPredicateAsync(appl => appl.Id == request.id.ToString(), explLoadedProps);
+            var user = await _userRepository.GetWithPredicateAsync(usr => usr.Id == request.id.ToString(), explLoadedProps);
 
 
             var response = new UserDetailsResponseDTO

@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-
     public class UserController : ApiControllerBase
     {
 
@@ -27,30 +26,25 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(await Mediator.Send(new CreateUserCommand(request)));
         }
 
-
-        [HttpGet("get-user-details-by-username/{username}")]
+        [HttpGet("user-details/{username}")]
         [ProducesDefaultResponseType(typeof(UserDetailsResponseDTO))]
         public async Task<IActionResult> GetUserDetailsByUserName(string username)
         {
             var result = await Mediator.Send(new GetUserDetailsByUserNameQuery(username));
             return Ok(result);
         }
-
         [HttpGet("get-all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<SearchModel<UserResponseDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return await Mediator.Send(new GetAllUserQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection));
         }
-
         [HttpGet("get/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<UserDetailsResponseDTO> Get(Guid id)
         {
             return await Mediator.Send(new GetUserByIdQuery(id));
         }
-
-
         [HttpPut("edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] UpdateUserRequest request)
         {

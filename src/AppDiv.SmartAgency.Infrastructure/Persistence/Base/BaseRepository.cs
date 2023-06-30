@@ -30,21 +30,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             _dbContext = dbContext;
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _dbContext.Set<T>().ToListAsync();
-        }
-
-        public virtual async Task<IEnumerable<T>> GetAllWithAsync(params string[] eagerLoadedProperties)
-        {
-            var list = _dbContext.Set<T>().AsQueryable();
-            foreach (var nav_property in eagerLoadedProperties)
-            {
-                list = list.Include(nav_property);
-            }
-            return await list.ToListAsync();
-        }
-
+        #region We also added this methods to be shared accross multiple entities, models and any other area
         public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
@@ -186,7 +172,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             };
         }
 
-
         public virtual async Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
 
@@ -222,65 +207,54 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return entities;
         }
-        public virtual async Task<SearchModel<T>> GetAllWithFilterAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, List<Filter>? filters = null, params string[] eagerLoadedProperties)
+
+        public virtual async Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<Guid> Ids, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
-            long maxPage = 1, totalItems = 0;
 
-            var query = _dbContext.Set<T>().AsQueryable();
-            if (filters != null && filters.Count > 0)
+            var entityList = new List<T>();
+
+            if (Ids.Count() > 0 && Ids != null)
             {
-                foreach (var filter in filters)
+                foreach (var id in Ids)
                 {
-                    var property = typeof(T).GetProperty(filter.PropertyName);
-                    var parameter = Expression.Parameter(typeof(T), "x");
-                    var left = Expression.Property(parameter, property);
-                    var right = Expression.Constant(filter.Value);
-                    var body = Expression.Call(left, typeof(string).GetMethod(filter.Operator.ToString()), right);
-                    var predicate = Expression.Lambda<Func<T, bool>>(body, parameter);
-
-                    query = query.Where(predicate);
+                    var entity = await _dbContext.Set<T>().FindAsync(id);
+                    if (entity != null)
+                    {
+                        entityList.Add(entity);
+                    }
                 }
+
+            }
+            var entities = entityList.AsQueryable();
+            if (predicate != null)
+            {
+                entities.Where(predicate);
+            }
+            foreach (var loadedProp in eagerLoadedProperties)
+            {
+                entities.Include(loadedProp);
             }
 
-            foreach (var nav_property in eagerLoadedProperties)
-            {
-                query = query.Include(nav_property);
-            }
-
-            totalItems = query.LongCount();
-            if (totalItems > 0)
-            {
-                maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
-                if (pageNumber >= maxPage)
-                {
-                    pageNumber = Convert.ToInt32(maxPage);
-                }
-            }
-
-            // Sorting
-            if (!string.IsNullOrEmpty(orderBy))
-            {
-                var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
-                query = query.OrderBy(orderExpression);
-            }
-
-            // Pagination
-            var skipAmount = (pageNumber - 1) * pageSize;
-            query = query.Skip(skipAmount).Take(pageSize);
-
-            var result = await query.ToListAsync();
-            return new SearchModel<T>
-            {
-                CurrentPage = pageNumber,
-                MaxPage = maxPage,
-                PagingSize = pageSize,
-                Items = result,
-                TotalCount = totalItems,
-                SortingColumn = orderBy,
-                SortingDirection = sortingDirection
-            };
+            return entities;
         }
 
+        #endregion
+
+
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _dbContext.Set<T>().ToListAsync();
+        }
+
+        public virtual async Task<IEnumerable<T>> GetAllWithAsync(params string[] eagerLoadedProperties)
+        {
+            var list = _dbContext.Set<T>().AsQueryable();
+            foreach (var nav_property in eagerLoadedProperties)
+            {
+                list = list.Include(nav_property);
+            }
+            return await list.ToListAsync();
+        }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
         {
@@ -1476,5 +1450,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 PagingSize = pageSize
             };
         }
+
+        // public Task<List<PropertyInfo>> GetProperties()
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 }

@@ -27,11 +27,6 @@ public class OrderEntityConfig : IEntityTypeConfiguration<Order>
             .HasForeignKey(fk => fk.VisaTypeId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(m => m.Employee)
-            .WithOne(n => n.Order)
-            .HasForeignKey<Order>(fk => fk.EmployeeId)
-            .OnDelete(DeleteBehavior.SetNull);
-
         builder.HasOne(m => m.Payment)
             .WithOne(n => n.Order)
             .HasForeignKey<Payment>(fk => fk.OrderId)

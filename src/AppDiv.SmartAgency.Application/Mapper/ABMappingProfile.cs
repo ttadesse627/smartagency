@@ -154,7 +154,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Partner, PartnerResponseDTO>();
             CreateMap<Address, AddressResponseDTO>();
 
-            CreateMap<CreateOrderRequest, Order>();
+            CreateMap<CreateOrderRequest, Order>()
+            .ForMember(dest => dest.Employees, opt => opt.Ignore());
             CreateMap<OrderCriteriaRequest, OrderCriteria>();
             CreateMap<SponsorRequest, Sponsor>();
             CreateMap<PaymentRequest, Payment>();
@@ -241,13 +242,11 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
             CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
-            // CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
                 .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
                 .ForMember(dest => dest.LetterBackGround, opt => opt.Ignore());
             CreateMap<Address, CompanyAddressResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>();
-            // CreateMap<CountryOperation, CountryOperationResponseDTO>();
             CreateMap<EditCompanyAddressRequest, Address>();
             CreateMap<EditCompanyInformationCommand, CompanyInformation>().ReverseMap();
             CreateMap<EditCompanyWitnessRequest, Witness>();
@@ -276,8 +275,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
             CreateMap<AddUserRequest, ApplicationUser>()
-                .ForMember(dest => dest.UserGroups, opt => opt.Ignore());
-            CreateMap<UserAddressRequest, Address>();
+                .ForMember(dest => dest.UserGroups, opt => opt.Ignore())
+                .ForMember(dest => dest.Email, opt => opt.Ignore());
             CreateMap<ApplicationUser, UserResponseDTO>();
             CreateMap<ApplicationUser, UserDetailsResponseDTO>();
             CreateMap<SearchModel<ApplicationUser>, SearchModel<UserResponseDTO>>();
