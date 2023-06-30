@@ -22,10 +22,10 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
 
         private async Task<bool> BeUniqueUsername(string username, CancellationToken cancellationToken)
         {
-            var userExistence = false;
+            var isUnique = false;
             var user = await _repo.GetByUsernameAsync(username);
-            if (user != null) userExistence = true;
-            return userExistence;
+            if (user == null) isUnique = true;
+            return isUnique;
         }
 
 

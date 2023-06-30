@@ -6,7 +6,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
-public record UnassignOrderCommand(UnassignOrderRequest request) : IRequest<ServiceResponse<Int32>>{}
+public record UnassignOrderCommand(UnassignOrderRequest request) : IRequest<ServiceResponse<Int32>> { }
 
 public class UnassignOrderCommandHandler : IRequestHandler<UnassignOrderCommand, ServiceResponse<Int32>>
 {
@@ -28,20 +28,24 @@ public class UnassignOrderCommandHandler : IRequestHandler<UnassignOrderCommand,
         {
             foreach (var orderId in orderIds)
             {
-                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderId && order.IsDeleted == false, "Employee");
+                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderId && (order.Employees != null && order.Employees.Count > 0) && order.IsDeleted == false, "Employees");
                 if (orderEntity != null)
                 {
-                    if (orderEntity.Employee != null)
+                    foreach (var empl in orderEntity.Employees)
                     {
-                        orderEntity.Employee = null;
-                        response = await _orderRepository.SaveDbUpdateAsync();
-                    }
-                    else
-                    {
-                        exceptions.Add(new Exception($"The order with id {orderId} is already unassigned."));
+                        orderEntity.Employees.Remove(empl);
                     }
                 }
                 else exceptions.Add(new Exception($"There is no Order with id {orderId}."));
+            }
+
+            try
+            {
+                response.Success = await _orderRepository.SaveChangesAsync(cancellationToken);
+            }
+            catch (System.Exception ex)
+            {
+                // TODO
             }
         }
         return response;

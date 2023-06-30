@@ -6,6 +6,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
 {
     public interface IBaseRepository<T> where T : class
     {
+        Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<Guid> Ids, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
         void Delete(Expression<Func<T, bool>>? predicate = null);
         void Delete(IEnumerable<T> entities);
         void Delete(T entity);

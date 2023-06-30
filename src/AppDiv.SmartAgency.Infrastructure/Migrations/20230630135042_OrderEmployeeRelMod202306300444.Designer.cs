@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230630135042_OrderEmployeeRelMod202306300444")]
+    partial class OrderEmployeeRelMod202306300444
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1070,12 +1072,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("PenalityAmount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PenalityInterval")
-                        .HasColumnType("int");
-
                     b.Property<int>("PrintedDocumentSubmitDays")
                         .HasColumnType("int");
 
@@ -1130,6 +1126,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<int?>("AmountPerPerson")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("CompanyInformationId")
                         .HasColumnType("char(36)");
 
@@ -1142,18 +1141,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("LicenseNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("VisaExpiryDays")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

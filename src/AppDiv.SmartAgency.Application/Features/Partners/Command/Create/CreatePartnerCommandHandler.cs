@@ -10,7 +10,7 @@ using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
 {
     public class CreatePartnerCommandHandler : IRequestHandler<CreatePartnerCommand, CreatePartnerCommandResponse>
-{
+    {
         private readonly IPartnerRepository _partnerRepository;
         private readonly IFileService _fileService;
         public CreatePartnerCommandHandler(IPartnerRepository partnerRepository, IFileService fileService)
@@ -20,7 +20,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
         }
         public async Task<CreatePartnerCommandResponse> Handle(CreatePartnerCommand request, CancellationToken cancellationToken)
         {
-           // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
+            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
             var createPartnerCommandResponse = new CreatePartnerCommandResponse();
 
@@ -36,49 +36,50 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
                     createPartnerCommandResponse.ValidationErrors.Add(error.ErrorMessage);
                 createPartnerCommandResponse.Message = createPartnerCommandResponse.ValidationErrors[0];
             }
-         if (createPartnerCommandResponse.Success)
+            if (createPartnerCommandResponse.Success)
             {
                 //can use this instead of automapper
-              /*  var partner = new Partner()
-                {
-                    PartnerName=request.partner.PartnerName,
-                    PartnerType=request.partner.PartnerType,
-                    PartnerNameAmharic=request.partner.PartnerNameAmharic,
-                    PartnerNameArabic=request.partner.PartnerNameArabic,
-                    ContactPerson=request.partner.ContactPerson,
-                    IdNumber=request.partner.IdNumber,
-                    ManagerNameAmharic=request.partner.ManagerNameAmharic,
-                    LicenseNumber=request.partner.LicenseNumber,
-                    BankName=request.partner.BankName,
-                    BankAccount=request.partner.BankAccount,
-                    HeaderLogo=request.partner.HeaderLogo,
-                    ReferenceNumber=request.partner.ReferenceNumber,
-                    Address=request.partner.Address
-                };  */
+                /*  var partner = new Partner()
+                  {
+                      PartnerName=request.partner.PartnerName,
+                      PartnerType=request.partner.PartnerType,
+                      PartnerNameAmharic=request.partner.PartnerNameAmharic,
+                      PartnerNameArabic=request.partner.PartnerNameArabic,
+                      ContactPerson=request.partner.ContactPerson,
+                      IdNumber=request.partner.IdNumber,
+                      ManagerNameAmharic=request.partner.ManagerNameAmharic,
+                      LicenseNumber=request.partner.LicenseNumber,
+                      BankName=request.partner.BankName,
+                      BankAccount=request.partner.BankAccount,
+                      HeaderLogo=request.partner.HeaderLogo,
+                      ReferenceNumber=request.partner.ReferenceNumber,
+                      Address=request.partner.Address
+                  };  */
 
-                
-               // await _partnerRepository.InsertAsync(partner, cancellationToken);
+
+                // await _partnerRepository.InsertAsync(partner, cancellationToken);
                 //await _partnerRepository.SaveChangesAsync(cancellationToken);
 
-            var partnerEntity = CustomMapper.Mapper.Map<Partner>(request.partner);
-            await _partnerRepository.InsertAsync(partnerEntity, cancellationToken);
-            var result = await _partnerRepository.SaveChangesAsync(cancellationToken);
+                var partnerEntity = CustomMapper.Mapper.Map<Partner>(request.partner);
+                await _partnerRepository.InsertAsync(partnerEntity, cancellationToken);
+                var result = await _partnerRepository.SaveChangesAsync(cancellationToken);
 
-             if (result==true){
-                // save headerlogo
-                var file = request.partner.HeaderLogo;
-                var folderName = Path.Combine("Resources", "PartnersHeaderLogo");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                var fileName = partnerEntity.Id.ToString();
-                if(!string.IsNullOrEmpty(file)){
+                if (result == true)
+                {
+                    // save headerlogo
+                    var file = request.partner.HeaderLogo;
+                    var folderName = Path.Combine("Resources", "PartnersHeaderLogo");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    var fileName = partnerEntity.Id.ToString();
+                    if (!string.IsNullOrEmpty(file))
+                    {
 
-                 await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
-             }     
-             }
-      
+                        await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
+                    }
+                }
+            }
+            return createPartnerCommandResponse;
         }
-          return createPartnerCommandResponse;
- }
 
-  }
+    }
 }

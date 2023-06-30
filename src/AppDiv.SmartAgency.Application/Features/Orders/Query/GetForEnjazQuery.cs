@@ -1,10 +1,7 @@
 
 
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
@@ -26,30 +23,47 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
         var ordEagerLoadedProps = new string[]{"Sponsor","OrderCriteria.Language","OrderCriteria.Religion",
                                         "Employee","Employee.Jobtitle","Employee.Language","Enjaz"};
 
+        var applEagerLoadedProps = new string[] { "Order", "Jobtitle", "Language", "Order.Enjaz" };
+
         // var applicantList = await _applicantRepository.GetAllWithPredicateAsync
         //                 (
         //                     applicant => applicant.IsDeleted == false && applicant.Order == null, applEagerLoadedProps
         //                 );
         var orderList = await _orderRepository.GetAllWithPredicateAsync
                         (
-                            order => order.IsDeleted == false && order.EmployeeId != null && order.Enjaz == null, ordEagerLoadedProps
+                            order => order.IsDeleted == false && order.Employees.Count > 0 && order.Employees != null && order.Enjaz == null, ordEagerLoadedProps
                         );
 
-        if (orderList.Count > 0 || orderList != null)
+        var applicantList = await _applicantRepository.GetAllWithPredicateAsync
+                        (
+                            applicant => applicant.IsDeleted == false && applicant.Order == null, applEagerLoadedProps
+                        );
+
+        if (orderList.Count > 0 && orderList != null)
         {
             foreach (var order in orderList)
             {
-                var ordResp = new DropdownEnjazResponseDTO
+                if (order.Employees != null && order.Employees.Count > 0)
                 {
-                    OrderId = order.Id,
-                    OrderNumber = order.OrderNumber,
-                    SponsorFullName = order.Sponsor.FullName,
-                    EmployeeProfession = order.Employee.Jobtitle.Value,
-                    EmployeeLanguage = order.Employee.Language.Value,
-                    PassportNumber = order.Employee.PassportNumber,
-                    EmployeeFullName = order.Employee.FirstName + " " + order.Employee.MiddleName + " " + order.Employee.LastName
-                };
-                response.Add(ordResp);
+                    foreach (var empl in order.Employees)
+                    {
+                        if (applicantList.Contains(empl))
+                        {
+                            var ordResp = new DropdownEnjazResponseDTO
+                            {
+                                OrderId = order.Id,
+                                OrderNumber = order.OrderNumber,
+                                SponsorFullName = order.Sponsor?.FullName,
+                                EmployeeProfession = empl.Jobtitle.Value,
+                                EmployeeLanguage = empl.Language.Value,
+                                PassportNumber = empl.PassportNumber,
+                                EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
+                            };
+                            response.Add(ordResp);
+                        }
+                    }
+                }
+
             }
         }
 

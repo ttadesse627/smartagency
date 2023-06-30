@@ -22,18 +22,21 @@ public class GetAllComplaintsQueryHandler : IRequestHandler<GetAllComplaintsQuer
 
         foreach (var orderComplaint in orderComplaints)
         {
-            var employeeName = orderComplaint.Employee.FirstName + " " + orderComplaint.Employee.MiddleName + " " + orderComplaint.Employee.LastName;
-            var days = DateTime.Now - orderComplaint.CreatedAt;
-            int numberOfDays = (int)days.TotalDays;
-            var complResponse = new GetAllComplaintsResponseDTO
+            if (orderComplaint.Employees != null && orderComplaint.Employees.Count > 0)
             {
-                Id = orderComplaint.Id,
-                SponsorName = orderComplaint.Sponsor.FullName,
-                EmployeeName = employeeName,
-                Days = numberOfDays
-            };
+                var employeeName = orderComplaint.Employees.First().FirstName + " " + orderComplaint.Employees.First().MiddleName + " " + orderComplaint.Employees.First().LastName;
+                var days = DateTime.Now - orderComplaint.CreatedAt;
+                int numberOfDays = (int)days.TotalDays;
+                var complResponse = new GetAllComplaintsResponseDTO
+                {
+                    Id = orderComplaint.Id,
+                    SponsorName = orderComplaint.Sponsor.FullName,
+                    EmployeeName = employeeName,
+                    Days = numberOfDays
+                };
 
-            response.Add(complResponse);
+                response.Add(complResponse);
+            }
         }
 
         return response;

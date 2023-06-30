@@ -42,6 +42,7 @@ public class Applicant : PersonalInfo
     public Guid? BrokerNameId { get; set; }
     public Guid? BranchId { get; set; }
     public Guid? PartnerId { get; set; }
+    public Guid? OrderId { get; set; }
     public Guid? AddressId { get; set; }
 
     // Objects

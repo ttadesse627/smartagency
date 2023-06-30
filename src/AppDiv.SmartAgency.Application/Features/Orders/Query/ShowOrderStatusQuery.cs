@@ -3,6 +3,7 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
@@ -26,6 +27,8 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
     public async Task<ShowOrderStatusResponseDTO> Handle(ShowOrderStatusQuery request, CancellationToken cancellationToken)
     {
         var response = new ShowOrderStatusResponseDTO();
+        var applResponse = new List<ApplicantInfoResponseDTO>();
+        var applicantProcesses = new List<ApplicantProcess>();
         var ordEagerLoadedProps = new string[] { "Employee", "Employee.MaritalStatus", "Employee.Religion", "Priority", "Partner", "Sponsor", "Enjaz" };
         var applProcLoadedProps = new string[] { "Applicant", "ProcessDefinition", "ProcessDefinition.Process" };
         var order = await _orderRepository.GetWithPredicateAsync
@@ -33,18 +36,24 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
                             order => order.IsDeleted == false && order.Id == request.OrderId, ordEagerLoadedProps
                         );
 
-        if (order.Employee != null)
+        if (order.Employees != null && order.Employees?.Count > 0)
         {
-            var applicantFullName = order.Employee.FirstName + " " + order.Employee.MiddleName + " " + order.Employee.LastName;
-            var applicantResponse = new ApplicantInfoResponseDTO
+            foreach (var employee in order.Employees)
             {
-                PassportNumber = order.Employee?.PassportNumber,
-                FullName = applicantFullName,
-                Sex = order.Employee?.Gender.ToString(),
-                MaritalSatus = order.Employee?.MaritalStatus?.Value,
-                Religion = order.Employee?.Religion?.Value
-            };
-            response.ApplicantInformation = applicantResponse;
+                var applicantFullName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName;
+                var applicantResponse = new ApplicantInfoResponseDTO
+                {
+                    PassportNumber = employee.PassportNumber,
+                    FullName = applicantFullName,
+                    Sex = employee.Gender.ToString(),
+                    MaritalSatus = employee.MaritalStatus?.Value,
+                    Religion = employee.Religion?.Value
+                };
+                applResponse.Add(applicantResponse);
+
+                await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ApplicantId == employee.Id, applProcLoadedProps);
+            }
+            response.ApplicantInformation = applResponse;
         }
 
         var orderResponse = new OrderInfoResponseDTO
@@ -56,7 +65,6 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
             SponsorName = order.Sponsor?.FullName
         };
         response.OrderInformation = orderResponse;
-        var applicantProcesses = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ApplicantId == order.EmployeeId, applProcLoadedProps);
 
         var statusInfo = new List<ProcessStatusResponseDTO>();
         var statusInformation = new StatusInfoResponseDTO();
@@ -88,8 +96,8 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
         response.StatusInformation = statusInformation;
 
         // var tktLoadedProps = new string[] { "AirLine" };
-        var ticketRegistration = await _ticketRegistrationRepository.GetWithPredicateAsync(tk => tk.ApplicantId == order.EmployeeId, "AirLine");
-        var ticketReady = await _ticketReadyRepository.GetWithPredicateAsync(tk => tk.ApplicantId == order.EmployeeId, "TicketOffice");
+        var ticketRegistration = await _ticketRegistrationRepository.GetWithPredicateAsync(tk => tk.ApplicantId == order.Employees!.First().Id, "AirLine");
+        var ticketReady = await _ticketReadyRepository.GetWithPredicateAsync(tk => tk.ApplicantId == order.Employees!.First().Id, "TicketOffice");
 
         var travelInfo = new TravelInfoResponseDTO
         {

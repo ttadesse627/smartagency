@@ -26,30 +26,30 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
             var request = command.request;
             if (request.Password != request.ConfirmationPassword)
             {
+                var msg = "The password should be confirmed";
+                response.Errors.Add(msg);
                 throw new BadRequestException("The password should be confirmed");
             }
 
-            // var validator = new CreateUserCommandValidator(_identityService);
-            // var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            var validator = new CreateUserCommandValidator(_identityService);
+            var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
             if ((request.PositionId != null || request.BranchId != null) && request.PartnerId != null)
             {
-                response.Success = false;
                 throw new BadRequestException("The user should belong either only to main agency or partner; but not both.");
             }
-            else response.Success = true;
-            //Check and log validation errors
-            // if (validationResult.Errors.Count > 0)
-            // {
-            //     response.Success = false;
-            //     response.Errors = new List<string>();
-            //     foreach (var error in validationResult.Errors)
-            //         response.Errors.Add(error.ErrorMessage);
-            //     response.Message = response.Errors[0];
-            // }
-            if (response.Success)
+
+            // Check and log validation errors
+            if (validationResult.Errors.Count > 0 || !validationResult.IsValid)
+            {
+                response.Errors = new List<string>();
+                foreach (var error in validationResult.Errors) response.Errors.Add(error.ErrorMessage);
+                response.Message = response.Errors[0];
+            }
+            if (validationResult.IsValid)
             {
                 var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>(request);
+                mappedUser.Email = request.Address.Email;
                 if (request.UserGroups.Count > 0)
                 {
                     var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
@@ -60,6 +60,12 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
                 if (!createResponse.Success)
                 {
                     throw new BadRequestException($"could not create user \n{string.Join(",", createResponse.Errors)}");
+                }
+                else
+                {
+                    response.Data = 1;
+                    response.Success = true;
+                    response.Message = "Created successfully!";
                 }
 
                 // save profile image

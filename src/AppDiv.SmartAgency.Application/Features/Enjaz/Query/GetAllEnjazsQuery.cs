@@ -44,24 +44,32 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         }
         public async Task<SearchModel<EnjazResponseDTO>> Handle(GetAllEnjazsQuery request, CancellationToken cancellationToken)
         {
-            var enjazsList = await _enjazRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Order", "Order.Employee");
+            var enjazsList = await _enjazRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Order", "Order.Employees");
             var enjazResponse = new SearchModel<EnjazResponseDTO>();
             if (enjazsList.Items.Count() > 0 || enjazsList != null)
             {
                 foreach (var enjaz in enjazsList.Items)
                 {
-                    var enjazResp = new EnjazResponseDTO
+
+                    if (enjaz.Order.Employees != null && enjaz.Order.Employees.Count > 0)
                     {
-                        EnjazNumber = enjaz.ApplicationNumber,
-                        OrderNumber = enjaz.Order.OrderNumber,
-                        VisaNumber = enjaz.Order.VisaNumber,
-                        OrderId = enjaz.OrderId,
-                        PassportNumber = enjaz.Order.Employee.PassportNumber,
-                        FirstName = enjaz.Order.Employee.FirstName,
-                        MiddleName = enjaz.Order.Employee.MiddleName,
-                        LastName = enjaz.Order.Employee.LastName
-                    };
-                    enjazResponse.Items.ToList().Add(enjazResp);
+                        foreach (var employee in enjaz.Order.Employees)
+                        {
+                            var enjazResp = new EnjazResponseDTO
+                            {
+                                EnjazNumber = enjaz.ApplicationNumber,
+                                OrderNumber = enjaz.Order.OrderNumber,
+                                VisaNumber = enjaz.Order.VisaNumber,
+                                OrderId = enjaz.OrderId,
+                                PassportNumber = employee.PassportNumber,
+                                FirstName = employee.FirstName,
+                                MiddleName = employee.MiddleName,
+                                LastName = employee.LastName
+                            };
+                            enjazResponse.Items.ToList().Add(enjazResp);
+                        }
+                    }
+
                 }
             }
             return enjazResponse;

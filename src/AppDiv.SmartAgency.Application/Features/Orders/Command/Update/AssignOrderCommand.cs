@@ -8,7 +8,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 public record AssignOrderCommand(OrderAssignmentRequest orderAssignmentRequest) : IRequest<ServiceResponse<Int32>>
-{}
+{ }
 
 public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, ServiceResponse<Int32>>
 {
@@ -31,25 +31,27 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
         {
             foreach (var orderRequest in assignOrderRequests)
             {
-                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderRequest.OrderId && order.EmployeeId == null, "Employee");
-                if (orderEntity != null)
+                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderRequest.OrderId, "Employee");
+                var employee = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == orderRequest.EmployeeId && applicant.IsDeleted == false, "Order");
+
+                if (orderEntity != null && employee != null)
                 {
-                    var employee = await _applicantRepository.GetWithPredicateAsync(applicant =>
-                        applicant.Id == orderRequest.EmployeeId
-                        && applicant.IsDeleted == false, "Order");
-                    if (employee != null)
+                    if (employee.Order == null)
                     {
-                        if (employee.Order == null)
-                        {
-                            orderEntity.Employee = employee;
-                            response = await _orderRepository.SaveDbUpdateAsync();
-                        }
-                    }
-                    else
-                    {
-                        exceptions.Add(new Exception($"There is no Employee with id {orderRequest.EmployeeId}."));
+                        employee.Order = orderEntity;
                     }
                 }
+            }
+            try
+            {
+                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+                response.Message = "Seccussfully assigned.";
+                response.Data = count + 1;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = "An error occured while saving the assignment.";
+                response.Errors?.Add(ex.Message);
             }
         }
         return response;

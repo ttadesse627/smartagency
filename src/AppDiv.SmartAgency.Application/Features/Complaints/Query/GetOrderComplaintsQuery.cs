@@ -20,23 +20,27 @@ public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaints
     public async Task<GetOrderComplaintsResponseDTO> Handle(GetOrderComplaintsQuery request, CancellationToken cancellationToken)
     {
         var response = new GetOrderComplaintsResponseDTO();
-        var explLoadedProps = new string[] { "Employee", "Sponsor", "Partner", "Complaints", "Complaints.User", "Employee.Address", "Sponsor.Address" };
+        var explLoadedProps = new string[] { "Employees", "Sponsor", "Partner", "Complaints", "Complaints.User", "Employees.Address", "Sponsor.Address" };
         var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.OrderId, explLoadedProps);
 
         if (order != null)
         {
-            if (order.Employee != null)
+            if (order.Employees != null && order.Employees.Count > 0)
             {
-                var employeeName = order.Employee.FirstName + " " + order.Employee.MiddleName + " " + order.Employee.LastName;
-                var employeeInfo = new EmployeeInfoDTO
+                foreach (var employee in order.Employees)
                 {
-                    Id = order.Employee.Id,
-                    EmployeeName = employeeName,
-                    HouseNumber = order.Employee.Address?.HouseNumber,
-                    PhoneNumber = order.Employee.Address?.PhoneNumber,
-                    MobileNumber = order.Employee.Address?.Mobile
-                };
-                response.EmployeeInfo = employeeInfo;
+                    var employeeName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName;
+                    var employeeInfo = new EmployeeInfoDTO
+                    {
+                        Id = employee.Id,
+                        EmployeeName = employeeName,
+                        HouseNumber = employee.Address?.HouseNumber,
+                        PhoneNumber = employee.Address?.PhoneNumber,
+                        MobileNumber = employee.Address?.Mobile
+                    };
+                    response.EmployeeInfo = employeeInfo;
+                }
+
             }
             var sponsorInfo = new SponsorInfoDTO
             {

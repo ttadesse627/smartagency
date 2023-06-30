@@ -18,7 +18,7 @@ public record CreateOrderRequest
     public Guid? PortOfArrivalId { get; set; }
     public Guid? PriorityId { get; set; }
     public Guid? VisaTypeId { get; set; }
-    public Guid? EmployeeId { get; set; }
+    public ICollection<Guid>? EmployeeIds { get; set; }
     public Guid? PartnerId { get; set; }
 
     // Navigation properties

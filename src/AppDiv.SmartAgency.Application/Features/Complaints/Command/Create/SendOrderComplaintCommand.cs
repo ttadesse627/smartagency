@@ -26,8 +26,8 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
         {
             var response = new List<GetComplaintResponseDTO>();
 
-            var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.Request.OrderId, "Employee");
-            if (order.Employee == null)
+            var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.Request.OrderId, "Employees");
+            if (order.Employees == null || order.Employees.Count == 0)
             {
                 throw new BadRequestException("This order is not assigned. It should be assigned first.");
             }
