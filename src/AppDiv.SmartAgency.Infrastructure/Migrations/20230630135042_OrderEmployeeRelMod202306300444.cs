@@ -5,202 +5,206 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class afterPulling : Migration
+    public partial class OrderEmployeeRelMod202306300444 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Enjazs_Sponsors_SponsorId",
-                table: "Enjazs");
+                name: "FK_Orders_Applicants_EmployeeId",
+                table: "Orders");
 
-            migrationBuilder.RenameColumn(
-                name: "SponsorId",
-                table: "Enjazs",
-                newName: "OrderId");
+            migrationBuilder.DropIndex(
+                name: "IX_Orders_EmployeeId",
+                table: "Orders");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_Enjazs_SponsorId",
-                table: "Enjazs",
-                newName: "IX_Enjazs_OrderId");
+            migrationBuilder.DropColumn(
+                name: "EmployeeId",
+                table: "Orders");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedAt",
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 6, 26, 10, 30, 49, 382, DateTimeKind.Local).AddTicks(7004),
+                defaultValue: new DateTime(2023, 6, 30, 16, 50, 40, 728, DateTimeKind.Local).AddTicks(6353),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 6, 18, 13, 2, 31, 657, DateTimeKind.Local).AddTicks(7365));
+                oldDefaultValue: new DateTime(2023, 6, 29, 15, 38, 0, 812, DateTimeKind.Local).AddTicks(3200));
 
-            migrationBuilder.AlterColumn<string>(
-                name: "ApplicationNumber",
-                table: "Enjazs",
-                type: "varchar(255)",
+            migrationBuilder.AddColumn<int>(
+                name: "ExpiryInterval",
+                table: "ProcessDefinitions",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "OrderId",
+                table: "Applicants",
+                type: "char(36)",
                 nullable: true,
-                oldClrType: typeof(string),
-                oldType: "varchar(255)")
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
+                collation: "ascii_general_ci");
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6310));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4971));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6325));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4988));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6329));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4994));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6343));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(5016));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6347));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(5020));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6353));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(5029));
 
             migrationBuilder.UpdateData(
                 table: "Processes",
                 keyColumn: "Id",
                 keyValue: new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6140));
+                value: new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4708));
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applicants_OrderId",
+                table: "Applicants",
+                column: "OrderId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Enjazs_Orders_OrderId",
-                table: "Enjazs",
+                name: "FK_Applicants_Orders_OrderId",
+                table: "Applicants",
                 column: "OrderId",
                 principalTable: "Orders",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Enjazs_Orders_OrderId",
-                table: "Enjazs");
+                name: "FK_Applicants_Orders_OrderId",
+                table: "Applicants");
 
-            migrationBuilder.RenameColumn(
+            migrationBuilder.DropIndex(
+                name: "IX_Applicants_OrderId",
+                table: "Applicants");
+
+            migrationBuilder.DropColumn(
+                name: "ExpiryInterval",
+                table: "ProcessDefinitions");
+
+            migrationBuilder.DropColumn(
                 name: "OrderId",
-                table: "Enjazs",
-                newName: "SponsorId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Enjazs_OrderId",
-                table: "Enjazs",
-                newName: "IX_Enjazs_SponsorId");
+                table: "Applicants");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedAt",
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 6, 18, 13, 2, 31, 657, DateTimeKind.Local).AddTicks(7365),
+                defaultValue: new DateTime(2023, 6, 29, 15, 38, 0, 812, DateTimeKind.Local).AddTicks(3200),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 6, 26, 10, 30, 49, 382, DateTimeKind.Local).AddTicks(7004));
+                oldDefaultValue: new DateTime(2023, 6, 30, 16, 50, 40, 728, DateTimeKind.Local).AddTicks(6353));
 
-            migrationBuilder.UpdateData(
-                table: "Enjazs",
-                keyColumn: "ApplicationNumber",
-                keyValue: null,
-                column: "ApplicationNumber",
-                value: "");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ApplicationNumber",
-                table: "Enjazs",
-                type: "varchar(255)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(255)",
-                oldNullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
+            migrationBuilder.AddColumn<Guid>(
+                name: "EmployeeId",
+                table: "Orders",
+                type: "char(36)",
+                nullable: true,
+                collation: "ascii_general_ci");
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4098));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7378));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4134));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7393));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4144));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7401));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4154));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7408));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4221));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7413));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(4234));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7422));
 
             migrationBuilder.UpdateData(
                 table: "Processes",
                 keyColumn: "Id",
                 keyValue: new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 6, 18, 13, 2, 31, 667, DateTimeKind.Local).AddTicks(3662));
+                value: new DateTime(2023, 6, 29, 15, 38, 0, 818, DateTimeKind.Local).AddTicks(7116));
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_EmployeeId",
+                table: "Orders",
+                column: "EmployeeId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Enjazs_Sponsors_SponsorId",
-                table: "Enjazs",
-                column: "SponsorId",
-                principalTable: "Sponsors",
+                name: "FK_Orders_Applicants_EmployeeId",
+                table: "Orders",
+                column: "EmployeeId",
+                principalTable: "Applicants",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.SetNull);
         }
     }
 }

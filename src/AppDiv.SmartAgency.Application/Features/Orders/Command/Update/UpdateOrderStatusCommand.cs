@@ -40,7 +40,7 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
                         );
 
         // Check if the ticket is previously registered
-        var registeredTicket = await _tktRegistrationRepository.GetWithPredicateAsync(appltkt => appltkt.ApplicantId == order.EmployeeId, "AirLine");
+        var registeredTicket = await _tktRegistrationRepository.GetWithPredicateAsync(appltkt => appltkt.ApplicantId == order.Employees!.First().Id, "AirLine");
         var airLine = await _lookUpRepository.GetAsync(travelInfoRequest.AirLineId);
         if (registeredTicket == null)
         {
@@ -67,7 +67,7 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
             registeredTicket.AirLine = airLine;
         }
         // Check if the ticket is previously registered
-        var prevTicketReady = await _tktReadyRepository.GetWithPredicateAsync(appltkt => appltkt.ApplicantId == order.EmployeeId, "TicketOffice");
+        var prevTicketReady = await _tktReadyRepository.GetWithPredicateAsync(appltkt => appltkt.ApplicantId == order.Employees!.First().Id, "TicketOffice");
 
         if (prevTicketReady == null)
         {
@@ -95,18 +95,21 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
         }
 
         // Set all the necessary objects those need to be returned
-        if (order.Employee != null)
+        if (order.Employees != null && order.Employees.Count > 0)
         {
-            var applicantFullName = order.Employee.FirstName + " " + order.Employee.MiddleName + " " + order.Employee.LastName;
-            var applicantResponse = new ApplicantInfoResponseDTO
+            foreach (var employee in order.Employees)
             {
-                PassportNumber = order.Employee?.PassportNumber,
-                FullName = applicantFullName,
-                Sex = order.Employee?.Gender.ToString(),
-                MaritalSatus = order.Employee?.MaritalStatus?.Value,
-                Religion = order.Employee?.Religion?.Value
-            };
-            response.ApplicantInformation = applicantResponse;
+                var applicantFullName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName;
+                var applicantResponse = new ApplicantInfoResponseDTO
+                {
+                    PassportNumber = employee?.PassportNumber,
+                    FullName = applicantFullName,
+                    Sex = employee?.Gender.ToString(),
+                    MaritalSatus = employee?.MaritalStatus?.Value,
+                    Religion = employee?.Religion?.Value
+                };
+                response.ApplicantInformation?.Add(applicantResponse);
+            }
         }
 
         var orderResponse = new OrderInfoResponseDTO
@@ -118,7 +121,7 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
             SponsorName = order.Sponsor?.FullName
         };
         response.OrderInformation = orderResponse;
-        var applicantProcesses = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ApplicantId == order.EmployeeId, applProcLoadedProps);
+        var applicantProcesses = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ApplicantId == order.Employees!.First().Id, applProcLoadedProps);
 
         var statusInfo = new List<ProcessStatusResponseDTO>();
         var statusInformation = new StatusInfoResponseDTO();
@@ -150,8 +153,8 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
         response.StatusInformation = statusInformation;
 
         // var tktLoadedProps = new string[] { "AirLine" };
-        var ticketRegistration = await _tktRegistrationRepository.GetWithPredicateAsync(tk => tk.ApplicantId == order.EmployeeId, "AirLine");
-        var ticketReady = await _tktReadyRepository.GetWithPredicateAsync(tk => tk.ApplicantId == order.EmployeeId, "TicketOffice");
+        var ticketRegistration = await _tktRegistrationRepository.GetWithPredicateAsync(appltkt => appltkt.ApplicantId == order.Employees!.First().Id, "AirLine");
+        var ticketReady = await _tktReadyRepository.GetWithPredicateAsync(appltkt => appltkt.ApplicantId == order.Employees!.First().Id, "TicketOffice");
 
         var travelInfo = new TravelInfoResponseDTO
         {

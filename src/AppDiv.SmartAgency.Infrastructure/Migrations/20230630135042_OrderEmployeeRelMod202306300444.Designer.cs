@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230626073049_afterPulling")]
-    partial class afterPulling
+    [Migration("20230630135042_OrderEmployeeRelMod202306300444")]
+    partial class OrderEmployeeRelMod202306300444
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -212,6 +212,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<int>("NumberOfChildren")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid?>("PartnerId")
                         .HasColumnType("char(36)");
 
@@ -266,6 +269,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("LanguageId");
 
                     b.HasIndex("MaritalStatusId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("PartnerId");
 
@@ -1271,7 +1276,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("TransactionCode")
@@ -1413,9 +1418,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ElectronicVisaNumber")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("EmployeeId")
-                        .HasColumnType("char(36)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -1452,9 +1454,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId")
-                        .IsUnique();
 
                     b.HasIndex("PartnerId");
 
@@ -1741,7 +1740,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6140),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4708),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1760,6 +1759,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("ExpiryInterval")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
@@ -1789,7 +1791,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6310),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4971),
+                            ExpiryInterval = 0,
                             Name = "Ready to Issue Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1798,7 +1801,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6325),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4988),
+                            ExpiryInterval = 0,
                             Name = "Register Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1807,7 +1811,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6329),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(4994),
+                            ExpiryInterval = 0,
                             Name = "Refund Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1816,7 +1821,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6343),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(5016),
+                            ExpiryInterval = 0,
                             Name = "Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1825,7 +1831,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6347),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(5020),
+                            ExpiryInterval = 0,
                             Name = "Register Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = false,
@@ -1834,7 +1841,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                            CreatedAt = new DateTime(2023, 6, 26, 10, 30, 49, 387, DateTimeKind.Local).AddTicks(6353),
+                            CreatedAt = new DateTime(2023, 6, 30, 16, 50, 40, 734, DateTimeKind.Local).AddTicks(5029),
+                            ExpiryInterval = 0,
                             Name = "Travel",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = true,
@@ -1851,7 +1859,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 26, 10, 30, 49, 382, DateTimeKind.Local).AddTicks(7004));
+                        .HasDefaultValue(new DateTime(2023, 6, 30, 16, 50, 40, 728, DateTimeKind.Local).AddTicks(6353));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2313,6 +2321,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasForeignKey("MaritalStatusId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "Order")
+                        .WithMany("Employees")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Partner", "Partner")
                         .WithMany("Applicants")
                         .HasForeignKey("PartnerId")
@@ -2352,6 +2365,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Language");
 
                     b.Navigation("MaritalStatus");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Partner");
 
@@ -2715,7 +2730,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "Order")
                         .WithOne("Enjaz")
                         .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Enjaz", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
                 });
@@ -2749,11 +2765,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Order", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Employee")
-                        .WithOne("Order")
-                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "EmployeeId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Partner", "Partner")
                         .WithMany("Orders")
                         .HasForeignKey("PartnerId")
@@ -2773,8 +2784,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .WithMany("LookUpVisaTypes")
                         .HasForeignKey("VisaTypeId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Partner");
 
@@ -3067,8 +3076,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("LanguageSkills");
 
-                    b.Navigation("Order");
-
                     b.Navigation("Representative");
 
                     b.Navigation("Skills");
@@ -3224,6 +3231,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("AttachmentFile");
 
                     b.Navigation("Complaints");
+
+                    b.Navigation("Employees");
 
                     b.Navigation("Enjaz");
 
