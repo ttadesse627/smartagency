@@ -59,15 +59,15 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     Name = "Assigned Visa"
                 };
 
-                if (groupedApplicantProcesses != null)
-                {
-                    groupedApplicantProcesses.Add(assignedVisa!);
-                }
-                else
-                {
-                    // groupedApplicantProcesses = new List<object> { assignedVisa };
-                    response.Add(assignedVisa);
-                }
+                            if (groupedApplicantProcesses != null)
+                            {
+                                groupedApplicantProcesses.Add(assignedVisa!);
+                            }
+                            else
+                            {
+                            
+                                response.Add(assignedVisa);
+                            }
 
 
             }
@@ -75,6 +75,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return response;
 
+
+                  
 
 
 
@@ -103,5 +105,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
 
         }
+
+
+                   public Task<object> GetQuickLinks()
+                    {
+                        var response= new List<Object>();
+
+
+                        throw new NotImplementedException();
+
+                        return null;
+                    }
+
+      
     }
 }

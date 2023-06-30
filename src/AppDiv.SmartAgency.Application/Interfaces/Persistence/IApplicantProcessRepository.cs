@@ -8,4 +8,5 @@ public interface IApplicantProcessRepository : IBaseRepository<ApplicantProcess>
 {
     
     public Task<object> GetDashbourdResult(DateTime? startDate, DateTime? endDate);
+    public Task<object> GetQuickLinks();
 }
