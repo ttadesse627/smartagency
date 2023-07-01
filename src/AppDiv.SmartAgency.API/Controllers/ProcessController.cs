@@ -1,6 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Features.Processes.Create;
@@ -26,13 +27,13 @@ public class ProcessController : ControllerBase
         return Ok(response);
     }
     [HttpGet("get")]
-    public async Task<ActionResult<ServiceResponse<List<GetProcessResponseDTO>>>> GetProcesses()
+    public async Task<ActionResult<ResponseContainerDTO<List<GetProcessResponseDTO>>>> GetProcesses()
     {
         return Ok(await _mediator.Send(new GetProcessQuery()));
     }
 
     [HttpGet("get/{id}")]
-    public async Task<ActionResult<ServiceResponse<List<GetProcessDefinitionResponseDTO>>>> GetProcessDefinitions(Guid id)
+    public async Task<ActionResult<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>>> GetProcessDefinitions(Guid id)
     {
         return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
     }
