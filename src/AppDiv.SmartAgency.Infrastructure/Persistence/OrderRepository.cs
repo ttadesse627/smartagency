@@ -135,11 +135,20 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
     public async Task<List<VisaExpiryResponseDTO>> GetExpiredVisa()
     {
-        // var response = await _context.Orders
-        //                 .Where(or=> DateTime.Now.Subtract(or.CreatedAt).Days> _context.CountryOperations.Where(
-        //                       co=> co.CountryId==or.Employees.FirstOrDefault()
-        //                 )).ToListAsync();
-       var response = new List<VisaExpiryResponseDTO>();
+        // var orders = await _context.Orders.
+        var response = await _context.Applicants
+                        .Where(app => app.OrderId != null && DateTime.Now.Subtract(app.Order.CreatedAt).Days >  _context.CountryOperations.Where(
+                        co => co.CountryId == app.Order.Sponsor.Address.CountryId).FirstOrDefault().VisaExpiryDays
+                        ).Select(
+                            orr=> new VisaExpiryResponseDTO{
+                                EmployerName= orr.Order.Sponsor.FullName,
+                                EmployerPhoneNumber = orr.Order.Sponsor.Address.PhoneNumber,
+                                EmployeeName= orr.FirstName + " " +orr.MiddleName + " " +orr.LastName,
+                                 PassportNumber = orr.PassportNumber,
+                                  WorkingCountry = orr.Order.Sponsor.Address.Country.Value,
+                                  Sex = orr.Gender.ToString()
+                            } 
+                        ).ToListAsync();
        return response;
 
 
