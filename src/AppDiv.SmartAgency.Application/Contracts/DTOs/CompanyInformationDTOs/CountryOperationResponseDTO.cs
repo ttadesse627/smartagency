@@ -12,7 +12,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
 
         public Guid? Id {get; set;}
         public int? AmountPerPerson {get; set;}
-        public Guid CompanyInformationId {get; set;}
+       // public Guid CompanyInformationId {get; set;}
         public LookUpItemResponseDTO LookUpCountryOperation {get; set;}
 
     }

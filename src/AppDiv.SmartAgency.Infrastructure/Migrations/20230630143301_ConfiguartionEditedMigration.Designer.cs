@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230630143301_ConfiguartionEditedMigration")]
+    partial class ConfiguartionEditedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,7 +122,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ArabicFullName")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("BranchId")
@@ -1423,6 +1425,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime?>("ElectronicVisaDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("ElectronicVisaNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -1431,9 +1436,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("NumberOfVisa")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime(6)");
@@ -1748,7 +1750,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9041),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(769),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1799,7 +1801,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9233),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(937),
                             ExpiryInterval = 0,
                             Name = "Ready to Issue Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1809,7 +1811,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9244),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(947),
                             ExpiryInterval = 0,
                             Name = "Register Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1819,7 +1821,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9247),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(951),
                             ExpiryInterval = 0,
                             Name = "Refund Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1829,7 +1831,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9251),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(954),
                             ExpiryInterval = 0,
                             Name = "Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1839,7 +1841,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9255),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(959),
                             ExpiryInterval = 0,
                             Name = "Register Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1849,7 +1851,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                            CreatedAt = new DateTime(2023, 7, 1, 14, 4, 3, 15, DateTimeKind.Local).AddTicks(9260),
+                            CreatedAt = new DateTime(2023, 6, 30, 17, 33, 0, 954, DateTimeKind.Local).AddTicks(975),
                             ExpiryInterval = 0,
                             Name = "Travel",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1867,7 +1869,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 7, 1, 14, 4, 3, 10, DateTimeKind.Local).AddTicks(9523));
+                        .HasDefaultValue(new DateTime(2023, 6, 30, 17, 33, 0, 949, DateTimeKind.Local).AddTicks(6159));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");

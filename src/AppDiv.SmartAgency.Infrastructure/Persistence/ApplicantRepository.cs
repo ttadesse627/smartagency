@@ -6,6 +6,7 @@ using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
@@ -182,4 +183,47 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             SortingDirection = sortingDirection
         };
     }
+
+    public async Task<List<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicants()
+    {
+       //var notProcessedApplicant= new List<NotProcessedApplicantResponseDTO>();
+
+        var response= await _context.Applicants
+                       .Where(ap=> ap.ApplicantProcesses==null || ap.ApplicantProcesses.Count()==0)
+                       .Select(g => new NotProcessedApplicantResponseDTO{ PassportNumber= g.PassportNumber, 
+                                          Duration = DateTime.Now.Subtract(g.CreatedAt).Days,
+                                          FullName = g.FirstName+ " " +g.MiddleName+" " +g.LastName,
+                                          Sex= g.Gender.ToString(),
+                                          MaritalStatus= g.MaritalStatus.Value,
+                                          Religion = g.Religion.Value,
+                                          Profession =  g.Jobtitle.Value,
+                                          ArabicName= g.ArabicFullName,
+                                          Age = DateTime.Now.Year - g.BirthDate.Year,
+                            }).ToListAsync();
+
+          return response;
+                       
+    }
+
+   public async Task<List<NewAssignedVisaResponseDTO>>  GetNewAssignedVisa()
+   {
+        var daysAgo = DateTime.Now.AddDays(-10);
+        var response= await _context.Applicants
+                            .Where(ap => ap.OrderId !=null && ap.CreatedAt >= daysAgo)
+                            .Select( ap => new NewAssignedVisaResponseDTO {
+                                         VisaNumber = ap.Order.VisaNumber,
+                                         Date = ap.Order.OrderDate,
+                                         JobTitle = ap.Jobtitle!.Value,
+                                         Salary = ap.Salary.Value,
+                                         ApplicantId = ap.Id,
+                                         Employee = ap.FirstName +" " + ap.MiddleName + " " + ap.LastName,
+                                         Country = ap.DesiredCountry.Value
+                            }) 
+                            
+                            .ToListAsync();
+
+       return response;
+
+   }
+
 }

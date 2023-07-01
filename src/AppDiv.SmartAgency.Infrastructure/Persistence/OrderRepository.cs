@@ -1,6 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
@@ -106,5 +107,41 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             response.Errors?.Add(ex.Message);
         }
         return response;
+    }
+
+
+    public async Task<List<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
+    {
+          var response= await _context.Orders
+                             .Where( or=> or.Employees== null)
+                             .Select( or=> new NotAssignedVisaResponseDTO{
+                                     AgencyName = or.Partner.PartnerName,
+                                     OrderNumber = or.OrderNumber,
+                                     VisaNumber = or.VisaNumber,
+                                     Duration = DateTime.Now.Subtract(or.CreatedAt).Days,
+                                     Job = or.OrderCriteria.JobTitle.Value,
+                                     Sponsor = or.Sponsor.FullName,
+                                     Age = (int)or.OrderCriteria.Age,
+                                     Language = or.OrderCriteria.Language.Value,
+                                     Expereince = or.OrderCriteria.Experience.Value,
+                                     NoOfVisa= or.NumberOfVisa,
+                                     Religion = or.OrderCriteria.Religion.Value
+
+                             } ).ToListAsync();
+
+                return response;          
+
+    }
+
+    public async Task<List<VisaExpiryResponseDTO>> GetExpiredVisa()
+    {
+        // var response = await _context.Orders
+        //                 .Where(or=> DateTime.Now.Subtract(or.CreatedAt).Days> _context.CountryOperations.Where(
+        //                       co=> co.CountryId==or.Employees.FirstOrDefault()
+        //                 )).ToListAsync();
+       var response = new List<VisaExpiryResponseDTO>();
+       return response;
+
+
     }
 }

@@ -11,7 +11,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs
         public string OrderNumber {get; set;}
         public string VisaNumber {get; set;}
         public int Duration {get; set;}
-        public string JobTitle {get; set;}
+        public string Job {get; set;}
         public string Sponsor {get; set;}
         public int Age {get; set;}
         public string Language {get; set;}
