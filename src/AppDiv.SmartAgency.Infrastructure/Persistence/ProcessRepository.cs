@@ -14,20 +14,9 @@ public class ProcessRepository : BaseRepository<Process>, IProcessRepository
         _context = context;
     }
 
-    public async Task<int> CreateProcessAsync(Process process)
-    {
-        int count = 0;
-        if (process != null)
-        {
-            _context.Processes.Add(process);
-            count = await _context.SaveChangesAsync();
-        }
-        return count;
-    }
-
     public async Task<Int32> GetMaximumStepAsync(Expression<Func<Process, bool>> predicate)
-    {  
-        
+    {
+
         int maxStep = await _context.Processes.Where(predicate).MaxAsync(pr => pr.Step);
         return maxStep;
     }

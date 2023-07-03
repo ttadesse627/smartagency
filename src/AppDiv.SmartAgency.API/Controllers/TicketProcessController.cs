@@ -1,8 +1,7 @@
 
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
-using AppDiv.SmartAgency.Application.Features.Processes.Create;
+using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Processes.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

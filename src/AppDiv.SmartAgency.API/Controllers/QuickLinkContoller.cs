@@ -20,31 +20,32 @@ namespace AppDiv.SmartAgency.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("a")]
         public async Task<ActionResult<NewAssignedVisaResponseDTO>> GetNewAssignedVisa()
         {
             var result = await _mediator.Send(new GetNewAssignedVisaQuery());
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("b")]
         public async Task<ActionResult<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
         {
             var result = await _mediator.Send(new GetNotAssignedVisaQuery());
             return Ok(result);
         }
-        [HttpGet]
+        [HttpGet("c")]
         public async Task<ActionResult<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicant()
         {
             var result = await _mediator.Send(new GetNotProcessedApplicantQuery());
             return Ok(result);
         }
-        [HttpGet]
+        [HttpGet("d")]
         public async Task<ActionResult<VisaExpiryResponseDTO>> GetExpiredVisa()
         {
             var result = await _mediator.Send(new GetExpiredVisaQuery());
             return Ok(result);
         }
+        [HttpGet("e")]
         public async Task<ActionResult<PenalityResponseDTO>> GetPenality()
         {
             var result = await _mediator.Send(new GetPenalityQuery());

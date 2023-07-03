@@ -23,7 +23,7 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         _applicantProcessRepository = applicantProcessRepository;
         _applicantRepository = applicantRepository;
     }
-public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
         var response = new ServiceResponse<Int32>();
@@ -32,17 +32,17 @@ public async Task<ServiceResponse<int>> Handle(CreateProcessCommand command, Can
         var maxStep = 1;
         if (processes.Count() > 1)
         {
-            maxStep = await _processRepository.GetMaximumStepAsync(pr => !(pr.Name.ToLower().Contains("ticket")));
+            maxStep = processes.Where(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86")).Max(pr => pr.Step);
         }
         if (maxStep < request.Step)
         {
             maxStep = request.Step;
         }
-        var ticketProcess = await _processRepository.GetWithPredicateAsync(pro => pro.Name.ToLower().Contains("ticket"));
+        var ticketProcess = processes.First(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
         ticketProcess.Step = maxStep + 1;
         try
         {
-            
+            Console.WriteLine(ticketProcess.Step);
             await _processRepository.InsertAsync(process, cancellationToken);
             await _processRepository.SaveChangesAsync(cancellationToken);
 

@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
+namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 public record StepbackProcessCommand(StepbackProcessRequest request) : IRequest<ServiceResponse<ApplicantProcessResponseDTO>> { }
 public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessCommand, ServiceResponse<ApplicantProcessResponseDTO>>
 {

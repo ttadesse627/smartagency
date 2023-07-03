@@ -8,9 +8,9 @@ using AppDiv.SmartAgency.Domain.Entities.TicketData;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
-public record SubmitTicketRegistrationCommand(SubmitRegisteredTicketRequest request) : IRequest<TicketProcessResponseDTO> { }
-public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTicketRegistrationCommand, TicketProcessResponseDTO>
+namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
+public record SubmitTicketRebookRegCommand(SubmitRegisteredTicketRequest request) : IRequest<TicketProcessResponseDTO> { }
+public class SubmitTicketRebookRegCommandHandler : IRequestHandler<SubmitTicketRebookRegCommand, TicketProcessResponseDTO>
 {
     private readonly IProcessDefinitionRepository _proDefRepository;
     private readonly IApplicantProcessRepository _applicantProcessRepository;
@@ -18,7 +18,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
     private readonly ITicketRegistrationRepository _ticketRegistrationRepository;
     private readonly ILookUpRepository _lookupRepository;
 
-    public SubmitTicketRegistrationCommandHandler(IApplicantProcessRepository applicantProcessRepository,
+    public SubmitTicketRebookRegCommandHandler(IApplicantProcessRepository applicantProcessRepository,
     IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository,
     IProcessDefinitionRepository proDefRepository, ITicketRegistrationRepository ticketRegistrationRepository)
     {
@@ -28,29 +28,21 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         _ticketRegistrationRepository = ticketRegistrationRepository;
         _lookupRepository = lookUpRepository;
     }
-    public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRegistrationCommand command, CancellationToken cancellationToken)
+    public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRebookRegCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
         var response = new TicketProcessResponseDTO();
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7", "Applicant");
+        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
         var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
         var airLine = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.AirLineId);
 
-
-        // Update the applicant status on the ApplicantProcess table
         applPro.Status = ProcessStatus.Out;
 
-        var tickRefund = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778", "ApplicantProcesses", "ApplicantProcesses.Applicant");
         var traveledPr = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "ApplicantProcesses", "ApplicantProcesses.Applicant");
+        var registeredTicket = await _ticketRegistrationRepository.GetWithPredicateAsync(rt => rt.ApplicantId == request.ApplicantId, "AirLine");
         var appProList = new List<ApplicantProcess>();
-        var applTickRefundProcess = new ApplicantProcess
-        {
-            Applicant = applicant,
-            ProcessDefinition = tickRefund,
-            Date = request.Date,
-            Status = ProcessStatus.In
-        };
+
         var applTraveledProcess = new ApplicantProcess
         {
             Applicant = applicant,
@@ -58,8 +50,18 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
             Date = request.Date,
             Status = ProcessStatus.In
         };
-        appProList.Add(applTickRefundProcess);
-        appProList.Add(applTraveledProcess);
+
+        if (registeredTicket != null)
+        {
+            registeredTicket.TicketNumber = request.TicketNumber;
+            registeredTicket.AirLine = airLine;
+            registeredTicket.FlightDate = request.FlightDate;
+            registeredTicket.DepartureTime = request.DepartureTime;
+            registeredTicket.Transit = request.Transit;
+            registeredTicket.ArrivalTime = request.ArrivalTime;
+            registeredTicket.Remark = request.Remark;
+            registeredTicket.Applicant = applicant;
+        }
 
         var tickRegAppl = new TicketRegistration
         {
@@ -75,8 +77,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
 
         try
         {
-            await _applicantProcessRepository.InsertAsync(appProList, cancellationToken);
-            await _ticketRegistrationRepository.InsertAsync(tickRegAppl, cancellationToken);
+            await _applicantProcessRepository.InsertAsync(applTraveledProcess, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
             await _ticketRegistrationRepository.SaveChangesAsync(cancellationToken);
         }

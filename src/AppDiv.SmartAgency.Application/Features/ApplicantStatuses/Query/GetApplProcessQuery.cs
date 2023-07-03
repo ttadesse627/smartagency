@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
+namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Query;
 public record GetApplProcessQuery(Guid ProcessId) : IRequest<List<GetProcessDefinitionResponseDTO>> { }
 public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, List<GetProcessDefinitionResponseDTO>>
 {

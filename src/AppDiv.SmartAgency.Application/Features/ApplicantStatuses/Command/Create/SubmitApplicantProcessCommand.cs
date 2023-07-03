@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
+namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 public record SubmitApplicantProcessCommand(SubmitApplicantProcessRequest request) : IRequest<List<GetProcessDefinitionResponseDTO>> { }
 public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantProcessCommand, List<GetProcessDefinitionResponseDTO>>
 {

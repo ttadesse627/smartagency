@@ -8,32 +8,32 @@ using AppDiv.SmartAgency.Domain.Entities.TicketData;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
-public record SubmitTicketRefundCommand(SubmitTicketRefundRequest request) : IRequest<TicketProcessResponseDTO> { }
-public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefundCommand, TicketProcessResponseDTO>
+namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
+public record SubmitTicketRebookCommand(SubmitTicketRebookRequest request) : IRequest<TicketProcessResponseDTO> { }
+public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebookCommand, TicketProcessResponseDTO>
 {
     private readonly IProcessDefinitionRepository _proDefRepository;
     private readonly IApplicantProcessRepository _applicantProcessRepository;
     private readonly IApplicantRepository _applicantRepository;
-    private readonly ITicketRefundRepository _ticketRefundRepository;
+    private readonly ITicketRebookRepository _ticketRebookRepository;
     private readonly ILookUpRepository _lookupRepository;
 
-    public SubmitTicketRefundCommandHandler(IApplicantProcessRepository applicantProcessRepository,
+    public SubmitTicketRebookCommandHandler(IApplicantProcessRepository applicantProcessRepository,
     IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository,
-    IProcessDefinitionRepository proDefRepository, ITicketRefundRepository ticketRefundRepository)
+    IProcessDefinitionRepository proDefRepository, ITicketRebookRepository ticketRebookRepository)
     {
         _applicantProcessRepository = applicantProcessRepository;
         _applicantRepository = applicantRepository;
         _proDefRepository = proDefRepository;
-        _ticketRefundRepository = ticketRefundRepository;
+        _ticketRebookRepository = ticketRebookRepository;
         _lookupRepository = lookUpRepository;
     }
-    public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRefundCommand command, CancellationToken cancellationToken)
+    public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRebookCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
         var response = new TicketProcessResponseDTO();
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778", "Applicant");
+        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
         var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
         // var airLine = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.AirLineId);
 
@@ -41,7 +41,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
         // Update the applicant status on the ApplicantProcess table
         applPro.Status = ProcessStatus.Out;
 
-        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf", "ApplicantProcesses", "ApplicantProcesses.Applicant");
+        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "ApplicantProcesses", "ApplicantProcesses.Applicant");
         var appProList = new List<ApplicantProcess>();
         var applTickRebookProcess = new ApplicantProcess
         {
@@ -51,7 +51,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             Status = ProcessStatus.In
         };
 
-        var tickRefund = new TicketRefund
+        var tickRebook = new TicketRebook
         {
             DateInterval = request.DateInterval,
             Applicant = applicant
@@ -60,9 +60,9 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
         try
         {
             await _applicantProcessRepository.InsertAsync(applTickRebookProcess, cancellationToken);
-            await _ticketRefundRepository.InsertAsync(tickRefund, cancellationToken);
+            await _ticketRebookRepository.InsertAsync(tickRebook, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-            await _ticketRefundRepository.SaveChangesAsync(cancellationToken);
+            await _ticketRebookRepository.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
