@@ -12,7 +12,6 @@ public class Order : BaseAuditableEntity
     public DateTime? VisaDate { get; set; }
     public DateTime OrderDate { get; set; } = DateTime.Now;
     public string? ContractNumber { get; set; }
-    public string? ElectronicVisaNumber { get; set; }
     public DateTime? ElectronicVisaDate { get; set; }
     public int NumberOfVisa { get; set; }
     public bool IsDeleted { get; set; } = false;

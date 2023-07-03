@@ -25,11 +25,7 @@ namespace AppDiv.SmartAgency.Application.Features.QuickLinks.Query
 
        public async Task<List<NotProcessedApplicantResponseDTO>> Handle(GetNotProcessedApplicantQuery request, CancellationToken cancellationToken)
        {
-          var response= new List<NotProcessedApplicantResponseDTO>();
-            
-
-
-
+          var response= await _applicantRepository.GetNotProcessedApplicants();
 
           return response;
 

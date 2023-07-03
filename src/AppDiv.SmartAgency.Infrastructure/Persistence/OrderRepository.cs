@@ -1,6 +1,7 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
@@ -107,5 +108,50 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             response.Errors?.Add(ex.Message);
         }
         return response;
+    }
+
+
+    public async Task<List<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
+    {
+          var response= await _context.Orders
+                             .Where( or=> or.Employees== null)
+                             .Select( or=> new NotAssignedVisaResponseDTO{
+                                     AgencyName = or.Partner.PartnerName,
+                                     OrderNumber = or.OrderNumber,
+                                     VisaNumber = or.VisaNumber,
+                                     Duration = DateTime.Now.Subtract(or.CreatedAt).Days,
+                                     Job = or.OrderCriteria.JobTitle.Value,
+                                     Sponsor = or.Sponsor.FullName,
+                                     Age = (int)or.OrderCriteria.Age,
+                                     Language = or.OrderCriteria.Language.Value,
+                                     Expereince = or.OrderCriteria.Experience.Value,
+                                     NoOfVisa= or.NumberOfVisa,
+                                     Religion = or.OrderCriteria.Religion.Value
+
+                             } ).ToListAsync();
+
+                return response;          
+
+    }
+
+    public async Task<List<VisaExpiryResponseDTO>> GetExpiredVisa()
+    {
+        // var orders = await _context.Orders.
+        var response = await _context.Applicants
+                        .Where(app => app.OrderId != null && DateTime.Now.Subtract(app.Order.CreatedAt).Days >  _context.CountryOperations.Where(
+                        co => co.CountryId == app.Order.Sponsor.Address.CountryId).FirstOrDefault().VisaExpiryDays
+                        ).Select(
+                            orr=> new VisaExpiryResponseDTO{
+                                EmployerName= orr.Order.Sponsor.FullName,
+                                EmployerPhoneNumber = orr.Order.Sponsor.Address.PhoneNumber,
+                                EmployeeName= orr.FirstName + " " +orr.MiddleName + " " +orr.LastName,
+                                 PassportNumber = orr.PassportNumber,
+                                  WorkingCountry = orr.Order.Sponsor.Address.Country.Value,
+                                  Sex = orr.Gender.ToString()
+                            } 
+                        ).ToListAsync();
+       return response;
+
+
     }
 }

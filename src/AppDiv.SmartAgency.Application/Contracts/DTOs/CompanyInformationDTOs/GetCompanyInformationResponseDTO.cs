@@ -30,6 +30,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
         public CompanyAddressResponseDTO? Address { get; set; }
         public ICollection<WitnessResponseDTO>? Witnesses { get; set; }
         public EditCompanySettingRequest? CompanySetting { get; set; }
-        //    public ICollection<CountryOperationResponseDTO>? CountryOperations { get; set; }
+         public ICollection<CountryOperationResponseDTO>? CountryOperations { get; set; }
     }
 }

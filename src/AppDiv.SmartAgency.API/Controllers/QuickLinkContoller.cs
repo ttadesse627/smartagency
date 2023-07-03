@@ -11,43 +11,46 @@ namespace AppDiv.SmartAgency.API.Controllers
     [Route("api/quick-links")]
     public class QuickLinkContoller : ControllerBase
     {
+
+
         private readonly IMediator _mediator;
+
         public QuickLinkContoller(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet("new-assigned-visa")]
+        [HttpGet]
         public async Task<ActionResult<NewAssignedVisaResponseDTO>> GetNewAssignedVisa()
         {
             var result = await _mediator.Send(new GetNewAssignedVisaQuery());
             return Ok(result);
         }
 
-        [HttpGet("not-assigned-visa")]
+        [HttpGet]
         public async Task<ActionResult<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
         {
             var result = await _mediator.Send(new GetNotAssignedVisaQuery());
             return Ok(result);
         }
-        [HttpGet("not-processed-applicants")]
+        [HttpGet]
         public async Task<ActionResult<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicant()
         {
             var result = await _mediator.Send(new GetNotProcessedApplicantQuery());
             return Ok(result);
         }
-        [HttpGet("get-expired-visa")]
+        [HttpGet]
         public async Task<ActionResult<VisaExpiryResponseDTO>> GetExpiredVisa()
         {
             var result = await _mediator.Send(new GetExpiredVisaQuery());
             return Ok(result);
         }
-
-        [HttpGet("get-penality")]
         public async Task<ActionResult<PenalityResponseDTO>> GetPenality()
         {
             var result = await _mediator.Send(new GetPenalityQuery());
             return Ok(result);
         }
+
+
     }
 }
