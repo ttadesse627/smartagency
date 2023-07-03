@@ -1,15 +1,7 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
-using AppDiv.SmartAgency.Application.Exceptions;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 {
@@ -28,16 +20,16 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
         }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
         {
-            
+
             var selectedPartner = await _partnerRepository.GetByIdAsync(request.Id);
-            
+
             // var postImageId= "postImage" + id.ToString();
             var headerLogoId = request.Id.ToString();
 
-            var fileType = "PartnersHeaderLogo";
+            var folder = "PartnersHeaderLogo";
 
             //string fileName = "Slider" + id.ToString() + ".jpg"; // Replace ".jpg" with the actual file extension
-            (byte[], string, string) fileResult = _fileService.getFile(headerLogoId, fileType, null);
+            (byte[], string, string) fileResult = _fileService.getFile(headerLogoId, folder, null);
 
             // Convert the byte array of the image content to a Base64 encoded string
             string fileContent = Convert.ToBase64String(fileResult.Item1);
@@ -51,16 +43,16 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
                 Id = selectedPartner.Id,
                 PartnerType = selectedPartner.PartnerType,
                 PartnerName = selectedPartner.PartnerName,
-                PartnerNameAmharic = selectedPartner.PartnerNameAmharic,
-                PartnerNameArabic = selectedPartner.PartnerNameArabic,
+                PartnerNameAmharic = selectedPartner.PartnerNameAmharic!,
+                PartnerNameArabic = selectedPartner.PartnerNameArabic!,
                 ContactPerson = selectedPartner.ContactPerson,
-                IdNumber = selectedPartner.IdNumber,
-                ManagerNameAmharic = selectedPartner.ManagerNameAmharic,
-                LicenseNumber = selectedPartner.LicenseNumber,
-                BankName = selectedPartner.BankName,
-                BankAccount = selectedPartner.BankAccount,
+                IdNumber = selectedPartner.IdNumber!,
+                ManagerNameAmharic = selectedPartner.ManagerNameAmharic!,
+                LicenseNumber = selectedPartner.LicenseNumber!,
+                BankName = selectedPartner.BankName!,
+                BankAccount = selectedPartner.BankAccount!,
                 HeaderLogo = fileContent,
-                ReferenceNumber = selectedPartner.ReferenceNumber,
+                ReferenceNumber = selectedPartner.ReferenceNumber!,
                 Address = CustomMapper.Mapper.Map<PartnerAddressResponseDTO>(selectedPartner.Address)
             };
 

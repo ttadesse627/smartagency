@@ -39,7 +39,7 @@ public class GetDeletedOrdersHandler : IRequestHandler<GetDeletedOrders, SearchM
                                     {
                                         "Priority","Sponsor", "OrderCriteria",
                                         "OrderCriteria.Salary",  "OrderCriteria.JobTitle",
-                                        "Employee","Payment", "Employee", "Partner"
+                                        "Employees","Payment","Partner"
                                     };
         var orderList = await _orderRepository.GetAllWithPredicateSearchAsync
                         (

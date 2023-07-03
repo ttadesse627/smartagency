@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using AppDiv.SmartAgency.Utility.Exceptions;
 
 namespace AppDiv.SmartAgency.Application.Exceptions
 {
-    public class ValidationException : ApplicationException
+    public class ValidationException : AppException
     {
         public ValidationException() : base("Validation Failure", "One or more validation errors occurred")
         {

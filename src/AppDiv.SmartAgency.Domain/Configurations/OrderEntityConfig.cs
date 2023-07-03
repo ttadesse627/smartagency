@@ -36,5 +36,10 @@ public class OrderEntityConfig : IEntityTypeConfiguration<Order>
             .WithOne(n => n.Order)
             .HasForeignKey<Sponsor>(fk => fk.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(m => m.Attachment)
+            .WithMany(n => n.Orders)
+            .HasForeignKey(fk => fk.AttachmentId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

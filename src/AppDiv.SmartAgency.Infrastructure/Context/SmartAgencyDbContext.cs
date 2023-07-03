@@ -29,7 +29,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<AttachmentFile> AttachmentFiles { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<Education> Educations { get; set; }
@@ -75,8 +74,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
-            // var dbContext = new SmartAgencyDbContext(optionsBuilder.Options);
+            // optionsBuilder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             // To run sql scripts, example alter database to set collation, create stored procedure, function, view ....
             // optionsBuilder.ReplaceService<IMigrationsSqlGenerator, CustomSqlServerMigrationsSqlGenerator>();
         }
@@ -87,7 +85,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
-                modelBuilder.ApplyConfiguration(new AttachmentFileEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
                 modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new EducationEntityConfig());
@@ -126,42 +123,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
             SeedData.Seedprocesses(modelBuilder);
             SeedData.SeedprocessDefinitions(modelBuilder);
-
-            // // get all entity types
-            // var entityTypes = modelBuilder.Model.GetEntityTypes();
-
-            // // loop through each entity type
-            // foreach (var entityType in entityTypes)
-            // {
-            //     // create a new DbTable entity for the current entity type
-            //     var dbTable = new DbTable { Name = entityType.Name };
-
-            //     // get all properties for the current entity type
-            //     var properties = entityType.GetProperties();
-
-            //     // loop through each property
-            //     foreach (var property in properties)
-            //     {
-            //         // create a new DbColumn entity for the current property
-            //         var dbColumn = new DbColumn
-            //         {
-            //             Name = property.Name,
-            //             Type = property.ClrType,
-            //             IsForeignKey = property.IsForeignKey(),
-            //             PrincipalEntity = property.GetContainingForeignKeys().FirstOrDefault()?.PrincipalEntityType.Name
-            //         };
-
-            //         // add the DbColumn entity to the context
-            //         modelBuilder.Entity<DbColumn>().HasData(dbColumn);
-
-            //         // add the DbColumn entity to the DbTable entity
-            //         dbTable.Columns = dbTable.Columns.Append(dbColumn);
-            //     }
-
-            //     // add the DbTable entity to the context
-            //     modelBuilder.Entity<DbTable>().HasData(dbTable);
-            // }
-
 
             #region Audit Config
             Audit.Core.Configuration.Setup()

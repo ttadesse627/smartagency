@@ -55,7 +55,6 @@ public class Applicant : PersonalInfo
     public Representative? Representative { get; set; }
     public ICollection<Witness>? Witnesses { get; set; }
     public ICollection<Beneficiary>? Beneficiaries { get; set; }
-    public ICollection<AttachmentFile>? AttachmentFiles { get; set; }
     public Address? Address { get; set; }
 
     //Navigation Properties
@@ -73,6 +72,7 @@ public class Applicant : PersonalInfo
     public LookUp? BrokerName { get; set; }
     public LookUp? Branch { get; set; }
     public Order? Order { get; set; }
+    public ICollection<Attachment>? Attachments { get; set; }
     public ICollection<Deposit>? Deposits { get; set; }
     public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses { get; set; }
     public ICollection<ApplicantProcess>? ApplicantProcesses { get; set; }

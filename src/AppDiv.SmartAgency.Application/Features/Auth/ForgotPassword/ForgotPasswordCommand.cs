@@ -2,6 +2,7 @@
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Utility.Config;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using AppDiv.SmartAgency.Utility.Services;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;

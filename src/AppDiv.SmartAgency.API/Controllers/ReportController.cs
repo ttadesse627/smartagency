@@ -21,32 +21,38 @@ namespace AppDiv.SmartAgency.API.Controllers
             _reportRepository = reportsRepository;
         }
 
-        [HttpGet("get-objects")]
-        public async Task<ActionResult<JObject>> getReportObjects()
+        [HttpGet("get-reports")]
+        public async Task<ActionResult<JObject>> getReports()
         {
-            return Ok(await _reportRepository.GetReportObjects());
+            return Ok(await _reportRepository.GetReports());
         }
 
+        // [HttpPost("create-report")]
+        // public async Task<ActionResult<ServiceResponse<Int32>>> CreateAsync(string reportName, string reportType, ReportsQueryRequest query)
+        // {
+        //     var result = await _mediator.Send(new CreateReportCmd(reportName, reportType, query));
+        //     return Ok(result);
+        // }
         [HttpPost("create")]
-        public async Task<ActionResult<ServiceResponse<Int32>>> CreateReportAsync(string reportName, string reportType, ReportsQueryRequest query)
+        public async Task<ActionResult<ServiceResponse<Int32>>> CreateReportAsync([FromBody] CreateReportRequest createReport)
         {
-            var result = await _mediator.Send(new CreateReportCommand(reportName, reportType, query));
+            var result = await _mediator.Send(new CreateReportCommand(createReport.ReportName, createReport.ReportQuery));
             return Ok(result);
         }
 
         [HttpPost("get/{reportName}")] //Task<(IEnumerable<Dictionary<string, object>>, List<String>)>
-        public async Task<ActionResult<JObject>> getDaynamicViewData(string reportName, ReportsQueryRequest query)
+        public async Task<ActionResult<JObject>> getDaynamicViewData(string reportName, ReportsQueryRequest? query = null)
         {
             var result = await _mediator.Send(new GetAllReportsQuery(reportName, query));
             return Ok(result);
         }
 
 
-        [HttpGet("get-test")]
-        public async Task<ActionResult<JObject>> getTestData()
-        {
-            return Ok(await _reportRepository.GetTestData());
-        }
+        // [HttpGet("get-test")]
+        // public async Task<ActionResult<JObject>> getTestData()
+        // {
+        //     return Ok(await _reportRepository.GetTestData());
+        // }
 
     }
 }

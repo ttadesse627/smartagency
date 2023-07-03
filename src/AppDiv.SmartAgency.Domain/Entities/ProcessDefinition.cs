@@ -1,7 +1,5 @@
 
-
 using AppDiv.SmartAgency.Domain.Entities.Base;
-using AppDiv.SmartAgency.Domain.Entities.TicketData;
 
 namespace AppDiv.SmartAgency.Domain.Entities;
 public class ProcessDefinition : BaseAuditableEntity

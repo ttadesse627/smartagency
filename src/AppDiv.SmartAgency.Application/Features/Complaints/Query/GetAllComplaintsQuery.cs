@@ -18,7 +18,7 @@ public class GetAllComplaintsQueryHandler : IRequestHandler<GetAllComplaintsQuer
     public async Task<List<GetAllComplaintsResponseDTO>> Handle(GetAllComplaintsQuery request, CancellationToken cancellationToken)
     {
         var response = new List<GetAllComplaintsResponseDTO>();
-        var orderComplaints = await _orderRepository.GetAllWithPredicateAsync(order => order.Complaints.Count > 0 || order.Complaints != null, "Employee", "Sponsor");
+        var orderComplaints = await _orderRepository.GetAllWithPredicateAsync(order => order.Complaints.Count > 0 || order.Complaints != null, "Employees", "Sponsor");
 
         foreach (var orderComplaint in orderComplaints)
         {

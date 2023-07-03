@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Contracts;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
@@ -98,7 +99,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             string selectColumn = "*";
             string selectColumnList = "";
 
-            if (columns.Count > 0 && columns != null)
+            if (columns != null && columns.Count > 0)
             {
                 foreach (var column in columns)
                 {
@@ -325,8 +326,42 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return response;
         }
+        public async Task<ServiceResponse<Int32>> CreateReportAsync(string reportName, string query)
+        {
+            var response = new ServiceResponse<int>();
+            string sql = "";
 
-        public async Task<JObject> GetReportObjects()
+            if (string.IsNullOrEmpty(reportName))
+            {
+                response.Message = "The report name should not be empty";
+                response.Errors?.Add("Empty Report name");
+                return response;
+            }
+            else if (string.IsNullOrEmpty(query))
+            {
+                response.Message = "You should provide the report query statement.";
+                response.Errors?.Add("Empty Report type");
+                return response;
+            }
+            else
+            {
+                sql = $" CREATE VIEW `{reportName}` AS {query}";
+                try
+                {
+                    response.Data = await _context.Database.ExecuteSqlRawAsync(sql);
+                    response.Message = $"Created a report {reportName} successfully.";
+                }
+                catch (Exception ex)
+                {
+                    response.Errors?.Add(ex.Message);
+                    throw new BadRequestException(ex.Message);
+                }
+            }
+
+            return response;
+        }
+
+        public async Task<JObject> GetReports()
         {
 
             var reportObjects = new JObject();
@@ -348,35 +383,36 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 var reportObject = new JObject();
                 string viewName = viewReader.GetString(0);
 
-                reportObject["objectName"] = viewName;
+                reportObject["reportName"] = viewName;
                 objectNames.Add(reportObject);
             }
             viewReader.Close();
+            /*
+                        foreach (var objectName in objectNames)
+                        {
+                            // Execute the first SQL statement to retrieve the view columns
+                            var columnsSql = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectName["objectName"]}'";
+                            using var colCommand = connection.CreateCommand();
+                            colCommand.CommandText = columnsSql;
+                            colCommand.CommandType = CommandType.Text;
 
-            foreach (var objectName in objectNames)
-            {
-                // Execute the first SQL statement to retrieve the view columns
-                var columnsSql = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectName["objectName"]}'";
-                using var colCommand = connection.CreateCommand();
-                colCommand.CommandText = columnsSql;
-                colCommand.CommandType = CommandType.Text;
+                            using var colReader = await colCommand.ExecuteReaderAsync();
 
-                using var colReader = await colCommand.ExecuteReaderAsync();
-
-                var columns = new JArray();
-                while (await colReader.ReadAsync())
-                {
-                    var column = new JObject();
-                    string columnName = colReader.GetString(0);
-                    column["propertyName"] = columnName;
-                    columns.Add(column);
-                }
-                objectName["objectProperties"] = columns;
-                colReader.Close();
-            }
+                            var columns = new JArray();
+                            while (await colReader.ReadAsync())
+                            {
+                                var column = new JObject();
+                                string columnName = colReader.GetString(0);
+                                column["propertyName"] = columnName;
+                                columns.Add(column);
+                            }
+                            objectName["reportProperties"] = columns;
+                            colReader.Close();
+                        }
+            */
 
             connection.Close();
-            reportObjects["reportObjects"] = objectNames;
+            reportObjects["items"] = objectNames;
 
             return reportObjects;
         }

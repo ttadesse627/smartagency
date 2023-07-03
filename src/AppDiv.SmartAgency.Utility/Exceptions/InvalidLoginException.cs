@@ -1,4 +1,4 @@
-﻿namespace AppDiv.SmartAgency.Application.Exceptions
+﻿namespace AppDiv.SmartAgency.Utility.Exceptions
 {
     public class InvalidLoginException : Exception
     {

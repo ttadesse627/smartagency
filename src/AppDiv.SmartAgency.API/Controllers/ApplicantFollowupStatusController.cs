@@ -46,23 +46,6 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
 
-
-     /*   [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeleteApplicantFollowupStatus(Guid id)
-        {
-            try
-            {
-                string result = string.Empty;
-                result = await _mediator.Send(new DeleteApplicantFollowupStatusCommand(id));
-                return Ok(result);
-            }
-            catch (Exception exp)
-            {
-                return BadRequest(exp.Message);
-            }
-        }
-        */
-
         [HttpDelete("Delete")]
         public async Task<ActionResult> DeleteFollowupStatuses([FromQuery]List<Guid> ids)
         { 

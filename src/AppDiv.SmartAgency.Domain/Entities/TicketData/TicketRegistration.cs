@@ -8,7 +8,7 @@ namespace AppDiv.SmartAgency.Domain.Entities.TicketData
     public class TicketRegistration
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public DateTime RegiteredDate { get; set; } = DateTime.Now;
+        public DateTime RegisteredDate { get; set; } = DateTime.Now;
         public string? TicketNumber { get; set; }
         public DateTime? FlightDate { get; set; }
         public string? DepartureTime { get; set; }

@@ -31,7 +31,7 @@ public class GetSingleOrderHandler : IRequestHandler<GetSingleOrder, ServiceResp
                                         "OrderCriteria.Experience","OrderCriteria.Language",
                                         "Sponsor","Sponsor.AttachmentFile","Sponsor.Address",
                                         "Sponsor.Address.Region","Sponsor.Address.Country",
-                                        "Sponsor.Address.City","Payment","Employee","Partner"
+                                        "Sponsor.Address.City","Payment","Employees","Partner"
                                     };
         orderResponse.Data = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.id && order.IsDeleted == false, eagerLoadedProperties);
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppDiv.SmartAgency.Application.Exceptions
+namespace AppDiv.SmartAgency.Utility.Exceptions
 {
     public class NotFoundException : Exception
     {

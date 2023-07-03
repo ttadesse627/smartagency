@@ -1,11 +1,11 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
@@ -15,10 +15,14 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
 {
     private readonly IApplicantRepository _applicantRepository;
     private readonly ILookUpRepository _lookUpRepository;
-    public EditApplicantCommandHandler(IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository)
+    private readonly IAttachmentRepository _attachmentRepository;
+    private readonly IFileService _fileService;
+    public EditApplicantCommandHandler(IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository, IAttachmentRepository attachmentRepository, IFileService fileService)
     {
         _applicantRepository = applicantRepository;
         _lookUpRepository = lookUpRepository;
+        _attachmentRepository = attachmentRepository;
+        _fileService = fileService;
     }
 
     public async Task<ServiceResponse<Int32>> Handle(EditApplicantCommand command, CancellationToken cancellationToken)
@@ -183,18 +187,39 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
             try
             {
                 serviceResponse.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
-                if (serviceResponse.Success)
+                if (serviceResponse.Success && (command.request.AttachmentFiles?.Count > 0 && command.request.AttachmentFiles != null))
                 {
-                    serviceResponse.Message = "Successfully updated the applicant.";
+                    foreach (var attachment in command.request.AttachmentFiles)
+                    {
+                        // save applicant attachment
+                        var file = attachment.AttachmentFile;
+                        var attachmentName = await _attachmentRepository.GetAsync(attachment.AttachmentId!);
+                        var folderName = Path.Combine("Resources", attachmentName.Title!);
+                        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                        var fileName = applicantEntity.Id.ToString();
+                        if (!string.IsNullOrEmpty(file))
+                        {
+                            var isSaved = await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
+                            if (isSaved == true)
+                            {
+                                serviceResponse.Errors?.Add("Couldn't save applicant attachment.");
+                            }
+                        }
+                    }
+                    serviceResponse.Message = "The applicant is successfully edited.";
+                    serviceResponse.Success = true;
+                }
+                else
+                {
+                    serviceResponse.Message = "Couldn't edit the requested applicant.";
+                    serviceResponse.Success = false;
                 }
             }
             catch (Exception ex)
             {
-                // Handle any database errors and add them to the exceptions list
                 exceptions.Add(ex);
             }
         }
-        // Handle any exceptions
         if (exceptions.Count > 0)
         {
             throw new AggregateException("One or more exceptions occurred while updating the applicant.", exceptions);

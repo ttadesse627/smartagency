@@ -33,10 +33,16 @@ public class ProcessController : ControllerBase
     }
 
     [HttpGet("get/{id}")]
-    public async Task<ActionResult<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>>> GetProcessDefinitions(Guid id)
+    public async Task<ActionResult<ResponseContainerDTO<ProcessDetailsResponseDTO>>> GetProcessDetails(Guid id)
     {
         return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
     }
+
+    // [HttpGet("pr/{id}")]
+    // public async Task<ActionResult<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>>> GetProcessDefinitions(Guid id)
+    // {
+    //     return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
+    // }
 
     [HttpPut("edit/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> EditProcess(Guid id, EditProcessRequest request)
