@@ -56,4 +56,11 @@ public class ProcessController : ControllerBase
         response = await _mediator.Send(new EditProcessCommand(request));
         return Ok(response);
     }
+
+    [HttpPut("delete/{id}")]
+    public async Task<ActionResult<ServiceResponse<Int32>>> DeleteProcess(Guid id)
+    {
+        var response = await _mediator.Send(new DeleteProcessCommand(id));
+        return Ok(response);
+    }
 }
