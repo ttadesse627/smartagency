@@ -27,7 +27,7 @@ public class Applicant : PersonalInfo
     public bool IsReserved { get; set; } = false;
     public bool IsBlocked { get; set; } = false;
     public bool IsDeleted { get; set; } = false;
-
+     public bool IsTraveled { get; set; } = false;
     //Foreign keys
     public Guid? IssuingCountryId { get; set; }
     public Guid? PassportIssuedPlaceId { get; set; }

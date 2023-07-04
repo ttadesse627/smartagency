@@ -12,8 +12,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public int PrintedDocumentSubmitDays {get; set;}=2;
         public int AmountOfDeposit {get; set;}
         public string? AuthorizedPerson {get; set;}
-        public int PenalityInterval {get; set;}
-        public int PenalityAmount {get; set;}
+        public int PenalityInterval {get; set;}=1;
+        public int PenalityAmount {get; set;}=200;
 
         public Guid? CompanyInformationId {get; set;}
 

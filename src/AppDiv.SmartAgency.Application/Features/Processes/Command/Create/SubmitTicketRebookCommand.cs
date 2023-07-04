@@ -47,7 +47,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
         {
             Applicant = applicant,
             ProcessDefinition = tktRebook,
-            Date = request.Date,
+            Date = (DateTime)request.Date,
             Status = ProcessStatus.In
         };
 

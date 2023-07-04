@@ -72,8 +72,9 @@ namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
 
                response["thisWeekSummary"] = ThisWeekSummary;
                response["thisMonthSummary"] = ThisMonthSummary;
+                 response["quickLinks"] = QuickLinks;
 
-        
+        var res=response;
             return response;   
 
       }

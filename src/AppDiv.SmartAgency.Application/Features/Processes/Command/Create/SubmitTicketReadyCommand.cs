@@ -46,7 +46,7 @@ public class SubmitTicketReadyCommandHandler : IRequestHandler<SubmitTicketReady
         {
             Applicant = applicant,
             ProcessDefinition = tickReg,
-            Date = request.Date,
+            Date = (DateTime)request.Date,
             Status = ProcessStatus.In
         };
         var tickReadyAppl = new TicketReady
