@@ -96,7 +96,6 @@ public class ApplicantController : ControllerBase
     {
         var response = await _mediator.Send(new RequestApplicantCommand(id));
         return Ok(response);
-
     }
 
     [HttpGet("request/get-all")]

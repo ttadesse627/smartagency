@@ -1,10 +1,8 @@
 
 
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
@@ -21,12 +19,24 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
     public async Task<ResponseContainerDTO<List<GetProcessResponseDTO>>> Handle(GetProcessQuery query, CancellationToken cancellationToken)
     {
         var response = new ResponseContainerDTO<List<GetProcessResponseDTO>>();
-        var excLoadedProps = new string[] { "Country", "ProcessDefinitions" };
-        var processes = await _processRepository.GetAllWithAsync(excLoadedProps);
+        var processRespList = new List<GetProcessResponseDTO>();
+        // var excLoadedProps = new string[] { "Country", "ProcessDefinitions" };
+        var processes = await _processRepository.GetAllWithAsync("Country");
         if (processes.Count() > 0)
         {
-            response.Items = CustomMapper.Mapper.Map<List<GetProcessResponseDTO>>(processes);
-
+            foreach (var process in processes)
+            {
+                var processResponse = new GetProcessResponseDTO
+                {
+                    Id = process.Id,
+                    Name = process.Name,
+                    Country = process.Country?.Value,
+                    IsVisaRequired = process.VisaRequired,
+                    EnjazRequired = process.EnjazRequired
+                };
+                processRespList.Add(processResponse);
+            }
+            response.Items = processRespList;
         }
         return response;
     }

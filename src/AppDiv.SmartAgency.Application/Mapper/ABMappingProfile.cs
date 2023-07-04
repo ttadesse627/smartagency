@@ -77,7 +77,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
                 .ForMember(dest => dest.Representative, opt => opt.Ignore())
                 .ForMember(dest => dest.Experiences, opt => opt.Ignore())
                 .ForMember(dest => dest.Beneficiaries, opt => opt.Ignore())
-                .ForMember(dest => dest.AttachmentFiles, opt => opt.Ignore())
                 .ForMember(dest => dest.LanguageSkills, opt => opt.Ignore());
             CreateMap<LanguageSkillRequest, LanguageSkill>();
             CreateMap<ExperienceRequest, Experience>();
@@ -91,13 +90,13 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<RepresentativeRequest, Representative>();
             CreateMap<WitnessRequest, Witness>();
             CreateMap<BeneficiaryRequest, Beneficiary>();
-            CreateMap<AttachmentFileRequest, AttachmentFile>();
             CreateMap<AddressRequest, Address>();
             CreateMap<UpdateAddressRequest, Address>();
             CreateMap<RepAddressRequest, Address>();
 
             // Get Single Applicant Mapper
-            CreateMap<Applicant, GetApplicantResponseDTO>();
+            CreateMap<Applicant, GetApplicantResponseDTO>()
+                .ForMember(dest => dest.AttachmentFiles, opt => opt.Ignore());
             CreateMap<LanguageSkill, GetLanguageSkillResponseDTO>();
             CreateMap<Experience, GetExperienceResponseDTO>();
             CreateMap<Education, GetEducationResponseDTO>();
@@ -127,7 +126,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditLanguageSkillRequest, LanguageSkill>();
             CreateMap<EditRepresentativeRequest, Representative>();
             CreateMap<EditWitnessRequest, Witness>();
-            CreateMap<EditAttachmentFileRequest, AttachmentFile>();
             CreateMap<EditAddressRequest, Address>();
             CreateMap<EditRepAddressRequest, Address>();
 
@@ -138,7 +136,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Beneficiary, BeneficiaryResponseDTO>();
             CreateMap<Education, EducationResponseDTO>();
             CreateMap<EmergencyContact, EmergencyContactResponseDTO>();
-            CreateMap<AttachmentFile, AttachmentFileResponseDTO>();
             CreateMap<LanguageSkill, LanguageResponseDTO>();
             CreateMap<Partner, PartnerApplRespDTO>();
             CreateMap<Representative, RepresentativeResponseDTO>();
@@ -155,10 +152,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Address, AddressResponseDTO>();
 
             CreateMap<CreateOrderRequest, Order>()
-            .ForMember(dest => dest.Employees, opt => opt.Ignore());
+            .ForMember(dest => dest.Employees, opt => opt.Ignore())
+            .ForMember(dest => dest.Payment, opt => opt.Ignore());
             CreateMap<OrderCriteriaRequest, OrderCriteria>();
             CreateMap<SponsorRequest, Sponsor>();
-            CreateMap<PaymentRequest, Payment>();
 
             // Map Group of orders
             CreateMap<Order, GetOrdersResponseDTO>();
@@ -180,7 +177,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Sponsor, GetSponsorResponseDTO>();
             CreateMap<Applicant, GetApplForAssignmentDTO>();
 
-            CreateMap<EditOrderRequest, Order>();
+            CreateMap<EditOrderRequest, Order>()
+                .ForMember(dest => dest.Employees, opt => opt.Ignore());
             CreateMap<EditOrderCriteriaRequest, OrderCriteria>();
             CreateMap<EditSponsorRequest, Sponsor>();
             CreateMap<EditPaymentRequest, Payment>();
@@ -261,6 +259,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
 
             CreateMap<Process, GetProcessResponseDTO>();
+            CreateMap<Process, ProcessDetailsResponseDTO>();
+            CreateMap<ProcessDefinition, ProcessDefinitionResponseDTO>();
             CreateMap<ProcessDefinition, GetProcessDefinitionResponseDTO>();
             CreateMap<ProcessDefinition, GetPDResponseDTO>();
             CreateMap<ApplicantProcess, GetApplProcessResponseDTO>();

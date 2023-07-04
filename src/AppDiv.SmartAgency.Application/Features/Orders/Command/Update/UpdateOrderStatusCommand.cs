@@ -32,7 +32,7 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
         var travelInfoRequest = command.request.TravelInformation;
         var statusInfoRequest = command.request.StatusInformation;
 
-        var ordEagerLoadedProps = new string[] { "Employee", "Employee.MaritalStatus", "Employee.Religion", "Priority", "Partner", "Sponsor", "Enjaz" };
+        var ordEagerLoadedProps = new string[] { "Employees", "Employees.MaritalStatus", "Employees.Religion", "Priority", "Partner", "Sponsor", "Enjaz" };
         var applProcLoadedProps = new string[] { "Applicant", "ProcessDefinition", "ProcessDefinition.Process" };
         var order = await _orderRepository.GetWithPredicateAsync
                         (
@@ -158,7 +158,7 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
 
         var travelInfo = new TravelInfoResponseDTO
         {
-            RegisteredDate = ticketRegistration.RegiteredDate,
+            RegisteredDate = ticketRegistration.RegisteredDate,
             TicketNumber = ticketRegistration.TicketNumber,
             FlightDate = ticketRegistration.FlightDate,
             DepartureTime = ticketRegistration.DepartureTime,

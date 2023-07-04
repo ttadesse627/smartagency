@@ -29,8 +29,9 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
         var response = new ShowOrderStatusResponseDTO();
         var applResponse = new List<ApplicantInfoResponseDTO>();
         var applicantProcesses = new List<ApplicantProcess>();
-        var ordEagerLoadedProps = new string[] { "Employee", "Employee.MaritalStatus", "Employee.Religion", "Priority", "Partner", "Sponsor", "Enjaz" };
+        var ordEagerLoadedProps = new string[] { "Employees", "Employees.MaritalStatus", "Employees.Religion", "Priority", "Partner", "Sponsor", "Enjaz" };
         var applProcLoadedProps = new string[] { "Applicant", "ProcessDefinition", "ProcessDefinition.Process" };
+
         var order = await _orderRepository.GetWithPredicateAsync
                         (
                             order => order.IsDeleted == false && order.Id == request.OrderId, ordEagerLoadedProps
@@ -101,7 +102,7 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
 
         var travelInfo = new TravelInfoResponseDTO
         {
-            RegisteredDate = ticketRegistration.RegiteredDate,
+            RegisteredDate = ticketRegistration.RegisteredDate,
             TicketNumber = ticketRegistration.TicketNumber,
             FlightDate = ticketRegistration.FlightDate,
             DepartureTime = ticketRegistration.DepartureTime,

@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.Application.Features.Reports.Query
 {
-    public record GetAllReportsQuery(string ReportName, ReportsQueryRequest query) : IRequest<JObject> { }
+    public record GetAllReportsQuery(string ReportName, ReportsQueryRequest? query = null) : IRequest<JObject> { }
     public class GetAllReportsQueryHandler : IRequestHandler<GetAllReportsQuery, JObject>
     {
         private readonly IReportsRepository _reportsRepository;

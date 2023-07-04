@@ -39,7 +39,7 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
                                     {
                                         "Priority","Sponsor", "OrderCriteria",
                                         "OrderCriteria.Salary",  "OrderCriteria.JobTitle",
-                                        "Employee","Payment", "Employee", "Partner"
+                                        "Employees","Payment", "Employees", "Partner"
                                     };
         var orderList = await _orderRepository.GetAllWithPredicateSearchAsync
                         (

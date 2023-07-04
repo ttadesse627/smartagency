@@ -21,7 +21,7 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
     {
         var response = new List<DropdownEnjazResponseDTO>();
         var ordEagerLoadedProps = new string[]{"Sponsor","OrderCriteria.Language","OrderCriteria.Religion",
-                                        "Employee","Employee.Jobtitle","Employee.Language","Enjaz"};
+                                        "Employees","Employees.Jobtitle","Employees.Language","Enjaz"};
 
         var applEagerLoadedProps = new string[] { "Order", "Jobtitle", "Language", "Order.Enjaz" };
 

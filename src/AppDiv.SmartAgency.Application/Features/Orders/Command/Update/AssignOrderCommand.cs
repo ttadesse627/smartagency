@@ -31,7 +31,7 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
         {
             foreach (var orderRequest in assignOrderRequests)
             {
-                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderRequest.OrderId, "Employee");
+                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderRequest.OrderId, "Employees");
                 var employee = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == orderRequest.EmployeeId && applicant.IsDeleted == false, "Order");
 
                 if (orderEntity != null && employee != null)

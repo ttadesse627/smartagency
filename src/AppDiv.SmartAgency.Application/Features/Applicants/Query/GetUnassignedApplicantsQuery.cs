@@ -1,11 +1,6 @@
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Queries;
 public class GetUnassignedApplicantsQuery : IRequest<GetUnAssignedApplicantsDTO> { }
@@ -24,7 +19,7 @@ public class GetUnassignedApplicantsQueryHandler : IRequestHandler<GetUnassigned
         var applEagerLoadedProps = new string[] { "Order", "Language", "Religion" };
         var applicantList = await _applicantRepository.GetAllWithPredicateAsync
                         (
-                            applicant => applicant.IsDeleted == false && applicant.Order == null, applEagerLoadedProps
+                            applicant => applicant.IsDeleted == false && applicant.OrderId == null, applEagerLoadedProps
                         );
 
         if (applicantList.Count > 0)

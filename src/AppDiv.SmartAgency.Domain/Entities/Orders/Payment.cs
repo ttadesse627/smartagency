@@ -1,8 +1,6 @@
 
 
 using System.ComponentModel.DataAnnotations.Schema;
-using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Domain.Entities.Orders;
 public class Payment
@@ -14,13 +12,17 @@ public class Payment
 
     // Navigation properties
     public Order? Order { get; set; }
-    public void UpdatePayment(decimal currentPaidAmount)
+
+    [NotMapped]
+    public decimal RemainingAmount => TotalAmount - PaidAmount;
+
+    public void AddPayment(decimal amount)
     {
-        if (PaidAmount < TotalAmount)
+        if (RemainingAmount < amount)
         {
-            PaidAmount += currentPaidAmount;
+            throw new Exception($"Cannot pay more than the remaining payment ({RemainingAmount}).");
         }
-        else throw new Exception($"Cannot pay more than the total payment specified firstly.");
+        PaidAmount += amount;
     }
 
 }

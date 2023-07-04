@@ -70,10 +70,16 @@ public class OrderController : ControllerBase
         return Ok(await _mediator.Send(new UnassignOrderCommand(request)));
     }
 
-    [HttpGet("order-status")]
+    [HttpGet("show-order-status")]
     public async Task<ActionResult> ShowOrderStatus(Guid OrderId)
     {
         return Ok(await _mediator.Send(new ShowOrderStatusQuery(OrderId)));
+    }
+
+    [HttpGet("order-statuses")]
+    public async Task<ActionResult> GetOrderStatuses()
+    {
+        return Ok(await _mediator.Send(new OrderStatusQuery()));
     }
 
     [HttpGet("get-for-enjaz")]

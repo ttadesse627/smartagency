@@ -5,6 +5,7 @@ using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create

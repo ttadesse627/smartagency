@@ -7,6 +7,7 @@ using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
@@ -50,7 +51,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
                     .Include("Sponsor.Address.Country")
                     .Include("Sponsor.Address.City")
                     .Include("Payment")
-                    .Include("Employee")
+                    .Include("Employees")
                     .Include("Partner").FirstOrDefaultAsync(ord => ord.Id == id);
             if (order is not null)
             {

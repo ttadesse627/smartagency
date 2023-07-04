@@ -33,10 +33,16 @@ public class ProcessController : ControllerBase
     }
 
     [HttpGet("get/{id}")]
-    public async Task<ActionResult<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>>> GetProcessDefinitions(Guid id)
+    public async Task<ActionResult<ResponseContainerDTO<ProcessDetailsResponseDTO>>> GetProcessDetails(Guid id)
     {
         return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
     }
+
+    // [HttpGet("pr/{id}")]
+    // public async Task<ActionResult<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>>> GetProcessDefinitions(Guid id)
+    // {
+    //     return Ok(await _mediator.Send(new GetProcessDefinitionsQuery(id)));
+    // }
 
     [HttpPut("edit/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> EditProcess(Guid id, EditProcessRequest request)
@@ -48,6 +54,13 @@ public class ProcessController : ControllerBase
             return BadRequest(response);
         }
         response = await _mediator.Send(new EditProcessCommand(request));
+        return Ok(response);
+    }
+
+    [HttpDelete("delete/{id}")]
+    public async Task<ActionResult<ServiceResponse<Int32>>> DeleteProcess(Guid id)
+    {
+        var response = await _mediator.Send(new DeleteProcessCommand(id));
         return Ok(response);
     }
 }

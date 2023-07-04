@@ -1,34 +1,29 @@
 
 
-
-using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
-public record GetProcessDefinitionsQuery(Guid id) : IRequest<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>> { }
-public class GetProcessDefinitionsQueryHandler : IRequestHandler<GetProcessDefinitionsQuery, ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>>
+public record GetProcessDefinitionsQuery(Guid id) : IRequest<ProcessDetailsResponseDTO> { }
+public class GetProcessDefinitionsQueryHandler : IRequestHandler<GetProcessDefinitionsQuery, ProcessDetailsResponseDTO>
 {
-    private readonly IProcessDefinitionRepository _definitionRepository;
-    public GetProcessDefinitionsQueryHandler(IProcessDefinitionRepository definitionRepository)
+    private readonly IProcessRepository _processRepository;
+    public GetProcessDefinitionsQueryHandler(IProcessRepository processRepository)
     {
-        _definitionRepository = definitionRepository;
+        _processRepository = processRepository;
     }
-    public async Task<ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>> Handle(GetProcessDefinitionsQuery query, CancellationToken cancellationToken)
+    public async Task<ProcessDetailsResponseDTO> Handle(GetProcessDefinitionsQuery query, CancellationToken cancellationToken)
     {
         var explicitLoadedProperties = new string[]
         {
-            "ApplicantProcesses", "ApplicantProcesses.Applicant",
-            "ApplicantProcesses.Applicant.Order", "ApplicantProcesses.Applicant.Order.Sponsor",
+            "ProcessDefinitions", "Country",
         };
-        var response = new ResponseContainerDTO<List<GetProcessDefinitionResponseDTO>>();
-        var processes = await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == query.id, explicitLoadedProperties);
-        if (processes.Count() > 0)
+        var response = new ProcessDetailsResponseDTO();
+        var process = await _processRepository.GetWithPredicateAsync(pd => pd.Id == query.id, explicitLoadedProperties);
+        if (process != null)
         {
-            response.Items = CustomMapper.Mapper.Map<List<GetProcessDefinitionResponseDTO>>(processes);
+            response = CustomMapper.Mapper.Map<ProcessDetailsResponseDTO>(process);
         }
         return response;
     }

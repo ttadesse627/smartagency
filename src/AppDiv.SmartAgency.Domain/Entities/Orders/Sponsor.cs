@@ -14,14 +14,14 @@ public class Sponsor
 
     // Foreign Keys
     public Guid? OrderId { get; set; }
-    public Guid? AttachmentFileId { get; set; }
     public Guid? AddressId { get; set; }
+    public Guid? AttachmentId { get; set; }
 
 
     // Navigation properties
-    public AttachmentFile? AttachmentFile { get; set; }
     public Order? Order { get; set; }
     public Address? Address { get; set; }
-    
+    public Attachment? Attachment { get; set; }
+
 
 }

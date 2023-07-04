@@ -6,51 +6,51 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    
-   [ApiController]
-   [Route("api/quick-links")]
+
+    [ApiController]
+    [Route("api/quick-links")]
     public class QuickLinkContoller : ControllerBase
     {
-      
-       
-       private readonly IMediator _mediator;
 
-       public QuickLinkContoller(IMediator mediator)
-       {
-         _mediator= mediator;
-       }
-    
-     [HttpGet("get-new-assigned-visa")]
-     public async Task<ActionResult<NewAssignedVisaResponseDTO>> GetNewAssignedVisa()
-     {
+
+        private readonly IMediator _mediator;
+
+        public QuickLinkContoller(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpGet("a")]
+        public async Task<ActionResult<NewAssignedVisaResponseDTO>> GetNewAssignedVisa()
+        {
             var result = await _mediator.Send(new GetNewAssignedVisaQuery());
             return Ok(result);
-     } 
+        }
 
-     [HttpGet("get-not-assigned-visa")] 
-     public async Task<ActionResult<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
-     {
+        [HttpGet("b")]
+        public async Task<ActionResult<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
+        {
             var result = await _mediator.Send(new GetNotAssignedVisaQuery());
             return Ok(result);
-     }
-     [HttpGet("get-not-processed-applicant")]
-    public async Task<ActionResult<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicant()
-    {
-        var result = await _mediator.Send(new GetNotProcessedApplicantQuery());
-        return Ok(result);    
-    }
-    [HttpGet("get-expired-visa")]
-    public async Task<ActionResult<VisaExpiryResponseDTO>> GetExpiredVisa()
-    {
-        var result = await _mediator.Send(new GetExpiredVisaQuery());
-        return Ok(result);
-    }
-    [HttpGet("get-penality")]
-     public async Task<ActionResult<PenalityResponseDTO>>  GetPenality()
-     {
-        var result = await _mediator.Send(new GetPenalityQuery());
-        return Ok(result);
-     }
+        }
+        [HttpGet("c")]
+        public async Task<ActionResult<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicant()
+        {
+            var result = await _mediator.Send(new GetNotProcessedApplicantQuery());
+            return Ok(result);
+        }
+        [HttpGet("d")]
+        public async Task<ActionResult<VisaExpiryResponseDTO>> GetExpiredVisa()
+        {
+            var result = await _mediator.Send(new GetExpiredVisaQuery());
+            return Ok(result);
+        }
+        [HttpGet("e")]
+        public async Task<ActionResult<PenalityResponseDTO>> GetPenality()
+        {
+            var result = await _mediator.Send(new GetPenalityQuery());
+            return Ok(result);
+        }
 
     [HttpGet("get-complaint")]
      public async Task<ActionResult<ComplaintResponseDTO>> GetComplaints()

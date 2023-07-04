@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
 {

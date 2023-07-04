@@ -2,6 +2,8 @@
 
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Utility.Contracts;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp.Formats;
@@ -113,7 +115,42 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             }
 
         }
-        public (byte[] file, string fileName, string fileExtenion) getFile(string fileId, string folder, string? folderType)
+
+        public async Task<bool> UpLoadMultipleFilesAsync(IList<FileModel> fileModels)
+        {
+            var success = false;
+            if (fileModels != null && fileModels.Count > 0)
+            {
+                foreach (var fileModel in fileModels)
+                {
+                    try
+                    {
+                        if (!Directory.Exists(fileModel.PathToSave))
+                        {
+                            // If folder does not exist, create it
+                            Directory.CreateDirectory(fileModel.PathToSave);
+                        }
+
+                        // Convert the Base64 string to a byte array.
+                        string myString = fileModel.Base64String.Substring(fileModel.Base64String.IndexOf(',') + 1);
+                        //    _logger.LogCritical(myString);
+                        byte[] bytes = Convert.FromBase64String(myString);
+                        var extension = string.IsNullOrEmpty(getFileExtension(bytes)) ? "." + getFileExtension(bytes) : ".png";
+                        var fullPath = Path.Combine(fileModel.PathToSave, fileModel.FileName + extension);
+                        await File.WriteAllBytesAsync(fullPath, bytes);
+                        success = true;
+
+                    }
+                    catch (System.Exception)
+                    {
+                        throw new ApplicationException("An error occurred while");
+                    }
+                }
+            }
+            return success;
+        }
+
+        public (byte[] file, string fileName, string fileExtenion) getFile(string fileId, string folder, string? folderType = null)
         {
             try
             {
@@ -124,7 +161,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 }
                 else
                 {
-
                     folderName = Path.Combine("Resources", folder);
                 }
                 var fullPath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
@@ -154,10 +190,29 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             }
             catch (System.IO.DirectoryNotFoundException e)
             {
-
                 throw new BadRequestException($"could not find the directory of the path specified:\n{e.Message}");
             }
 
+        }
+
+        public ICollection<FileResult> GetFiles(IList<string> folderNames, string fileName)
+        {
+            var fileResults = new List<FileResult>();
+            if ((folderNames != null && folderNames.Count > 0) && fileName != null)
+            {
+                foreach (var folderName in folderNames)
+                {
+                    var filerslt = getFile(folderName, fileName);
+                    var fileResult = new FileResult
+                    {
+                        File = filerslt.file,
+                        FileName = filerslt.fileName,
+                        FileExtension = filerslt.fileExtenion
+                    };
+                    fileResults.Add(fileResult);
+                }
+            }
+            return fileResults;
         }
 
         public List<(byte[], string, string)> GetAllImages(string folderType)
@@ -220,10 +275,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 return "failed to delete image";
             }
-
-
-
-
         }
 
         private string? getFileExtension(byte[] bytes)

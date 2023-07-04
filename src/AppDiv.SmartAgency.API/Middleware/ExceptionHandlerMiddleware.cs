@@ -1,8 +1,9 @@
 ﻿using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using ApplicationException = AppDiv.SmartAgency.Application.Exceptions.ApplicationException;
+using ApplicationException = AppDiv.SmartAgency.Utility.Exceptions.AppException;
 
 namespace AppDiv.SmartAgency.Api.Middleware
 {
