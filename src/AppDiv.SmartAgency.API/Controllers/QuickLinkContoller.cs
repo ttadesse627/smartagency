@@ -52,6 +52,22 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(result);
         }
 
+    [HttpGet("get-complaint")]
+     public async Task<ActionResult<ComplaintResponseDTO>> GetComplaints()
+     {
+          var result = await _mediator.Send(new GetComplaintQuery());
+          return Ok(result);   
+     }
 
+     [HttpGet("get-daynamic-process")]
+     public async Task<ActionResult<DynamicProcessResponseDTO>> GetDynamicProcesses()
+     {
+           var result= await _mediator.Send(new GetDynamicProcessQuery());
+           return Ok(result);
+     }
+
+
+
+        
     }
 }

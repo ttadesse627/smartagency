@@ -53,7 +53,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             {
                 Applicant = applicant,
                 ProcessDefinition = firstPdOfNextProcess,
-                Date = request.Date,
+                Date = (DateTime)request.Date,
                 Status = ProcessStatus.In
             };
 
@@ -83,7 +83,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             {
                 Applicant = applicant,
                 ProcessDefinition = nextPd,
-                Date = request.Date,
+                Date = (DateTime)request.Date,
                 Status = ProcessStatus.In
             };
 

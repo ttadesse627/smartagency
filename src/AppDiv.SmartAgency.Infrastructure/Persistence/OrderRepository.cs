@@ -1,5 +1,6 @@
 
 
+using System.Runtime.InteropServices;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Exceptions;
@@ -136,22 +137,76 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
     public async Task<List<VisaExpiryResponseDTO>> GetExpiredVisa()
     {
-        // var orders = await _context.Orders.
-        var response = await _context.Applicants
-                        .Where(app => app.OrderId != null && DateTime.Now.Subtract(app.Order.CreatedAt).Days >  _context.CountryOperations.Where(
-                        co => co.CountryId == app.Order.Sponsor.Address.CountryId).FirstOrDefault().VisaExpiryDays
-                        ).Select(
-                            orr=> new VisaExpiryResponseDTO{
-                                EmployerName= orr.Order.Sponsor.FullName,
-                                EmployerPhoneNumber = orr.Order.Sponsor.Address.PhoneNumber,
-                                EmployeeName= orr.FirstName + " " +orr.MiddleName + " " +orr.LastName,
-                                 PassportNumber = orr.PassportNumber,
-                                  WorkingCountry = orr.Order.Sponsor.Address.Country.Value,
-                                  Sex = orr.Gender.ToString()
-                            } 
-                        ).ToListAsync();
-       return response;
+       
+                var response = await _context.Applicants
+                    .Where(app => app.OrderId != null && !app.IsDeleted) 
+                    .Join(_context.Orders.Where(o => !o.IsDeleted), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o }) 
+                    .Join(_context.CountryOperations, ao => ao.Order.Sponsor.Address.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
+                    .Where(aoc => DateTime.Compare(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays), DateTime.Now) < 0)
+                    .Select(aoc => new VisaExpiryResponseDTO {
+                        EmployerName = aoc.ApplicantOrder.Order.Sponsor.FullName,
+                        EmployerPhoneNumber = aoc.ApplicantOrder.Order.Sponsor.Address.PhoneNumber,
+                        EmployeeName = aoc.ApplicantOrder.Applicant.FirstName ,
+                        PassportNumber = aoc.ApplicantOrder.Applicant.PassportNumber,
+                        WorkingCountry = aoc.ApplicantOrder.Order.Sponsor.Address.Country.Value,
+                        Sex = aoc.ApplicantOrder.Applicant.Gender.ToString(),
+                        VisaExpired = aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays),
+                        DatePassed = (int)DateTime.Now.Subtract(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays)).TotalDays
+                    })
+                    .ToListAsync();
+
+      return response;
 
 
     }
+
+    public async Task<List<PenalityResponseDTO>> GetPenality()
+    {
+        
+                // .Join(_context.Orders.Where(o => o.IsDeleted==false), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
+                // .AsEnumerable()
+          
+            var settings = await _context.CompanySettings.FirstOrDefaultAsync();
+
+            var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
+         
+
+            var response = _context.Applicants
+                .Where(app => app.OrderId != null && app.TraveledApplicant == null && app.Order.IsDeleted == false )
+                .Include(app => app.Order)
+                .Include(app => app.Order.Sponsor)
+                .Include(app => app.Order.Partner)
+                .AsEnumerable()
+                .Where(app=> app.Order.CreatedAt.Add(penaltyInterval) <= DateTime.Now)
+                .Select(res => new PenalityResponseDTO
+                {
+                    Customer = res.Order.Partner.PartnerName,
+                    Sponsor = res.Order.Sponsor.FullName,
+                    Days = (int)(DateTime.Now - res.Order.CreatedAt.Add(penaltyInterval)).TotalDays,
+                    Penality = ((int)(DateTime.Now - res.Order.CreatedAt.Add(penaltyInterval)).TotalDays) * settings.PenalityAmount
+                })
+                .ToList();
+                var res= response;
+
+            return await Task.FromResult(response);
+
+    }
+
+   public async Task<List<ComplaintResponseDTO>> GetComplaints()
+   {
+          var response = await _context.Complaints
+                        .Where(c => c.IsClosed==false && c.OrderId !=null)
+                        .Select(c => new ComplaintResponseDTO
+                        {
+                            Sponsor = c.Order.Sponsor.FullName,
+                            Employee = c.Order.Employees
+                                .FirstOrDefault(e => e.OrderId == c.OrderId).AmharicFullName,
+                            Days = (int)(DateTimeOffset.Now - new DateTimeOffset(c.CreatedAt)).TotalDays
+                        })
+                        .ToListAsync();
+
+     return response;
+
+   }
+
 }

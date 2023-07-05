@@ -48,14 +48,14 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         {
             Applicant = applicant,
             ProcessDefinition = tickRefund,
-            Date = request.Date,
+            Date = (DateTime)request.Date,
             Status = ProcessStatus.In
         };
         var applTraveledProcess = new ApplicantProcess
         {
             Applicant = applicant,
             ProcessDefinition = traveledPr,
-            Date = request.Date,
+            Date = (DateTime)request.Date,
             Status = ProcessStatus.In
         };
         appProList.Add(applTickRefundProcess);
