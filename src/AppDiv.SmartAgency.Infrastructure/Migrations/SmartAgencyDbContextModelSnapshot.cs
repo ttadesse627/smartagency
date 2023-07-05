@@ -175,9 +175,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<bool>("IsReserved")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("IsTraveled")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("IssuedDate")
                         .HasColumnType("datetime(6)");
 
