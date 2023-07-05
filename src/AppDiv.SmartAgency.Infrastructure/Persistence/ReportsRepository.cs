@@ -381,35 +381,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             while (await viewReader.ReadAsync())
             {
                 var reportObject = new JObject();
-                string viewName = viewReader.GetString(0);
+                string reportName = viewReader.GetString(0);
 
-                reportObject["reportName"] = viewName;
+                reportObject["ReportName"] = reportName;
                 objectNames.Add(reportObject);
             }
             viewReader.Close();
-            /*
-                        foreach (var objectName in objectNames)
-                        {
-                            // Execute the first SQL statement to retrieve the view columns
-                            var columnsSql = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectName["objectName"]}'";
-                            using var colCommand = connection.CreateCommand();
-                            colCommand.CommandText = columnsSql;
-                            colCommand.CommandType = CommandType.Text;
-
-                            using var colReader = await colCommand.ExecuteReaderAsync();
-
-                            var columns = new JArray();
-                            while (await colReader.ReadAsync())
-                            {
-                                var column = new JObject();
-                                string columnName = colReader.GetString(0);
-                                column["propertyName"] = columnName;
-                                columns.Add(column);
-                            }
-                            objectName["reportProperties"] = columns;
-                            colReader.Close();
-                        }
-            */
 
             connection.Close();
             reportObjects["items"] = objectNames;

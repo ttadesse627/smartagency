@@ -25,13 +25,9 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
 
         var applEagerLoadedProps = new string[] { "Order", "Jobtitle", "Language", "Order.Enjaz" };
 
-        // var applicantList = await _applicantRepository.GetAllWithPredicateAsync
-        //                 (
-        //                     applicant => applicant.IsDeleted == false && applicant.Order == null, applEagerLoadedProps
-        //                 );
         var orderList = await _orderRepository.GetAllWithPredicateAsync
                         (
-                            order => order.IsDeleted == false && order.Employees.Count > 0 && order.Employees != null && order.Enjaz == null, ordEagerLoadedProps
+                            order => order.IsDeleted == false && order.Employees != null && order.Employees.Count > 0 && order.Enjaz == null, ordEagerLoadedProps
                         );
 
         var applicantList = await _applicantRepository.GetAllWithPredicateAsync
@@ -47,20 +43,17 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
                 {
                     foreach (var empl in order.Employees)
                     {
-                        if (applicantList.Contains(empl))
+                        var ordResp = new DropdownEnjazResponseDTO
                         {
-                            var ordResp = new DropdownEnjazResponseDTO
-                            {
-                                OrderId = order.Id,
-                                OrderNumber = order.OrderNumber,
-                                SponsorFullName = order.Sponsor?.FullName,
-                                EmployeeProfession = empl.Jobtitle.Value,
-                                EmployeeLanguage = empl.Language.Value,
-                                PassportNumber = empl.PassportNumber,
-                                EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
-                            };
-                            response.Add(ordResp);
-                        }
+                            OrderId = order.Id,
+                            OrderNumber = order.OrderNumber,
+                            SponsorFullName = order.Sponsor?.FullName,
+                            EmployeeProfession = empl.Jobtitle.Value,
+                            EmployeeLanguage = empl.Language.Value,
+                            PassportNumber = empl.PassportNumber,
+                            EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
+                        };
+                        response.Add(ordResp);
                     }
                 }
 

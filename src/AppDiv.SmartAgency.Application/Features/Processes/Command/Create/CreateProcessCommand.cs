@@ -45,7 +45,6 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
             Console.WriteLine(ticketProcess.Step);
             await _processRepository.InsertAsync(process, cancellationToken);
             await _processRepository.SaveChangesAsync(cancellationToken);
-
         }
         catch (System.Exception ex)
         {
