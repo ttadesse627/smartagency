@@ -14,9 +14,9 @@ namespace AppDiv.SmartAgency.Domain.Configurations
                 .HasForeignKey(fk => fk.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(comp => comp.Order)
+            builder.HasOne(comp => comp.Applicant)
                 .WithMany(ord => ord.Complaints)
-                .HasForeignKey(fk => fk.OrderId)
+                .HasForeignKey(fk => fk.ApplicantId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

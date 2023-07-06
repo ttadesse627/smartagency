@@ -32,10 +32,10 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(await _mediator.Send(new GetAllComplaintsQuery()));
         }
 
-        [HttpGet("get-order-complaints")]
-        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetOrderComplaints(Guid OrderId)
+        [HttpGet("get-order-complaints/{id}")]
+        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetOrderComplaints(Guid id)
         {
-            return Ok(await _mediator.Send(new GetOrderComplaintsQuery(OrderId)));
+            return Ok(await _mediator.Send(new GetOrderComplaintsQuery(id)));
         }
     }
 }

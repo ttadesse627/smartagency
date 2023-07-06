@@ -10,7 +10,12 @@ namespace AppDiv.SmartAgency.Application.Features.QuickLinks.Query
 {
     public class GetDynamicProcessQuery :IRequest<List<DynamicProcessResponseDTO>>
     {
-        
+        public Guid Id{get; set;}
+        public GetDynamicProcessQuery(Guid id)
+        {
+            Id = id;
+        }
+
     }
    
     public class GetDynamicProcessHandler :IRequestHandler<GetDynamicProcessQuery, List<DynamicProcessResponseDTO>>
@@ -23,7 +28,7 @@ namespace AppDiv.SmartAgency.Application.Features.QuickLinks.Query
         
         public async Task<List<DynamicProcessResponseDTO>>  Handle(GetDynamicProcessQuery request, CancellationToken cancellationToken)
         {
-            return await _processDefnitionRepository.GetDynamicProcesses();
+            return await _processDefnitionRepository.GetDynamicProcesses(request.Id);
         }
 
 
