@@ -18,19 +18,18 @@ public class ApplicantProcessController : ControllerBase
     {
         _mediator = mediator;
     }
-    [HttpPost("submit-to-process")]
-    public async Task<ActionResult<List<GetProcessDefinitionResponseDTO>>> CreateProcess(SubmitApplicantProcessRequest request)
-    {
-        var response = await _mediator.Send(new SubmitApplicantProcessCommand(request));
-        return Ok(response);
-    }
     [HttpGet("get/{processId}")]
     public async Task<ActionResult<List<GetProcessDefinitionResponseDTO>>> GetApplicantProcessses(Guid processId)
     {
         var response = await _mediator.Send(new GetApplProcessQuery(processId));
         return Ok(response);
     }
-
+    [HttpPost("submit-to-process")]
+    public async Task<ActionResult<List<GetProcessDefinitionResponseDTO>>> CreateProcess(SubmitApplicantProcessRequest request)
+    {
+        var response = await _mediator.Send(new SubmitApplicantProcessCommand(request));
+        return Ok(response);
+    }
     [HttpPost("step-back")]
     public async Task<ActionResult<ServiceResponse<ApplicantProcessResponseDTO>>> StepBack(StepbackProcessRequest request)
     {

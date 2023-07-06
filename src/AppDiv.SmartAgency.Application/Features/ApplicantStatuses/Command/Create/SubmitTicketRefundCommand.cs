@@ -1,7 +1,5 @@
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
@@ -18,9 +16,10 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
     private readonly ITicketRefundRepository _ticketRefundRepository;
     private readonly ILookUpRepository _lookupRepository;
 
-    public SubmitTicketRefundCommandHandler(IApplicantProcessRepository applicantProcessRepository,
-    IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository,
-    IProcessDefinitionRepository proDefRepository, ITicketRefundRepository ticketRefundRepository)
+    public SubmitTicketRefundCommandHandler
+    (IApplicantProcessRepository applicantProcessRepository,
+        IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository,
+        IProcessDefinitionRepository proDefRepository, ITicketRefundRepository ticketRefundRepository)
     {
         _applicantProcessRepository = applicantProcessRepository;
         _applicantRepository = applicantRepository;
