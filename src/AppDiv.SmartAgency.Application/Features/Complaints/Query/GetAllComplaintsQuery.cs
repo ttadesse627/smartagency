@@ -10,33 +10,32 @@ public class GetAllComplaintsQuery : IRequest<List<GetAllComplaintsResponseDTO>>
 public class GetAllComplaintsQueryHandler : IRequestHandler<GetAllComplaintsQuery, List<GetAllComplaintsResponseDTO>>
 {
     private readonly IOrderRepository _orderRepository;
-    public GetAllComplaintsQueryHandler(IOrderRepository orderRepository)
+    private readonly IApplicantRepository _applicantRepository;
+    public GetAllComplaintsQueryHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository)
     {
         _orderRepository = orderRepository;
+        _applicantRepository = applicantRepository;
     }
 
     public async Task<List<GetAllComplaintsResponseDTO>> Handle(GetAllComplaintsQuery request, CancellationToken cancellationToken)
     {
         var response = new List<GetAllComplaintsResponseDTO>();
-        var orderComplaints = await _orderRepository.GetAllWithPredicateAsync(order => order.Complaints.Count > 0 || order.Complaints != null, "Employees", "Sponsor");
+        var orderComplaints = await _applicantRepository.GetAllWithPredicateAsync(app => app.OrderId != null && app.Complaints != null && app.Complaints.Count > 0, "Order", "Order.Sponsor");
 
         foreach (var orderComplaint in orderComplaints)
         {
-            if (orderComplaint.Employees != null && orderComplaint.Employees.Count > 0)
-            {
-                var employeeName = orderComplaint.Employees.First().FirstName + " " + orderComplaint.Employees.First().MiddleName + " " + orderComplaint.Employees.First().LastName;
+                var employeeName = orderComplaint.FirstName + " " + orderComplaint.MiddleName + " " + orderComplaint.LastName;
                 var days = DateTime.Now - orderComplaint.CreatedAt;
                 int numberOfDays = (int)days.TotalDays;
                 var complResponse = new GetAllComplaintsResponseDTO
                 {
                     Id = orderComplaint.Id,
-                    SponsorName = orderComplaint.Sponsor.FullName,
+                    SponsorName = orderComplaint.Order?.Sponsor?.FullName,
                     EmployeeName = employeeName,
                     Days = numberOfDays
                 };
 
                 response.Add(complResponse);
-            }
         }
 
         return response;
