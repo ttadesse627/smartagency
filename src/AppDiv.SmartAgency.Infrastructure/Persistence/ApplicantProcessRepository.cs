@@ -1,12 +1,8 @@
 
-using System;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
-using AppDiv.SmartAgency.Application.Features.QuickLinks.Query;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Infrastructure.Context;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -174,15 +170,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
 
-            //  var penalities = _context.Applicants
-            // .Where(app => app.OrderId != null && app.TraveledApplicant == null )
-            // .Join(_context.Orders.Where(o => o.IsDeleted==false), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
-            // .AsEnumerable()
-            // .Where(ao => ao.Order.CreatedAt.Add(penaltyInterval) <= DateTime.Now).Count();
-
-
-
-
             var penalities = await _context.Applicants
                .CountAsync(app => (app.IsDeleted == false) && (app.TraveledApplicant == null) && (app.OrderId != null) && (app.Order.IsDeleted == false) && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now) < 0));
 
@@ -223,13 +210,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 }
             }
 
-
-
-
-
             return response;
         }
-
 
     }
 }
