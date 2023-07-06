@@ -55,7 +55,7 @@ public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaints
 
             response.SponsorInfo = sponsorInfo;
 
-            var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.OrderId == request.OrderId, "User");
+            var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == request.OrderId, "User");
             var compResponse = new List<GetComplaintResponseDTO>();
             if (complaints.Count > 0 || complaints != null)
             {

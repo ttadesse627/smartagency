@@ -3,8 +3,10 @@ using System.Reflection.PortableExecutable;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IProcessDefinitionRepository
@@ -40,7 +42,7 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
     //       return null;
     // }
 
-    public async Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses()
+    public async Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses(Guid id)
     {
         var expiredProcesses = await _context.ApplicantProcesses
           .Include(ap => ap.ProcessDefinition.Process)
@@ -55,6 +57,22 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
               // DatePassed=   (int)(DateTime.Now - g.FirstOrDefault().ProcessDefinition.ApplicantProcesses.FirstOrDefault().Date.Add(g.FirstOrDefault().ProcessDefinition.ExpiryInterval)).TotalDays,  
           })
                   .ToListAsync();
+
+        var expiredProcesses = await _context.ApplicantProcesses
+         .Include(ap => ap.ProcessDefinition)
+          .Where(ap => (ap.ProcessDefinitionId == id) && (ap.Status == ProcessStatus.In) && (DateTime.UtcNow > ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval)))
+          .Select(g => new DynamicProcessResponseDTO
+          {
+              ProcessDefnitionName = g.ProcessDefinition.Name,
+              ApplicantName = g.Applicant.FirstName + " " + g.Applicant.MiddleName + " " + g.Applicant.LastName,
+              PassportNumber = g.Applicant.PassportNumber,
+              DatePassed = (int)(DateTime.UtcNow - g.Date.AddDays(g.ProcessDefinition.ExpiryInterval)).TotalDays,
+          })
+                  .ToListAsync();
+
+        return expiredProcesses;
+
+
 
         return expiredProcesses;
     }

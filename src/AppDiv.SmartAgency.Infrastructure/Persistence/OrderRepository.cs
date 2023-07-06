@@ -1,5 +1,6 @@
 
 
+using System.Threading;
 using System.Runtime.InteropServices;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
@@ -177,7 +178,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
                 .Include(app => app.Order.Sponsor)
                 .Include(app => app.Order.Partner)
                 .AsEnumerable()
-                .Where(app=> app.Order.CreatedAt.Add(penaltyInterval) <= DateTime.Now)
+                .Where(app=> app.Order.CreatedAt.Add(penaltyInterval) < DateTime.Now)
                 .Select(res => new PenalityResponseDTO
                 {
                     Customer = res.Order.Partner.PartnerName,
@@ -194,16 +195,29 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
    public async Task<List<ComplaintResponseDTO>> GetComplaints()
    {
-          var response = await _context.Complaints
-                        .Where(c => c.IsClosed==false && c.OrderId !=null)
-                        .Select(c => new ComplaintResponseDTO
-                        {
-                            Sponsor = c.Order.Sponsor.FullName,
-                            Employee = c.Order.Employees
-                                .FirstOrDefault(e => e.OrderId == c.OrderId).AmharicFullName,
-                            Days = (int)(DateTimeOffset.Now - new DateTimeOffset(c.CreatedAt)).TotalDays
-                        })
-                        .ToListAsync();
+
+           var response= await _context.Applicants
+                          .Where(ap=>ap.OrderId!=null && ap.Complaints != null && ap.Complaints.Count()>0 && ap.Complaints.Any(comp => comp.IsClosed) == false)
+                          .Select(s=> new ComplaintResponseDTO{
+                               // ApplicantId= s.Id,
+                                Employee= s.FirstName,
+                                Sponsor= s.Order.Sponsor.FullName,
+                                Path = "api/complaint/get-order-complaints/"+s.Id
+
+                          }).ToListAsync();
+                          
+        //   var response = await _context.Complaints
+        //                 .Where(c => c.IsClosed==false && c.OrderId !=null)
+        //                 .Select(c => new ComplaintResponseDTO
+        //                 {
+        //                     OrderId= c.OrderId,
+        //                     Sponsor = c.Order.Sponsor.FullName,
+        //                     Employee = c.Order.Employees
+        //                         .FirstOrDefault(e => e.OrderId == c.OrderId).AmharicFullName,
+        //                     Days = (int)(DateTimeOffset.Now - new DateTimeOffset(c.CreatedAt)).TotalDays,
+        //                     Path=""
+        //                 })
+        //                 .ToListAsync();
 
      return response;
 

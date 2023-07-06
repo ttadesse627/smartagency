@@ -13,13 +13,13 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
     public class SendOrderComplaintCommandHandler : IRequestHandler<SendOrderComplaintCommand, List<GetComplaintResponseDTO>>
     {
         private readonly IComplaintRepository _complaintRepository;
-        private readonly IOrderRepository _orderRepository;
+        private readonly IApplicantRepository _applicantRepository;
         private readonly ISmartAgencyDbContext _context;
 
-        public SendOrderComplaintCommandHandler(IComplaintRepository complaintRepository, IOrderRepository orderRepository, ISmartAgencyDbContext context)
+        public SendOrderComplaintCommandHandler(IComplaintRepository complaintRepository, IApplicantRepository applicantRepository, ISmartAgencyDbContext context)
         {
             _complaintRepository = complaintRepository;
-            _orderRepository = orderRepository;
+            _applicantRepository = applicantRepository;
             _context = context;
         }
 
@@ -27,15 +27,11 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
         {
             var response = new List<GetComplaintResponseDTO>();
 
-            var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.Request.OrderId, "Employees");
-            if (order.Employees == null || order.Employees.Count == 0)
-            {
-                throw new BadRequestException("This order is not assigned. It should be assigned first.");
-            }
+            var applicant = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.Request.ApplicantId);
             var complint = new Complaint
             {
                 Message = request.Request.Message,
-                OrderId = request.Request.OrderId,
+                ApplicantId = request.Request.ApplicantId,
                 CreatedBy = _context.GetCurrentUserId()
             };
             await _complaintRepository.InsertAsync(complint, cancellationToken);
@@ -44,7 +40,7 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
                 var success = await _complaintRepository.SaveChangesAsync(cancellationToken);
                 if (success)
                 {
-                    var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.OrderId == request.Request.OrderId, "User");
+                    var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == request.Request.ApplicantId, "User");
                     if (complaints.Count > 0 || complaints != null)
                     {
 
