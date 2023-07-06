@@ -181,13 +181,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 query = query.Where(predicate);
             }
 
-            foreach (var nav_property in eagerLoadedProperties)
+            if (eagerLoadedProperties.Length > 0)
             {
-                query = query.Include(nav_property);
+                foreach (var nav_property in eagerLoadedProperties)
+                {
+                    query = query.Include(nav_property);
+                }
             }
             var entity = await query.ToListAsync();
 
-            return entity.First();
+            return entity.FirstOrDefault()!;
         }
 
         public virtual async Task<List<T>> GetAllWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)

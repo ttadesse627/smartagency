@@ -44,11 +44,11 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             var nextProcess = await _processRepository.GetWithPredicateAsync(p => p.Step == process.Step + 1, "ProcessDefinitions");
             if (nextProcess == null)
             {
-                throw new BadRequestException("Finished the process!");
+                throw new BadRequestException("Finished processes.");
             }
 
             // Set the applicant's status to 'In' for the first process definition of the next process
-            var firstPdOfNextProcess = nextProcess.ProcessDefinitions?.OrderBy(pd => pd.Step).First();
+            var firstPdOfNextProcess = nextProcess.ProcessDefinitions?.OrderBy(pd => pd.Step).FirstOrDefault();
             var applProcess = new ApplicantProcess
             {
                 Applicant = applicant,
@@ -56,6 +56,12 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                 Date = (DateTime)request.Date,
                 Status = ProcessStatus.In
             };
+            // update the status of applicant processes for the current process definition
+            var updatedApplicantProcess = await _applicantProcessRepository.GetAllWithPredicateAsync(appPro => appPro.ApplicantId == applicant.Id && appPro.ProcessDefinitionId == currentPd.Id && appPro.Status == ProcessStatus.In);
+            if (updatedApplicantProcess.Count > 0)
+            {
+                updatedApplicantProcess.First().Status = ProcessStatus.Out;
+            }
 
             try
             {
@@ -66,7 +72,9 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             {
                 throw new System.ApplicationException(ex.Message);
             }
+
         }
+
         else
         {
             // This is not the last process definition for the current process,
@@ -99,20 +107,18 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         }
 
         // Return all the applicants in each process definitions within that Process
-        var applicantLoadedProperties = new string[] { "Order", "Order.Sponsor" };
-        var pdLoadedProperties = new string[] { "ApplicantProcesses", "ApplicantProcesses.Applicant.Order" };
+        var applProLoadedProperties = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
+        // var pdLoadedProperties = new string[] { "ApplicantProcesses", "ApplicantProcesses.Applicant.Order" };
 
         var response = new List<GetProcessDefinitionResponseDTO>();
 
-        var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == currentPd.ProcessId, "ProcessDefinitions");
+        var processDefs = await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id);
 
-        var onProcessApplicants = await _definitionRepository.GetAllWithPredicateAsync(
-            pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == process.Id, pdLoadedProperties);
-
-        foreach (var proDef in onProcessApplicants)
+        foreach (var pd in processDefs)
         {
+            var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();
-            foreach (var applicant1 in proDef.ApplicantProcesses)
+            foreach (var applicant1 in proApps)
             {
                 pdApplicants.Add(new GetApplProcessResponseDTO()
                 {
@@ -125,12 +131,39 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             }
             response.Add(new GetProcessDefinitionResponseDTO()
             {
-                Id = proDef.Id,
-                Name = proDef.Name,
-                Step = proDef.Step,
+                Id = pd.Id,
+                Name = pd.Name,
+                Step = pd.Step,
                 ApplicantProcesses = pdApplicants
             });
         }
+
+        // Under here!
+        // var onProcessApplicants = await _definitionRepository.GetAllWithPredicateAsync(
+        //     pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == process.Id, pdLoadedProperties);
+
+        // foreach (var proDef in onProcessApplicants)
+        // {
+        //     var pdApplicants = new List<GetApplProcessResponseDTO>();
+        //     foreach (var applicant1 in proDef.ApplicantProcesses)
+        //     {
+        //         pdApplicants.Add(new GetApplProcessResponseDTO()
+        //         {
+        //             Id = applicant1.Applicant.Id,
+        //             PassportNumber = applicant1.Applicant.PassportNumber,
+        //             FullName = applicant1.Applicant.FirstName + " " + applicant1.Applicant.MiddleName + " " + applicant1.Applicant.LastName,
+        //             OrderNumber = applicant1.Applicant.Order?.OrderNumber!,
+        //             SponsorName = applicant1.Applicant.Order?.Sponsor?.FullName!
+        //         });
+        //     }
+        //     response.Add(new GetProcessDefinitionResponseDTO()
+        //     {
+        //         Id = proDef.Id,
+        //         Name = proDef.Name,
+        //         Step = proDef.Step,
+        //         ApplicantProcesses = pdApplicants
+        //     });
+        // }
 
         return response;
     }

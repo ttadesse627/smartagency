@@ -11,12 +11,13 @@ using AppDiv.SmartAgency.Application.Features.Applicants.Queries;
 using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 
-// [Authorize()]
+[Authorize(JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 [Route("api/applicant")]
 public class ApplicantController : ControllerBase

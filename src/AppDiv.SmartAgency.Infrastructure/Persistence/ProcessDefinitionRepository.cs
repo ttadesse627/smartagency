@@ -25,6 +25,13 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
         }
         return count;
     }
+
+    public async Task<List<Guid>> GetMinStepAsync(Guid processId)
+    {
+        return await _context.ProcessDefinitions.Where(prd => prd.ProcessId == processId && prd.Step == _context.ProcessDefinitions.Min(pd => pd.Step)).Select(pd => pd.Id).ToListAsync();
+    }
+
+
     // public async Task<List<Object>> GetDashbourd()
     // {
     //     var response= await _context.ProcessDefinitions
@@ -35,20 +42,20 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
 
     public async Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses()
     {
-              var expiredProcesses = await _context.ApplicantProcesses
-                .Include(ap => ap.ProcessDefinition.Process) 
-                .Include(ap => ap.ProcessDefinition) 
-                .Where(ap => DateTime.UtcNow > ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval)) 
-                .GroupBy(ap => ap.ProcessDefinition.ProcessId) 
-                .Select(g => new DynamicProcessResponseDTO
-                        {
-                           ApplicantName= g.FirstOrDefault().Applicant.AmharicFullName,
-                           PassportNumber= g.FirstOrDefault().Applicant.PassportNumber,
-                           Status= g.FirstOrDefault().ProcessDefinition.Name,
-                          // DatePassed=   (int)(DateTime.Now - g.FirstOrDefault().ProcessDefinition.ApplicantProcesses.FirstOrDefault().Date.Add(g.FirstOrDefault().ProcessDefinition.ExpiryInterval)).TotalDays,  
-                        })
-                        .ToListAsync();
+        var expiredProcesses = await _context.ApplicantProcesses
+          .Include(ap => ap.ProcessDefinition.Process)
+          .Include(ap => ap.ProcessDefinition)
+          .Where(ap => DateTime.UtcNow > ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval))
+          .GroupBy(ap => ap.ProcessDefinition.ProcessId)
+          .Select(g => new DynamicProcessResponseDTO
+          {
+              ApplicantName = g.FirstOrDefault().Applicant.AmharicFullName,
+              PassportNumber = g.FirstOrDefault().Applicant.PassportNumber,
+              Status = g.FirstOrDefault().ProcessDefinition.Name,
+              // DatePassed=   (int)(DateTime.Now - g.FirstOrDefault().ProcessDefinition.ApplicantProcesses.FirstOrDefault().Date.Add(g.FirstOrDefault().ProcessDefinition.ExpiryInterval)).TotalDays,  
+          })
+                  .ToListAsync();
 
-            return expiredProcesses;    
+        return expiredProcesses;
     }
 }

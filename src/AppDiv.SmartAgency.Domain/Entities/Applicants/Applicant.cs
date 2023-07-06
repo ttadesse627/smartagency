@@ -27,7 +27,6 @@ public class Applicant : PersonalInfo
     public bool IsReserved { get; set; } = false;
     public bool IsBlocked { get; set; } = false;
     public bool IsDeleted { get; set; } = false;
-     public bool IsTraveled { get; set; } = false;
     //Foreign keys
     public Guid? IssuingCountryId { get; set; }
     public Guid? PassportIssuedPlaceId { get; set; }
@@ -72,6 +71,7 @@ public class Applicant : PersonalInfo
     public LookUp? BrokerName { get; set; }
     public LookUp? Branch { get; set; }
     public Order? Order { get; set; }
+
     public ICollection<Attachment>? Attachments { get; set; }
     public ICollection<Deposit>? Deposits { get; set; }
     public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses { get; set; }

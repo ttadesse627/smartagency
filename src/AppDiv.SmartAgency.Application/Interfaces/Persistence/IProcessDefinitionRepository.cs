@@ -8,6 +8,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence;
 public interface IProcessDefinitionRepository : IBaseRepository<ProcessDefinition>
 {
     // public Task<Int32> CreateProcessAsync(Process processDefinition);
-     //public Task<List<Object>>  GetDashbourd();
-     public Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses();
+    //public Task<List<Object>>  GetDashbourd();
+    public Task<List<Guid>> GetMinStepAsync(Guid processId);
+    public Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses();
 }
