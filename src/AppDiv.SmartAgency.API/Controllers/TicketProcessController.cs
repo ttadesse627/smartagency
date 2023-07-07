@@ -18,9 +18,9 @@ public class TicketProcessController : ControllerBase
     }
 
     [HttpGet("get-ticket-process")]
-    public async Task<ActionResult<TicketProcessResponseDTO>> GetOnTicketProcessApplicants(Guid processId)
+    public async Task<ActionResult<TicketProcessResponseDTO>> GetOnTicketProcessApplicants()
     {
-        return await _mediator.Send(new GetTicketProcessApplicantsQuery(processId));
+        return await _mediator.Send(new GetTicketProcessApplicantsQuery());
     }
 
     [HttpPost("submit-ticket-ready")]

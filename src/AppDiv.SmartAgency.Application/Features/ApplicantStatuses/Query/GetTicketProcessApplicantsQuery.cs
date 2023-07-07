@@ -4,7 +4,7 @@ using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
-public record GetTicketProcessApplicantsQuery(Guid ProcessId) : IRequest<TicketProcessResponseDTO> { }
+public record GetTicketProcessApplicantsQuery() : IRequest<TicketProcessResponseDTO> { }
 public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketProcessApplicantsQuery, TicketProcessResponseDTO>
 {
     private readonly IProcessRepository _processRepository;
@@ -32,19 +32,15 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
 
         var response = new TicketProcessResponseDTO();
 
-        if (query.ProcessId != null)
-        {
-            // var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.ProcessId, "ProcessDefinitions.TicketReadies");
-
             var onProcessApplicants = await _definitionRepository.GetAllWithPredicateAsync(
-                pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == query.ProcessId, pdLoadedProperties);
+                pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"), pdLoadedProperties);
 
-            var ticketReady = onProcessApplicants.Where(appl => appl.Id.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a").First();
-            var ticketRegistration = onProcessApplicants.Where(appl => appl.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7").First();
-            var ticketRefund = onProcessApplicants.Where(appl => appl.Id.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778").First();
-            var ticketRebook = onProcessApplicants.Where(appl => appl.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf").First();
-            var ticketRebookReg = onProcessApplicants.Where(appl => appl.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf").First();
-            var traveled = onProcessApplicants.Where(appl => appl.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616").First();
+            var ticketReady = onProcessApplicants.Where(appl => appl.Id.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a").FirstOrDefault();
+            var ticketRegistration = onProcessApplicants.Where(appl => appl.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7").FirstOrDefault();
+            var ticketRefund = onProcessApplicants.Where(appl => appl.Id.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778").FirstOrDefault();
+            var ticketRebook = onProcessApplicants.Where(appl => appl.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf").FirstOrDefault();
+            var ticketRebookReg = onProcessApplicants.Where(appl => appl.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf").FirstOrDefault();
+            var traveled = onProcessApplicants.Where(appl => appl.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616").FirstOrDefault();
 
             var tkReadyApplicants = new List<GetTicketReadyApplicantsResponseDTO>();
             var tkRegApplicants = new List<GetTicketRegistrationApplicantsResponseDTO>();
@@ -126,7 +122,7 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             response.TicketRebookApplicants = tkRebookApplicants;
             response.TicketRebookRegistrationApplicants = tkRebRegApplicants;
             response.TraveledApplicants = traveledApplicants;
-        }
+        
         return response;
     }
 }

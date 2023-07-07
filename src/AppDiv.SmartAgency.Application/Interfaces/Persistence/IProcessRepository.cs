@@ -8,5 +8,5 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence;
 public interface IProcessRepository : IBaseRepository<Process>
 {
     public Task<Int32> GetMaximumStepAsync(Expression<Func<Process, bool>> predicate);
-    public Task<bool> GetMinStepProcessesAsync(Guid processId);
+    public Task<bool> GetMinStepProcessesAsync(Guid? processId);
 }

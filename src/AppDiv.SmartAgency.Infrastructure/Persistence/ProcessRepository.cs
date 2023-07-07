@@ -21,7 +21,7 @@ public class ProcessRepository : BaseRepository<Process>, IProcessRepository
         return maxStep;
     }
 
-    public async Task<bool> GetMinStepProcessesAsync(Guid processId)
+    public async Task<bool> GetMinStepProcessesAsync(Guid? processId)
     {
         return await _context.Processes.AnyAsync(pr => pr.Id == processId && pr.Step == _context.Processes.Min(pd => pd.Step));
     }

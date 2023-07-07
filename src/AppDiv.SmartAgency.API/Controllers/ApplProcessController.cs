@@ -7,7 +7,6 @@ using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 [ApiController]
@@ -20,27 +19,10 @@ public class ApplicantProcessController : ControllerBase
         _mediator = mediator;
     }
     [HttpGet("get/{processId}")]
-    public async Task<ActionResult<JObject>> GetApplicantProcessses(Guid processId)
+    public async Task<ActionResult<ApplicantProcessResponseDTO>> GetApplicantProcessses(Guid processId)
     {
-        var response = new JObject();
-        var resp = await _mediator.Send(new GetApplProcessQuery(processId));
-        if (resp != null)
-        {
-            if (resp.ProcessReadyApplicants != null && resp.ProcessReadyApplicants.Count > 0)
-            {
-                var prReady = new JArray();
+        var response = await _mediator.Send(new GetApplProcessQuery(processId));
 
-                prReady = (JArray)resp.ProcessReadyApplicants;
-                response["ProcessReady"] = prReady;
-            }
-
-            var processDefs = new JArray();
-            if (resp.ProcessDefinitions != null && resp.ProcessDefinitions.Count > 0)
-            {
-                processDefs = (JArray)resp.ProcessDefinitions;
-                response["ProcessDefinitions"] = processDefs;
-            }
-        }
         return Ok(response);
     }
     [HttpPost("submit-to-process")]

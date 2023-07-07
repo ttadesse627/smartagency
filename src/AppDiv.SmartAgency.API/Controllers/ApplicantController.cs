@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 
-[Authorize(JwtBearerDefaults.AuthenticationScheme)]
+// [Authorize(JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 [Route("api/applicant")]
 public class ApplicantController : ControllerBase

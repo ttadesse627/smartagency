@@ -8,7 +8,7 @@ public record GetProcessDefinitionResponseDTO
     public Guid Id { get; set; }
     public string? Name { get; set; }
     public int Step { get; set; }
-    public ICollection<Guid>? NextPdIds { get; set; }
+    public Guid? NextPdId { get; set; }
     public ICollection<GetApplProcessResponseDTO>? ApplicantProcesses { get; set; }
 
 }

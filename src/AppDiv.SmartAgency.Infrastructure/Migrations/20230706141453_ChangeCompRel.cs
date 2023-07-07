@@ -9,14 +9,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Complaints_Orders_OrderId",
-                table: "Complaints");
-
-            migrationBuilder.DropColumn(
-                name: "IsTraveled",
-                table: "Applicants");
-
             migrationBuilder.RenameColumn(
                 name: "OrderId",
                 table: "Complaints",
