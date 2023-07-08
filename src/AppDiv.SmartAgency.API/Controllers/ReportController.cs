@@ -40,19 +40,15 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("get/{reportName}")] //Task<(IEnumerable<Dictionary<string, object>>, List<String>)>
+        [HttpPost("get/{reportName}")]
         public async Task<ActionResult<JObject>> getDaynamicViewData(string reportName, ReportsQueryRequest? query = null)
         {
-            var result = await _mediator.Send(new GetAllReportsQuery(reportName, query));
-            return Ok(result);
+            var response = new JObject();
+            if (!string.IsNullOrEmpty(reportName) || !string.IsNullOrWhiteSpace(reportName))
+            {
+                response = await _mediator.Send(new GetAllReportsQuery(reportName, query));
+            }
+            return Ok(response);
         }
-
-
-        // [HttpGet("get-test")]
-        // public async Task<ActionResult<JObject>> getTestData()
-        // {
-        //     return Ok(await _reportRepository.GetTestData());
-        // }
-
     }
 }

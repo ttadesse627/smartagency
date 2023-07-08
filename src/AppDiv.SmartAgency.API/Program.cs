@@ -7,6 +7,7 @@ using AppDiv.SmartAgency.Application.Service;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Infrastructure;
 using AppDiv.SmartAgency.Api.Middleware;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,26 +22,70 @@ var _expirtyMinutes = builder.Configuration["Jwt:ExpiryMinutes"];
 
 
 // Configuration for token
-builder.Services.AddAuthentication(x =>
+// builder.Services.AddAuthentication(x =>
+// {
+//     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//     x.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+// }).AddJwtBearer(x =>
+// {
+//     x.RequireHttpsMetadata = false;
+//     x.SaveToken = true;
+//     x.TokenValidationParameters = new TokenValidationParameters()
+//     {
+//         ValidateIssuer = true,
+//         ValidateAudience = true,
+//         ValidateLifetime = true,
+//         ValidateIssuerSigningKey = true,
+//         ValidAudience = _audience,
+//         ValidIssuer = _issuer,
+//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
+//         ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes))
+
+//     };
+// }).AddCookie(options =>
+// {
+//     options.LoginPath = "/api/auth/login";
+//     options.LogoutPath = "/api/auth/logout";
+//     options.AccessDeniedPath = "/api/auth/access-denied";
+// });
+
+
+builder.Services.AddAuthentication(options =>
 {
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
 {
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters()
+    options.LoginPath = "/api/auth/login";
+    options.LogoutPath = "/api/auth/logout";
+    options.AccessDeniedPath = "/api/auth/access-denied";
+    options.SlidingExpiration = false;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidAudience = _audience,
         ValidIssuer = _issuer,
+        ValidAudience = _audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
-        ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes))
+        ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes)),
+        ValidateLifetime = true,
+        LifetimeValidator = (DateTime? notBefore, DateTime? expires, SecurityToken token, TokenValidationParameters parameters) =>
+        {
+            if (expires != null && expires <= DateTime.UtcNow)
+            {
+                return false;
+            }
 
+            return true;
+        }
     };
 });
 

@@ -1,12 +1,11 @@
 
-using System.Reflection.PortableExecutable;
+
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IProcessDefinitionRepository
@@ -27,13 +26,11 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
         }
         return count;
     }
-    // public async Task<List<Object>> GetDashbourd()
-    // {
-    //     var response= await _context.ProcessDefinitions
-    //       .Include(pd=>pd.ApplicantProcesses)
-    //       .FirstOrDefaultAsync(pd=> pd.ApplicantProcesses!=null);
-    //       return null;
-    // }
+
+    public async Task<Guid> GetMinStepAsync(Guid processId)
+    {
+        return await _context.ProcessDefinitions.OrderBy(p => p.Step).Where(p => p.ProcessId == processId).Select(p => p.Id).FirstOrDefaultAsync();
+    }
 
     public async Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses(Guid id)
     {
@@ -51,9 +48,6 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
                         })
                         .ToListAsync();
 
-
-                
-
-            return expiredProcesses;    
+        return expiredProcesses;
     }
 }

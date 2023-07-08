@@ -22,7 +22,6 @@ public record CreateOrderRequest
     public Guid? PartnerId { get; set; }
 
     // Navigation properties
-
     public AttachmentFileRequest? AttachmentFile { get; set; }
     public OrderCriteriaRequest? OrderCriteria { get; set; }
     public PaymentRequest? Payment { get; set; }

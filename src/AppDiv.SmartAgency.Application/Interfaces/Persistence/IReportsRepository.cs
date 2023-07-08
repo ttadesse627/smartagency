@@ -12,6 +12,5 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
         Task<ServiceResponse<Int32>> CreateReport(string reportName, string tableName, List<string>? columns = null, List<Filter>? filters = null, List<Aggregate>? aggregates = null);
         Task<ServiceResponse<Int32>> CreateReportAsync(string reportName, string query);
         Task<JObject> GetReportData(string reportName, List<string>? columns = null, List<Filter>? filters = null, List<Aggregate>? aggregates = null);
-        Task<JObject> GetTestData();
     }
 }

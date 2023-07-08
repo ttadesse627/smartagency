@@ -71,7 +71,7 @@ public class Applicant : PersonalInfo
     public LookUp? BrokerName { get; set; }
     public LookUp? Branch { get; set; }
     public Order? Order { get; set; }
-    public ICollection<Complaint>? Complaints {get; set;}
+    public ICollection<Complaint>? Complaints { get; set; }
     public ICollection<Attachment>? Attachments { get; set; }
     public ICollection<Deposit>? Deposits { get; set; }
     public ICollection<ApplicantFollowupStatus>? ApplicantFollowupStatuses { get; set; }

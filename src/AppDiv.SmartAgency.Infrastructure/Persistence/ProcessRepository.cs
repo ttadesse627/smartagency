@@ -20,4 +20,11 @@ public class ProcessRepository : BaseRepository<Process>, IProcessRepository
         int maxStep = await _context.Processes.Where(predicate).MaxAsync(pr => pr.Step);
         return maxStep;
     }
+
+    public async Task<bool> GetMinStepProcessesAsync(Guid? processId)
+    {
+        return await _context.Processes.AnyAsync(pr => pr.Id == processId && pr.Step == _context.Processes.Min(pd => pd.Step));
+    }
+
+
 }

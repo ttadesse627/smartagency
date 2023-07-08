@@ -19,9 +19,10 @@ public class ApplicantProcessController : ControllerBase
         _mediator = mediator;
     }
     [HttpGet("get/{processId}")]
-    public async Task<ActionResult<List<GetProcessDefinitionResponseDTO>>> GetApplicantProcessses(Guid processId)
+    public async Task<ActionResult<ApplicantProcessResponseDTO>> GetApplicantProcessses(Guid processId)
     {
         var response = await _mediator.Send(new GetApplProcessQuery(processId));
+
         return Ok(response);
     }
     [HttpPost("submit-to-process")]

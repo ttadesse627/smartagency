@@ -1,13 +1,12 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Query;
-public record GetApplProcessQuery(Guid ProcessId) : IRequest<List<GetProcessDefinitionResponseDTO>> { }
-public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, List<GetProcessDefinitionResponseDTO>>
+public record GetApplProcessQuery(Guid ProcessId) : IRequest<ApplicantProcessResponseDTO> { }
+public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, ApplicantProcessResponseDTO>
 {
     private readonly IProcessRepository _processRepository;
     private readonly IProcessDefinitionRepository _definitionRepository;
@@ -21,81 +20,90 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, L
         _definitionRepository = definitionRepository;
         _applicantProcessRepository = applicantProcessRepository;
     }
-    public async Task<List<GetProcessDefinitionResponseDTO>> Handle(GetApplProcessQuery query, CancellationToken cancellationToken)
+    public async Task<ApplicantProcessResponseDTO> Handle(GetApplProcessQuery query, CancellationToken cancellationToken)
     {
-        var applicantLoadedProperties = new string[] { "Order", "Order.Sponsor" };
-        var pdLoadedProperties = new string[] { "ApplicantProcesses", "ApplicantProcesses.Applicant.Order" };
+        var applProLoadedProperties = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
+        var applLoadedProperties = new string[] { "Order", "Order.Sponsor" };
+        var response = new ApplicantProcessResponseDTO();
 
-        var response = new List<GetProcessDefinitionResponseDTO>();
+        var definitions = new List<GetProcessDefinitionResponseDTO>();
+        var processDefs = await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == query.ProcessId, "Process");
+        var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(query.ProcessId);
 
-        if (query.ProcessId != null)
+        if (isInitialProcess)
         {
-            var applicantProcessList = new List<ApplicantProcess>();
-            try
+
+            var processReadyApplicants = new List<GetApplProcessResponseDTO>();
+            var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || app.ApplicantProcesses.Any() == false);
+            if (readyApplicants != null && readyApplicants.Count > 0)
             {
-                var pros = await _processRepository.GetAllWithPredicateAsync(null, "ProcessDefinitions");
-                if (pros.Count > 0 || pros != null)
+                var nxtPdId = new Guid();
+                var nxtPd = processDefs.OrderBy(p => p.Step).FirstOrDefault();
+                if (nxtPd != null)
                 {
-                    var pro = pros.OrderBy(pr => pr.Step).ToList()[0];
-                    var appls = await _applicantRepository.GetAllWithPredicateAsync(appl => appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0);
-
-                    if (appls.Count > 0 && pro.ProcessDefinitions?.Count > 0)
-                    {
-                        var sortedPds = pro.ProcessDefinitions.OrderBy(pd => pd.Step).ToList();
-                        var firstPd = sortedPds[0];
-                        foreach (var appl in appls)
-                        {
-                            var applicantProcess = new ApplicantProcess
-                            {
-                                Applicant = appl,
-                                ProcessDefinition = firstPd,
-                                Date = appl.CreatedAt,
-                                Status = ProcessStatus.In
-                            };
-
-                            applicantProcessList.Add(applicantProcess);
-                        }
-                    }
+                    nxtPdId = nxtPd.Id;
                 }
 
-                await _applicantProcessRepository.InsertAsync(applicantProcessList, cancellationToken);
-                await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException(ex.Message);
-            }
-
-            // var processEntity = await _processRepository.GetWithPredicateAsync(pro => pro.Id == query.ProcessId, "ProcessDefinitions");
-
-            var onProcessApplicants = await _definitionRepository.GetAllWithPredicateAsync(
-                pd => pd.ProcessId == query.ProcessId, pdLoadedProperties);
-
-            foreach (var proDef in onProcessApplicants)
-            {
-                var applicantProcesses = await _applicantProcessRepository.GetAllWithPredicateAsync(ap => ap.ProcessDefinitionId == proDef.Id);
-                var pdApplicants = new List<GetApplProcessResponseDTO>();
-                foreach (var applicant in applicantProcesses)
+                foreach (var apl in readyApplicants)
                 {
-                    pdApplicants.Add(new GetApplProcessResponseDTO()
+                    processReadyApplicants.Add(new GetApplProcessResponseDTO()
                     {
-                        Id = applicant.Applicant.Id,
-                        PassportNumber = applicant.Applicant.PassportNumber,
-                        FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
-                        OrderNumber = applicant.Applicant.Order?.OrderNumber!,
-                        SponsorName = applicant.Applicant.Order?.Sponsor?.FullName!
+                        Id = apl.Id,
+                        PassportNumber = apl.PassportNumber,
+                        FullName = apl.FirstName + " " + apl.MiddleName + " " + apl.LastName,
+                        OrderNumber = apl.Order?.OrderNumber!,
+                        SponsorName = apl.Order?.Sponsor?.FullName!
                     });
                 }
-                response.Add(new GetProcessDefinitionResponseDTO()
+
+                definitions.Add(new GetProcessDefinitionResponseDTO
                 {
-                    Id = proDef.Id,
-                    Name = proDef.Name,
-                    Step = proDef.Step,
-                    ApplicantProcesses = pdApplicants
+                    Name = "ProcessReadyApplicants",
+                    NextPdId = nxtPdId,
+                    ApplicantProcesses = processReadyApplicants
                 });
             }
         }
+
+        var lastPds = processDefs.Where(p => p.Step == processDefs.Max(p => p.Step)).ToList();
+
+        foreach (var pd in processDefs)
+        {
+            var nextpdId = new Guid();
+            if (lastPds.Contains(pd))
+            {
+                var nextPrStep = pd.Process!.Step + 1;
+                var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
+                nextpdId = await _definitionRepository.GetMinStepAsync(nextPr.Id);
+            }
+            else
+            {
+                nextpdId = processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id).FirstOrDefault();
+            }
+            var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
+            var pdApplicants = new List<GetApplProcessResponseDTO>();
+            foreach (var applicant1 in proApps)
+            {
+                pdApplicants.Add(new GetApplProcessResponseDTO()
+                {
+                    Id = applicant1.Applicant!.Id,
+                    PassportNumber = applicant1.Applicant.PassportNumber,
+                    FullName = applicant1.Applicant.FirstName + " " + applicant1.Applicant.MiddleName + " " + applicant1.Applicant.LastName,
+                    OrderNumber = applicant1.Applicant.Order?.OrderNumber!,
+                    SponsorName = applicant1.Applicant.Order?.Sponsor?.FullName!
+                });
+            }
+            definitions.Add(new GetProcessDefinitionResponseDTO()
+            {
+                Id = pd.Id,
+                Name = pd.Name,
+                Step = pd.Step,
+                NextPdId = nextpdId,
+                ApplicantProcesses = pdApplicants
+            });
+        }
+        response.ProcessDefinitions = definitions;
+
         return response;
     }
 }

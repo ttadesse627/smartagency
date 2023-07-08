@@ -141,7 +141,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     switch (aggregateMethod)
                     {
                         case SqlAggregate.GroupBy:
-                            groupBySql += $"GROUP BY Id, {propertyName}, ";
+                            groupBySql += $"GROUP BY {propertyName}, ";
                             break;
                         case SqlAggregate.OrderBy:
                             groupBySql += $"ORDER BY {propertyName} ASC, ";
@@ -167,13 +167,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     groupBySql = groupBySql.Remove(groupBySql.Length - 2);
                 }
             }
-            var sql = $"SELECT {selectColumn} {aggregateSql} FROM `{reportName}` {filterSql} {groupBySql}";
+
 
             var connection = _context.Database.GetDbConnection();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
-            command.CommandText = sql;
-            command.CommandType = CommandType.Text;
+            if (!string.IsNullOrEmpty(reportName))
+            {
+                var sql = $"SELECT {selectColumn} {aggregateSql} FROM `{reportName}` {filterSql} {groupBySql}";
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
+            }
 
             using var reader = await command.ExecuteReaderAsync();
 
@@ -210,8 +214,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     properties.Add(prop);
                 }
             }
-
-            Console.WriteLine(resultList);
             reportData["reportData"] = reportItems;
             reportData["reportProperties"] = properties;
             return reportData;
@@ -390,60 +392,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             connection.Close();
             reportObjects["items"] = objectNames;
-
-            return reportObjects;
-        }
-
-        public async Task<JObject> GetTestData()
-        {
-
-            var reportObjects = new JObject();
-
-            var sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'smartagency'";
-
-            var connectionString = _context.Database.GetDbConnection().ConnectionString + ";Pooling=false;Allow User Variables=true";
-            using var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
-
-            using var command = connection.CreateCommand();
-            command.CommandText = sql;
-            command.CommandType = CommandType.Text;
-
-            using var viewReader = await command.ExecuteReaderAsync();
-            var objectNames = new JArray();
-            while (await viewReader.ReadAsync())
-            {
-                var reportObject = new JObject();
-                string viewName = viewReader.GetString(0);
-
-                reportObject["objectName"] = viewName;
-                objectNames.Add(reportObject);
-            }
-            viewReader.Close();
-
-            foreach (var objectName in objectNames)
-            {
-                // Execute the first SQL statement to retrieve the view columns
-                var columnsSql = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectName["objectName"]}'";
-                using var colCommand = connection.CreateCommand();
-                colCommand.CommandText = columnsSql;
-                colCommand.CommandType = CommandType.Text;
-
-                using var colReader = await colCommand.ExecuteReaderAsync();
-
-                var columns = new JArray();
-                while (await colReader.ReadAsync())
-                {
-                    var column = new JObject();
-                    string columnName = colReader.GetString(0);
-                    column["propertyName"] = columnName;
-                    columns.Add(column);
-                }
-                objectName["objectProperties"] = columns;
-                colReader.Close();
-            }
-
-            reportObjects["reportObjects"] = objectNames;
 
             return reportObjects;
         }

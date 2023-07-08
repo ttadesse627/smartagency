@@ -5,7 +5,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Enums;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
@@ -34,6 +34,10 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         {
             maxStep = processes.Where(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86")).Max(pr => pr.Step);
         }
+        if (request.Step > maxStep + 1)
+        {
+            throw new BadRequestException("The process steps should be increased by one.");
+        }
         if (maxStep < request.Step)
         {
             maxStep = request.Step;
@@ -42,7 +46,6 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         ticketProcess.Step = maxStep + 1;
         try
         {
-            Console.WriteLine(ticketProcess.Step);
             await _processRepository.InsertAsync(process, cancellationToken);
             await _processRepository.SaveChangesAsync(cancellationToken);
         }

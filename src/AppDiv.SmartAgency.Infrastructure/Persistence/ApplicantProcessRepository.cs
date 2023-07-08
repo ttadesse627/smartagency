@@ -1,12 +1,8 @@
 
-using System;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
-using AppDiv.SmartAgency.Application.Features.QuickLinks.Query;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Infrastructure.Context;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -15,11 +11,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     public class ApplicantProcessRepository : BaseRepository<ApplicantProcess>, IApplicantProcessRepository
     {
         private readonly SmartAgencyDbContext _context;
-  
+
         public ApplicantProcessRepository(SmartAgencyDbContext dbContext) : base(dbContext)
         {
             _context = dbContext;
-           
+
         }
 
         public async Task<object> GetDashbourdResult(DateTime? startDate, DateTime? endDate)
@@ -30,15 +26,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var groupedApplicantProcesses = await _context.ApplicantProcesses
                                    .Include(ap => ap.ProcessDefinition)
-                                   .Where(ap=> (ap.Status==ProcessStatus.In) && (ap.Date>=startDate && ap.Date <= endDate))
-                                   .GroupBy(ap=> ap.ProcessDefinitionId)
-                                   .Select(g => new {
-                                             Count= g.Count(),
-                                             Name= g.FirstOrDefault().ProcessDefinition.Name
+                                   .Where(ap => (ap.Status == ProcessStatus.In) && (ap.Date >= startDate && ap.Date <= endDate))
+                                   .GroupBy(ap => ap.ProcessDefinitionId)
+                                   .Select(g => new
+                                   {
+                                       Count = g.Count(),
+                                       Name = g.FirstOrDefault().ProcessDefinition.Name
                                    }).ToListAsync();
-                                 
 
-          
+
+
 
             if (groupedApplicantProcesses != null)
             {
@@ -174,62 +171,48 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
 
-                //  var penalities = _context.Applicants
-                // .Where(app => app.OrderId != null && app.TraveledApplicant == null )
-                // .Join(_context.Orders.Where(o => o.IsDeleted==false), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
-                // .AsEnumerable()
-                // .Where(ao => ao.Order.CreatedAt.Add(penaltyInterval) <= DateTime.Now).Count();
+            var penalities = await _context.Applicants
+               .CountAsync(app => (app.IsDeleted == false) && (app.TraveledApplicant == null) && (app.OrderId != null) && (app.Order.IsDeleted == false) && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now) < 0));
 
 
+            if (penalities > 0)
+            {
+                var penality = new JObject();
+
+                penality["Name"] = "Penality";
+                penality["Count"] = penalities;
+                penality["Path"] = "api/quick-links/get-penality";
+
+                response.Add(penality);
+
+            }
 
 
-             var penalities = await _context.Applicants
-                .CountAsync(app => (app.IsDeleted==false) && (app.TraveledApplicant==null) && (app.OrderId != null) && (app.Order.IsDeleted==false)  && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now)<0));
+            //dynamic processes
 
 
-                if(penalities>0)
+            var expiredProcesses = await _context.ApplicantProcesses
+                          .Include(ap => ap.ProcessDefinition)
+                          .Where(ap => ap.Status == ProcessStatus.In)
+                          .Where(ap => DateTime.UtcNow > ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval))
+                          .GroupBy(ap => ap.ProcessDefinitionId)
+                          .Select(g => new JObject(
+                                          //new JProperty("Id", g.Key),
+                                          new JProperty("Name", g.FirstOrDefault().ProcessDefinition.Name),
+                                          new JProperty("Count", g.Count()),
+                                          new JProperty("Path", "api/quick-links/get-dynamic-process/" + g.Key)
+                                      )).ToListAsync();
+
+            if (expiredProcesses != null)
+            {
+                foreach (var ePro in expiredProcesses)
                 {
-                    var penality = new JObject();
-                                
-                                 penality["Name"] = "Penality";
-                                 penality["Count"] = penalities;
-                                 penality["Path"] = "api/quick-links/get-penality";
-                             
-                            response.Add(penality);
-                   
-                } 
+                    response.Add(ePro);
+                }
+            }
 
+            return response;
+        }
 
-          //dynamic processes
-
-            
-          var expiredProcesses = await _context.ApplicantProcesses
-                        .Include(ap => ap.ProcessDefinition) 
-                        .Where(ap => ap.Status == ProcessStatus.In)
-                        .Where(ap => DateTime.UtcNow > ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval)) 
-                        .GroupBy(ap => ap.ProcessDefinitionId)                       
-                        .Select(g => new JObject(
-                                        //new JProperty("Id", g.Key),
-                                        new JProperty("Name", g.FirstOrDefault().ProcessDefinition.Name),
-                                        new JProperty("Count", g.Count()),
-                                        new JProperty("Path", "api/quick-links/get-dynamic-process/"+g.Key)
-                                    )).ToListAsync();
-                        
-                 if (expiredProcesses!=null)
-                 {
-                    foreach(var ePro in expiredProcesses)
-                    {
-                        response.Add(ePro);
-                    }
-                 }
-
-
-
-
-
-                        return response;
-                    }
-
-      
     }
 }
