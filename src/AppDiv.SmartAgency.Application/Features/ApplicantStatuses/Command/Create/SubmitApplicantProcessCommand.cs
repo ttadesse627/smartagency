@@ -34,6 +34,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         var currentPd = new ProcessDefinition();
         var processDefs = new List<ProcessDefinition>();
         var currentStatus = new ApplicantProcess();
+
         var inValidId = (currentPdId == Guid.Parse("00000000-0000-0000-0000-000000000000") || currentPdId == null);
         if (!inValidId)
         {
@@ -49,9 +50,18 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         var applProLoadedProperties = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
         var applLoadedProperties = new string[] { "Order", "Order.Sponsor" };
 
-
+        var currentPId = new Guid();
         var definitions = new List<GetProcessDefinitionResponseDTO>();
-        processDefs.AddRange(await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == currentPd.ProcessId, "Process"));
+
+        if (!inValidId)
+        {
+            currentPId = (Guid)currentPd.ProcessId;
+        }
+        else
+        {
+            currentPId = (Guid)nextPd.ProcessId;
+        }
+        processDefs.AddRange(await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == currentPId, "Process"));
 
         // Set the applicant's status to 'In' for the first process definition of the next process
 
@@ -79,8 +89,6 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         {
             throw new System.ApplicationException(ex.Message);
         }
-
-
 
         // Return all the applicants in each process definitions within that Process
         var isInitialProcess = false;

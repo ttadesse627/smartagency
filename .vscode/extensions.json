@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "mtxr.sqltools"
+        "mtxr.sqltools",
+        "vadimcn.vscode-lldb"
     ]
 }

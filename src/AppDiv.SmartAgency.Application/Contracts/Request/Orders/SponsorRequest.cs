@@ -12,5 +12,5 @@ public record SponsorRequest
     public string? ResidentialTitle { get; set; }
     public int NumberOfFamily { get; set; }
     public AttachmentFileRequest? AttachmentFile { get; set; }
-    public AddressRequest? Address { get; set; }
+    public SponsorAddressRequest? Address { get; set; }
 }

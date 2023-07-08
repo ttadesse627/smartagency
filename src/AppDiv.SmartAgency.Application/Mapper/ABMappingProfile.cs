@@ -156,6 +156,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             .ForMember(dest => dest.Payment, opt => opt.Ignore());
             CreateMap<OrderCriteriaRequest, OrderCriteria>();
             CreateMap<SponsorRequest, Sponsor>();
+            CreateMap<SponsorAddressRequest, Address>();
 
             // Map Group of orders
             CreateMap<Order, GetOrdersResponseDTO>();
@@ -184,7 +185,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<EditPaymentRequest, Payment>();
             CreateMap<EditAddressRequest, Address>();
 
-
             CreateMap<Address, AddressResponseDTO>();
             CreateMap<CreatePartnerRequest, Partner>();
             CreateMap<Address, AddressResponseDTO>();
@@ -197,7 +197,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<PartnerAddressRequest, Address>();
             CreateMap<EditPartnerAddressRequest, Address>();
             CreateMap<SearchModel<Partner>, SearchModel<GetAllPartnerResponseDTO>>();
-
 
             CreateMap<OnlineApplicant, OnlineApplicantResponseDTO>();
             CreateMap<OnlineApplicantRequest, OnlineApplicant>();

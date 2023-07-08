@@ -37,7 +37,4 @@ public class Address : BaseAuditableEntity
     public CompanyInformation? CompanyInformation { get; set; }
     public ApplicationUser? ApplicationUser { get; set; }
 
-
-
-
 }
