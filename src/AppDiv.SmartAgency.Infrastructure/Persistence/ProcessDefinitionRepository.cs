@@ -38,15 +38,16 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
     public async Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses(Guid id)
     {
 
+
               var expiredProcesses = await _context.ApplicantProcesses
                .Include(ap => ap.ProcessDefinition) 
-                .Where( ap => (ap.ProcessDefinitionId==id) && (ap.Status==ProcessStatus.In) &&( DateTime.UtcNow > ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval))) 
+                .Where( ap => (ap.ProcessDefinitionId==id) && (ap.Status==ProcessStatus.In) &&( DateTime.Compare( ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval), DateTime.Now)<0) )
                 .Select(g => new DynamicProcessResponseDTO
                         {
-                           ProcessDefnitionName= g.ProcessDefinition.Name,
-                           ApplicantName= g.Applicant.FirstName + " " + g.Applicant.MiddleName + " " + g.Applicant.LastName,
-                           PassportNumber= g.Applicant.PassportNumber,
-                           DatePassed=   (int)(DateTime.UtcNow - g.Date.AddDays(g.ProcessDefinition.ExpiryInterval)).TotalDays,  
+                             ProcessDefnitionName= g.ProcessDefinition.Name,
+                             ApplicantName= g.Applicant.AmharicFullName,
+                             PassportNumber= g.Applicant.PassportNumber,
+                             DatePassed=   (int)DateTime.UtcNow.Subtract(g.Date.AddDays(g.ProcessDefinition.ExpiryInterval)).TotalDays
                         })
                         .ToListAsync();
 

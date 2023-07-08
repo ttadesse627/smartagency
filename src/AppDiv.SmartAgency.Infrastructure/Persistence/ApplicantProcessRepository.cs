@@ -54,6 +54,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                    var numberOfAssignedVisas= await _context.Applicants
                                            .CountAsync(app => (app.OrderId!=null) && (app.Order.CreatedAt>= startDate && app.Order.CreatedAt< endDate));
 
+                                       
                       
 
             if (numberOfAssignedVisas > 0)
@@ -64,15 +65,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     Name = "Assigned Visa"
                 };
 
-                            if (groupedApplicantProcesses != null)
-                            {
-                                groupedApplicantProcesses.Add(assignedVisa!);
-                            }
-                            else
-                            {
+                            // if (groupedApplicantProcesses != null)
+                            // {
+                            //     groupedApplicantProcesses.Add(assignedVisa!);
+                            //     //response.Add(groupedApplicantProcesses);
+                            // }
+                            // else
+                            // {
                             
                                 response.Add(assignedVisa);
-                            }
+                            // }
 
 
             }
@@ -132,7 +134,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                                 response.Add(notProcessedApplicant);
                             }
                         var notAssignedVisas =  await _context.Orders
-                                                 .CountAsync( or=> or.Employees== null);
+                                                 .CountAsync( or=> or.Employees== null || or.Employees.Count==0);
                         if (notAssignedVisas>0)
                         {
                             var notAssignedVisa = new JObject();
