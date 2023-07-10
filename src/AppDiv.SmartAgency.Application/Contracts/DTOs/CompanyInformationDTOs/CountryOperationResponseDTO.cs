@@ -10,10 +10,10 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
     public class CountryOperationResponseDTO
     {
 
-        public Guid? Id {get; set;}
-        public int? AmountPerPerson {get; set;}
-       // public Guid CompanyInformationId {get; set;}
-        public LookUpItemResponseDTO LookUpCountryOperation {get; set;}
+        //public Guid? Id {get; set;}
+        public LookUpItemResponseDTO? Country{get; set;}
+       public string? LicenseNumber {get; set;}
+        public int VisaExpiryDays {get; set;}
 
     }
 }

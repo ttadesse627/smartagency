@@ -9,12 +9,14 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusR
 {
     public class GetApplicantFollowupStatusByIdResponseDTO 
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string PassportNumber { get; set; }
-        public DateTime Month { get; set; }
+        public DateTime? Month { get; set; }
         public string Remark { get; set; }
-        public OnlineApplicantLookUpResponseDTO FollowupStatus {get; set;} 
-        public Guid ApplicantId {get; set;}
+       public OnlineApplicantLookUpResponseDTO FollowupStatus {get; set;} 
+
+       //public string? FollowupStatus {get; set;}
+      //  public Guid ApplicantId {get; set;}
         
 
     }

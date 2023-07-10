@@ -14,9 +14,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
 {
     private readonly SmartAgencyDbContext _context;
-    public ApplicantRepository(SmartAgencyDbContext dbContext) : base(dbContext)
+    private readonly IFileService _fileService;
+    public ApplicantRepository(SmartAgencyDbContext dbContext, IFileService fileService) : base(dbContext)
     {
         _context = dbContext;
+        _fileService = fileService;
     }
     public override async Task InsertAsync(Applicant applicant, CancellationToken cancellationToken)
     {
@@ -223,7 +225,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         {
             Id = app.Id,
             Nationality = app.CurrentNationality,
-            DateOfBirth = app.BirthDate.ToString("yyyy-mm-dd"),
+            DateOfBirth = app.BirthDate.ToString("yyyy-MM-dd"),
             PlaceOfBirth = app.PlaceOfBirth,
             MaritalStatus = app.MaritalStatus.Value,
             NumberOfChildren = app.NumberOfChildren,
@@ -241,8 +243,8 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         PassportInfo = new PassportInfoResponseDTO
         {
             PassportNumber = app.PassportNumber,
-            IssuedDate = app.IssuedDate.ToString("yy-mm-dd"),
-            ExpiryDate = app.PassportExpiryDate.ToString("yy-mm-dd"),
+            IssuedDate = app.IssuedDate.ToString("yy-MM-dd"),
+            ExpiryDate = app.PassportExpiryDate.ToString("yy-MM-dd"),
             PassportIssuedPlace = app.PassportIssuedPlace.Value,
             NextOfKinName = app.EmergencyContact.NameOfContactPerson,
             NextOfKinNumber = app.EmergencyContact.Address.PhoneNumber
@@ -254,7 +256,12 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             Proficiency = l.Proficiency.ToString()
         }
         ).ToList(),
-        AttachmentNames = app.Attachments.Select(att => att.Title).ToList()
+        // Attachments= new AttachmentsResponseDTO
+        //  {
+        //     Photo= Convert.ToBase64String(_fileService.getFile(id.ToString(), "Photo",null).Item1),
+        //     FullSizePhoto= Convert.ToBase64String(_fileService.getFile(id.ToString(), "Full Size", null).Item1)
+        //  },
+        AttachmentNames = app.Attachments.Where(att=>att.ShowOnCv==true).Select(att => att.Title).ToList()
     }).FirstOrDefaultAsync();
         return response;
 

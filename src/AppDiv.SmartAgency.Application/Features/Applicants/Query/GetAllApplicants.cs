@@ -38,6 +38,7 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
         var applicantList = await _applicantRepository.GetAllWithSearchAsync(
             request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
             null, expLoadedProps);
+
         var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
         var itemsArray = response.Items.ToArray();
         var entitiesArray = applicantList.Items.ToArray();
@@ -50,6 +51,8 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
                     itemsArray[i].MaritalStatus = entitiesArray[j].MaritalStatus.Value;
                     itemsArray[i].Religion = entitiesArray[j].Religion.Value;
                     itemsArray[i].BrokerName = entitiesArray[j].BrokerName.Value;
+                    itemsArray[i].CreatedAt= entitiesArray[j].CreatedAt.ToString("yyyy-MM-dd");
+                    itemsArray[i].Gender= entitiesArray[j].Gender.ToString();
                 }
                 if (i < j) break;
             }

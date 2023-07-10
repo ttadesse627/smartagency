@@ -43,6 +43,17 @@ public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicant
             }
         }
         var applicantResponse = CustomMapper.Mapper.Map<GetApplicantResponseDTO>(applicantEntity);
+
+            if (DateTime.TryParse(applicantResponse.BirthDate, out DateTime birthDate))
+                        {
+                            applicantResponse.BirthDate = birthDate.ToString("yyyy-MM-dd");
+                        }
+                applicantResponse.Gender= applicantResponse.Gender.ToString();
+
+
+
+
+
         var fileResults = _fileService.GetFiles(fileTypes, applicantEntity.Id.ToString());
         var attchFiles = new List<AttachmentFileResponseDTO>();
         if (fileResults.Count > 0)

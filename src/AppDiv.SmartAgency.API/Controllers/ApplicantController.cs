@@ -130,6 +130,10 @@ public class ApplicantController : ControllerBase
         return Ok(await _mediator.Send(new GetApplicantCvDetailQuery(id)));
     }
 
-
+   [HttpGet("get-unassigned-orders-dropdown")]
+   public async Task<ActionResult<Object>> GetUnAssignedOrdersDropdown()
+   {
+    return Ok( await _mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
+   }
 
 }

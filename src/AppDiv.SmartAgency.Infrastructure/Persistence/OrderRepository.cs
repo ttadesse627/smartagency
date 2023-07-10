@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class OrderRepository : BaseRepository<Order>, IOrderRepository
@@ -206,21 +207,30 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
                           }).ToListAsync();
                           
-        //   var response = await _context.Complaints
-        //                 .Where(c => c.IsClosed==false && c.OrderId !=null)
-        //                 .Select(c => new ComplaintResponseDTO
-        //                 {
-        //                     OrderId= c.OrderId,
-        //                     Sponsor = c.Order.Sponsor.FullName,
-        //                     Employee = c.Order.Employees
-        //                         .FirstOrDefault(e => e.OrderId == c.OrderId).AmharicFullName,
-        //                     Days = (int)(DateTimeOffset.Now - new DateTimeOffset(c.CreatedAt)).TotalDays,
-        //                     Path=""
-        //                 })
-        //                 .ToListAsync();
 
      return response;
 
    }
 
+        public  async Task<List<GetUnAssignedOrdersDropdownResponseDTO>> GetUnAssignedOrdersDropDown(){
+
+           var response= await _context.Orders
+                            .Where(or=> or.Employees==null || or.Employees.Count()==0)
+                            .Select(or=> new GetUnAssignedOrdersDropdownResponseDTO{
+                                OrderId= or.Id,
+                                OrderNumber= or.OrderNumber,
+                                SponsorName= or.Sponsor.FullName,
+                                VisaNumber= or.VisaNumber,
+                                JobTitle= or.OrderCriteria.JobTitle.Value
+                            }).ToListAsync();    
+        
+            return response;    
+        }
+
+  
+
+    // public Task<List<GetUnAssignedOrdersDropdownResponseDTO>> GetUnAssignedOrdersDropDown()
+    // {
+    //     throw new NotImplementedException();
+    // }
 }
