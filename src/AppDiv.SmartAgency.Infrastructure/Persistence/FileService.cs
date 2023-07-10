@@ -202,7 +202,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 foreach (var folderName in folderNames)
                 {
-                    var filerslt = getFile(folderName, fileName);
+                    var filerslt = getFile(fileName, folderName);
                     var fileResult = new FileResult
                     {
                         File = filerslt.file,

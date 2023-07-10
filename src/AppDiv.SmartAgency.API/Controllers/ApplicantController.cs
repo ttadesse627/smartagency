@@ -2,6 +2,7 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
@@ -14,6 +15,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 
@@ -117,4 +119,17 @@ public class ApplicantController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetUnassignedApplicantsQuery()));
     }
+
+
+    //get applicant detail for cv
+
+    [HttpGet("get-cv-detail/{id}")]
+
+    public async Task<ActionResult<ApplicantCvResponseDTO>> GetApplicantCvDetail(Guid id)
+    {
+        return Ok(await _mediator.Send(new GetApplicantCvDetailQuery(id)));
+    }
+
+
+
 }

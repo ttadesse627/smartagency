@@ -23,7 +23,7 @@ namespace AppDiv.SmartAgency.Application.Features.QuickLinks.Query
 
         public async Task<List<VisaExpiryResponseDTO>> Handle(GetExpiredVisaQuery request, CancellationToken cancellationToken)
         {
-                 var orders= await _orderRepository.GetAllWithPredicateAsync(order => order.IsDeleted == false, "Sponsor.Address.Country");
+                 //var orders= await _orderRepository.GetAllWithPredicateAsync(order => order.IsDeleted == false, "Sponsor.Address.Country");
                  
 
             return await _orderRepository.GetExpiredVisa();

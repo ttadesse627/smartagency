@@ -116,7 +116,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     public async Task<List<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
     {
           var response= await _context.Orders
-                             .Where( or=> or.Employees== null)
+                             .Where( or=> or.Employees==null || or.Employees.Count()==0 )
                              .Select( or=> new NotAssignedVisaResponseDTO{
                                      AgencyName = or.Partner.PartnerName,
                                      OrderNumber = or.OrderNumber,

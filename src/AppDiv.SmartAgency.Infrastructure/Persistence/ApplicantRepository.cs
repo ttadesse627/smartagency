@@ -7,6 +7,8 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
+using Newtonsoft.Json.Linq;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
@@ -184,9 +186,84 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         };
     }
 
+
+    public async Task<ApplicantCvResponseDTO> GetApplicantCvDetail(Guid id)
+    { 
+        var overseasExperiences = new List<OverseasExperienceResponseDTO>();
+        var skills = new List<string>();
+        var languages = new List<LanguagesResponseDTO>();
+        var response = await _context.Applicants
+    .Where(app => app.Id == id)
+    .Include("Salary")
+    .Include("Religion")
+    .Include("Jobtitle")
+    .Include("MaritalStatus")
+    .Include("Skills.LookUp")
+    .Include("Education.LevelOfQualifications.LookUp")
+    .Include("Address")
+    .Include("EmergencyContact")
+    .Include("EmergencyContact.Address")
+    .Include("Experiences.Country")
+    .Include("PassportIssuedPlace")
+    .Include("Attachments")
+    .Include("LanguageSkills.Language")
+    .Select(app => new ApplicantCvResponseDTO
+    {
+        Overview = new OverviewResponseDTO
+        {
+            RefNumber = "001",
+            FullName = $"{app.FirstName} {app.MiddleName} {app.LastName}",
+            Religion = app.Religion.Value,
+            DesiredPosition = app.Jobtitle.Value,
+            Salary = app.Salary.Value,
+            Age = DateTime.Now.Year - app.BirthDate.Year,
+            Sex = app.Gender.ToString()
+        },
+        PersonalInfo = new PersonalInfoResponseDTO
+        {
+            Id = app.Id,
+            Nationality = app.CurrentNationality,
+            DateOfBirth = app.BirthDate.ToString("yyyy-mm-dd"),
+            PlaceOfBirth = app.PlaceOfBirth,
+            MaritalStatus = app.MaritalStatus.Value,
+            NumberOfChildren = app.NumberOfChildren,
+            Height = app.Height,
+            Weight = app.Weight,
+            EducationQualification = app.Education.LevelOfQualifications.FirstOrDefault().LookUp.Value,
+            PhoneNumber = app.Address.PhoneNumber,
+        },
+        OverseasExperiences = app.Experiences.Select(e => new OverseasExperienceResponseDTO
+        {
+            Country = e.Country.Value,
+            Period = e.PeriodLength,
+            Position = e.Position
+        }).ToList(),
+        PassportInfo = new PassportInfoResponseDTO
+        {
+            PassportNumber = app.PassportNumber,
+            IssuedDate = app.IssuedDate.ToString("yy-mm-dd"),
+            ExpiryDate = app.PassportExpiryDate.ToString("yy-mm-dd"),
+            PassportIssuedPlace = app.PassportIssuedPlace.Value,
+            NextOfKinName = app.EmergencyContact.NameOfContactPerson,
+            NextOfKinNumber = app.EmergencyContact.Address.PhoneNumber
+        },
+        Skills = app.Skills.Select(s => s.LookUp.Value).ToList(),
+        Languages = app.LanguageSkills.Select(l => new LanguagesResponseDTO
+        {
+            LanguageName = l.Language.Value,
+            Proficiency = l.Proficiency.ToString()
+        }
+        ).ToList(),
+        AttachmentNames = app.Attachments.Select(att => att.Title).ToList()
+    }).FirstOrDefaultAsync();
+        return response;
+
+
+    }
+
     public async Task<List<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicants()
     {
-       //var notProcessedApplicant= new List<NotProcessedApplicantResponseDTO>();
+     
 
         var response= await _context.Applicants
                        .Where(ap=> ap.ApplicantProcesses==null || ap.ApplicantProcesses.Count()==0)
@@ -226,4 +303,5 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
 
    }
 
+   
 }
