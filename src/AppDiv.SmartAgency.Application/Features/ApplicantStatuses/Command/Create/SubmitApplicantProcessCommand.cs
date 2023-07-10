@@ -26,7 +26,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
     public async Task<ApplicantProcessResponseDTO> Handle(SubmitApplicantProcessCommand command, CancellationToken cancellationToken)
     {
         var request = command.Request;
-        var response = new ApplicantProcessResponseDTO();
+        // var response = new ApplicantProcessResponseDTO();
 
         var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcesses", "Order.Sponsor");
         var currentPdId = request.PdId;
@@ -36,12 +36,12 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         var newAppStatuses = new List<ApplicantProcess>();
 
         var currentStatus = new ApplicantProcess();
-        var nextpdIds = new List<Guid>();
+        // var nextpdIds = new List<Guid>();
 
         var inValidId = currentPdId == Guid.Parse("00000000-0000-0000-0000-000000000000");
         if (!inValidId)
         {
-            currentPd = await _definitionRepository.GetWithPredicateAsync(def => def.Id == request.PdId, "Process");
+            currentPd = await _definitionRepository.GetWithPredicateAsync(def => def.Id == currentPdId, "Process");
             currentStatus = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ProcessDefinitionId == request.PdId && appPr.ApplicantId == request.ApplicantId && appPr.Status == ProcessStatus.In);
         }
 
@@ -50,24 +50,20 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             nextPds.AddRange(await _definitionRepository.GetAllWithPredicateAsync(pd => request.NextPdIds.Contains(pd.Id), "Process"));
         }
 
-        var applProLoadedProperties = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
-        var applLoadedProperties = new string[] { "Order", "Order.Sponsor" };
-
         var currentPId = new Guid();
-        var definitions = new List<GetProcessDefinitionResponseDTO>();
 
         if (!inValidId)
         {
             currentPId = (Guid)currentPd.ProcessId;
         }
 
-        // else
-        // {
-        //     foreach (var nextPd in nextPds)
-        //     {
-        //         currentPId = (Guid)nextPd.ProcessId;
-        //     }
-        // }
+        else
+        {
+            if (nextPds.Any())
+            {
+                currentPId = (Guid)nextPds.First().ProcessId;
+            };
+        }
 
         processDefs.AddRange(await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == currentPId, "Process"));
 
@@ -104,20 +100,24 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         }
 
         // Return all the applicants in each process definitions within that Process
+        var applProLoadedProperties = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
+        var applLoadedProperties = new string[] { "Order", "Order.Sponsor" };
+        var response = new ApplicantProcessResponseDTO();
+
+        var definitions = new List<GetProcessDefinitionResponseDTO>();
+
         var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(currentPId);
 
         if (isInitialProcess)
         {
+
             var processReadyApplicants = new List<GetApplProcessResponseDTO>();
             var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || app.ApplicantProcesses.Any() == false);
-            if (readyApplicants != null && readyApplicants.Count > 0)
+            if (readyApplicants != null && readyApplicants.Count > 0 && processDefs != null && processDefs.Count > 0)
             {
-                var nxtPdId = new Guid();
-                var nxtPd = processDefs.OrderBy(p => p.Step).FirstOrDefault();
-                if (nxtPd != null)
-                {
-                    nxtPdId = nxtPd.Id;
-                }
+                var nextpdIds = new List<Guid>();
+                var nxtPdStep = processDefs.OrderBy(p => p.Step).First().Step;
+                nextpdIds.AddRange(processDefs.Where(p => p.Step == nxtPdStep).Select(p => p.Id));
 
                 foreach (var apl in readyApplicants)
                 {
@@ -130,6 +130,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                         SponsorName = apl.Order?.Sponsor?.FullName!
                     });
                 }
+
                 definitions.Add(new GetProcessDefinitionResponseDTO
                 {
                     Name = "ProcessReadyApplicants",
@@ -139,20 +140,24 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             }
         }
 
+
         var lastPds = processDefs.Where(p => p.Step == processDefs.Max(p => p.Step)).ToList();
 
         foreach (var pd in processDefs)
         {
-            var nxtpdId = new Guid();
+            var nextpdIds = new List<Guid>();
             if (lastPds.Contains(pd))
             {
                 var nextPrStep = pd.Process!.Step + 1;
-                var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
-                nxtpdId = await _definitionRepository.GetMinStepAsync(nextPr.Id);
+                var nextPrs = await _processRepository.GetAllWithPredicateAsync(p => p.Step == nextPrStep);
+                foreach (var nextPr in nextPrs)
+                {
+                    nextpdIds.Add(await _definitionRepository.GetMinStepAsync(nextPr.Id));
+                }
             }
             else
             {
-                nxtpdId = processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id).FirstOrDefault();
+                nextpdIds.AddRange(processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id));
             }
             var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();
@@ -176,6 +181,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                 ApplicantProcesses = pdApplicants
             });
         }
+
         response.ProcessDefinitions = definitions;
 
         return response;

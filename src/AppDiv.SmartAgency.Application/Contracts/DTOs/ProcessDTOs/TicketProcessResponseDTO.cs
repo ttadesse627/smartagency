@@ -1,7 +1,7 @@
 
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
-public class TicketProcessResponseDTO
+public record TicketProcessResponseDTO
 {
     public ICollection<GetTicketReadyApplicantsResponseDTO> TicketReadyApplicants { get; set; }
     public ICollection<GetTicketRegistrationApplicantsResponseDTO> TicketRegistrationApplicants { get; set; }

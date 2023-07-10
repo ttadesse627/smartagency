@@ -1,10 +1,10 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
-using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Processes.Query;
+using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 [ApiController]
