@@ -1,7 +1,6 @@
-using AppDiv.SmartAgency.Application.Common;
+
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
@@ -9,7 +8,7 @@ using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
-public record SubmitTicketRebookCommand(SubmitTicketRebookRequest request) : IRequest<TicketProcessResponseDTO> { }
+public record SubmitTicketRebookCommand(SubmitTicketRebookRequest Request) : IRequest<TicketProcessResponseDTO> { }
 public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebookCommand, TicketProcessResponseDTO>
 {
     private readonly IProcessDefinitionRepository _proDefRepository;
@@ -30,31 +29,29 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
     }
     public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRebookCommand command, CancellationToken cancellationToken)
     {
-        var request = command.request;
-        var response = new TicketProcessResponseDTO();
+        var request = command.Request;
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
-        var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
-        // var airLine = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.AirLineId);
+        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf");
+        var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId);
 
 
         // Update the applicant status on the ApplicantProcess table
         applPro.Status = ProcessStatus.Out;
 
-        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "ApplicantProcesses", "ApplicantProcesses.Applicant");
+        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf");
         var appProList = new List<ApplicantProcess>();
         var applTickRebookProcess = new ApplicantProcess
         {
-            Applicant = applicant,
+            Applicant = applicant1,
             ProcessDefinition = tktRebook,
-            Date = (DateTime)request.Date,
+            Date = request.Date,
             Status = ProcessStatus.In
         };
 
         var tickRebook = new TicketRebook
         {
             DateInterval = request.DateInterval,
-            Applicant = applicant
+            Applicant = applicant1
         };
 
         try
@@ -69,24 +66,22 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
             throw new System.ApplicationException(ex.Message);
         }
 
-        var pDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
-        var processDefinitions = pDefs.OrderBy(pd => pd.Step).ToList();
-
         var pdLoadedProperties = new string[] {
                 "ApplicantProcesses", "ApplicantProcesses.Applicant.Order",
                 "ApplicantProcesses.Applicant.Order.Sponsor", "ApplicantProcesses.Applicant.DesiredCountry",
                 "ApplicantProcesses.Applicant.Order.PortOfArrival",
             };
 
-        var ticketProcessApplicants = await _proDefRepository.GetAllWithPredicateAsync(
-            pd => pd.ApplicantProcesses.All(applPr => applPr.Status == ProcessStatus.In) && pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"), pdLoadedProperties);
+        var response = new TicketProcessResponseDTO();
 
-        var ticketReady = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a").First();
-        var ticketRegistration = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7").First();
-        var ticketRefund = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778").First();
-        var ticketRebook = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf").First();
-        var ticketRebookReg = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf").First();
-        var traveled = ticketProcessApplicants.Where(appl => appl.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616").First();
+        var proDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"), pdLoadedProperties);
+
+        var ticketReady = proDefs.Where(pd => pd.Id.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a").FirstOrDefault();
+        var ticketRegistration = proDefs.Where(appl => appl.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7").FirstOrDefault();
+        var ticketRefund = proDefs.Where(appl => appl.Id.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778").FirstOrDefault();
+        var ticketRebook = proDefs.Where(appl => appl.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf").FirstOrDefault();
+        var ticketRebookReg = proDefs.Where(appl => appl.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf").FirstOrDefault();
+        var traveled = proDefs.Where(appl => appl.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616").FirstOrDefault();
 
         var tkReadyApplicants = new List<GetTicketReadyApplicantsResponseDTO>();
         var tkRegApplicants = new List<GetTicketRegistrationApplicantsResponseDTO>();
@@ -95,71 +90,99 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
         var tkRebRegApplicants = new List<GetTicketRegistrationApplicantsResponseDTO>();
         var traveledApplicants = new List<GetTraveledApplicantsResponseDTO>();
 
-        foreach (var appl in ticketReady.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
+        if (ticketReady != null)
         {
-            tkReadyApplicants.Add(new GetTicketReadyApplicantsResponseDTO()
+            var applProLoadedProps = new string[] { "Applicant.Order", "Applicant.Order.Sponsor", "Applicant.Order.PortOfArrival" };
+            var onTciketReadyAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketReady.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            foreach (var applicant in onTciketReadyAppls)
             {
-                Id = appl.Id,
-                PassportNumber = appl.Applicant.PassportNumber,
-                FullName = appl.Applicant.FirstName + " " + appl.Applicant.MiddleName + " " + appl.Applicant.LastName,
-                OrderNumber = appl.Applicant.Order?.OrderNumber!,
-                SponsorName = appl.Applicant.Order?.Sponsor?.FullName!,
-                Country = appl.Applicant.DesiredCountry?.Value,
-                PortOfArrival = appl.Applicant.Order?.PortOfArrival?.Value
-            });
+                tkReadyApplicants.Add(new GetTicketReadyApplicantsResponseDTO()
+                {
+                    Id = applicant.Applicant.Id,
+                    PassportNumber = applicant.Applicant.PassportNumber,
+                    FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
+                    OrderNumber = applicant.Applicant.Order?.OrderNumber!,
+                    SponsorName = applicant.Applicant.Order?.Sponsor?.FullName!,
+                    Country = applicant.Applicant.DesiredCountry?.Value,
+                    PortOfArrival = applicant.Applicant.Order?.PortOfArrival?.Value
+                });
+            }
         }
 
-        foreach (var appl in ticketRegistration.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
+        if (ticketRegistration != null)
         {
-            tkRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
+            var applProLoadedProps = new string[] { "Applicant" };
+            var onTciketRegistrationAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRegistration.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            foreach (var applicant in onTciketRegistrationAppls)
             {
-                Id = appl.Applicant.Id,
-                PassportNumber = appl.Applicant.PassportNumber
-            });
+                tkRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
+                {
+                    Id = applicant.Applicant.Id,
+                    PassportNumber = applicant.Applicant.PassportNumber
+                });
+            }
         }
 
-        foreach (var appl in ticketRefund.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
+        if (ticketRefund != null)
         {
-            tkRefundApplicants.Add(new GetTicketRefundApplicantsResponseDTO()
+            var applProLoadedProps = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
+            var onTciketRefundAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRefund.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            foreach (var applicant in onTciketRefundAppls)
             {
-                Id = appl.Applicant.Id,
-                PassportNumber = appl.Applicant.PassportNumber,
-                FullName = appl.Applicant.FirstName + " " + appl.Applicant.MiddleName + " " + appl.Applicant.LastName,
-                OrderNumber = appl.Applicant.Order?.OrderNumber!,
-                SponsorName = appl.Applicant.Order?.Sponsor?.FullName!
-            });
+                tkRefundApplicants.Add(new GetTicketRefundApplicantsResponseDTO()
+                {
+                    Id = applicant.Applicant.Id,
+                    PassportNumber = applicant.Applicant.PassportNumber,
+                    FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
+                    OrderNumber = applicant.Applicant.Order?.OrderNumber!,
+                    SponsorName = applicant.Applicant.Order?.Sponsor?.FullName!
+                });
+            }
         }
 
-        foreach (var appl in ticketRebook.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
+        if (ticketRebook != null)
         {
-            tkRebookApplicants.Add(new GetTicketRebookApplicantsResponseDTO()
+            var applProLoadedProps = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
+            var onTciketRebookAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRebook.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            foreach (var applicant in onTciketRebookAppls)
             {
-                Id = appl.Applicant.Id,
-                PassportNumber = appl.Applicant.PassportNumber,
-                FullName = appl.Applicant.FirstName + " " + appl.Applicant.MiddleName + " " + appl.Applicant.LastName,
-                OrderNumber = appl.Applicant.Order?.OrderNumber!,
-                SponsorName = appl.Applicant.Order?.Sponsor?.FullName!
-            });
+                tkRebookApplicants.Add(new GetTicketRebookApplicantsResponseDTO()
+                {
+                    Id = applicant.Applicant.Id,
+                    PassportNumber = applicant.Applicant.PassportNumber,
+                    FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
+                    OrderNumber = applicant.Applicant.Order?.OrderNumber!,
+                    SponsorName = applicant.Applicant.Order?.Sponsor?.FullName!
+                });
+            }
         }
 
-        foreach (var appl in ticketRebookReg.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
+        if (ticketRebookReg != null)
         {
-            tkRebRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
+            var onTciketRebookRegAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRebookReg.Id && applPro.Status == ProcessStatus.In, "Applicant");
+            foreach (var applicant in onTciketRebookRegAppls)
             {
-                Id = appl.Applicant.Id,
-                PassportNumber = appl.Applicant.PassportNumber
-            });
+                tkRebRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
+                {
+                    Id = applicant.Applicant.Id,
+                    PassportNumber = applicant.Applicant.PassportNumber,
+                });
+            }
         }
 
-        foreach (var appl in traveled.ApplicantProcesses.Where(appProc => appProc.Status == ProcessStatus.In))
+        if (traveled != null)
         {
-            tkRebRegApplicants.Add(new GetTraveledApplicantsResponseDTO()
+            var traveledAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == traveled.Id && applPro.Status == ProcessStatus.In, "Applicant");
+            foreach (var applicant in traveledAppls)
             {
-                Id = appl.Applicant.Id,
-                PassportNumber = appl.Applicant.PassportNumber,
-                FullName = appl.Applicant.FirstName + " " + appl.Applicant.MiddleName + " " + appl.Applicant.LastName,
-                Date = appl.Date
-            });
+                tkRebRegApplicants.Add(new GetTraveledApplicantsResponseDTO()
+                {
+                    Id = applicant.Applicant.Id,
+                    PassportNumber = applicant.Applicant.PassportNumber,
+                    FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
+                    Date = applicant.Date
+                });
+            }
         }
 
         response.TicketReadyApplicants = tkReadyApplicants;

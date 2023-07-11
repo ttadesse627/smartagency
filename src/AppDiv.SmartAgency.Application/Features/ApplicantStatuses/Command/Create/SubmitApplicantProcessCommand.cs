@@ -30,10 +30,9 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
 
         var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcesses", "Order.Sponsor");
         var currentPdId = request.PdId;
-        var nextPds = new List<ProcessDefinition>();
+        var nextPd = new ProcessDefinition();
         var currentPd = new ProcessDefinition();
         var processDefs = new List<ProcessDefinition>();
-        var newAppStatuses = new List<ApplicantProcess>();
 
         var currentStatus = new ApplicantProcess();
         // var nextpdIds = new List<Guid>();
@@ -45,9 +44,9 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             currentStatus = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ProcessDefinitionId == request.PdId && appPr.ApplicantId == request.ApplicantId && appPr.Status == ProcessStatus.In);
         }
 
-        if (request.NextPdIds != null && !request.NextPdIds.Contains(Guid.Parse("00000000-0000-0000-0000-000000000000")))
+        if (!request.NextPdId.Equals(Guid.Parse("00000000-0000-0000-0000-000000000000")))
         {
-            nextPds.AddRange(await _definitionRepository.GetAllWithPredicateAsync(pd => request.NextPdIds.Contains(pd.Id), "Process"));
+            nextPd = await _definitionRepository.GetWithPredicateAsync(pd => pd.Id.Equals(request.NextPdId), "Process");
         }
 
         var currentPId = new Guid();
@@ -59,25 +58,19 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
 
         else
         {
-            if (nextPds.Any())
-            {
-                currentPId = (Guid)nextPds.First().ProcessId;
-            };
+            currentPId = (Guid)nextPd.ProcessId;
         }
 
         processDefs.AddRange(await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == currentPId, "Process"));
 
         // Set the applicant's status to 'In' for the next process definitions
-        foreach (var nextPd in nextPds)
+        var newAppStatus = new ApplicantProcess
         {
-            newAppStatuses.Add(new ApplicantProcess
-            {
-                Applicant = applicant,
-                ProcessDefinition = nextPd,
-                Date = (DateTime)request.Date,
-                Status = ProcessStatus.In
-            });
-        }
+            Applicant = applicant,
+            ProcessDefinition = nextPd,
+            Date = request.Date,
+            Status = ProcessStatus.In
+        };
 
 
         // update the status of applicant process for the current process definition
@@ -85,18 +78,14 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         {
             currentStatus.Status = ProcessStatus.Out;
         }
-
-        if (newAppStatuses.Count > 0)
+        try
         {
-            try
-            {
-                await _applicantProcessRepository.InsertAsync(newAppStatuses, cancellationToken);
-                await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                throw new System.ApplicationException(ex.Message);
-            }
+            await _applicantProcessRepository.InsertAsync(newAppStatus, cancellationToken);
+            await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new System.ApplicationException(ex.Message);
         }
 
         // Return all the applicants in each process definitions within that Process
@@ -139,7 +128,6 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                 });
             }
         }
-
 
         var lastPds = processDefs.Where(p => p.Step == processDefs.Max(p => p.Step)).ToList();
 
