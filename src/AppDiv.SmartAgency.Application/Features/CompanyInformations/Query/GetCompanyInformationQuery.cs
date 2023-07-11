@@ -33,7 +33,74 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
             if (allCompanyInformation.Count() > 0)
             {
                 var selectedCompanyInformation = allCompanyInformation.First();
-                companyInformationResponse.Data = CustomMapper.Mapper.Map<GetCompanyInformationResponseDTO>(selectedCompanyInformation);
+                // companyInformationResponse.Data = CustomMapper.Mapper.Map<GetCompanyInformationResponseDTO>(selectedCompanyInformation);
+                 var witnesses= new List<CompanyWitnessRequest>();
+                 var CountryOperations= new List<CountryOperationResponseDTO>();
+
+               companyInformationResponse.Data= new GetCompanyInformationResponseDTO{
+
+                  Id = selectedCompanyInformation.Id,
+                  CompanyName = selectedCompanyInformation.CompanyName,
+                  CompanyNameAmharic= selectedCompanyInformation.CompanyNameAmharic,     
+                  CompanyNameArabic = selectedCompanyInformation.CompanyNameArabic,
+                  ContractNumber = selectedCompanyInformation.ContractNumber,
+                  licenseNumber= selectedCompanyInformation.licenseNumber,
+                  AssurancePolicyNumber = selectedCompanyInformation.AssurancePolicyNumber,
+                  GeneralManager = selectedCompanyInformation.AssurancePolicyNumber,
+                  GeneralManagerAmharic = selectedCompanyInformation.GeneralManagerAmharic,
+                  ViceManager = selectedCompanyInformation.ViceManager,
+                  ViceManagerAmharic = selectedCompanyInformation.ViceManagerAmharic,
+                  CountriesOperation = selectedCompanyInformation.CountriesOperation,
+                  Address= new CompanyAddressResponseDTO{
+                      Region= new Contracts.DTOs.LookUpDTOs.LookUpItemResponseDTO{
+                        Id= selectedCompanyInformation.Address.RegionId,
+                        Value = selectedCompanyInformation.Address.Region.Value
+                      },
+                     SubCity = selectedCompanyInformation.Address.SubCity,
+                     Zone = selectedCompanyInformation.Address.Zone,
+                     Woreda = selectedCompanyInformation.Address.Woreda,
+                     Adress = selectedCompanyInformation.Address.Adress,
+                     PostCode= selectedCompanyInformation.Address.PostCode,
+                     PhoneNumber = selectedCompanyInformation.Address.PhoneNumber,
+                     HouseNumber = selectedCompanyInformation.Address.HouseNumber,
+                     OfficePhone = selectedCompanyInformation.Address.OfficePhone,
+                     Mobile  = selectedCompanyInformation.Address.Mobile,
+                     AlternativePhone = selectedCompanyInformation.Address.AlternativePhone,
+                     Fax = selectedCompanyInformation.Address.Fax,
+                     Email = selectedCompanyInformation.Address.Email
+                  },
+                     
+                Witness= new CompanyWitnssRequest{
+                      Witnesses= selectedCompanyInformation.Witnesses.Select(wit=> new CompanyWitnessRequest{
+                          FullName= wit.FullName,
+                          Address= wit.Address,
+                          PhoneNumber= wit.PhoneNumber,
+                      }).ToList()
+                },
+
+                CountryOperations= selectedCompanyInformation.CountryOperations.Select(co=> new CountryOperationResponseDTO{
+                    Country= new Contracts.DTOs.LookUpDTOs.LookUpItemResponseDTO{
+                        Id= co.CountryId,
+                        Value= co.LookUpCountryOperation.Value
+                    },
+                    LicenseNumber= co.LicenseNumber,
+                    VisaExpiryDays= co.VisaExpiryDays
+                }).ToList(),
+                
+                CompanySetting = new CompanySettingRequest{
+                    FileNumberStartFrom= selectedCompanyInformation.CompanySetting.FileNumberStartFrom,
+                    PrintedDocumentSubmitDays = selectedCompanyInformation.CompanySetting.PrintedDocumentSubmitDays,
+                    AmountOfDeposit = selectedCompanyInformation.CompanySetting.AmountOfDeposit,
+                    AuthorizedPerson = selectedCompanyInformation.CompanySetting.AuthorizedPerson,
+                    PenalityInterval = selectedCompanyInformation.CompanySetting.PenalityInterval,
+                    PenalityAmount = selectedCompanyInformation.CompanySetting.PenalityAmount,
+
+                 }
+            
+              };
+
+
+                   
                 var companyImageId = selectedCompanyInformation.Id.ToString();
 
                 var fileType1 = "CompanyLetterLogo";

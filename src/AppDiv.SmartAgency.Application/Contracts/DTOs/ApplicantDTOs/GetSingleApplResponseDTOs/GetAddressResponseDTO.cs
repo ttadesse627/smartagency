@@ -5,7 +5,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleA
 public record GetAddressResponseDTO
 {
     public Guid Id { get; set; }
-    public string? SubCityCity { get; set; }
+    public string? SubCity { get; set; }
     public string? Zone { get; set; }
     public string? Woreda { get; set; }
     public string? Kebele { get; set; }
@@ -20,5 +20,5 @@ public record GetAddressResponseDTO
     public string? Email { get; set; }
     public string? Website { get; set; }
     public LookUpResponseDTO? Region { get; set; }
-    public LookUpResponseDTO? Country { get; set; }
+  //  public LookUpResponseDTO? Country { get; set; }
 }

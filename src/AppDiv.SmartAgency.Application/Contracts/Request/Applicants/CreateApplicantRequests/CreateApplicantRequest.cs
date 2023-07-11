@@ -42,6 +42,7 @@ public record CreateApplicantRequest
     public Guid? DesiredCountryId { get; set; }
     public Guid? BrokerNameId { get; set; }
     public Guid? BranchId { get; set; }
+  //  public Guid? OrderId {get; set;}
     public Guid? PartnerId { get; set; } = null;
     public SkillRequest? Skill { get; set; }
     public ApplicantExperienceRequest? ApplicantExperience { get; set; }

@@ -10,7 +10,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
 {
     public class CompanyAddressResponseDTO
     {
-        public Guid Id { get; set; }
+       // public Guid Id { get; set; }
         public LookUpItemResponseDTO Region { get; set; }
         public string? SubCity { get; set; }
         public string? Zone { get; set; }

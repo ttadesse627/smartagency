@@ -31,6 +31,14 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Que
         public async Task<GetApplicantFollowupStatusByIdResponseDTO> Handle(GetApplicantFollowupStatusByIdQuery request, CancellationToken cancellationToken)
         {
             var selectedApplicantFollowupStatus = await _applicantFollowupStatusRepository.GetByIdAsync(request.Id);
+            // var response = new GetApplicantFollowupStatusByIdResponseDTO{
+            //         Id= selectedApplicantFollowupStatus.Id, 
+            //         PassportNumber= selectedApplicantFollowupStatus.PassportNumber,
+            //         FollowupStatus = selectedApplicantFollowupStatus.FollowupStatus.Value,
+            //         Month= selectedApplicantFollowupStatus.Month.ToString("yyyy-MM-dd"),
+            //         Remark = selectedApplicantFollowupStatus.Remark
+            // } ;
+            // return response;
             return CustomMapper.Mapper.Map<GetApplicantFollowupStatusByIdResponseDTO>(selectedApplicantFollowupStatus);
            
         }

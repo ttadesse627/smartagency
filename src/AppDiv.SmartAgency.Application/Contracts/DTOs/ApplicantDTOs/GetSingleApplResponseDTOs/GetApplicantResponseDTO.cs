@@ -10,11 +10,11 @@ public record GetApplicantResponseDTO
     public string FirstName { get; set; } = string.Empty;
     public string MiddleName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public DateTime? BirthDate { get; set; }
-    public Gender Gender { get; set; }
+    public string? BirthDate { get; set; }
+    public string? Gender { get; set; }
     public string PassportNumber { get; set; } = string.Empty;
-    public DateTime IssuedDate { get; set; }
-    public DateTime PassportExpiryDate { get; set; }
+    public string? IssuedDate { get; set; }
+    public string? PassportExpiryDate { get; set; }
     public string PlaceOfBirth { get; set; } = string.Empty;
     public string AmharicFullName { get; set; } = string.Empty;
     public string? ArabicFullName { get; set; }
@@ -28,9 +28,9 @@ public record GetApplicantResponseDTO
     public int ContractPeriod { get; set; }
     public string? AmharicJobTitle { get; set; }
     public string? Remark { get; set; }
-    public bool IsRequested { get; set; } = false;
-    public bool IsReserved { get; set; } = false;
-    public bool IsBlocked { get; set; } = false;
+    // public bool IsRequested { get; set; } = false;
+    // public bool IsReserved { get; set; } = false;
+    // public bool IsBlocked { get; set; } = false;
 
     // Objects
     public ICollection<GetLanguageSkillResponseDTO>? LanguageSkills { get; set; }
@@ -59,5 +59,5 @@ public record GetApplicantResponseDTO
     public LookUpResponseDTO? DesiredCountry { get; set; }
     public LookUpResponseDTO? BrokerName { get; set; }
     public LookUpResponseDTO? Branch { get; set; }
-    public LookUpResponseDTO? Order { get; set; }
+    //public LookUpResponseDTO? Order { get; set; }
 }

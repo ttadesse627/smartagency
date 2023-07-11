@@ -1,5 +1,6 @@
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
@@ -16,4 +17,5 @@ public interface IOrderRepository : IBaseRepository<Order>
     public Task<List<VisaExpiryResponseDTO>> GetExpiredVisa();
     public Task<List<PenalityResponseDTO>>  GetPenality();
     public Task<List<ComplaintResponseDTO>> GetComplaints();
+    public Task<List<GetUnAssignedOrdersDropdownResponseDTO>> GetUnAssignedOrdersDropDown();
 }
