@@ -10,7 +10,7 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
-public record CreateApplicantCommand(CreateApplicantRequest applicantRequest) : IRequest<ServiceResponse<Int32>> { }
+public record CreateApplicantCommand(CreateApplicantRequest ApplicantRequest) : IRequest<ServiceResponse<Int32>> { }
 public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, ServiceResponse<Int32>>
 {
     private readonly IApplicantRepository _applicantRepository;
@@ -25,11 +25,11 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         _attachmentRepository = attachmentRepository;
         _fileService = fileService;
     }
-    public async Task<ServiceResponse<Int32>> Handle(CreateApplicantCommand applicantRequest, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<Int32>> Handle(CreateApplicantCommand command, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<Int32>();
         var exceptions = new List<Exception>();
-        var request = applicantRequest.applicantRequest;
+        var request = command.ApplicantRequest;
 
         var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
         var representativeEntity = CustomMapper.Mapper.Map<Representative>(request.Witness?.Representative);
@@ -125,9 +125,7 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             var lvlqs = new List<LevelOfQualification>();
             foreach (var loq in levelOfQualifications)
             {
-                var lvlq = new LevelOfQualification();
-                lvlq.LookUp = loq;
-                lvlqs.Add(lvlq);
+                lvlqs.Add(new LevelOfQualification { LookUp = loq });
             }
             applicantEntity.Education!.LevelOfQualifications = lvlqs;
         }
@@ -136,9 +134,10 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             var qts = new List<QualificationType>();
             foreach (var qt in qualificationTypes)
             {
-                var quaqt = new QualificationType();
-                quaqt.LookUp = qt;
-                qts.Add(quaqt);
+                qts.Add(new QualificationType
+                {
+                    LookUp = qt
+                });
             }
             applicantEntity.Education!.QualificationTypes = qts;
         }
@@ -147,9 +146,10 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             var awds = new List<Award>();
             foreach (var awd in awards)
             {
-                var aw = new Award();
-                aw.LookUp = awd;
-                awds.Add(aw);
+                awds.Add(new Award
+                {
+                    LookUp = awd
+                });
             }
             applicantEntity.Education!.Awards = awds;
         }
@@ -158,9 +158,10 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             var skls = new List<Skill>();
             foreach (var sk in technicalSkills)
             {
-                var skl = new Skill();
-                skl.LookUp = sk;
-                skls.Add(skl);
+                skls.Add(new Skill
+                {
+                    LookUp = sk
+                });
             }
             applicantEntity.Skills = skls;
             applicantEntity.LanguageSkills = CustomMapper.Mapper.Map<List<LanguageSkill>>(request.Skill?.LanguageSkills);
@@ -180,13 +181,13 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             }
         }
         var attachments = await _attachmentRepository.GetByIdsAsync(attachmentIds);
-        if (attachments.Count() > 0)
+        if (attachments.Any())
         {
             applicantEntity.Attachments = attachments.ToList();
         }
 
         // Apply the update to the database
-        if (exceptions.Count() == 0)
+        if (exceptions.Count == 0)
         {
             await _applicantRepository.InsertAsync(applicantEntity, cancellationToken);
         }

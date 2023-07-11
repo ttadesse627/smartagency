@@ -27,22 +27,19 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
         var response = new ApplicantProcessResponseDTO();
 
         var definitions = new List<GetProcessDefinitionResponseDTO>();
+
         var processDefs = await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == query.ProcessId, "Process");
         var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(query.ProcessId);
 
         if (isInitialProcess)
         {
-
             var processReadyApplicants = new List<GetApplProcessResponseDTO>();
-            var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || app.ApplicantProcesses.Any() == false);
-            if (readyApplicants != null && readyApplicants.Count > 0)
+            var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || !app.ApplicantProcesses.Any());
+            if (readyApplicants != null && readyApplicants.Count > 0 && processDefs != null && processDefs.Count > 0)
             {
-                var nxtPdId = new Guid();
-                var nxtPd = processDefs.OrderBy(p => p.Step).FirstOrDefault();
-                if (nxtPd != null)
-                {
-                    nxtPdId = nxtPd.Id;
-                }
+                var nextpdIds = new List<Guid>();
+                var nxtPdStep = processDefs.OrderBy(p => p.Step).First().Step;
+                nextpdIds.AddRange(processDefs.Where(p => p.Step == nxtPdStep).Select(p => p.Id));
 
                 foreach (var apl in readyApplicants)
                 {
@@ -59,26 +56,28 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
                 definitions.Add(new GetProcessDefinitionResponseDTO
                 {
                     Name = "ProcessReadyApplicants",
-                    NextPdId = nxtPdId,
+                    NextPdIds = nextpdIds,
                     ApplicantProcesses = processReadyApplicants
                 });
             }
         }
-
         var lastPds = processDefs.Where(p => p.Step == processDefs.Max(p => p.Step)).ToList();
 
         foreach (var pd in processDefs)
         {
-            var nextpdId = new Guid();
+            var nextpdIds = new List<Guid>();
             if (lastPds.Contains(pd))
             {
                 var nextPrStep = pd.Process!.Step + 1;
-                var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
-                nextpdId = await _definitionRepository.GetMinStepAsync(nextPr.Id);
+                var nextPrs = await _processRepository.GetAllWithPredicateAsync(p => p.Step == nextPrStep);
+                foreach (var nextPr in nextPrs)
+                {
+                    nextpdIds.Add(await _definitionRepository.GetMinStepAsync(nextPr.Id));
+                }
             }
             else
             {
-                nextpdId = processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id).FirstOrDefault();
+                nextpdIds.AddRange(processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id));
             }
             var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();
@@ -93,15 +92,17 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
                     SponsorName = applicant1.Applicant.Order?.Sponsor?.FullName!
                 });
             }
+
             definitions.Add(new GetProcessDefinitionResponseDTO()
             {
                 Id = pd.Id,
                 Name = pd.Name,
                 Step = pd.Step,
-                NextPdId = nextpdId,
+                NextPdIds = nextpdIds,
                 ApplicantProcesses = pdApplicants
             });
         }
+
         response.ProcessDefinitions = definitions;
 
         return response;
