@@ -81,7 +81,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         }
         catch (Exception ex)
         {
-            throw new System.ApplicationException(ex.Message);
+            throw new ApplicationException(ex.Message);
         }
 
 
@@ -112,7 +112,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         if (ticketReady != null)
         {
             var applProLoadedProps = new string[] { "Applicant.Order", "Applicant.Order.Sponsor", "Applicant.Order.PortOfArrival" };
-            var onTciketReadyAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketReady.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            var onTciketReadyAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a" && applPro.Status == ProcessStatus.In, applProLoadedProps);
             foreach (var applicant in onTciketReadyAppls)
             {
                 tkReadyApplicants.Add(new GetTicketReadyApplicantsResponseDTO()
@@ -131,7 +131,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         if (ticketRegistration != null)
         {
             var applProLoadedProps = new string[] { "Applicant" };
-            var onTciketRegistrationAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRegistration.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            var onTciketRegistrationAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7" && applPro.Status == ProcessStatus.In, applProLoadedProps);
             foreach (var applicant in onTciketRegistrationAppls)
             {
                 tkRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
@@ -145,7 +145,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         if (ticketRefund != null)
         {
             var applProLoadedProps = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
-            var onTciketRefundAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRefund.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            var onTciketRefundAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778" && applPro.Status == ProcessStatus.In, applProLoadedProps);
             foreach (var applicant in onTciketRefundAppls)
             {
                 tkRefundApplicants.Add(new GetTicketRefundApplicantsResponseDTO()
@@ -162,7 +162,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
         if (ticketRebook != null)
         {
             var applProLoadedProps = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
-            var onTciketRebookAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRebook.Id && applPro.Status == ProcessStatus.In, applProLoadedProps);
+            var onTciketRebookAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf" && applPro.Status == ProcessStatus.In, applProLoadedProps);
             foreach (var applicant in onTciketRebookAppls)
             {
                 tkRebookApplicants.Add(new GetTicketRebookApplicantsResponseDTO()
@@ -178,7 +178,7 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
 
         if (ticketRebookReg != null)
         {
-            var onTciketRebookRegAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == ticketRebookReg.Id && applPro.Status == ProcessStatus.In, "Applicant");
+            var onTciketRebookRegAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf" && applPro.Status == ProcessStatus.In, "Applicant");
             foreach (var applicant in onTciketRebookRegAppls)
             {
                 tkRebRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
@@ -191,10 +191,10 @@ public class SubmitTicketRegistrationCommandHandler : IRequestHandler<SubmitTick
 
         if (traveled != null)
         {
-            var traveledAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == traveled.Id && applPro.Status == ProcessStatus.In, "Applicant");
+            var traveledAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId.ToString() == "5b912c00-9df3-47a1-a525-410abf239616" && applPro.Status == ProcessStatus.In, "Applicant");
             foreach (var applicant in traveledAppls)
             {
-                tkRebRegApplicants.Add(new GetTraveledApplicantsResponseDTO()
+                traveledApplicants.Add(new GetTraveledApplicantsResponseDTO()
                 {
                     Id = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,

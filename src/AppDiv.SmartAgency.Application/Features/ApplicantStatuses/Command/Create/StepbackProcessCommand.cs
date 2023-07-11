@@ -30,9 +30,9 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
 
         var process = currentPd.Process;
         var processDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id);
-        var processDefinitions = processDefs.OrderBy(pd => pd.Step).ToList();
+        var proDefinitions = processDefs.OrderBy(pd => pd.Step).ToList();
 
-        var currentPdIndex = processDefinitions.FindIndex(pd => pd.Id == currentPd.Id);
+        var currentPdIndex = proDefinitions.FindIndex(pd => pd.Id == currentPd.Id);
         var prevPdIndex = currentPdIndex - 1;
 
         if (prevPdIndex < 0)
@@ -72,7 +72,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
                 pendingApplProcess.Status = ProcessStatus.Out;
             }
 
-            var prevPd = processDefinitions[prevPdIndex];
+            var prevPd = proDefinitions[prevPdIndex];
             var applProc = await _applicantProcessRepository.GetWithPredicateAsync(applpr => applpr.ApplicantId == request.ApplicantId && applpr.ProcessDefinitionId == prevPd.Id && applpr.Status == ProcessStatus.Out);
             applProc.Status = ProcessStatus.In;
 
@@ -97,18 +97,18 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
 
         var definitions = new List<GetProcessDefinitionResponseDTO>();
 
-        var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(process!.Id);
+        var processDefinitions = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id, "Process");
+        var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(process.Id);
 
         if (isInitialProcess)
         {
-
             var processReadyApplicants = new List<GetApplProcessResponseDTO>();
-            var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || app.ApplicantProcesses.Any() == false);
-            if (readyApplicants != null && readyApplicants.Count > 0 && processDefs != null && processDefs.Count > 0)
+            var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || !app.ApplicantProcesses.Any());
+            if (readyApplicants != null && readyApplicants.Count > 0 && processDefinitions != null && processDefinitions.Any())
             {
-                var nextpdIds = new List<Guid>();
-                var nxtPdStep = processDefs.OrderBy(p => p.Step).First().Step;
-                nextpdIds.AddRange(processDefs.Where(p => p.Step == nxtPdStep).Select(p => p.Id));
+                var nextpdId = new Guid();
+                var nxtPdStep = processDefinitions.OrderBy(p => p.Step).First().Step;
+                nextpdId = processDefinitions.Where(p => p.Step == nxtPdStep).Select(p => p.Id).FirstOrDefault();
 
                 foreach (var apl in readyApplicants)
                 {
@@ -125,29 +125,28 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
                 definitions.Add(new GetProcessDefinitionResponseDTO
                 {
                     Name = "ProcessReadyApplicants",
-                    NextPdIds = nextpdIds,
+                    NextPdId = nextpdId,
                     ApplicantProcesses = processReadyApplicants
                 });
             }
         }
+        var lastPds = processDefinitions.Where(p => p.Step == processDefinitions.Max(p => p.Step)).ToList();
 
-        var lastPds = processDefs.Where(p => p.Step == processDefs.Max(p => p.Step)).ToList();
-
-        foreach (var pd in processDefs)
+        foreach (var pd in processDefinitions)
         {
-            var nextpdIds = new List<Guid>();
+            var nextpdId = new Guid();
             if (lastPds.Contains(pd))
             {
                 var nextPrStep = pd.Process!.Step + 1;
-                var nextPrs = await _processRepository.GetAllWithPredicateAsync(p => p.Step == nextPrStep);
-                foreach (var nextPr in nextPrs)
+                var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
+                if (nextPr != null)
                 {
-                    nextpdIds.Add(await _proDefRepository.GetMinStepAsync(nextPr.Id));
+                    nextpdId = await _proDefRepository.GetMinStepAsync(nextPr.Id);
                 }
             }
             else
             {
-                nextpdIds.AddRange(processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id));
+                nextpdId = processDefinitions.Where(p => p.Step == pd.Step + 1).FirstOrDefault().Id;
             }
             var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();
@@ -162,12 +161,13 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
                     SponsorName = applicant1.Applicant.Order?.Sponsor?.FullName!
                 });
             }
+
             definitions.Add(new GetProcessDefinitionResponseDTO()
             {
                 Id = pd.Id,
                 Name = pd.Name,
                 Step = pd.Step,
-                NextPdIds = nextpdIds,
+                NextPdId = nextpdId,
                 ApplicantProcesses = pdApplicants
             });
         }

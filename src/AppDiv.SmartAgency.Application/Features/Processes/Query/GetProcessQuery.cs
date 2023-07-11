@@ -72,7 +72,7 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
         //         throw new ApplicationException(ex.Message);
         //     }
         // }
-        if (processes.Count() > 0)
+        if (processes.Any())
         {
             foreach (var process in processes)
             {
@@ -86,12 +86,12 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
                     EnjazRequired = process.EnjazRequired
                 };
                 processRespList.Add(processResponse);
+                if (processRespList != null && processRespList.Count > 0)
+                {
+                    _ = processRespList.OrderBy(p => p.Step); // Change this to .Sort() to preserve performance.
+                }
             }
             response.Items = processRespList;
-        }
-        if (response.Items != null && response.Items.Count > 0)
-        {
-            response.Items.OrderBy(p => p.Id); // Change this to .Sort() to preserve performance.
         }
         return response;
     }

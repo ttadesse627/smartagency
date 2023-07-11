@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    //[Authorize(JwtBearerDefaults.AuthenticationScheme)]
     // [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/complaint")]
     [ApiController]
@@ -33,10 +32,10 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(await _mediator.Send(new GetAllComplaintsQuery()));
         }
 
-        [HttpGet("get-order-complaints/{id}")]
-        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetOrderComplaints(Guid id)
+        [HttpGet("get-order-complaints/{applicantId}")]
+        public async Task<ActionResult<List<GetAllComplaintsResponseDTO>>> GetOrderComplaints(Guid applicantId)
         {
-            return Ok(await _mediator.Send(new GetOrderComplaintsQuery(id)));
+            return Ok(await _mediator.Send(new GetOrderComplaintsQuery(applicantId)));
         }
     }
 }

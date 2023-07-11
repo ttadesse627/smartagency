@@ -37,9 +37,9 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
             var readyApplicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.ApplicantProcesses == null || !app.ApplicantProcesses.Any());
             if (readyApplicants != null && readyApplicants.Count > 0 && processDefs != null && processDefs.Count > 0)
             {
-                var nextpdIds = new List<Guid>();
+                var nextpdId = new Guid();
                 var nxtPdStep = processDefs.OrderBy(p => p.Step).First().Step;
-                nextpdIds.AddRange(processDefs.Where(p => p.Step == nxtPdStep).Select(p => p.Id));
+                nextpdId = processDefs.Where(p => p.Step == nxtPdStep).Select(p => p.Id).FirstOrDefault();
 
                 foreach (var apl in readyApplicants)
                 {
@@ -56,7 +56,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
                 definitions.Add(new GetProcessDefinitionResponseDTO
                 {
                     Name = "ProcessReadyApplicants",
-                    NextPdIds = nextpdIds,
+                    NextPdId = nextpdId,
                     ApplicantProcesses = processReadyApplicants
                 });
             }
@@ -65,19 +65,19 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
 
         foreach (var pd in processDefs)
         {
-            var nextpdIds = new List<Guid>();
+            var nextpdId = new Guid();
             if (lastPds.Contains(pd))
             {
                 var nextPrStep = pd.Process!.Step + 1;
-                var nextPrs = await _processRepository.GetAllWithPredicateAsync(p => p.Step == nextPrStep);
-                foreach (var nextPr in nextPrs)
+                var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
+                if (nextPr != null)
                 {
-                    nextpdIds.Add(await _definitionRepository.GetMinStepAsync(nextPr.Id));
+                    nextpdId = await _definitionRepository.GetMinStepAsync(nextPr.Id);
                 }
             }
             else
             {
-                nextpdIds.AddRange(processDefs.Where(p => p.Step == pd.Step + 1).Select(p => p.Id));
+                nextpdId = processDefs.Where(p => p.Step == pd.Step + 1).FirstOrDefault().Id;
             }
             var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();
@@ -98,7 +98,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
                 Id = pd.Id,
                 Name = pd.Name,
                 Step = pd.Step,
-                NextPdIds = nextpdIds,
+                NextPdId = nextpdId,
                 ApplicantProcesses = pdApplicants
             });
         }

@@ -30,17 +30,16 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
     public async Task<TicketProcessResponseDTO> Handle(SubmitTicketRefundCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
-        var response = new TicketProcessResponseDTO();
 
         var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a", "Applicant");
         var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "Order.Sponsor");
-        var ticketOffice = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.TicketOfficeId);
+        // var ticketOffice = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.TicketOfficeId);
 
 
         // Update the applicant status on the ApplicantProcess table
         applPro.Status = ProcessStatus.Out;
 
-        var tickReg = await _definitionRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7", "ApplicantProcesses", "ApplicantProcesses.Applicant");
+        var tickReg = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7");
         var applProcess = new ApplicantProcess
         {
             Applicant = applicant1,
@@ -48,58 +47,24 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
             Date = (DateTime)request.Date,
             Status = ProcessStatus.In
         };
-        var tickReadyAppl = new TicketReady
+        var tickRefund = new TicketRefund
         {
             DateInterval = request.DateInterval,
-            TicketOffice = ticketOffice,
             Applicant = applicant1
         };
 
         try
         {
             await _applicantProcessRepository.InsertAsync(applProcess, cancellationToken);
-            await _ticketReadyRepository.InsertAsync(tickReadyAppl, cancellationToken);
+            await _ticketRefundRepository.InsertAsync(tickRefund, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-            await _ticketReadyRepository.SaveChangesAsync(cancellationToken);
+            await _ticketRefundRepository.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
             throw new System.ApplicationException(ex.Message);
         }
 
-        
-
-
-        // // Update the applicant status on the ApplicantProcess table
-        // applPro.Status = ProcessStatus.Out;
-
-        // var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf", "ApplicantProcesses", "ApplicantProcesses.Applicant");
-        // var appProList = new List<ApplicantProcess>();
-        // var applTickRebookProcess = new ApplicantProcess
-        // {
-        //     Applicant = applicant,
-        //     ProcessDefinition = tktRebook,
-        //     Date = (DateTime)request.Date,
-        //     Status = ProcessStatus.In
-        // };
-
-        // var tickRefund = new TicketRefund
-        // {
-        //     DateInterval = request.DateInterval,
-        //     Applicant = applicant
-        // };
-
-        // try
-        // {
-        //     await _applicantProcessRepository.InsertAsync(applTickRebookProcess, cancellationToken);
-        //     await _ticketRefundRepository.InsertAsync(tickRefund, cancellationToken);
-        //     await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-        //     await _ticketRefundRepository.SaveChangesAsync(cancellationToken);
-        // }
-        // catch (Exception ex)
-        // {
-        //     throw new System.ApplicationException(ex.Message);
-        // }
 
         var pdLoadedProperties = new string[] {
                 "ApplicantProcesses", "ApplicantProcesses.Applicant.Order",
@@ -109,7 +74,7 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
 
         var response = new TicketProcessResponseDTO();
 
-        var proDefs = await _definitionRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"), pdLoadedProperties);
+        var proDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"), pdLoadedProperties);
 
         var ticketReady = proDefs.Where(pd => pd.Id.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a").FirstOrDefault();
         var ticketRegistration = proDefs.Where(appl => appl.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7").FirstOrDefault();
