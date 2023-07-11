@@ -11,6 +11,6 @@ public class GetSponsorRespDTO
     public string? OtherName { get; set; }
     public string? ResidentialTitle { get; set; }
     public int NumberOfFamily { get; set; }
-    public AttachmentFileResponseDTO? AttachmentFile { get; set; }
+    public AttachmentFileResponseDTO? Attachment { get; set; }
     public GetSponsorAddressRespDTO? Address { get; set; }
 }

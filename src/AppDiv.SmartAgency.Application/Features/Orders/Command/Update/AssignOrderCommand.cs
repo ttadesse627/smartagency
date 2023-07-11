@@ -23,9 +23,6 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
     {
         var assignOrderRequests = command.orderAssignmentRequest.OrderAssignments;
         var response = new ServiceResponse<int>();
-        var updateResponse = new ServiceResponse<String>();
-        var exceptions = new List<Exception>();
-        var count = 0;
 
         if (assignOrderRequests != null)
         {
@@ -36,22 +33,26 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
 
                 if (orderEntity != null && employee != null)
                 {
-                    if (employee.Order == null)
+                    if (employee.OrderId == null)
                     {
                         employee.Order = orderEntity;
                     }
                 }
-            }
-            try
-            {
-                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
-                response.Message = "Seccussfully assigned.";
-                response.Data = count + 1;
-            }
-            catch (System.Exception ex)
-            {
-                response.Message = "An error occured while saving the assignment.";
-                response.Errors?.Add(ex.Message);
+
+                try
+                {
+                    response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+                    if (response.Success)
+                    {
+                        response.Data += 1;
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    response.Message = "An error occured while saving the assignment.";
+                    response.Errors?.Add(ex.Message);
+                }
+
             }
         }
         return response;

@@ -20,8 +20,8 @@ public record GetOrderRespDTO
     public LookUpResponseDTO? PortOfArrival { get; set; }
     public LookUpResponseDTO? Priority { get; set; }
     public LookUpResponseDTO? VisaType { get; set; }
-    public OrderApplResponseDTO? Employee { get; set; }
-    public AttachmentFileResponseDTO? AttachmentFile { get; set; }
+    public OrderApplResponseDTO? Employees { get; set; }
+    public AttachmentFileResponseDTO? Attachment { get; set; }
     public GetOrderCriteriaRespDTO? OrderCriteria { get; set; }
     public GetPaymentRespDTO? Payment { get; set; }
     public GetSponsorRespDTO? Sponsor { get; set; }
