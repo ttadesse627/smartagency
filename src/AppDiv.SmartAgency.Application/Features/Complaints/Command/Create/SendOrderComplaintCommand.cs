@@ -23,15 +23,15 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
             _context = context;
         }
 
-        public async Task<List<GetComplaintResponseDTO>> Handle(SendOrderComplaintCommand request, CancellationToken cancellationToken)
+        public async Task<List<GetComplaintResponseDTO>> Handle(SendOrderComplaintCommand command, CancellationToken cancellationToken)
         {
             var response = new List<GetComplaintResponseDTO>();
 
-            var applicant = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.Request.ApplicantId);
+            var applicant = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.Request.ApplicantId);
             var complint = new Complaint
             {
-                Message = request.Request.Message,
-                ApplicantId = request.Request.ApplicantId,
+                Message = command.Request.Message,
+                ApplicantId = command.Request.ApplicantId,
                 CreatedBy = _context.GetCurrentUserId()
             };
             await _complaintRepository.InsertAsync(complint, cancellationToken);
@@ -40,10 +40,9 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
                 var success = await _complaintRepository.SaveChangesAsync(cancellationToken);
                 if (success)
                 {
-                    var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == request.Request.ApplicantId, "User");
+                    var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == command.Request.ApplicantId, "User");
                     if (complaints.Count > 0 || complaints != null)
                     {
-
                         foreach (var complaint in complaints)
                         {
                             var comResponse = new GetComplaintResponseDTO
@@ -57,7 +56,7 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new BadRequestException(ex.Message);
             }

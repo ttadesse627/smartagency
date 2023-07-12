@@ -6,75 +6,64 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Complaints.Query;
-public record GetOrderComplaintsQuery(Guid OrderId) : IRequest<GetOrderComplaintsResponseDTO> { }
+public record GetOrderComplaintsQuery(Guid ApplicantId) : IRequest<GetOrderComplaintsResponseDTO> { }
 public class GetOrderComplaintsQueryHandler : IRequestHandler<GetOrderComplaintsQuery, GetOrderComplaintsResponseDTO>
 {
-    private readonly IOrderRepository _orderRepository;
+    private readonly IApplicantRepository _applicantRepository;
     private readonly IComplaintRepository _complaintRepository;
-    public GetOrderComplaintsQueryHandler(IOrderRepository orderRepository, IComplaintRepository complaintRepository)
+    public GetOrderComplaintsQueryHandler(IApplicantRepository applicantRepository, IComplaintRepository complaintRepository)
     {
-        _orderRepository = orderRepository;
+        _applicantRepository = applicantRepository;
         _complaintRepository = complaintRepository;
     }
 
-    public async Task<GetOrderComplaintsResponseDTO> Handle(GetOrderComplaintsQuery request, CancellationToken cancellationToken)
+    public async Task<GetOrderComplaintsResponseDTO> Handle(GetOrderComplaintsQuery query, CancellationToken cancellationToken)
     {
         var response = new GetOrderComplaintsResponseDTO();
-        var explLoadedProps = new string[] { "Employees", "Sponsor", "Partner", "Complaints", "Complaints.User", "Employees.Address", "Sponsor.Address" };
-        var order = await _orderRepository.GetWithPredicateAsync(order => order.Id == request.OrderId, explLoadedProps);
+        var explLoadedProps = new string[] { "Order", "Order.Sponsor", "Order.Partner", "Complaints", "Complaints.User", "Address", "Order.Sponsor.Address" };
+        var orderedApplicant = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == query.ApplicantId && applicant.OrderId != null, explLoadedProps);
 
-        if (order != null)
+        var employeeName = orderedApplicant.FirstName + " " + orderedApplicant.MiddleName + " " + orderedApplicant.LastName;
+        var employeeInfo = new EmployeeInfoDTO
         {
-            if (order.Employees != null && order.Employees.Count > 0)
+            Id = orderedApplicant.Id,
+            EmployeeName = employeeName,
+            HouseNumber = orderedApplicant.Address?.HouseNumber,
+            PhoneNumber = orderedApplicant.Address?.PhoneNumber,
+            MobileNumber = orderedApplicant.Address?.Mobile
+        };
+        response.EmployeeInfo = employeeInfo;
+
+        var sponsorInfo = new SponsorInfoDTO
+        {
+            OrderNumber = orderedApplicant.Order?.OrderNumber,
+            CustomerName = orderedApplicant.Order?.Partner?.PartnerName,
+            VisaNumber = orderedApplicant.Order?.VisaNumber,
+            SponsorName = orderedApplicant.Order?.Sponsor?.FullName,
+            HousePhone = orderedApplicant.Order?.Sponsor?.Address?.PhoneNumber,
+            MobilePhone = orderedApplicant.Order?.Sponsor?.Address?.Mobile
+        };
+
+        response.SponsorInfo = sponsorInfo;
+
+        var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == query.ApplicantId, "User");
+        var compResponse = new List<GetComplaintResponseDTO>();
+        if (complaints.Count > 0 || complaints != null)
+        {
+            foreach (var complaint in complaints)
             {
-                foreach (var employee in order.Employees)
+                var comResponse = new GetComplaintResponseDTO
                 {
-                    var employeeName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName;
-                    var employeeInfo = new EmployeeInfoDTO
-                    {
-                        Id = employee.Id,
-                        EmployeeName = employeeName,
-                        HouseNumber = employee.Address?.HouseNumber,
-                        PhoneNumber = employee.Address?.PhoneNumber,
-                        MobileNumber = employee.Address?.Mobile
-                    };
-                    response.EmployeeInfo = employeeInfo;
-                }
-
+                    Message = complaint.Message,
+                    SenderName = complaint.User.FullName,
+                    Date = complaint.CreatedAt
+                };
+                compResponse.Add(comResponse);
             }
-            var sponsorInfo = new SponsorInfoDTO
-            {
-                Id = order.Id,
-                OrderNumber = order.OrderNumber,
-                CustomerName = order.Partner?.PartnerName,
-                VisaNumber = order.VisaNumber,
-                SponsorName = order.Sponsor?.FullName,
-                HousePhone = order.Sponsor?.Address?.PhoneNumber,
-                MobilePhone = order.Sponsor?.Address?.Mobile
-            };
-
-            response.SponsorInfo = sponsorInfo;
-
-            var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == request.OrderId, "User");
-            var compResponse = new List<GetComplaintResponseDTO>();
-            if (complaints.Count > 0 || complaints != null)
-            {
-                foreach (var complaint in complaints)
-                {
-                    var comResponse = new GetComplaintResponseDTO
-                    {
-                        Message = complaint.Message,
-                        SenderName = complaint.User.FullName,
-                        Date = complaint.CreatedAt
-                    };
-                    compResponse.Add(comResponse);
-                }
-            }
-
-            response.Complaints = compResponse;
         }
 
-        return response;
+        response.Complaints = compResponse;
 
+        return response;
     }
 }

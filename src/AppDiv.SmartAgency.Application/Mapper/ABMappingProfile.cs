@@ -168,10 +168,12 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<SearchModel<Order>, SearchModel<GetOrdersResponseDTO>>();
 
             // Map response to get single Order
-            CreateMap<Order, GetOrderRespDTO>();
+            CreateMap<Order, GetOrderRespDTO>()
+                .ForMember(dest => dest.Attachment, opt => opt.Ignore());
             CreateMap<OrderCriteria, GetOrderCriteriaRespDTO>();
             CreateMap<Payment, GetPaymentRespDTO>();
-            CreateMap<Sponsor, GetSponsorRespDTO>();
+            CreateMap<Sponsor, GetSponsorRespDTO>()
+                .ForMember(dest => dest.Attachment, opt => opt.Ignore());
             CreateMap<Address, GetSponsorAddressRespDTO>();
             CreateMap<ServiceResponse<Order>, ServiceResponse<GetOrderRespDTO>>();
             CreateMap<Order, GetForAssignmentOrderDTO>();

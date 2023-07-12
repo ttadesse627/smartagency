@@ -176,7 +176,7 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             {
                 foreach (var attch in request.Attachment.AttachmentFiles)
                 {
-                    attachmentIds.Add(attch.AttachmentId);
+                    attachmentIds.Add((Guid)attch.AttachmentId);
                 }
             }
         }

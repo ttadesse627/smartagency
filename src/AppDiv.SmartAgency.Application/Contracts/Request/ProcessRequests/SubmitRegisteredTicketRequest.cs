@@ -9,8 +9,8 @@ public record SubmitRegisteredTicketRequest
     public string? ArrivalTime { get; set; }
     public string? Remark { get; set; }
     public string? TicketPrice { get; set; }
-    public DateTime? Date { get; set; }
+    public DateTime Date { get; set; }
     public Guid? AirLineId { get; set; }
     public Guid? ProcessDefinitionId { get; set; }
-    public Guid? ApplicantId { get; set; }
+    public Guid ApplicantId { get; set; }
 }
