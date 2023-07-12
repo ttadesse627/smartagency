@@ -32,18 +32,20 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
             foreach (var orderRequest in assignOrderRequests)
             {
                 var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderRequest.OrderId, "Employees");
-                var employee = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == orderRequest.EmployeeId && applicant.IsDeleted == false, "Order");
+                var employee = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == orderRequest.EmployeeId && applicant.IsDeleted == false && applicant.OrderId==null, "Order");
 
                 if (orderEntity != null && employee != null)
                 {
-                    if (employee.Order == null)
+                    if (employee.OrderId == null)
                     {
-                        employee.Order = orderEntity;
+                        employee.OrderId = orderEntity.Id;
                     }
                 }
             }
             try
             {
+
+            
                 response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
                 response.Message = "Seccussfully assigned.";
                 response.Data = count + 1;

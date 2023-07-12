@@ -32,13 +32,13 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Ser
             response = await _orderRepository.SaveDbUpdateAsync();
             if (response.Data >= 1)
             {
-                response.Message = $"Successfully deleted the applicant with an id {request.Id}";
+                response.Message = $"Successfully deleted the Order with an id {request.Id}";
                 response.Success = true;
             }
         }
         else if (orderToBeDeleted is null)
         {
-            response.Message = $"An applicant with an Id {request.Id} is not found!";
+            response.Message = $"An Order with an Id {request.Id} is not found!";
             response.Success = false;
         }
         else throw new Exception("Unknown error occorred while trying to delete the order.");

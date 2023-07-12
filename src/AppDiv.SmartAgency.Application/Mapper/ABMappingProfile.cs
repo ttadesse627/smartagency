@@ -1,4 +1,5 @@
-﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
+﻿using System.Runtime.InteropServices;
+using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
@@ -231,8 +232,10 @@ namespace AppDiv.SmartAgency.Application.Mapper
 
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>()
                 .ForMember(dest => dest.Witnesses, opt => opt.Ignore()).ReverseMap();
+            CreateMap<EditCompanyInformationCommand, CompanyInformation>()
+                 .ForMember(dest => dest.Witnesses, opt=> opt.Ignore()).ReverseMap();     
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
-            CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
+            //CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
 
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();

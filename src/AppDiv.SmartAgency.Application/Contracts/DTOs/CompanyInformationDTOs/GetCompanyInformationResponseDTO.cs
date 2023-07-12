@@ -4,14 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
+using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 
-namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs
 {
-    public record CreateCompanyInformationRequest
+    public record GetCompanyInformationResponseDTO
     {
 
+        public Guid Id { get; set; }
         public string CompanyName { get; set; }
 
         public string CompanyNameAmharic { get; set; }

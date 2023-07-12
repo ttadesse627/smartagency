@@ -46,14 +46,16 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
                 var result = await _groupRepository.SaveChangesAsync(cancellationToken);
                 if (result)
                 {
+                    response.Data= Convert.ToInt32(result);
                     response.Success = true;
                     response.Message = "Created Successfully!";
                 }
             }
             catch (Exception ex)
             {
+                response.Data=0;
                 response.Errors?.Add(ex.Message);
-                throw new BadRequestException(ex.Message);
+                //throw new BadRequestException(ex.Message);
             }
             return response;
         }

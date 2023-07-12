@@ -30,10 +30,10 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     public async Task<ServiceResponse<Order>> GetOrderAsync(Guid id)
     {
         var response = new ServiceResponse<Order>();
-        var order = new Order();
+       var order = new Order();
         try
         {
-            order = await _context.Orders
+             order = await _context.Orders
                     .Include("PortOfArrival")
                     .Include("Priority")
                     .Include("VisaType")
@@ -117,7 +117,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     public async Task<List<NotAssignedVisaResponseDTO>> GetNotAssignedVisa()
     {
           var response= await _context.Orders
-                             .Where( or=> or.Employees==null || or.Employees.Count()==0 )
+                             .Where( or=> (or.IsDeleted==false) &&(or.Employees==null || or.Employees.Count()==0 ))
                              .Select( or=> new NotAssignedVisaResponseDTO{
                                      AgencyName = or.Partner.PartnerName,
                                      OrderNumber = or.OrderNumber,

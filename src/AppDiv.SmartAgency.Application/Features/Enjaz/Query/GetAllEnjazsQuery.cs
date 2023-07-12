@@ -72,6 +72,7 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
 
                 }
             }
+            var res=enjazResponse;
             return enjazResponse;
 
             // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
