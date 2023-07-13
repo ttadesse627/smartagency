@@ -11,12 +11,9 @@ public class EnjazEntityConfig : IEntityTypeConfiguration<Enjaz>
         builder.HasIndex(enj => enj.ApplicationNumber)
             .IsUnique();
 
-        builder.HasIndex(enj => enj.OrderId)
-            .IsUnique();
-
-        builder.HasOne(enj => enj.Order)
+        builder.HasOne(enj => enj.Applicant)
             .WithOne(sp => sp.Enjaz)
-            .HasForeignKey<Enjaz>(fk => fk.OrderId)
+            .HasForeignKey<Enjaz>(fk => fk.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
