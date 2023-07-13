@@ -2,6 +2,7 @@
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Query;
@@ -12,95 +13,59 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
 {
     private readonly IApplicantRepository _applicantRepository;
     private readonly IProcessRepository _processRepository;
+    private readonly IApplicantProcessRepository _applicantProcessRepository;
 
-    public GetForEnjazQueryHandler(IProcessRepository processRepository, IApplicantRepository applicantRepository)
+    public GetForEnjazQueryHandler(IProcessRepository processRepository, IApplicantRepository applicantRepository, IApplicantProcessRepository applicantProcessRepository)
     {
         _processRepository = processRepository;
         _applicantRepository = applicantRepository;
+        _applicantProcessRepository = applicantProcessRepository;
     }
 
     public async Task<List<DropdownEnjazResponseDTO>> Handle(GetForEnjazQuery request, CancellationToken cancellationToken)
     {
         var response = new List<DropdownEnjazResponseDTO>();
-        var ordEagerLoadedProps = new string[]{"Sponsor","OrderCriteria.Language","OrderCriteria.Religion",
-                                        "Employees","Employees.Jobtitle","Employees.Language","Enjaz"};
 
-        var applEagerLoadedProps = new string[] { "Order", "Order.Sponsor", "Jobtitle", "Language", "Religion", "Enjaz" };
 
-        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => app.OrderId != null);
-
-        if (applicants != null && applicants.Any())
+        var enjazRequiredProcesses = await _processRepository.GetEnjazRequiredProcessesAsync();
+        if (enjazRequiredProcesses == null || !enjazRequiredProcesses.Any())
         {
-            var enjazRequiredProcess = await _processRepository.GetEnjazRequiredProcessesAsync();
-            if (enjazRequiredProcess.Any())
-            {
-                var enjazMinStep = enjazRequiredProcess.Min(pr => pr.Step);
-                var prevProcesses = await _processRepository.GetPrevStepEnjazProcessesAsync(pr => pr.Step == enjazMinStep - 1);
-                if (prevProcesses.Any())
-                {
-                    var prevProcess = prevProcesses.First();
-                    if (prevProcess.ProcessDefinitions != null && prevProcess.ProcessDefinitions.Any())
-                    {
-                        var maxStep = prevProcess.ProcessDefinitions.Max(p => p.Step);
-                        var lastPds = prevProcess.ProcessDefinitions.Where()
-                        //////////////////
-                        foreach (var empl in order.Employees)
-                        {
-                            var ordResp = new DropdownEnjazResponseDTO
-                            {
-                                OrderId = order.Id,
-                                OrderNumber = order.OrderNumber,
-                                SponsorFullName = order.Sponsor?.FullName,
-                                EmployeeProfession = empl.Jobtitle.Value,
-                                EmployeeLanguage = empl.Language.Value,
-                                PassportNumber = empl.PassportNumber,
-                                EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
-                            };
-                            response.Add(ordResp);
-                        }
-                    }
-
-                }
-            }
-
-            //////////////////////////////////////////////////////////////////
-
-            var orderList = await _orderRepository.GetAllWithPredicateAsync
-                            (
-                                order => order.IsDeleted == false && order.Employees != null && order.Employees.Count > 0 && order.Enjaz == null, ordEagerLoadedProps
-                            );
-
-            var applicantList = await _applicantRepository.GetAllWithPredicateAsync
-                            (
-                                applicant => applicant.IsDeleted == false && applicant.OrderId != null, applEagerLoadedProps
-                            );
-
-            if (orderList.Count > 0 && orderList != null)
-            {
-                foreach (var order in orderList)
-                {
-                    if (order.Employees != null && order.Employees.Count > 0)
-                    {
-                        foreach (var empl in order.Employees)
-                        {
-                            var ordResp = new DropdownEnjazResponseDTO
-                            {
-                                OrderId = order.Id,
-                                OrderNumber = order.OrderNumber,
-                                SponsorFullName = order.Sponsor?.FullName,
-                                EmployeeProfession = empl.Jobtitle.Value,
-                                EmployeeLanguage = empl.Language.Value,
-                                PassportNumber = empl.PassportNumber,
-                                EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
-                            };
-                            response.Add(ordResp);
-                        }
-                    }
-
-                }
-            }
-
-
             return response;
         }
+
+        var enjazMinStep = enjazRequiredProcesses.Min(pr => pr.Step);
+        var prevProcesses = await _processRepository.GetPrevStepEnjazProcessesAsync(pr => pr.Step == enjazMinStep - 1);
+        if (prevProcesses == null || !prevProcesses.Any())
+        {
+            return response;
+        }
+
+        var prevProcess = prevProcesses.First();
+        var lastProcessDefinition = prevProcess.ProcessDefinitions?.OrderByDescending(p => p.Step).FirstOrDefault();
+        if (lastProcessDefinition != null)
+        {
+            var eligibleApplicants = await _applicantRepository.GetAllWithPredicateAsync(
+                appl => appl.OrderId != null
+                    && appl.ApplicantProcesses != null
+                    && appl.ApplicantProcesses.Any(applPro => applPro.ProcessDefinitionId == lastProcessDefinition.Id && applPro.Status == ProcessStatus.In)
+                    && appl.Enjaz == null,
+                new string[] { "Order", "Order.Sponsor", "Jobtitle", "Language", "Religion", "Enjaz", "ApplicantProcesses" });
+
+            foreach (var applicant in eligibleApplicants)
+            {
+                var resp = new DropdownEnjazResponseDTO
+                {
+                    OrderId = applicant.OrderId,
+                    OrderNumber = applicant.Order.OrderNumber,
+                    SponsorFullName = applicant.Order.Sponsor?.FullName,
+                    EmployeeProfession = applicant.Jobtitle.Value,
+                    EmployeeLanguage = applicant.Language.Value,
+                    PassportNumber = applicant.PassportNumber,
+                    EmployeeFullName = applicant.FirstName + " " + applicant.MiddleName + " " + applicant.LastName
+                };
+                response.Add(resp);
+            }
+        }
+        return response;
     }
+}
