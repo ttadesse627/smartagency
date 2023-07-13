@@ -7,5 +7,6 @@ public record OrderInfoResponseDTO
     public string? ClientName { get; set; }
     public string? Priority { get; set; }
     public string? VisaNumber { get; set; }
-    public string? SponsorName { get; set; }
+    public string? Sponsor { get; set; }
+    public string? City { get; set; }
 }

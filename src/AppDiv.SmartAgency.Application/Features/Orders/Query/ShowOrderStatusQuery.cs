@@ -120,12 +120,15 @@ public class ShowOrderStatusQueryHandler : IRequestHandler<ShowOrderStatusQuery,
     }
 }*/
 
-// public class ShowOrderStatusQueryHandler: IRequestHandler<ShowOrderStatusQuery, ShowOrderStatusResponseDTO>
-// {
-//     private readonly IApplicantRepository _applicantRepository;
-//     public ShowOrderStatusQueryHandler(IApplicantRepository applicantRepository)
-//     {
-//          _applicantRepository = applicantRepository;
-//     }
-//     public async Task<ShowOrderStatusResponseDTO>  Handle()
-// }
+public class ShowOrderStatusQueryHandler: IRequestHandler<ShowOrderStatusQuery, ShowOrderStatusResponseDTO>
+{
+    private readonly IApplicantRepository _applicantRepository;
+    public ShowOrderStatusQueryHandler(IApplicantRepository applicantRepository)
+    {
+         _applicantRepository = applicantRepository;
+    }
+    public async Task<ShowOrderStatusResponseDTO>  Handle(ShowOrderStatusQuery request, CancellationToken cancellationToken)
+    {
+        return await _applicantRepository.GetShowOrderStatus(request.ApplicantId);
+    }
+}

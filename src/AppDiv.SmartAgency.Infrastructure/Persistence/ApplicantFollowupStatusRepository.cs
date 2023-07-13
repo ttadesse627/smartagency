@@ -36,6 +36,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
       
         _context.ApplicantFollowupStatuses.Update(applicantFollowupStatus);
         var response = await _context.SaveChangesAsync();
+        
 
         return response;
     }

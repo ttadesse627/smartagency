@@ -9,6 +9,7 @@ using System.Linq.Dynamic.Core;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using Newtonsoft.Json.Linq;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
@@ -195,20 +196,20 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         var skills = new List<string>();
         var languages = new List<LanguagesResponseDTO>();
         var response = await _context.Applicants
-    .Where(app => app.Id == id)
-    .Include("Salary")
-    .Include("Religion")
-    .Include("Jobtitle")
-    .Include("MaritalStatus")
-    .Include("Skills.LookUp")
-    .Include("Education.LevelOfQualifications.LookUp")
-    .Include("Address")
-    .Include("EmergencyContact")
-    .Include("EmergencyContact.Address")
-    .Include("Experiences.Country")
-    .Include("PassportIssuedPlace")
-    .Include("Attachments")
-    .Include("LanguageSkills.Language")
+            .Where(app => app.Id == id)
+            .Include("Salary")
+            .Include("Religion")
+            .Include("Jobtitle")
+            .Include("MaritalStatus")
+            .Include("Skills.LookUp")
+            .Include("Education.LevelOfQualifications.LookUp")
+            .Include("Address")
+            .Include("EmergencyContact")
+            .Include("EmergencyContact.Address")
+            .Include("Experiences.Country")
+            .Include("PassportIssuedPlace")
+            .Include("Attachments")
+            .Include("LanguageSkills.Language")
     .Select(app => new ApplicantCvResponseDTO
     {
         Overview = new OverviewResponseDTO
@@ -308,6 +309,119 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
 
        return response;
 
+   }
+
+
+   public async Task<ShowOrderStatusResponseDTO> GetShowOrderStatus(Guid id)
+   {
+
+      var showStatus = new ShowOrderStatusResponseDTO();
+
+                var appOrderInfo= await _context.Applicants
+                .Where(ap => (ap.Id == id) && (ap.IsDeleted == false) && (ap.OrderId != null))
+                    .Include(app=>app.Order)
+                    .Include(app => app.Order.Partner)
+                    .Include(app => app.Order.Sponsor)
+                    .Include(app => app.Order.Sponsor.Address) 
+                    .Include( app => app.Order.Sponsor.Address.City)
+                    .Include(app => app.Order.Priority)
+                    .Include( app=> app.MaritalStatus) 
+                    .Include (app=> app.Gender)
+                    .Include( app=> app.Religion)
+                    .Select(app => new {
+                orderInfo= new OrderInfoResponseDTO{
+                   OrderNumber= app.Order.OrderNumber,
+                   ClientName= app.Order.Partner.PartnerName,
+                   Priority = app.Order.Priority.Value,
+                   VisaNumber= app.Order.VisaNumber,
+                   Sponsor=  app.Order.Sponsor.FullName,
+                   City= app.Order.Sponsor.Address.City.Value
+                      },
+                    //applicants info
+                 applicantInfo = new ApplicantInfoResponseDTO{
+                    PassportNumber=  app.PassportNumber,
+                    FullName= $"{app.FirstName} {app.MiddleName} {app.LastName}",
+                    Sex= app.Gender.ToString(),
+                    MaritalSatus= app.MaritalStatus.Value,
+                    Religion= app.Religion.Value,
+                    DateOfBirth = app.BirthDate.ToString("yyyy-MM-dd"),
+                    CurrentNationality = app.CurrentNationality
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            showStatus.OrderInformation= appOrderInfo?.orderInfo;
+            showStatus.ApplicantInformation= appOrderInfo?.applicantInfo;
+         
+
+
+            var tickReg= await _context.TicketRegistrations.FirstOrDefaultAsync(tr=>tr.ApplicantId==id);
+          
+           var ticketReady = await _context.TicketReadies
+                        .Include(tr=>tr.TicketOffice)
+                        .Include(tr=>tr.Applicant)
+                        .Where(tr => tr.ApplicantId == id)
+                        .Select(tr => new { tr.TicketOffice })
+                        .FirstOrDefaultAsync();
+                        
+            var travelInfo= new TravelInfoResponseDTO
+                    {
+                      TicketNumber= tickReg.TicketNumber,
+                      FlightDate = tickReg.FlightDate ,
+                      DepatrureFromAddis = tickReg.DepartureTime,
+                      ArrivalTime= tickReg.ArrivalTime,
+                      TicketOffice= ticketReady.TicketOffice.Value,
+                      TicketPrice= tickReg.TicketPrice,
+                      UploadTicket =""       
+                      };      
+                                   
+        showStatus.TravelInformation = travelInfo;
+
+        var enjazRes= await _context.Enjazs.Where( en=> en.ApplicantId==id)
+                     .Select(en=> new EnjazResponseDTO{
+                         Id = en.Id,
+                         ApplicationNumber= en.ApplicationNumber,
+                         TransactionCode = en.TransactionCode
+                     }).FirstOrDefaultAsync();
+
+         showStatus.EnjazResponse = enjazRes; 
+
+    //      var statuses= new List<StatusInfoResponseDTO>();
+
+    //      var statusRes= await _context.ApplicantProcesses
+    //                      .Where(appPro=> appPro.ApplicantId==id)
+    //                      .Select(appPro=> new{
+    //                       ProcessStatus= statuses.Select(st=> new StatusInfoResponseDTO{
+    //                         Id= appPro.ProcessDefinitionId,
+    //                         StatusName= appPro.ProcessDefinition.Name,
+    //                         Date= appPro.Date
+                          
+    //                       }).ToList()}).FirstOrDefaultAsync();   
+                            
+                        
+                    
+    //   showStatus.StatusInformation=statusRes.ProcessStatus;
+                
+
+                var statusRes = await _context.ProcessDefinitions
+                .GroupJoin(
+                    _context.ApplicantProcesses.Where(appPro => appPro.ApplicantId == id), // join with ApplicantProcesses table
+                    pd => pd.Id, // join on ProcessDefinition Id
+                    ap => ap.ProcessDefinitionId, // join on ApplicantProcess ProcessDefinitionId
+                    (pd, appProGroup) => new { ProcessDef = pd, ApplicantProcesses = appProGroup }) // select result
+                .SelectMany(
+                    x => x.ApplicantProcesses.DefaultIfEmpty(), // flatten result
+                    (pd, appPro) => new StatusInfoResponseDTO {
+                        Id = pd.ProcessDef.Id,
+                        StatusName = pd.ProcessDef.Name,
+                        Date = appPro != null ? appPro.Date : null // set Date to null if no matching record in ApplicantProcesses table
+                    })
+                .ToListAsync();
+
+    showStatus.StatusInformation= statusRes;
+
+
+    return showStatus;
    }
 
    

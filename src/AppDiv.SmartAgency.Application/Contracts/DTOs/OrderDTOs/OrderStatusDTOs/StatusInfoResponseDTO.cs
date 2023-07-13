@@ -3,5 +3,8 @@
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
 public record StatusInfoResponseDTO
 {
-    public ICollection<ProcessStatusResponseDTO>? ProcessStatuses { get; set; }
+     public Guid Id {get; set;}
+    public string? StatusName { get; set; }
+    public DateTime? Date { get; set; }
+   
 }
