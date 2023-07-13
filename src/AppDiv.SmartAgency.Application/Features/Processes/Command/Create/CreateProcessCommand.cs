@@ -42,7 +42,7 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         {
             maxStep = request.Step;
         }
-        var ticketProcess = processes.First(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
+        var ticketProcess = processes.FirstOrDefault(pr => pr.Id == Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
         ticketProcess.Step = maxStep + 1;
         try
         {

@@ -31,7 +31,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("get/{id}")]
-    public async Task<ActionResult<ServiceResponse<GetOrderRespDTO>>> GetByIdAsync(Guid id)
+    public async Task<ActionResult<GetOrderRespDTO>> GetByIdAsync(Guid id)
     {
         return Ok(await _mediator.Send(new GetSingleOrder(id)));
     }

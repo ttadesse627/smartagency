@@ -92,6 +92,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return properties;
         }
 
+        // The method that returns the report data which is query result.  And also the report columns(column names)
         public async Task<JObject> GetReportData(string reportName, List<string>? columns = null, List<Filter>? filters = null, List<Aggregate>? aggregates = null)
         {
             var reportData = new JObject();
@@ -219,6 +220,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return reportData;
         }
 
+        // Miss this.
         public async Task<ServiceResponse<Int32>> CreateReport(string reportName, string tableName, List<string>? columns = null, List<Filter>? filters = null, List<Aggregate>? aggregates = null)
         {
             var response = new ServiceResponse<int>();
@@ -328,6 +330,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return response;
         }
+        
+        // The Last Implementation to applied
         public async Task<ServiceResponse<Int32>> CreateReportAsync(string reportName, string query)
         {
             var response = new ServiceResponse<int>();
@@ -363,6 +367,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return response;
         }
 
+        // The method to return available reports (we considered sql view as report)
         public async Task<JObject> GetReports()
         {
 
