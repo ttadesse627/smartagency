@@ -141,7 +141,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
                 var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
                 if (nextPr != null)
                 {
-                    nextpdId = await _proDefRepository.GetMinStepAsync(nextPr.Id);
+                    nextpdId = await _proDefRepository.GetMinStepPdAsync(nextPr.Id);
                 }
             }
             else

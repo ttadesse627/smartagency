@@ -27,26 +27,31 @@ public class ProcessDefinitionRepository : BaseRepository<ProcessDefinition>, IP
         return count;
     }
 
-    public async Task<Guid> GetMinStepAsync(Guid processId)
+    public async Task<Guid> GetMinStepPdAsync(Guid processId)
     {
         return await _context.ProcessDefinitions.OrderBy(p => p.Step).Where(p => p.ProcessId == processId).Select(p => p.Id).FirstOrDefaultAsync();
+    }
+
+    public async Task<int> GetMaxStepAsync(Guid processId)
+    {
+        return await _context.ProcessDefinitions.Where(p => p.ProcessId == processId).MaxAsync(p => p.Step);
     }
 
     public async Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses(Guid id)
     {
 
 
-              var expiredProcesses = await _context.ApplicantProcesses
-               .Include(ap => ap.ProcessDefinition) 
-                .Where( ap => (ap.ProcessDefinitionId==id) && (ap.Status==ProcessStatus.In) &&( DateTime.Compare( ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval), DateTime.Now)<0) )
-                .Select(g => new DynamicProcessResponseDTO
-                        {
-                             ProcessDefnitionName= g.ProcessDefinition.Name,
-                             ApplicantName= g.Applicant.AmharicFullName,
-                             PassportNumber= g.Applicant.PassportNumber,
-                             DatePassed=   (int)DateTime.UtcNow.Subtract(g.Date.AddDays(g.ProcessDefinition.ExpiryInterval)).TotalDays
-                        })
-                        .ToListAsync();
+        var expiredProcesses = await _context.ApplicantProcesses
+         .Include(ap => ap.ProcessDefinition)
+          .Where(ap => (ap.ProcessDefinitionId == id) && (ap.Status == ProcessStatus.In) && (DateTime.Compare(ap.Date.AddDays(ap.ProcessDefinition.ExpiryInterval), DateTime.Now) < 0))
+          .Select(g => new DynamicProcessResponseDTO
+          {
+              ProcessDefnitionName = g.ProcessDefinition.Name,
+              ApplicantName = g.Applicant.AmharicFullName,
+              PassportNumber = g.Applicant.PassportNumber,
+              DatePassed = (int)DateTime.UtcNow.Subtract(g.Date.AddDays(g.ProcessDefinition.ExpiryInterval)).TotalDays
+          })
+                  .ToListAsync();
 
         return expiredProcesses;
     }

@@ -72,7 +72,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
                 var nextPr = await _processRepository.GetWithPredicateAsync(p => p.Step == nextPrStep);
                 if (nextPr != null)
                 {
-                    nextpdId = await _definitionRepository.GetMinStepAsync(nextPr.Id);
+                    nextpdId = await _definitionRepository.GetMinStepPdAsync(nextPr.Id);
                 }
             }
             else
