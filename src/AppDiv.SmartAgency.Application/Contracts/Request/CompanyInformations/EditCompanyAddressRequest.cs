@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
 {
-    public class EditCompanyAddressRequest:CompanyAddressRequest
+    public class EditCompanyAddressRequest : CompanyAddressRequest
     {
 
-         //public Guid id { get; set; }
+        public Guid id { get; set; }
     }
 }

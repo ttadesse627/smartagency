@@ -42,65 +42,70 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
                     if (prevProcess.ProcessDefinitions != null && prevProcess.ProcessDefinitions.Any())
                     {
                         var maxStep = prevProcess.ProcessDefinitions.Max(p => p.Step);
-                        var lastPds = prevProcess.ProcessDefinitions.Where()
-                        //////////////////
-                        foreach (var empl in order.Employees)
+                        var lastPds = prevProcess.ProcessDefinitions.Where(pd => pd.Step == maxStep);
+                        if (lastPds != null && lastPds.Any())
                         {
-                            var ordResp = new DropdownEnjazResponseDTO
-                            {
-                                OrderId = order.Id,
-                                OrderNumber = order.OrderNumber,
-                                SponsorFullName = order.Sponsor?.FullName,
-                                EmployeeProfession = empl.Jobtitle.Value,
-                                EmployeeLanguage = empl.Language.Value,
-                                PassportNumber = empl.PassportNumber,
-                                EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
-                            };
-                            response.Add(ordResp);
+                            var lastPd = lastPds.First();
                         }
+                        //     //////////////////
+                        //     foreach (var empl in order.Employees)
+                        //     {
+                        //         var ordResp = new DropdownEnjazResponseDTO
+                        //         {
+                        //             OrderId = order.Id,
+                        //             OrderNumber = order.OrderNumber,
+                        //             SponsorFullName = order.Sponsor?.FullName,
+                        //             EmployeeProfession = empl.Jobtitle.Value,
+                        //             EmployeeLanguage = empl.Language.Value,
+                        //             PassportNumber = empl.PassportNumber,
+                        //             EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
+                        //         };
+                        //         response.Add(ordResp);
+                        //     }
                     }
 
                 }
             }
-
-            //////////////////////////////////////////////////////////////////
-
-            var orderList = await _orderRepository.GetAllWithPredicateAsync
-                            (
-                                order => order.IsDeleted == false && order.Employees != null && order.Employees.Count > 0 && order.Enjaz == null, ordEagerLoadedProps
-                            );
-
-            var applicantList = await _applicantRepository.GetAllWithPredicateAsync
-                            (
-                                applicant => applicant.IsDeleted == false && applicant.OrderId != null, applEagerLoadedProps
-                            );
-
-            if (orderList.Count > 0 && orderList != null)
-            {
-                foreach (var order in orderList)
-                {
-                    if (order.Employees != null && order.Employees.Count > 0)
-                    {
-                        foreach (var empl in order.Employees)
-                        {
-                            var ordResp = new DropdownEnjazResponseDTO
-                            {
-                                OrderId = order.Id,
-                                OrderNumber = order.OrderNumber,
-                                SponsorFullName = order.Sponsor?.FullName,
-                                EmployeeProfession = empl.Jobtitle.Value,
-                                EmployeeLanguage = empl.Language.Value,
-                                PassportNumber = empl.PassportNumber,
-                                EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
-                            };
-                            response.Add(ordResp);
-                        }
-                    }
-
-                }
-            }
-
-
-            return response;
         }
+
+        //////////////////////////////////////////////////////////////////
+
+        // var orderList = await _orderRepository.GetAllWithPredicateAsync
+        //                 (
+        //                     order => order.IsDeleted == false && order.Employees != null && order.Employees.Count > 0 && order.Enjaz == null, ordEagerLoadedProps
+        //                 );
+
+        // var applicantList = await _applicantRepository.GetAllWithPredicateAsync
+        //                 (
+        //                     applicant => applicant.IsDeleted == false && applicant.OrderId != null, applEagerLoadedProps
+        //                 );
+
+        // if (orderList.Count > 0 && orderList != null)
+        // {
+        //     foreach (var order in orderList)
+        //     {
+        //         if (order.Employees != null && order.Employees.Count > 0)
+        //         {
+        //             foreach (var empl in order.Employees)
+        //             {
+        //                 var ordResp = new DropdownEnjazResponseDTO
+        //                 {
+        //                     OrderId = order.Id,
+        //                     OrderNumber = order.OrderNumber,
+        //                     SponsorFullName = order.Sponsor?.FullName,
+        //                     EmployeeProfession = empl.Jobtitle.Value,
+        //                     EmployeeLanguage = empl.Language.Value,
+        //                     PassportNumber = empl.PassportNumber,
+        //                     EmployeeFullName = empl.FirstName + " " + empl.MiddleName + " " + empl.LastName
+        //                 };
+        //                 response.Add(ordResp);
+        //             }
+        //         }
+
+        //     }
+        // }
+
+
+        return response;
     }
+}
