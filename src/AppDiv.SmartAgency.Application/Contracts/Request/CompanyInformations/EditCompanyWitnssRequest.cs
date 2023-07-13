@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
 {
-    public class EditCompanyWitnessRequest : CompanyWitnessRequest
+    public class EditCompanyWitnssRequest
     {
-        public Guid Id { get; set; }
+        public ICollection<EditCompanyWitnessRequest>? Witnesses { get; set; }
     }
 }
