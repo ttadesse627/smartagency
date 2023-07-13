@@ -9,8 +9,20 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           
-            
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Enjazs_Orders_OrderId",
+                table: "Enjazs");
+
+            migrationBuilder.RenameColumn(
+                name: "OrderId",
+                table: "Enjazs",
+                newName: "ApplicantId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Enjazs_OrderId",
+                table: "Enjazs",
+                newName: "IX_Enjazs_ApplicantId");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedAt",

@@ -5,7 +5,6 @@ using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Create;
@@ -28,31 +27,33 @@ public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand,
         var request = command.request;
         var response = new ServiceResponse<Int32>();
         var process = CustomMapper.Mapper.Map<Process>(request);
-        var processes = await _processRepository.GetAllAsync();
-        var maxStep = 1;
-        if (processes.Count() > 1)
-        {
-            maxStep = processes.Where(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86")).Max(pr => pr.Step);
-        }
-        if (request.Step > maxStep + 1)
-        {
-            throw new BadRequestException("The process steps should be increased by one.");
-        }
-        if (maxStep < request.Step)
-        {
-            maxStep = request.Step;
-        }
-        var ticketProcess = processes.FirstOrDefault(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
-        ticketProcess.Step = maxStep + 1;
         try
         {
             await _processRepository.InsertAsync(process, cancellationToken);
-            await _processRepository.SaveChangesAsync(cancellationToken);
+            response.Success = await _processRepository.SaveChangesAsync(cancellationToken);
+            response.Message = "Successfully created!";
         }
         catch (System.Exception ex)
         {
-            throw new ApplicationException($"Unknown error occurred while updating the {ticketProcess.Name}'s step.");
+            response.Errors?.Add(ex.Message);
+            throw new ApplicationException($"Unknown error occurred while inserting process data.");
         }
+        var ticketProcess = await _processRepository.GetAsync(Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
+        if (ticketProcess != null)
+        {
+            var maxStep = await _processRepository.GetMaximumStepAsync(pr => pr.Id != Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86"));
+            ticketProcess.Step = maxStep + 1;
+            try
+            {
+                var success = await _processRepository.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                response.Errors?.Add(ex.Message);
+                response.Errors?.Add($"An error occurre while updating {ticketProcess.Name}'s step.");
+            }
+        }
+
         return response;
     }
 }

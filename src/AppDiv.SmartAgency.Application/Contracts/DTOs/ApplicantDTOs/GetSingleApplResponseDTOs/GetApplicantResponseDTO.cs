@@ -1,9 +1,9 @@
 using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+// using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 
-namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs. GetSingleApplResponseDTOs;
+namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
 public record GetApplicantResponseDTO
 {
     public Guid Id { get; set; }
@@ -42,7 +42,7 @@ public record GetApplicantResponseDTO
     public GetRepresentativeResponseDTO? Representative { get; set; }
     public ICollection<GetWitnessResponseDTO>? Witnesses { get; set; }
     public ICollection<GetBeneficiaryResponseDTO>? Beneficiaries { get; set; }
-    public ICollection<AttachmentFileResponseDTO>? AttachmentFiles { get; set; }
+    public ICollection<ApplicantAttachmentResponseDTO>? AttachmentFiles { get; set; }
     public GetAddressResponseDTO? Address { get; set; }
 
     //Navigation Properties

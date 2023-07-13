@@ -20,7 +20,7 @@ public record GetOrderRespDTO
     public LookUpResponseDTO? PortOfArrival { get; set; }
     public LookUpResponseDTO? Priority { get; set; }
     public LookUpResponseDTO? VisaType { get; set; }
-    public OrderApplResponseDTO? Employees { get; set; }
+    public ICollection<OrderApplResponseDTO>? Employees { get; set; }
     public AttachmentFileResponseDTO? Attachment { get; set; }
     public GetOrderCriteriaRespDTO? OrderCriteria { get; set; }
     public GetPaymentRespDTO? Payment { get; set; }

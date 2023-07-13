@@ -98,7 +98,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
             {
                 tkReadyApplicants.Add(new GetTicketReadyApplicantsResponseDTO()
                 {
-                    Id = applicant.Applicant.Id,
+                    ApplicantId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
                     OrderNumber = applicant.Applicant.Order?.OrderNumber!,
@@ -131,7 +131,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
             {
                 tkRefundApplicants.Add(new GetTicketRefundApplicantsResponseDTO()
                 {
-                    Id = applicant.Applicant.Id,
+                    ApplicantId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
                     OrderNumber = applicant.Applicant.Order?.OrderNumber!,
@@ -148,7 +148,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
             {
                 tkRebookApplicants.Add(new GetTicketRebookApplicantsResponseDTO()
                 {
-                    Id = applicant.Applicant.Id,
+                    ApplicantId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
                     OrderNumber = applicant.Applicant.Order?.OrderNumber!,

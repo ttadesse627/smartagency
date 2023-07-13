@@ -1,17 +1,11 @@
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
-public class DeleteOrderCommand : IRequest<ServiceResponse<Int32>>
-{
-    public Guid Id { get; set; }
-    public DeleteOrderCommand(Guid id)
-    {
-        Id = id;
-    }
-}
+public record DeleteOrderCommand(Guid Id) : IRequest<ServiceResponse<Int32>> { }
 
 public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, ServiceResponse<Int32>>
 {
@@ -24,24 +18,28 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Ser
     {
         var response = new ServiceResponse<int>();
 
-        var serviceResponse = await _orderRepository.GetOrderAsync(request.Id);
-        var orderToBeDeleted = serviceResponse.Data;
-        if (orderToBeDeleted is not null)
+        var deletedOrder = await _orderRepository.GetAsync(request.Id);
+        deletedOrder.IsDeleted = true;
+        try
         {
-            orderToBeDeleted.IsDeleted = true;
-            response = await _orderRepository.SaveDbUpdateAsync();
-            if (response.Data >= 1)
+            response.Success = await _orderRepository.SaveChangesAsync(cancellationToken);
+            if (response.Success)
             {
-                response.Message = $"Successfully deleted the Order with an id {request.Id}";
-                response.Success = true;
+                response.Message = $"Successfully deleted the order with an id {request.Id}";
+                response.Data += 1;
+            }
+            else
+            {
+                throw new NotFoundException("You are trying to access the order that does not exist!");
             }
         }
-        else if (orderToBeDeleted is null)
+        catch (Exception ex)
         {
-            response.Message = $"An Order with an Id {request.Id} is not found!";
-            response.Success = false;
+            response.Message = "An error occurred while trying to delete order.";
+            response.Errors?.Add(ex.Message);
+            throw new ApplicationException("An error occurred while trying to delete order!");
         }
-        else throw new Exception("Unknown error occorred while trying to delete the order.");
+
         return response;
     }
 }

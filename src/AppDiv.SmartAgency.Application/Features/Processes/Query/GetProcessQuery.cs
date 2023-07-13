@@ -1,5 +1,4 @@
 
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
@@ -28,50 +27,10 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
     {
         var response = new ResponseContainerDTO<List<GetProcessResponseDTO>>();
         var processRespList = new List<GetProcessResponseDTO>();
-        // var excLoadedProps = new string[] { "Country", "ProcessDefinitions" };
         var applProList = new List<ApplicantProcess>();
 
-        var unprocessedAppls = await _applicantRepository.GetAllWithPredicateAsync(appl => (appl.ApplicantProcesses == null || appl.ApplicantProcesses.Count == 0) && !(appl.IsDeleted));
         var processes = await _processRepository.GetAllWithAsync("Country");
-
-        // var minStep = processes.Min(pr => pr.Step);
-        // var initPros = processes.Where(pro => pro.Step == minStep).ToList();
-        // if (initPros != null && initPros.Count > 0)
-        // {
-        //     foreach (var pr in initPros)
-        //     {
-        //         var pds = await _processDefRepository.GetMinStepAsync(pr.Id);
-        //         if (pds != null && pds.Count > 0)
-        //         {
-        //             foreach (var pd in pds)
-        //             {
-        //                 if (unprocessedAppls != null && unprocessedAppls.Count > 0)
-        //                 {
-        //                     foreach (var applicant in unprocessedAppls)
-        //                     {
-        //                         var appPro = new ApplicantProcess
-        //                         {
-        //                             Applicant = applicant,
-        //                             ProcessDefinition = pd,
-        //                             Status = ProcessStatus.In,
-        //                             Date = DateTime.Today
-        //                         };
-        //                         applProList.Add(appPro);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     try
-        //     {
-        //         await _applicantProcessRepository.InsertAsync(applProList, cancellationToken);
-        //         await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new ApplicationException(ex.Message);
-        //     }
-        // }
+        
         if (processes.Any())
         {
             foreach (var process in processes)

@@ -9,6 +9,7 @@ public interface IProcessDefinitionRepository : IBaseRepository<ProcessDefinitio
 {
     // public Task<Int32> CreateProcessAsync(Process processDefinition);
     //public Task<List<Object>>  GetDashbourd();
-    public Task<Guid> GetMinStepAsync(Guid processId);
+    public Task<Guid> GetMinStepPdAsync(Guid processId);
+    public Task<int> GetMaxStepAsync(Guid processId);
     public Task<List<DynamicProcessResponseDTO>> GetDynamicProcesses(Guid id);
 }

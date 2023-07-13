@@ -55,12 +55,12 @@ public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicant
 
 
         var fileResults = _fileService.GetFiles(fileTypes, applicantEntity.Id.ToString());
-        var attchFiles = new List<AttachmentFileResponseDTO>();
+        var attchFiles = new List<ApplicantAttachmentResponseDTO>();
         if (fileResults.Count > 0)
         {
             foreach (var fileResult in fileResults)
             {
-                var fileResponse = new AttachmentFileResponseDTO
+                var fileResponse = new ApplicantAttachmentResponseDTO
                 {
                     AttachmentFile = Convert.ToBase64String(fileResult.File),
                     AttachmentType = fileResult.FileName
