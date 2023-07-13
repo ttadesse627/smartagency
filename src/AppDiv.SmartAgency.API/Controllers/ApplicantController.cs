@@ -4,6 +4,8 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
@@ -135,5 +137,13 @@ public class ApplicantController : ControllerBase
    {
     return Ok( await _mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
    }
+
+       [HttpGet("get-for-enjaz")]
+    public async Task<ActionResult<ResponseContainerDTO<List<DropdownEnjazResponseDTO>>>> GetOrderForEnjaz()
+    {
+        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>();
+        response.Items = await _mediator.Send(new GetForEnjazQuery());
+        return Ok(response);
+    }
 
 }

@@ -83,12 +83,4 @@ public class OrderController : ControllerBase
         return Ok(await _mediator.Send(new OrderStatusQuery()));
     }
 
-    [HttpGet("get-for-enjaz")]
-    public async Task<ActionResult<ResponseContainerDTO<List<DropdownEnjazResponseDTO>>>> GetOrderForEnjaz()
-    {
-        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>();
-        response.Items = await _mediator.Send(new GetForEnjazQuery());
-        return Ok(response);
-    }
-
 }

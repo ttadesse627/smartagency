@@ -26,5 +26,14 @@ public class ProcessRepository : BaseRepository<Process>, IProcessRepository
         return await _context.Processes.AnyAsync(pr => pr.Id == processId && pr.Step == _context.Processes.Min(pd => pd.Step));
     }
 
+    public async Task<IEnumerable<Process>> GetEnjazRequiredProcessesAsync()
+    {
+        return await _context.Processes.Where(pr => pr.EnjazRequired).ToListAsync();
+    }
+    public async Task<IEnumerable<Process>> GetPrevStepEnjazProcessesAsync(Expression<Func<Process, bool>> predicate)
+    {
+        return await _context.Processes.Include(pr => pr.ProcessDefinitions).Where(pr => pr.EnjazRequired).ToListAsync();
+    }
+
 
 }
