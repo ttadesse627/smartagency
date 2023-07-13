@@ -114,7 +114,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
                 {
                     processReadyApplicants.Add(new GetApplProcessResponseDTO()
                     {
-                        Id = apl.Id,
+                        ApplicantId = apl.Id,
                         PassportNumber = apl.PassportNumber,
                         FullName = apl.FirstName + " " + apl.MiddleName + " " + apl.LastName,
                         OrderNumber = apl.Order?.OrderNumber!,
@@ -154,7 +154,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
             {
                 pdApplicants.Add(new GetApplProcessResponseDTO()
                 {
-                    Id = applicant1.Applicant!.Id,
+                    ApplicantId = applicant1.Applicant!.Id,
                     PassportNumber = applicant1.Applicant.PassportNumber,
                     FullName = applicant1.Applicant.FirstName + " " + applicant1.Applicant.MiddleName + " " + applicant1.Applicant.LastName,
                     OrderNumber = applicant1.Applicant.Order?.OrderNumber!,
@@ -164,7 +164,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
 
             definitions.Add(new GetProcessDefinitionResponseDTO()
             {
-                Id = pd.Id,
+                PdId = pd.Id,
                 Name = pd.Name,
                 Step = pd.Step,
                 NextPdId = nextpdId,

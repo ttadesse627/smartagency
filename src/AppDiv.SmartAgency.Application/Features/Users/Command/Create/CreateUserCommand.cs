@@ -27,9 +27,9 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
             var request = command.request;
             if (request.Password != request.ConfirmationPassword)
             {
-                var msg = "The password should be confirmed";
+                var msg = "The password doesn't match";
                 response.Errors.Add(msg);
-                throw new BadRequestException("The password should be confirmed");
+                throw new BadRequestException("The password doesn't match");
             }
 
             var validator = new CreateUserCommandValidator(_identityService);
@@ -50,6 +50,7 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
             if (validationResult.IsValid)
             {
                 var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>(request);
+               
                 mappedUser.Email = request.Address.Email;
                 if (request.UserGroups.Count > 0)
                 {

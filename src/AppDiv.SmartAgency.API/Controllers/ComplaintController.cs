@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
+    [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     // [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/complaint")]
     [ApiController]

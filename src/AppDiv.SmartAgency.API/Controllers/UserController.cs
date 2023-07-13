@@ -21,7 +21,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             if (request.ConfirmationPassword != request.Password)
             {
-                return BadRequest("The password is not confirmed. Please try again!");
+                return BadRequest("The password doesn't match. Please try again!");
             }
             return Ok(await Mediator.Send(new CreateUserCommand(request)));
         }

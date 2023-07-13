@@ -72,9 +72,9 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("show-order-status")]
-    public async Task<ActionResult> ShowOrderStatus(Guid OrderId)
+    public async Task<ActionResult> ShowOrderStatus(Guid ApplicantId)
     {
-        return Ok(await _mediator.Send(new ShowOrderStatusQuery(OrderId)));
+        return Ok(await _mediator.Send(new ShowOrderStatusQuery(ApplicantId)));
     }
 
     [HttpGet("order-statuses")]

@@ -7,6 +7,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 public record UpdateOrderStatusCommand(SubmitOrderStatusRequest request) : IRequest<ShowOrderStatusResponseDTO> { }
+/*
 public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatusCommand, ShowOrderStatusResponseDTO>
 {
     private readonly IProcessDefinitionRepository _definitionRepository;
@@ -173,4 +174,4 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
         return response;
     }
 
-}
+}*/

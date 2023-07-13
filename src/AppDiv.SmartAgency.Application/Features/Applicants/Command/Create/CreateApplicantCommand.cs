@@ -170,8 +170,8 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         var attachmentIds = new List<Guid>();
         if (request.Attachment != null)
         {
-         
-            applicantEntity.OrderId= request.Attachment.OrderId;
+
+            applicantEntity.OrderId = request.Attachment.OrderId;
             if (request.Attachment?.AttachmentFiles != null && request.Attachment.AttachmentFiles.Count > 0)
             {
                 foreach (var attch in request.Attachment.AttachmentFiles)

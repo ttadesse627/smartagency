@@ -6,4 +6,5 @@ public record AttachmentFileResponseDTO
 {
     public string? AttachmentFile { get; set; }
     public AttachmentDropDownDto? Attachment { get; set; }
+    public string AttachmentType { get; internal set; }
 }

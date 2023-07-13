@@ -7,7 +7,8 @@ using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
 public class GetForEnjazQuery : IRequest<List<DropdownEnjazResponseDTO>>
 { }
-public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<DropdownEnjazResponseDTO>>
+/*public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<DropdownEnjazResponseDTO>>
+
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IApplicantRepository _applicantRepository;
@@ -63,4 +64,4 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
 
         return response;
     }
-}
+}*/

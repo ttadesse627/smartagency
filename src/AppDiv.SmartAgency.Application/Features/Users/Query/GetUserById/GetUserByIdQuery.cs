@@ -33,13 +33,13 @@ namespace AppDiv.SmartAgency.Application.Features.User.Query.GetUserById
                 FullName = user.FullName,
                 UserName = user.UserName,
                 Email = user.Email,
-                Position = user.Position.Value,
-                Branch = user.Branch.Value,
+                Position = user.Position?.Value,
+                Branch = user.Branch?.Value,
                 Partner = CustomMapper.Mapper.Map<UserPartnerResponseDTO>(user.Partner),
                 Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address),
                 UserGroups = CustomMapper.Mapper.Map<List<GroupDTO>>(user.UserGroups)
             };
-
+        
             return response;
 
         }

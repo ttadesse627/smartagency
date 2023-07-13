@@ -27,9 +27,9 @@ public class GetForAssignmentQueryHandler : IRequestHandler<GetForAssignmentQuer
                                     };
         var orderList = await _orderRepository.GetAllWithPredicateAsync
                         (
-                            order => order.IsDeleted == false && (order.Employees.Count == 0 || order.Employees != null), ordEagerLoadedProps
+                            order => (order.IsDeleted == false) && (order.Employees.Count == 0 || order.Employees != null), ordEagerLoadedProps
                         );
-
+                    
         if (orderList.Count > 0 || orderList != null)
         {
             foreach (var order in orderList)

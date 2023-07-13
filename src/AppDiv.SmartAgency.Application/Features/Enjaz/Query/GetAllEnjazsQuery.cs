@@ -31,7 +31,7 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         }
 
     }
-
+/*
     public class GetAllEnjazsQueryHandler : IRequestHandler<GetAllEnjazsQuery, SearchModel<EnjazResponseDTO>>
     {
         private readonly IEnjazRepository _enjazRepository;
@@ -72,9 +72,10 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
 
                 }
             }
+            var res=enjazResponse;
             return enjazResponse;
 
             // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
-    }
+    }*/
 }

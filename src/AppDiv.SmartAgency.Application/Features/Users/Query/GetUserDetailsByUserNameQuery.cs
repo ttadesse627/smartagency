@@ -40,7 +40,15 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Query
                     Email = user.Email,
                     Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address)
                 };
+            }else{
+                response.Id= user.Id;
+                response.FullName = user.FullName;
+                response.UserName= user.UserName;
+                response.Email = user.Email;
+                response.Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address);
+        
             }
+            
             return response;
         }
     }

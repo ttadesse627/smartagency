@@ -32,7 +32,6 @@ public class Order : BaseAuditableEntity
     public Attachment? Attachment { get; set; }
     public Payment? Payment { get; set; }
     public Sponsor? Sponsor { get; set; }
-    public Enjaz? Enjaz { get; set; }
     public Partner? Partner { get; set; }
    
 
