@@ -1,10 +1,12 @@
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrdersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
+using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Orders.Query;
@@ -55,7 +57,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("get-for-assignment")]
-    public async Task<ActionResult<GetForAssignmentDTO>> GetOrderForAssignment()
+    public async Task<ActionResult<ResponseContainerDTO<List<GetUnAssignedOrdersDropdownResponseDTO>>>> GetOrderForAssignment()
     {
         return Ok(await _mediator.Send(new GetForAssignmentQuery()));
     }

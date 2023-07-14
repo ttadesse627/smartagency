@@ -3,6 +3,7 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
@@ -28,24 +29,25 @@ public class UnassignOrderCommandHandler : IRequestHandler<UnassignOrderCommand,
         {
             foreach (var orderId in orderIds)
             {
-                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderId && (order.Employees != null && order.Employees.Count > 0) && order.IsDeleted == false, "Employees");
-                if (orderEntity != null)
+                var applicantEntity = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.OrderId == orderId && applicant.IsDeleted == false, "Order");
+                if (applicantEntity != null)
                 {
-                    foreach (var empl in orderEntity.Employees)
-                    {
-                        orderEntity.Employees.Remove(empl);
-                    }
+                    applicantEntity.Order = null;
                 }
-                else exceptions.Add(new Exception($"There is no Order with id {orderId}."));
+                else exceptions.Add(new NotFoundException($"The Order with id {orderId} has no applicant assigned."));
             }
 
             try
             {
-                response.Success = await _orderRepository.SaveChangesAsync(cancellationToken);
+                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+                if (response.Success)
+                {
+                    response.Message = "Un assigned successfully!";
+                }
             }
             catch (System.Exception ex)
             {
-                // TODO
+                response.Errors?.Add(ex.Message);
             }
         }
         return response;

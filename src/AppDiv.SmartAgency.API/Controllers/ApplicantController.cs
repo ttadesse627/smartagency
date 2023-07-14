@@ -132,13 +132,20 @@ public class ApplicantController : ControllerBase
         return Ok(await _mediator.Send(new GetApplicantCvDetailQuery(id)));
     }
 
-   [HttpGet("get-unassigned-orders-dropdown")]
-   public async Task<ActionResult<Object>> GetUnAssignedOrdersDropdown()
-   {
-    return Ok( await _mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
-   }
+    [HttpGet("get-attachments")]
 
-       [HttpGet("get-for-enjaz")]
+    public async Task<ActionResult<string>> GetApplicantAttachments(Guid ApplicantId, string AttachmentType)
+    {
+        return Ok(await _mediator.Send(new GetApplicantAttachmentsQuery(ApplicantId, AttachmentType)));
+    }
+
+    [HttpGet("get-unassigned-orders-dropdown")]
+    public async Task<ActionResult<Object>> GetUnAssignedOrdersDropdown()
+    {
+        return Ok(await _mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
+    }
+
+    [HttpGet("get-for-enjaz")]
     public async Task<ActionResult<ResponseContainerDTO<List<DropdownEnjazResponseDTO>>>> GetOrderForEnjaz()
     {
         var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>();

@@ -14,5 +14,5 @@ public record ApplicantCvResponseDTO
     public ICollection<LanguagesResponseDTO>? Languages { get; set; }
     public PassportInfoResponseDTO? PassportInfo { get; set; }
     public AttachmentsResponseDTO? Attachments { get; set; }
-    public ICollection<String>? AttachmentNames { get; set; }
+    public ICollection<String>? AttachmentTypes { get; set; }
 }

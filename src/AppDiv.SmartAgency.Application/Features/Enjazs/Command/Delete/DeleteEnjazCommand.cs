@@ -8,7 +8,7 @@ using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
+namespace AppDiv.SmartAgency.Application.Features.Enjazs.Command.Delete;
 public record DeleteEnjazCommand(Guid Id) : IRequest<ServiceResponse<int>> { }
 
 public class DeleteEnjazCommandHandler : IRequestHandler<DeleteEnjazCommand, ServiceResponse<int>>

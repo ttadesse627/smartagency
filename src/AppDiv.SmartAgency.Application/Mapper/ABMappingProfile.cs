@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using AppDiv.SmartAgency.Application.Contracts.DTOs;
+﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
@@ -49,7 +48,6 @@ using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
-using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
 
 namespace AppDiv.SmartAgency.Application.Mapper
@@ -235,7 +233,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CreateCompanyInformationRequest, CompanyInformation>()
                 .ForMember(dest => dest.Witnesses, opt => opt.Ignore()).ReverseMap();
             CreateMap<EditCompanyInformationCommand, CompanyInformation>()
-                 .ForMember(dest => dest.Witnesses, opt=> opt.Ignore()).ReverseMap();     
+                 .ForMember(dest => dest.Witnesses, opt => opt.Ignore()).ReverseMap();
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
             //CreateMap<CreateCompanyInformationCommand, CompanyInformation>().ReverseMap();
 
