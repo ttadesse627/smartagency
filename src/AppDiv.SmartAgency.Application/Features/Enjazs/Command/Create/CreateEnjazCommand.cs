@@ -7,7 +7,7 @@ using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Enjazs.Command.Create;
-public record CreateEnjazCommand(CreateEnjazRequest request) : IRequest<ServiceResponse<Int32>>
+public record CreateEnjazCommand(CreateEnjazRequest Request) : IRequest<ServiceResponse<Int32>>
 { }
 public class CreateEnjazCommandHandler : IRequestHandler<CreateEnjazCommand, ServiceResponse<Int32>>
 {
@@ -21,9 +21,9 @@ public class CreateEnjazCommandHandler : IRequestHandler<CreateEnjazCommand, Ser
         var response = new ServiceResponse<Int32>();
         var enjazEntities = new List<Enjaz>();
 
-        if (command.request.Enjazs.Count > 0)
+        if (command.Request.Enjazs != null && command.Request.Enjazs.Any())
         {
-            foreach (var enjaz in command.request.Enjazs)
+            foreach (var enjaz in command.Request.Enjazs)
             {
                 var enjazEntity = CustomMapper.Mapper.Map<Enjaz>(enjaz);
                 enjazEntities.Add(enjazEntity);

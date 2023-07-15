@@ -5,6 +5,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrdersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
@@ -74,13 +75,14 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("show-order-status")]
-    public async Task<ActionResult> ShowOrderStatus(Guid ApplicantId)
+    public async Task<ActionResult<ShowOrderStatusResponseDTO>> ShowOrderStatus(Guid ApplicantId)
     {
-        if (ApplicantId == null)
+        if (ApplicantId.Equals(Guid.Empty))
         {
-            return BadRequest("This order is not assigned");
+            return BadRequest("This order is not assigned OR employee Id is necessary.");
         }
-        return Ok(await _mediator.Send(new ShowOrderStatusQuery(ApplicantId)));
+        var response = await _mediator.Send(new ShowOrderStatusQuery(ApplicantId));
+        return Ok(response);
     }
 
     [HttpGet("order-statuses")]
@@ -88,5 +90,4 @@ public class OrderController : ControllerBase
     {
         return Ok(await _mediator.Send(new OrderStatusQuery()));
     }
-
 }

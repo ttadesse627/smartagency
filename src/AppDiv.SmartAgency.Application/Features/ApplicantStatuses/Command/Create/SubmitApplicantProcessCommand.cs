@@ -90,12 +90,12 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                     }
                     catch (Exception ex)
                     {
-                        throw new System.ApplicationException(ex.Message);
+                        throw new ApplicationException(ex.Message);
                     }
                 }
                 else
                 {
-                    response = await _mediator.Send(new GetApplProcessQuery(currentPId));
+                    response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
                 }
             }
             else
@@ -121,11 +121,11 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                 }
                 catch (Exception ex)
                 {
-                    throw new System.ApplicationException(ex.Message);
+                    throw new ApplicationException(ex.Message);
                 }
 
                 // Return all the applicants in each process definitions within that Process
-                response = await _mediator.Send(new GetApplProcessQuery(currentPId));
+                response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
             }
         }
         else
@@ -151,11 +151,11 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             }
             catch (Exception ex)
             {
-                throw new System.ApplicationException(ex.Message);
+                throw new ApplicationException(ex.Message);
             }
 
             // Return all the applicants in each process definitions within that Process
-            response = await _mediator.Send(new GetApplProcessQuery(currentPId));
+            response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
         }
 
         return response;

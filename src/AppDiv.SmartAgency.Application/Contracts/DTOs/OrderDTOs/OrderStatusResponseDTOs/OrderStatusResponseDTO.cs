@@ -10,14 +10,14 @@ public record OrderStatusResponseDTO
     public string? PassportNumber { get; set; }
     public string? SponsorName { get; set; }
     public string? BrokerName { get; set; }
-    public int Days { get; set; }
-    public int NumberOfDays { get; set; }
-    public int Left { get; set; }
+    // public int Days { get; set; }
+    // public int NumberOfDays { get; set; }
+    // public int Left { get; set; }
     public decimal Amount { get; set; }
     public decimal PaidAmount { get; set; }
     public string? Priority { get; set; }
     public string? Jobtitle { get; set; }
-    public ICollection<StatusResponseDTO>? Statuses { get; set; }
+    // public ICollection<StatusResponseDTO>? Statuses { get; set; }
     public string? PortOfArrival { get; set; }
     public string? TicketNo { get; set; }
     public DateTime? FlightDate { get; set; }
@@ -25,6 +25,8 @@ public record OrderStatusResponseDTO
     public string? Transit { get; set; }
     public string? ArrivalTime { get; set; }
     public bool TravelStatus { get; set; }
+    public string StatusName { get; set; }
+    public DateTime? Date { get; set; }
 
 
 }
