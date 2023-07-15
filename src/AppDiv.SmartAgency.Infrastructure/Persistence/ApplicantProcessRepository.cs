@@ -48,11 +48,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             // var numberOfAssignedVisa = await _context.Orders
             //                         .CountAsync(o => (o.Employees != null && o.Employees.Count > 0) && o.CreatedAt >= startDate && o.CreatedAt < endDate);
 
-                   var numberOfAssignedVisas= await _context.Applicants
-                                           .CountAsync(app => (app.OrderId!=null) && (app.Order.CreatedAt>= startDate && app.Order.CreatedAt< endDate));
+            var numberOfAssignedVisas = await _context.Applicants
+                                    .CountAsync(app => (app.OrderId != null) && (app.Order.CreatedAt >= startDate && app.Order.CreatedAt < endDate));
 
-                                       
-                      
+
+
 
             if (numberOfAssignedVisas > 0)
             {
@@ -62,16 +62,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     Name = "Assigned Visa"
                 };
 
-                            // if (groupedApplicantProcesses != null)
-                            // {
-                            //     groupedApplicantProcesses.Add(assignedVisa!);
-                            //     //response.Add(groupedApplicantProcesses);
-                            // }
-                            // else
-                            // {
-                            
-                                response.Add(assignedVisa);
-                            // }
+                // if (groupedApplicantProcesses != null)
+                // {
+                //     groupedApplicantProcesses.Add(assignedVisa!);
+                //     //response.Add(groupedApplicantProcesses);
+                // }
+                // else
+                // {
+
+                response.Add(assignedVisa);
+                // }
 
 
             }
@@ -84,107 +84,111 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
 
 
-                   public async Task<List<JObject>> GetQuickLinks()
-                    {
-                        var response= new List<JObject>();
-                        var complaints = await _context.Applicants
-                                .CountAsync(ap=>ap.OrderId!=null && ap.Complaints != null && ap.Complaints.Count()>0 && ap.Complaints.Any(comp => comp.IsClosed) == false);   
+        public async Task<List<JObject>> GetQuickLinks()
+        {
+            var response = new List<JObject>();
+            var complaints = await _context.Applicants
+                    .CountAsync(ap => ap.OrderId != null && ap.Complaints != null && ap.Complaints.Count() > 0 && ap.Complaints.Any(comp => comp.IsClosed) == false);
 
-                            if(complaints>0){
-                                var complaint= new JObject();
-                                    complaint["Name"] = "Complaints" ;
-                                    complaint["Count"] = complaints;
-                                    complaint["Path"] = "api/quick-links/get-complaint";
-                             
-                                response.Add(complaint);
-                            }  
+            if (complaints > 0)
+            {
+                var complaint = new JObject();
+                complaint["Name"] = "Complaints";
+                complaint["Count"] = complaints;
+                complaint["Path"] = "api/quick-links/get-complaint";
 
-                      var daysAgo = DateTime.Now.AddDays(-10);
-                      var newAssignedVisas= await _context.Applicants
-                                        .CountAsync(ap => ap.OrderId !=null && ap.CreatedAt >= daysAgo);
+                response.Add(complaint);
+            }
 
-                            if(newAssignedVisas>0)
-                            {
-                                var newAssignedVisa = new JObject();
-                              
-                                    newAssignedVisa["Name"] = "New Assigned Visas";
-                                    newAssignedVisa["Count"] = newAssignedVisas;
-                                    newAssignedVisa["Path"]= "api/quick-links/get-new-assigned-visa";
-                                response.Add(newAssignedVisa);
+            var daysAgo = DateTime.Now.AddDays(-10);
+            var newAssignedVisas = await _context.Applicants
+                              .CountAsync(ap => ap.OrderId != null && ap.CreatedAt >= daysAgo);
 
-                            } 
+            if (newAssignedVisas > 0)
+            {
+                var newAssignedVisa = new JObject();
+
+                newAssignedVisa["Name"] = "New Assigned Visas";
+                newAssignedVisa["Count"] = newAssignedVisas;
+                newAssignedVisa["Path"] = "api/quick-links/get-new-assigned-visa";
+                response.Add(newAssignedVisa);
+
+            }
 
 
 
 
-                        var notProcessedApplicants= await _context.Applicants
-                                    .CountAsync(ap=> ap.ApplicantProcesses==null || ap.ApplicantProcesses.Count()==0); 
+            var notProcessedApplicants = await _context.Applicants
+                        .CountAsync(ap => ap.ApplicantProcesses == null || ap.ApplicantProcesses.Count() == 0);
 
-                            if(notProcessedApplicants>0)
-                            {
-                                var notProcessedApplicant = new JObject();
-                                
-                                   notProcessedApplicant["Name"] = "Not Processed Applicants";
-                                   notProcessedApplicant["Count"] = notProcessedApplicants;
-                                   notProcessedApplicant["Path"] = "api/quick-links/get-not-processed-applicant";
-                           
-                                response.Add(notProcessedApplicant);
-                            }
-                        var notAssignedVisas =  await _context.Orders
-                                                 .CountAsync( or=> or.Employees== null || or.Employees.Count==0);
-                        if (notAssignedVisas>0)
-                        {
-                            var notAssignedVisa = new JObject();
-                              
-                                  notAssignedVisa["Name"] = "Not Assigned Visas";
-                                  notAssignedVisa["Count"] = notAssignedVisas;
-                                  notAssignedVisa["Path"] = "api/quick-links/get-not-assigned-visa";
-                            
-                                response.Add(notAssignedVisa);
-                         
+            if (notProcessedApplicants > 0)
+            {
+                var notProcessedApplicant = new JObject();
 
-                        }
+                notProcessedApplicant["Name"] = "Not Processed Applicants";
+                notProcessedApplicant["Count"] = notProcessedApplicants;
+                notProcessedApplicant["Path"] = "api/quick-links/get-not-processed-applicant";
 
-                        var expiredVisas=   await _context.Applicants
-                                    .Where(app => app.OrderId != null && app.IsDeleted==false) 
-                                    .Join(_context.Orders.Where(o => !o.IsDeleted), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o }) 
-                                    .Join(_context.CountryOperations, ao => ao.Order.Sponsor.Address.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
-                                    .Where(aoc => DateTime.Compare(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays), DateTime.Now) < 0).CountAsync();                    
+                response.Add(notProcessedApplicant);
+            }
+            var notAssignedVisas = await _context.Orders
+                                     .CountAsync(or => or.Employees == null || or.Employees.Count == 0);
+            if (notAssignedVisas > 0)
+            {
+                var notAssignedVisa = new JObject();
 
-                            if (expiredVisas>0)
-                            {
+                notAssignedVisa["Name"] = "Not Assigned Visas";
+                notAssignedVisa["Count"] = notAssignedVisas;
+                notAssignedVisa["Path"] = "api/quick-links/get-not-assigned-visa";
 
-                                var expiredVisa = new JObject();
-                                
-                                    expiredVisa["Name"] = "Expired Visas";
-                                    expiredVisa["Count"] = expiredVisas;
-                                    expiredVisa["Path"] = "api/quick-links/get-expired-visa";
-                                
-                                response.Add(expiredVisa);
-                            
+                response.Add(notAssignedVisa);
 
-                            }
+
+            }
+
+            var expiredVisas = await _context.Applicants
+                        .Where(app => app.OrderId != null && app.IsDeleted == false)
+                        .Join(_context.Orders.Where(o => !o.IsDeleted), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
+                        .Join(_context.CountryOperations, ao => ao.Order.Sponsor.Address.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
+                        .Where(aoc => DateTime.Compare(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays), DateTime.Now) < 0).CountAsync();
+
+            if (expiredVisas > 0)
+            {
+
+                var expiredVisa = new JObject();
+
+                expiredVisa["Name"] = "Expired Visas";
+                expiredVisa["Count"] = expiredVisas;
+                expiredVisa["Path"] = "api/quick-links/get-expired-visa";
+
+                response.Add(expiredVisa);
+
+
+            }
 
 
 
             var settings = await _context.CompanySettings.FirstOrDefaultAsync();
 
-            var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
-
-            var penalities = await _context.Applicants
-               .CountAsync(app => (app.IsDeleted == false) && (app.TraveledApplicant == null) && (app.OrderId != null) && (app.Order.IsDeleted == false) && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now) < 0));
-
-
-            if (penalities > 0)
+            if (settings != null)
             {
-                var penality = new JObject();
+                var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
 
-                penality["Name"] = "Penality";
-                penality["Count"] = penalities;
-                penality["Path"] = "api/quick-links/get-penality";
+                var penalities = await _context.Applicants
+                   .CountAsync(app => (app.IsDeleted == false) && (app.TraveledApplicant == null) && (app.OrderId != null) && (app.Order.IsDeleted == false) && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now) < 0));
 
-                response.Add(penality);
 
+                if (penalities > 0)
+                {
+                    var penality = new JObject();
+
+                    penality["Name"] = "Penality";
+                    penality["Count"] = penalities;
+                    penality["Path"] = "api/quick-links/get-penality";
+
+                    response.Add(penality);
+
+                }
             }
 
 

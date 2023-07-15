@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using Newtonsoft.Json.Linq;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
@@ -390,7 +391,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         showStatus.TravelInformation = travelInfo;
 
         var enjazRes = await _context.Enjazs.Where(en => en.ApplicantId == id)
-                     .Select(en => new EnjazResponseDTO
+                     .Select(en => new ShowStatusEnjazResponseDTO
                      {
                          Id = en.Id,
                          ApplicationNumber = en.ApplicationNumber,
