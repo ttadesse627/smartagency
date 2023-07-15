@@ -390,7 +390,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         showStatus.TravelInformation = travelInfo;
 
         var enjazRes = await _context.Enjazs.Where(en => en.ApplicantId == id)
-                     .Select(en => new EnjazResponseDTO
+                     .Select(en => new ShowStatusEnjazResponseDTO
                      {
                          Id = en.Id,
                          ApplicationNumber = en.ApplicationNumber,

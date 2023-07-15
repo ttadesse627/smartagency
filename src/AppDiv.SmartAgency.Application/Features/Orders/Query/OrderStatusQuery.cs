@@ -83,6 +83,44 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
                             };
                             response.Items.Add(orderStatusResponse);
                         }
+                        else
+                        {
+                            var travelStatus = false;
+                            if (appOrder.TraveledApplicant != null)
+                            {
+                                if (appOrder.TraveledApplicant.ApplicantId != null)
+                                {
+                                    travelStatus = true;
+                                }
+                            }
+                            var orderStatusResponse = new OrderStatusResponseDTO
+                            {
+                                EmployeeId = appOrder.Id,
+                                OrderNumber = appOrder.Order?.OrderNumber,
+                                ClientName = appOrder.Order?.Partner?.PartnerName,
+                                VisaNumber = appOrder.Order?.VisaNumber,
+                                EmployeeFullName = appOrder.FirstName + " " + appOrder.MiddleName + " " + appOrder.LastName,
+                                PassportNumber = appOrder.PassportNumber,
+                                SponsorName = appOrder.Order?.Sponsor!.FullName,
+                                BrokerName = appOrder.BrokerName?.Value,
+                                // Days = 5,
+                                // NumberOfDays = 10,
+                                // Left = 20,
+                                Amount = appOrder.Order!.Payment!.TotalAmount,
+                                PaidAmount = appOrder.Order.Payment.PaidAmount,
+                                Priority = appOrder.Order.Priority?.Value,
+                                Jobtitle = appOrder.Jobtitle?.Value,
+                                PortOfArrival = appOrder.Order.PortOfArrival?.Value,
+                                TicketNo = appOrder.TicketRegistration?.TicketNumber,
+                                FlightDate = appOrder.TicketRegistration?.FlightDate,
+                                DepartureTime = appOrder.TicketRegistration?.TicketNumber,
+                                Transit = appOrder.TicketRegistration?.TicketNumber,
+                                ArrivalTime = appOrder.TicketRegistration?.TicketNumber,
+                                TravelStatus = travelStatus,
+                                StatusName = proDef.Name
+                            };
+                            response.Items.Add(orderStatusResponse);
+                        }
                     }
                 }
             }
