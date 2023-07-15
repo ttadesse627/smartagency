@@ -13,12 +13,12 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Query
     {
     }
 
-    public class GetUnAssignedOrdersDrodownHandler : IRequestHandler<GetUnAssignedOrdersDrodownQuery , List<GetUnAssignedOrdersDropdownResponseDTO>>
+    public class GetUnAssignedOrdersDrodownHandler : IRequestHandler<GetUnAssignedOrdersDrodownQuery, List<GetUnAssignedOrdersDropdownResponseDTO>>
     {
         private readonly IOrderRepository _orderRepository;
         public GetUnAssignedOrdersDrodownHandler(IOrderRepository orderRepository)
         {
-            _orderRepository= orderRepository;
+            _orderRepository = orderRepository;
         }
         public async Task<List<GetUnAssignedOrdersDropdownResponseDTO>> Handle(GetUnAssignedOrdersDrodownQuery request, CancellationToken cancellationToken)
         {

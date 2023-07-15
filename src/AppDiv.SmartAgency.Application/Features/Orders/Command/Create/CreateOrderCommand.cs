@@ -1,5 +1,6 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
+using AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
@@ -7,21 +8,22 @@ using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
-public record CreateOrderCommand(CreateOrderRequest Request) : IRequest<ServiceResponse<Int32>>
-{ }
+public record CreateOrderCommand(CreateOrderRequest Request) : IRequest<ServiceResponse<Int32>> { }
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ServiceResponse<Int32>>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IApplicantRepository _applicantRepository;
     private readonly IAttachmentRepository _attachmentRepository;
     private readonly IFileService _fileService;
+    private readonly IMediator _mediator;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository, IAttachmentRepository attachmentRepository, IFileService fileService)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository, IAttachmentRepository attachmentRepository, IFileService fileService, IMediator mediator)
     {
         _orderRepository = orderRepository;
         _applicantRepository = applicantRepository;
         _attachmentRepository = attachmentRepository;
         _fileService = fileService;
+        _mediator = mediator;
     }
     public async Task<ServiceResponse<Int32>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
@@ -31,17 +33,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ser
         var orderPayment = new Payment { TotalAmount = command.Request.Payment!.TotalAmount };
         orderPayment.AddPayment(command.Request.Payment!.CurrentPaidAmount);
         orderEntity.Payment = orderPayment;
-        IEnumerable<Applicant> appOrders = new List<Applicant>();
-
-        if (command.Request.EmployeeIds != null && command.Request.EmployeeIds.Count > 0)
-        {
-            appOrders = await _applicantRepository.GetByIdsAsync(command.Request.EmployeeIds, appl => appl.IsDeleted == false);
-        }
-
-        if (appOrders.Any())
-        {
-            orderEntity.Employees = appOrders.ToList();
-        }
 
         try
         {
@@ -105,6 +96,35 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ser
                             }
                         }
                     }
+                }
+            }
+
+            if (command.Request.EmployeeIds != null && command.Request.EmployeeIds.Any())
+            {
+                var assignment = new OrderAssignmentRequest();
+                var orderAssigmentList = new List<OrderAssignment>();
+                foreach (var employeeId in command.Request.EmployeeIds)
+                {
+                    var assignRequest = new OrderAssignment
+                    {
+                        EmployeeId = employeeId,
+                        OrderId = orderEntity.Id
+                    };
+                    orderAssigmentList.Add(assignRequest);
+                }
+                assignment.OrderAssignments = orderAssigmentList;
+
+                try
+                {
+                    var assignResponse = await _mediator.Send(new AssignOrderCommand(assignment));
+                    if (!assignResponse.Success)
+                    {
+                        response.Errors?.Add("Could not assign the applicant to the order.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response.Errors?.Add(ex.Message);
                 }
             }
         }

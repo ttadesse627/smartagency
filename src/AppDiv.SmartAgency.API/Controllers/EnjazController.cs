@@ -4,13 +4,13 @@
 
 using AppDiv.SmartAgency.Application.Contracts.Request.Enjazs;
 using AppDiv.SmartAgency.Application.Features.Enjazs.Command.Create;
-using AppDiv.SmartAgency.Application.Features.Deposits.Query;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
-using AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.Enjazs.Query;
+using AppDiv.SmartAgency.Application.Features.Enjazs.Command.Delete;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {

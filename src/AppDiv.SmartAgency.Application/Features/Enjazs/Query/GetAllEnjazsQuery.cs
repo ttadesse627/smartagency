@@ -1,17 +1,10 @@
-
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
-using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
-namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
+namespace AppDiv.SmartAgency.Application.Features.Enjazs.Query
 {
     public class GetAllEnjazsQuery : IRequest<SearchModel<EnjazResponseDTO>>
     {
@@ -31,7 +24,6 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         }
 
     }
-/*
     public class GetAllEnjazsQueryHandler : IRequestHandler<GetAllEnjazsQuery, SearchModel<EnjazResponseDTO>>
     {
         private readonly IEnjazRepository _enjazRepository;
@@ -44,38 +36,33 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         }
         public async Task<SearchModel<EnjazResponseDTO>> Handle(GetAllEnjazsQuery request, CancellationToken cancellationToken)
         {
-            var enjazsList = await _enjazRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Order", "Order.Employees");
+            var enjazsList = await _enjazRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, enj => enj.Applicant != null && enj.Applicant.OrderId != null, "Applicant", "Applicant.Order");
             var enjazResponse = new SearchModel<EnjazResponseDTO>();
             if (enjazsList.Items.Count() > 0 || enjazsList != null)
             {
                 foreach (var enjaz in enjazsList.Items)
                 {
-
-                    if (enjaz.Order.Employees != null && enjaz.Order.Employees.Count > 0)
+                    if (enjaz.Applicant != null)
                     {
-                        foreach (var employee in enjaz.Order.Employees)
+                        if (enjaz.Applicant.Order != null)
                         {
                             var enjazResp = new EnjazResponseDTO
                             {
                                 EnjazNumber = enjaz.ApplicationNumber,
-                                OrderNumber = enjaz.Order.OrderNumber,
-                                VisaNumber = enjaz.Order.VisaNumber,
-                                OrderId = enjaz.OrderId,
-                                PassportNumber = employee.PassportNumber,
-                                FirstName = employee.FirstName,
-                                MiddleName = employee.MiddleName,
-                                LastName = employee.LastName
+                                OrderNumber = enjaz.Applicant.Order.OrderNumber,
+                                VisaNumber = enjaz.Applicant.Order.VisaNumber,
+                                OrderId = enjaz.Applicant.OrderId,
+                                PassportNumber = enjaz.Applicant.PassportNumber,
+                                FirstName = enjaz.Applicant.FirstName,
+                                MiddleName = enjaz.Applicant.MiddleName,
+                                LastName = enjaz.Applicant.LastName
                             };
                             enjazResponse.Items.ToList().Add(enjazResp);
                         }
                     }
-
                 }
             }
-            var res=enjazResponse;
             return enjazResponse;
-
-            // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
-    }*/
+    }
 }

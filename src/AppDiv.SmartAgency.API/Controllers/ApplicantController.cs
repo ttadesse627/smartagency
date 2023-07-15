@@ -132,12 +132,12 @@ public class ApplicantController : ControllerBase
         return Ok(await _mediator.Send(new GetApplicantCvDetailQuery(id)));
     }
 
-    [HttpGet("get-cv-attachments")]
+    [HttpGet("get-attachments")]
 
-    // public async Task<ActionResult> GetApplicantCvAttachments(Guid id, string folderName)
-    // {
-    //     return Ok(await _mediator.Send(new GetApplicantCvAttachmentQuery(id, folderName)));
-    // }
+    public async Task<ActionResult<string>> GetApplicantAttachments(Guid ApplicantId, string AttachmentType)
+    {
+        return Ok(await _mediator.Send(new GetApplicantAttachmentsQuery(ApplicantId, AttachmentType)));
+    }
 
     [HttpGet("get-unassigned-orders-dropdown")]
     public async Task<ActionResult<Object>> GetUnAssignedOrdersDropdown()

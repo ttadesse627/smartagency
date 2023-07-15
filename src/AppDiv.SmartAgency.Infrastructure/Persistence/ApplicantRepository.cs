@@ -192,9 +192,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
 
     public async Task<ApplicantCvResponseDTO> GetApplicantCvDetail(Guid id)
     {
-        var overseasExperiences = new List<OverseasExperienceResponseDTO>();
-        var skills = new List<string>();
-        var languages = new List<LanguagesResponseDTO>();
+
         var response = await _context.Applicants
             .Where(app => app.Id == id)
             .Include("Salary")
@@ -259,10 +257,10 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         ).ToList(),
         // Attachments= new AttachmentsResponseDTO
         //  {
-        //     Photo= Convert.ToBase64String(_fileService.getFile(id.ToString(), "Photo",null).Item1),
+        //     Photo= Convert.ToBase64String(_fileService.getFile(id.ToString(), "3x4",null).Item1),
         //     FullSizePhoto= Convert.ToBase64String(_fileService.getFile(id.ToString(), "Full Size", null).Item1)
         //  },
-        AttachmentNames = app.Attachments.Where(att => att.ShowOnCv == true).Select(att => att.Title).ToList()
+        AttachmentTypes = app.Attachments.Where(att => att.ShowOnCv == true).Select(att => att.Title).ToList()
     }).FirstOrDefaultAsync();
         return response;
 
@@ -377,13 +375,13 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
                             .Select(aPro => new { aPro.Date }).FirstOrDefaultAsync();
         var travelInfo = new TravelInfoResponseDTO
         {
-            RegisteredDate = tickReg.RegisteredDate,
-            TicketNumber = tickReg.TicketNumber,
-            FlightDate = tickReg.FlightDate,
-            DepatrureFromAddis = tickReg.DepartureTime,
-            ArrivalTime = tickReg.ArrivalTime,
+            RegisteredDate = tickReg?.RegisteredDate,
+            TicketNumber = tickReg?.TicketNumber,
+            FlightDate = tickReg?.FlightDate,
+            DepatrureFromAddis = tickReg?.DepartureTime,
+            ArrivalTime = tickReg?.ArrivalTime,
             TicketOffice = ticketReady?.TicketOffice?.Value,
-            TicketPrice = tickReg.TicketPrice,
+            TicketPrice = tickReg?.TicketPrice,
             Remark = traveledRes?.Remark,
             Traveled = traveledTime?.Date,
             UploadTicket = ""

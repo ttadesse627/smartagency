@@ -1,7 +1,4 @@
 
-
-using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
-
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderAssignment;
 public record GetForAssignmentOrderDTO
 {
@@ -13,4 +10,6 @@ public record GetForAssignmentOrderDTO
     public string? Religion { get; set; }
     public string? Language { get; set; }
     public int? Age { get; set; }
+    public int? NumberOfAvailableVisa { get; set; }
+
 }

@@ -3,7 +3,6 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
@@ -28,17 +27,13 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
         {
             foreach (var orderRequest in assignOrderRequests)
             {
-                var orderEntity = await _orderRepository.GetWithPredicateAsync(order => order.Id == orderRequest.OrderId, "Employees");
-                var employee = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == orderRequest.EmployeeId && applicant.IsDeleted == false && applicant.OrderId==null, "Order");
+                var orderEntity = await _orderRepository.GetAsync(orderRequest.OrderId);
+                var employee = await _applicantRepository.GetWithPredicateAsync(applicant => applicant.Id == orderRequest.EmployeeId, "Order");
 
                 if (orderEntity != null && employee != null)
                 {
-                    if (employee.OrderId == null)
-                    {
-                        employee.OrderId = orderEntity.Id;
-                    }
+                    employee.Order = orderEntity;
                 }
-
                 try
                 {
                     response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
@@ -52,7 +47,6 @@ public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, Ser
                     response.Message = "An error occured while saving the assignment.";
                     response.Errors?.Add(ex.Message);
                 }
-
             }
         }
         return response;

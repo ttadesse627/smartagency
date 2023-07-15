@@ -12,10 +12,15 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IApplicantRepository _applicantRepository;
-    public OrderStatusQueryHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository)
+    private readonly IApplicantProcessRepository _applicantProcessRepository;
+    private readonly IProcessDefinitionRepository _processDefRepository;
+    public OrderStatusQueryHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository,
+    IProcessDefinitionRepository processDefRepository, IApplicantProcessRepository applicantProcessRepository)
     {
         _orderRepository = orderRepository;
         _applicantRepository = applicantRepository;
+        _processDefRepository = processDefRepository;
+        _applicantProcessRepository = applicantProcessRepository;
     }
 
     public async Task<ResponseContainerDTO<List<OrderStatusResponseDTO>>> Handle(OrderStatusQuery request, CancellationToken cancellationToken)
@@ -31,16 +36,28 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
         };
         var appOrders = await _applicantRepository.GetAllWithPredicateAsync(app => app.IsDeleted == false && app.OrderId != null, applEagerLoadedProps);
         var statuses = new List<StatusResponseDTO>();
-        if (appOrders != null && appOrders.Count > 0)
+        if (appOrders != null && appOrders.Any())
         {
+            var processDefinitions = await _processDefRepository.GetAllAsync();
             foreach (var appOrder in appOrders)
             {
-                if (appOrder.ApplicantProcesses != null && appOrder.ApplicantProcesses.Count > 0)
+                if (processDefinitions != null && processDefinitions.Any())
                 {
-                    foreach (var status in appOrder.ApplicantProcesses)
+                    foreach (var proDef in processDefinitions)
                     {
-                        var statusResponse = new StatusResponseDTO { StatusName = status.ProcessDefinition?.Name, Date = status.Date };
-                        statuses.Add(statusResponse);
+                        var applicantStatus = await _applicantProcessRepository.GetWithPredicateAsync(applPro => applPro.ApplicantId == appOrder.Id && applPro.ProcessDefinitionId == proDef.Id);
+
+
+                        if (applicantStatus != null)
+                        {
+                            var statusResponse = new StatusResponseDTO { StatusName = proDef.Name, Date = applicantStatus.Date };
+                            statuses.Add(statusResponse);
+                        }
+                        else
+                        {
+                            var statusResponse = new StatusResponseDTO { StatusName = proDef.Name };
+                            statuses.Add(statusResponse);
+                        }
                     }
                 }
                 var travelStatus = false;
@@ -64,7 +81,7 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
                     Days = 5,
                     NumberOfDays = 10,
                     Left = 20,
-                    Amount = appOrder.Order.Payment!.TotalAmount,
+                    Amount = appOrder.Order!.Payment!.TotalAmount,
                     PaidAmount = appOrder.Order.Payment.PaidAmount,
                     Priority = appOrder.Order.Priority?.Value,
                     Jobtitle = appOrder.Jobtitle?.Value,
@@ -76,12 +93,10 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
                     ArrivalTime = appOrder.TicketRegistration?.TicketNumber,
                     TravelStatus = travelStatus,
                 };
-
                 orderStatusResponse.Statuses = statuses;
                 response.Items.Add(orderStatusResponse);
             }
         }
-
         return response;
     }
 }

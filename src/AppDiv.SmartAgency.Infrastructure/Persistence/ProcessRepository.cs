@@ -32,7 +32,7 @@ public class ProcessRepository : BaseRepository<Process>, IProcessRepository
     }
     public async Task<IEnumerable<Process>> GetPrevStepEnjazProcessesAsync(Expression<Func<Process, bool>> predicate)
     {
-        return await _context.Processes.Include(pr => pr.ProcessDefinitions).Where(pr => pr.EnjazRequired).ToListAsync();
+        return await _context.Processes.Include(pr => pr.ProcessDefinitions).Where(predicate).ToListAsync();
     }
 
 

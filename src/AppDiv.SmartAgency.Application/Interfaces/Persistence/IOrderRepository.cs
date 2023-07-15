@@ -15,7 +15,7 @@ public interface IOrderRepository : IBaseRepository<Order>
 
     public Task<List<NotAssignedVisaResponseDTO>> GetNotAssignedVisa();
     public Task<List<VisaExpiryResponseDTO>> GetExpiredVisa();
-    public Task<List<PenalityResponseDTO>>  GetPenality();
+    public Task<List<PenalityResponseDTO>> GetPenality();
     public Task<List<ComplaintResponseDTO>> GetComplaints();
     public Task<List<GetUnAssignedOrdersDropdownResponseDTO>> GetUnAssignedOrdersDropDown();
 }

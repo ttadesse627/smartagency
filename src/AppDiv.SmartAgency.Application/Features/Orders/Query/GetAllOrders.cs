@@ -35,6 +35,8 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
     }
     public async Task<SearchModel<GetOrdersResponseDTO>> Handle(GetAllOrders request, CancellationToken cancellationToken)
     {
+        var orderResponse = new SearchModel<GetOrdersResponseDTO>();
+        var orderDTOs = new List<GetOrdersResponseDTO>();
         var eagerLoadedProperties = new string[]
                                     {
                                         "Priority","Sponsor", "OrderCriteria",
@@ -46,7 +48,63 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
                             request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy,
                             request.SortingDirection, order => order.IsDeleted == false, eagerLoadedProperties
                         );
-        var orderResponse = CustomMapper.Mapper.Map<SearchModel<GetOrdersResponseDTO>>(orderList);
+
+        if (orderList.Items != null && orderList.Items.Any())
+        {
+            foreach (var order in orderList.Items)
+            {
+                if (order.Employees != null && order.Employees.Any())
+                {
+                    foreach (var employee in order.Employees)
+                    {
+                        var orderResp = new GetOrdersResponseDTO
+                        {
+                            Id = order.Id,
+                            RegisteredDate = order.CreatedAt,
+                            OrderNumber = order.OrderNumber,
+                            VisaNumber = order.VisaNumber,
+                            Priority = order.Priority?.Value,
+                            ApplicantId = employee.Id,
+                            PassportNumber = employee.PassportNumber,
+                            EmployeeName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName,
+                            JobTitle = order.OrderCriteria?.JobTitle?.Value,
+                            Salary = order.OrderCriteria?.Salary?.Value,
+                            TotalAmount = order.Payment.TotalAmount,
+                            PaidAmount = order.Payment.PaidAmount,
+                            SponsorIdNumber = order.Sponsor?.IdNumber,
+                            SponsorFullName = order.Sponsor.FullName,
+                            PartnerName = order.Partner.PartnerName
+                        };
+                        orderDTOs.Add(orderResp);
+                    }
+                }
+                else
+                {
+                    var orderResp = new GetOrdersResponseDTO
+                    {
+                        Id = order.Id,
+                        RegisteredDate = order.CreatedAt,
+                        OrderNumber = order.OrderNumber,
+                        VisaNumber = order.VisaNumber,
+                        Priority = order.Priority?.Value,
+                        ApplicantId = null,
+                        PassportNumber = null,
+                        EmployeeName = null,
+                        JobTitle = order.OrderCriteria?.JobTitle?.Value,
+                        Salary = order.OrderCriteria?.Salary?.Value,
+                        TotalAmount = order.Payment.TotalAmount,
+                        PaidAmount = order.Payment.PaidAmount,
+                        SponsorIdNumber = order.Sponsor?.IdNumber,
+                        SponsorFullName = order.Sponsor.FullName,
+                        PartnerName = order.Partner.PartnerName
+                    };
+                    orderDTOs.Add(orderResp);
+                }
+            }
+        }
+        orderResponse.Items = orderDTOs;
+
+        // var orderResponse = CustomMapper.Mapper.Map<SearchModel<GetOrdersResponseDTO>>(orderList);
         return orderResponse;
     }
 }

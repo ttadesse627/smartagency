@@ -4,7 +4,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTO
 public record TravelInfoResponseDTO
 {
 
-    public DateTime RegisteredDate { get; set; }
+    public DateTime? RegisteredDate { get; set; }
     public string? TicketNumber { get; set; }
     public DateTime? FlightDate { get; set; }
     public string? DepatrureFromAddis { get; set; }
