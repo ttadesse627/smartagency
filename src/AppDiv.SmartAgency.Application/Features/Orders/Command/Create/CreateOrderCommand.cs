@@ -56,14 +56,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ser
                     if (atchmnt != null)
                     {
                         orderEntity.Attachment = atchmnt;
-                        var orderFileSaved = false;
                         var orderFile = command.Request.AttachmentFile?.AttachmentFile;
                         var orderFolderName = Path.Combine("Resources", atchmnt!.Title!);
                         var orderPathToSave = Path.Combine(Directory.GetCurrentDirectory(), orderFolderName);
                         var orderFileName = orderEntity.Id.ToString();
                         if (!string.IsNullOrEmpty(orderFile))
                         {
-                            orderFileSaved = await _fileService.UploadBase64FileAsync(orderFile, orderFileName, orderPathToSave, FileMode.Create);
+                            bool orderFileSaved = await _fileService.UploadBase64FileAsync(orderFile, orderFileName, orderPathToSave, FileMode.Create);
                             if (orderFileSaved == true)
                             {
                                 response.Errors?.Add("Couldn't save order attachment.");
@@ -82,14 +81,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ser
                     if (atchmnt != null)
                     {
                         orderEntity.Attachment = atchmnt;
-                        var sponsorFileSaved = false;
                         var orderFile = command.Request.AttachmentFile?.AttachmentFile;
                         var orderFolderName = Path.Combine("Resources", atchmnt!.Title!);
                         var orderPathToSave = Path.Combine(Directory.GetCurrentDirectory(), orderFolderName);
                         var orderFileName = orderEntity.Id.ToString();
                         if (!string.IsNullOrEmpty(orderFile))
                         {
-                            sponsorFileSaved = await _fileService.UploadBase64FileAsync(orderFile, orderFileName, orderPathToSave, FileMode.Create);
+                            bool sponsorFileSaved = await _fileService.UploadBase64FileAsync(orderFile, orderFileName, orderPathToSave, FileMode.Create);
                             if (sponsorFileSaved)
                             {
                                 response.Errors?.Add("Couldn't save sponsor attachment.");

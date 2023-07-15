@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
+using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Update;
 using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,5 +37,11 @@ public class ApplicantProcessController : ControllerBase
     {
         var response = await _mediator.Send(new StepbackProcessCommand(request));
         return Ok(response);
+    }
+
+    [HttpGet("edit -statuses")]
+    public async Task<ActionResult> EditOrderStatuses(EditOrderStatusRequest StatusRequest)
+    {
+        return Ok(await _mediator.Send(new EditOrderStatusCommand(StatusRequest)));
     }
 }

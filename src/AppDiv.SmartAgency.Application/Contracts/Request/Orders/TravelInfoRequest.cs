@@ -12,4 +12,5 @@ public record TravelInfoRequest
     public Guid? TicketOfficeId { get; set; }
     public string? TicketPrice { get; set; }
     public string? Remark { get; set; }
+    public string? TicketFile { get; set; }
 }
