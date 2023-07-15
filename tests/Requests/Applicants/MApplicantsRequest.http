@@ -10,7 +10,7 @@ Content-Type: application/json
   "lastName": "Koricho",
   "birthDate": "2023-06-15T18:36:08.321Z",
   "gender": "female",
-  "passportNumber": "EP0006",
+  "passportNumber": "EP0001",
   "issuedDate": "2023-06-15T18:36:08.321Z",
   "passportExpiryDate": "2023-06-15T18:36:08.321Z",
   "placeOfBirth": "Finfinne",
@@ -138,6 +138,7 @@ Content-Type: application/json
     ]
   },
   "attachment": {
+    "orderId": ""
     "attachmentFiles": [
       {
         "attachmentFile": "string",

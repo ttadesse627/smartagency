@@ -74,6 +74,10 @@ public class OrderController : ControllerBase
     [HttpGet("show-order-status")]
     public async Task<ActionResult> ShowOrderStatus(Guid ApplicantId)
     {
+        if (ApplicantId == null)
+        {
+            return BadRequest("This order is not assigned");
+        }
         return Ok(await _mediator.Send(new ShowOrderStatusQuery(ApplicantId)));
     }
 
