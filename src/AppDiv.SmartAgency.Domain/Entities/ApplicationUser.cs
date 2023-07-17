@@ -20,6 +20,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<Complaint>? Complaints { get; set; }
         public virtual Address Address { get; set; }
         public virtual ICollection<UserGroup> UserGroups { get; set; }
+        public virtual ICollection<LoginHistory> LoginHistories { get; set; }
 
     }
 }

@@ -84,6 +84,8 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ITicketRebookRepository, TicketRebookRepository>();
             services.AddTransient<ITicketRegistrationRepository, TicketRegistrationRepository>();
             services.AddTransient<ITraveledApplicantRepository, TraveledApplicantRepository>();
+            services.AddTransient<IRevocationTokenRepository, RevocationTokenRepository>();
+            services.AddTransient<ILoginHistoryRepository, LoginHistoryRepository>();
             services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
 
             services.AddSingleton<IMailService, MailKitService>();

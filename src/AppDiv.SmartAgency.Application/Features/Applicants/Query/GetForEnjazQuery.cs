@@ -55,7 +55,7 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
             {
                 var resp = new DropdownEnjazResponseDTO
                 {
-                    OrderId = applicant.OrderId,
+                    ApplicantId = applicant.Id,
                     OrderNumber = applicant.Order.OrderNumber,
                     SponsorFullName = applicant.Order.Sponsor?.FullName,
                     EmployeeProfession = applicant.Jobtitle.Value,

@@ -18,6 +18,7 @@ namespace AppDiv.SmartAgency.Application
             services.AddMediatR(typeof(ServiceContainer).Assembly);
 
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ITokenValidatorService, TokenValidatorService>();
 
             return services;
         }

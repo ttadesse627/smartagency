@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    [Migration("20230715140553_orderStatusChanged")]
-    partial class orderStatusChanged
+    [Migration("20230716065441_UpdateTicketData202307160950")]
+    partial class UpdateTicketData202307160950
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1714,7 +1714,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(6829),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(5805),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1766,7 +1766,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(7022),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6190),
                             ExpiryInterval = 0,
                             Name = "Ready to Issue Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1776,7 +1776,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(7033),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6212),
                             ExpiryInterval = 0,
                             Name = "Register Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1786,7 +1786,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(7036),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6223),
                             ExpiryInterval = 0,
                             Name = "Refund Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1796,7 +1796,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(7056),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6233),
                             ExpiryInterval = 0,
                             Name = "Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1806,7 +1806,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(7060),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6242),
                             ExpiryInterval = 0,
                             Name = "Register Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1816,12 +1816,22 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                            CreatedAt = new DateTime(2023, 7, 15, 17, 5, 53, 336, DateTimeKind.Local).AddTicks(7066),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6268),
                             ExpiryInterval = 0,
                             Name = "Travel",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            RequestApproval = true,
+                            RequestApproval = false,
                             Step = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("6b912c00-9df3-47a1-a524-410abf239616"),
+                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6299),
+                            ExpiryInterval = 0,
+                            Name = "Traveled",
+                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
+                            RequestApproval = true,
+                            Step = 3
                         });
                 });
 
@@ -1834,7 +1844,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 7, 15, 17, 5, 53, 329, DateTimeKind.Local).AddTicks(1930));
+                        .HasDefaultValue(new DateTime(2023, 7, 16, 9, 54, 40, 372, DateTimeKind.Local).AddTicks(9169));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");

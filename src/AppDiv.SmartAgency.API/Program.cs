@@ -8,6 +8,11 @@ using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Infrastructure;
 using AppDiv.SmartAgency.Api.Middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,69 +27,48 @@ var _expirtyMinutes = builder.Configuration["Jwt:ExpiryMinutes"];
 
 
 // Configuration for token
-// builder.Services.AddAuthentication(x =>
-// {
-//     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//     x.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-// }).AddJwtBearer(x =>
-// {
-//     x.RequireHttpsMetadata = false;
-//     x.SaveToken = true;
-//     x.TokenValidationParameters = new TokenValidationParameters()
-//     {
-//         ValidateIssuer = true,
-//         ValidateAudience = true,
-//         ValidateLifetime = true,
-//         ValidateIssuerSigningKey = true,
-//         ValidAudience = _audience,
-//         ValidIssuer = _issuer,
-//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
-//         ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes))
-
-//     };
-// }).AddCookie(options =>
-// {
-//     options.LoginPath = "/api/auth/login";
-//     options.LogoutPath = "/api/auth/logout";
-//     options.AccessDeniedPath = "/api/auth/access-denied";
-// });
-
-
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(x =>
 {
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-})
-.AddCookie(options =>
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
 {
-    options.LoginPath = "/api/auth/login";
-    options.LogoutPath = "/api/auth/logout";
-    options.AccessDeniedPath = "/api/auth/access-denied";
-    options.SlidingExpiration = false;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
         ValidateAudience = true,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = _issuer,
         ValidAudience = _audience,
+        ValidIssuer = _issuer,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
         ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes)),
-        ValidateLifetime = true,
-        LifetimeValidator = (DateTime? notBefore, DateTime? expires, SecurityToken token, TokenValidationParameters parameters) =>
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
+    x.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = async context =>
         {
-            if (expires != null && expires <= DateTime.UtcNow)
+            // Check if the token is still valid
+            var tokenValidatorService = context.HttpContext.RequestServices.GetRequiredService<ITokenValidatorService>();
+            var isValid = await tokenValidatorService.ValidateAsync(context.SecurityToken as JwtSecurityToken);
+            if (!isValid)
             {
-                return false;
+                context.Fail("Unauthorized Access");
             }
-
-            return true;
+            return;
+        },
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
         }
     };
 });
@@ -93,7 +77,7 @@ builder.Services.AddAuthentication(options =>
 // Dependency injection with key
 builder.Services.AddSingleton<ITokenGeneratorService>(new TokenGeneratorService(_key, _issuer, _audience, _expirtyMinutes));
 
-// Include Infrastructur/Application Dependency
+// Include Infrastructure/Application Dependency
 builder.Services.AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
 

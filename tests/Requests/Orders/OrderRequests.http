@@ -1,0 +1,4 @@
+@host = http://127.0.0.1:5120/api
+
+###
+GET {{host}}/order/get-all HTTP/1.1

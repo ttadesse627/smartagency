@@ -148,9 +148,21 @@ public class ApplicantController : ControllerBase
     [HttpGet("get-for-enjaz")]
     public async Task<ActionResult<ResponseContainerDTO<List<DropdownEnjazResponseDTO>>>> GetOrderForEnjaz()
     {
-        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>();
-        response.Items = await _mediator.Send(new GetForEnjazQuery());
+        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
+        {
+            Items = await _mediator.Send(new GetForEnjazQuery())
+        };
         return Ok(response);
     }
+
+    // [HttpGet("get-traveled-applicants")]
+    // public async Task<ActionResult<SearchModel<DropdownEnjazResponseDTO>>> GetTraveledApplicants()
+    // {
+    //     var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
+    //     {
+    //         Items = await _mediator.Send(new GetForEnjazQuery())
+    //     };
+    //     return Ok(response);
+    // }
 
 }

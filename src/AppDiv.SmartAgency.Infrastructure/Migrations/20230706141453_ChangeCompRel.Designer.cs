@@ -3,6 +3,7 @@ using System;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartAgencyDbContext))]
-    partial class SmartAgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230706141453_ChangeCompRel")]
+    partial class ChangeCompRel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,7 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("ApplicantId")
+                    b.Property<Guid?>("ApplicantId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -86,10 +88,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("ProcessDefinitionId")
+                    b.Property<Guid?>("ProcessDefinitionId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1227,11 +1229,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("ApplicationNumber")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1246,16 +1244,18 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("TransactionCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("TransactionCode")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId")
+                    b.HasIndex("ApplicationNumber")
                         .IsUnique();
 
-                    b.HasIndex("ApplicationNumber")
+                    b.HasIndex("OrderId")
                         .IsUnique();
 
                     b.ToTable("Enjazs");
@@ -1712,7 +1712,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(5805),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(2879),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1742,10 +1742,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("ProcessId")
+                    b.Property<Guid?>("ProcessId")
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("RequestApproval")
@@ -1764,7 +1763,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6190),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(3030),
                             ExpiryInterval = 0,
                             Name = "Ready to Issue Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1774,7 +1773,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6212),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(3040),
                             ExpiryInterval = 0,
                             Name = "Register Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1784,7 +1783,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6223),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(3044),
                             ExpiryInterval = 0,
                             Name = "Refund Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1794,7 +1793,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6233),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(3047),
                             ExpiryInterval = 0,
                             Name = "Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1804,7 +1803,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6242),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(3066),
                             ExpiryInterval = 0,
                             Name = "Register Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1814,22 +1813,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6268),
+                            CreatedAt = new DateTime(2023, 7, 6, 17, 14, 53, 347, DateTimeKind.Local).AddTicks(3071),
                             ExpiryInterval = 0,
                             Name = "Travel",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            RequestApproval = false,
-                            Step = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("6b912c00-9df3-47a1-a524-410abf239616"),
-                            CreatedAt = new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6299),
-                            ExpiryInterval = 0,
-                            Name = "Traveled",
-                            ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                             RequestApproval = true,
-                            Step = 3
+                            Step = 2
                         });
                 });
 
@@ -1842,7 +1831,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 7, 16, 9, 54, 40, 372, DateTimeKind.Local).AddTicks(9169));
+                        .HasDefaultValue(new DateTime(2023, 7, 6, 17, 14, 53, 342, DateTimeKind.Local).AddTicks(4849));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -1994,7 +1983,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime?>("FlightDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("RegisteredDate")
+                    b.Property<DateTime>("RegisteredDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Remark")
@@ -2255,14 +2244,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
                         .WithMany("ApplicantProcesses")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.ProcessDefinition", "ProcessDefinition")
                         .WithMany("ApplicantProcesses")
                         .HasForeignKey("ProcessDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Applicant");
 
@@ -2703,13 +2690,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Enjaz", b =>
                 {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Orders.Order", "Order")
                         .WithOne("Enjaz")
-                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Enjaz", "ApplicantId")
+                        .HasForeignKey("AppDiv.SmartAgency.Domain.Entities.Enjaz", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Applicant");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.OnlineApplicant", b =>
@@ -2888,8 +2875,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Process", "Process")
                         .WithMany("ProcessDefinitions")
                         .HasForeignKey("ProcessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Process");
                 });
@@ -3071,8 +3057,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
 
                     b.Navigation("EmergencyContact");
 
-                    b.Navigation("Enjaz");
-
                     b.Navigation("Experiences");
 
                     b.Navigation("LanguageSkills");
@@ -3227,6 +3211,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Orders.Order", b =>
                 {
                     b.Navigation("Employees");
+
+                    b.Navigation("Enjaz");
 
                     b.Navigation("OrderCriteria");
 
