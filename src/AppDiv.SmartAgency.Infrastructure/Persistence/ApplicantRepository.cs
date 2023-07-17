@@ -9,6 +9,7 @@ using System.Linq.Dynamic.Core;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
