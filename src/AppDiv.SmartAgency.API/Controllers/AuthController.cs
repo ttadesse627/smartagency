@@ -26,7 +26,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         // [ProducesDefaultResponseType(typeof(AuthResponseDTO))]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
         // [HttpPost("resetPassword")]
         // // [ProducesDefaultResponseType(typeof(AuthResponseDTO))]
@@ -44,9 +44,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            // Logout logic here
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok();
+            return Ok(await _mediator.Send(new LogoutCommand()));
         }
     }
 }

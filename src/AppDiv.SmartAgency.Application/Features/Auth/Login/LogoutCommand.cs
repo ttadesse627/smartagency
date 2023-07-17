@@ -30,7 +30,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login
 {
-    public class LogoutCommand : IRequest<BaseResponse> { }
+    public record LogoutCommand : IRequest<BaseResponse> { }
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, BaseResponse>
     {
         private readonly IUserRepository _userRepository;
