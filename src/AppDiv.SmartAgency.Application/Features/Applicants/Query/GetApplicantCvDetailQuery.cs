@@ -4,20 +4,28 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDT
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Query
 {
+
     public record GetApplicantCvDetailQuery(Guid Id) : IRequest<ApplicantCvResponseDTO> { }
 
     public class GetApplicantCvDetailHandler : IRequestHandler<GetApplicantCvDetailQuery, ApplicantCvResponseDTO>
     {
         private readonly IApplicantRepository _applicantRepository;
+
+
         private readonly IFileService _fileService;
 
         public GetApplicantCvDetailHandler(IApplicantRepository applicantRepository, IFileService fileService)
         {
             _applicantRepository = applicantRepository;
+            _applicantRepository = applicantRepository;
             _fileService = fileService;
         }
         public async Task<ApplicantCvResponseDTO> Handle(GetApplicantCvDetailQuery request, CancellationToken cancellationToken)
         {
+            // var response = await _applicantRepository.GetApplicantCvDetail(request.Id);
+            // return response;
+
+
             var response = new ApplicantCvResponseDTO();
             // var overseasExperiences = new List<OverseasExperienceResponseDTO>();
             // var skills = new List<string>();

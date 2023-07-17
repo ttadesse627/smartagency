@@ -80,14 +80,14 @@ public class ApplicantController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet("search-applicant")]
     public async Task<ActionResult<ApplSearchResponseDTO>> GetSearchResult
-    (
-        int pageNumber = 1, int pageSize = 20, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
-        Guid? jobTitleId = null, Guid? maritalStatusId = null, int ageFrom = 0, int ageTo = 0,
-        Guid? religionId = null, Guid? experienceId = null, Guid? countryId = null
-    )
+   (
+       int pageNumber = 1, int pageSize = 20, string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending,
+       Guid? jobTitleId = null, Guid? maritalStatusId = null, int ageFrom = 0, int ageTo = 0,
+       Guid? religionId = null, Guid? experienceId = null, Guid? countryId = null
+   )
     {
         return Ok(await _mediator.Send(new GetApplSearchResultQuery(
                         pageNumber, pageSize, orderBy, sortingDirection,
@@ -148,8 +148,20 @@ public class ApplicantController : ControllerBase
     [HttpGet("get-for-enjaz")]
     public async Task<ActionResult<ResponseContainerDTO<List<DropdownEnjazResponseDTO>>>> GetOrderForEnjaz()
     {
-        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>();
-        response.Items = await _mediator.Send(new GetForEnjazQuery());
+        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
+        {
+            Items = await _mediator.Send(new GetForEnjazQuery())
+        };
+        return Ok(response);
+    }
+
+    [HttpGet("get-traveled-applicants")]
+    public async Task<ActionResult<SearchModel<DropdownEnjazResponseDTO>>> GetTraveledApplicants()
+    {
+        var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
+        {
+            Items = await _mediator.Send(new GetForEnjazQuery())
+        };
         return Ok(response);
     }
 

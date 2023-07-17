@@ -21,8 +21,10 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
 
     public async Task<ResponseContainerDTO<List<OrderStatusResponseDTO>>> Handle(OrderStatusQuery request, CancellationToken cancellationToken)
     {
-        var response = new ResponseContainerDTO<List<OrderStatusResponseDTO>>();
-        response.Items = new List<OrderStatusResponseDTO>();
+        var response = new ResponseContainerDTO<List<OrderStatusResponseDTO>>
+        {
+            Items = new List<OrderStatusResponseDTO>()
+        };
 
         var applEagerLoadedProps = new string[]
         {

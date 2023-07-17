@@ -26,41 +26,40 @@ namespace AppDiv.SmartAgency.Application.Features.Enjazs.Query
     }
     public class GetAllEnjazsQueryHandler : IRequestHandler<GetAllEnjazsQuery, SearchModel<EnjazResponseDTO>>
     {
-        private readonly IEnjazRepository _enjazRepository;
+        private readonly IApplicantRepository _applicantRepository;
         private readonly ISmartAgencyDbContext _dbContext;
 
-        public GetAllEnjazsQueryHandler(IEnjazRepository enjazRepository, ISmartAgencyDbContext dbContext)
+        public GetAllEnjazsQueryHandler(IApplicantRepository applicantRepository, ISmartAgencyDbContext dbContext)
         {
-            _enjazRepository = enjazRepository;
+            _applicantRepository = applicantRepository;
             _dbContext = dbContext;
         }
         public async Task<SearchModel<EnjazResponseDTO>> Handle(GetAllEnjazsQuery request, CancellationToken cancellationToken)
         {
-            var enjazsList = await _enjazRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, enj => enj.Applicant != null && enj.Applicant.OrderId != null, "Applicant", "Applicant.Order");
+            var enjazsList = await _applicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, applicant => applicant.Enjaz != null && applicant.OrderId != null, "Enjaz", "Order", "Order.Sponsor");
             var enjazResponse = new SearchModel<EnjazResponseDTO>();
-            if (enjazsList.Items.Count() > 0 || enjazsList != null)
+            var enjazRespList = new List<EnjazResponseDTO>();
+            if (enjazsList != null && enjazsList.Items.Any())
             {
-                foreach (var enjaz in enjazsList.Items)
+                foreach (var applicant in enjazsList.Items)
                 {
-                    if (enjaz.Applicant != null)
+                    if (applicant.Enjaz != null)
                     {
-                        if (enjaz.Applicant.Order != null)
+                        var enjazResp = new EnjazResponseDTO
                         {
-                            var enjazResp = new EnjazResponseDTO
-                            {
-                                EnjazNumber = enjaz.ApplicationNumber,
-                                OrderNumber = enjaz.Applicant.Order.OrderNumber,
-                                VisaNumber = enjaz.Applicant.Order.VisaNumber,
-                                OrderId = enjaz.Applicant.OrderId,
-                                PassportNumber = enjaz.Applicant.PassportNumber,
-                                FirstName = enjaz.Applicant.FirstName,
-                                MiddleName = enjaz.Applicant.MiddleName,
-                                LastName = enjaz.Applicant.LastName
-                            };
-                            enjazResponse.Items.ToList().Add(enjazResp);
-                        }
+                            EnjazNumber = applicant.Enjaz.ApplicationNumber,
+                            OrderNumber = applicant.Order!.OrderNumber,
+                            VisaNumber = applicant.Order.VisaNumber,
+                            EmployeeId = applicant.Id,
+                            PassportNumber = applicant.PassportNumber,
+                            EmployeeName = applicant.FirstName + " " + applicant.MiddleName + " " + applicant.LastName,
+                            SponsorName = applicant.Order.Sponsor!.FullName
+                        };
+                        enjazRespList.Add(enjazResp);
                     }
                 }
+                enjazResponse.Items = enjazRespList;
+
             }
             return enjazResponse;
         }

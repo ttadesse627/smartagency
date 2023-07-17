@@ -45,58 +45,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(await _mediator.Send(new DeleteEnjazCommand(id)));
 
         }
-
-
-        // [HttpGet("{id}")]
-        // [ProducesResponseType(StatusCodes.Status200OK)]
-        // public async Task<CreateDepositRequest> Get(Guid id)
-        // {
-        //     return await _mediator.Send(new GetDepositByIdQuery(id));
-        // }
-
-
-        // [HttpDelete("Delete/{id}")]
-        // public async Task<ActionResult> DeleteDeposit(Guid id)
-        // {
-        //     try
-        //     {
-        //         string result = string.Empty;
-        //         result = await _mediator.Send(new DeleteDepositCommand(id));
-        //         return Ok(result);
-        //     }
-        //     catch (Exception exp)
-        //     {
-        //         return BadRequest(exp.Message);
-        //     }
-        // }
-
-
-
-
-        // [HttpPut("Edit/{id}")]
-        // public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)
-        // {
-        //     try
-        //     {
-        //         if (command.Id == id)
-        //         {
-        //             var result = await _mediator.Send(command);
-        //             return Ok(result);
-        //         }
-        //         else
-        //         {
-        //             return BadRequest();
-        //         }
-
-        //         //var result = await _mediator.Send(command,id);
-        //     }
-        //     catch (Exception exp)
-        //     {
-        //         return BadRequest(exp.Message);
-        //     }
-
-
-        // }
     }
 
 }

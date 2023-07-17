@@ -10,7 +10,7 @@ Content-Type: application/json
   "lastName": "Koricho",
   "birthDate": "2023-06-15T18:36:08.321Z",
   "gender": "female",
-  "passportNumber": "EP0006",
+  "passportNumber": "EP0001",
   "issuedDate": "2023-06-15T18:36:08.321Z",
   "passportExpiryDate": "2023-06-15T18:36:08.321Z",
   "placeOfBirth": "Finfinne",
@@ -26,19 +26,19 @@ Content-Type: application/json
   "contractPeriod": 2,
   "amharicJobTitle": "የቤት ሰራተኛ",
   "remark": "That is all about!",
-  "issuingCountryId": "6bd10614-24fd-4171-9363-aa4a9c8b5867",
-  "passportIssuedPlaceId": "df267674-cd9d-4407-a0b8-5764a72fdb41",
-  "maritalStatusId": "da715023-d9f7-4bc7-b68e-deef11e5f355",
-  "healthId": "060f8b7a-6f8b-4cd0-9f3f-019f33cd00d4",
-  "religionId": "abb7ffd6-eb11-4d1f-84c6-68a70bec5195",
-  "jobtitleId": "ba0164b4-023f-4d56-ba7c-65534c316e95",
-  "experienceId": "41a9b5cd-58f1-4d5f-94e4-8afba523e290",
-  "languageId": "a81bd4ce-c43a-46ea-a9d0-01c644561320",
-  "salaryId": "9aee019b-1bac-4a65-b193-17bdb3261c2e",
-  "desiredCountryId": "d20343aa-8573-4f56-a04e-28c62bdb2083",
-  "brokerNameId": "fee31575-96ad-4552-b9ba-c805dce2a3bb",
-  "branchId": "0cef07fd-c5f1-49d5-82a3-f83a619e0731",
-  "partnerId": "1e78ab69-3f6c-41f8-94ae-3359c3470b42",
+  "issuingCountryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "passportIssuedPlaceId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "maritalStatusId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "healthId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "religionId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "jobtitleId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "experienceId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "languageId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "salaryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "desiredCountryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "brokerNameId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "branchId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "partnerId": null,
   "skill": {
     "languageSkills": [
       {
@@ -47,11 +47,11 @@ Content-Type: application/json
         "canSpeak": true,
         "canListen": true,
         "proficiency": "Good",
-        "languageId": "6bd10614-24fd-4171-9363-aa4a9c8b5867"
+        "languageId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
       }
     ],
     "skills": [
-      "19d82e96-4241-4d68-b19d-ce8bf04bb4a9"
+      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
     ]
   },
   "applicantExperience": {
@@ -59,7 +59,7 @@ Content-Type: application/json
       {
         "periodLength": 2,
         "position": "Software Engineering",
-        "countryId": "d0bd936d-e1ca-490e-a197-87da82d6130d"
+        "countryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
       }
     ]
   },
@@ -68,13 +68,13 @@ Content-Type: application/json
     "fieldOfStudy": "SE",
     "professionalSkill": "Software Development",
     "qualificationTypes": [
-      "38c7305a-e1d8-4c9f-ac4a-b23d485e6e78"
+      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
     ],
     "levelofQualifications": [
-      "49593992-c2ec-43e3-93a1-00fb3930d457"
+      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
     ],
     "awards": [
-      "99235b08-76b4-44cf-8946-700970da9bf5"
+      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
     ]
   },
   "bankAccount": {
@@ -88,7 +88,7 @@ Content-Type: application/json
     "arabicName": "string",
     "birthDate": "2023-06-15T18:36:08.321Z",
     "gender": "Male",
-    "relationshipId": "5e5c227d-1242-4aa1-a64a-e2f5a54ac015",
+    "relationshipId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
     "address": {
       "subCity": "Dukem",
       "zone": "East Shoa",
@@ -104,7 +104,7 @@ Content-Type: application/json
       "postCode": "10001",
       "email": "abebe@email.com",
       "website": "abebe.com",
-      "regionId": "67fe4d14-fb28-4722-aabc-88bddc33b63d"
+      "regionId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
     }
   },
   "witness": {
@@ -132,17 +132,15 @@ Content-Type: application/json
         "region": "string",
         "zone": "string",
         "woreda": "string",
-        "rate": 0,
-        "relationshipId": "5e5c227d-1242-4aa1-a64a-e2f5a54ac015"
+        "rate": 10,
+        "relationshipId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
       }
     ]
   },
   "attachment": {
+    "orderId": null,
     "attachmentFiles": [
-      {
-        "attachmentFile": "string",
-        "attachmentId": null
-      }
+      
     ]
   },
   "address": {
@@ -160,7 +158,7 @@ Content-Type: application/json
       "postCode": "10001",
       "email": "abebe@email.com",
       "website": "abebe.com",
-      "regionId": "67fe4d14-fb28-4722-aabc-88bddc33b63d"
+      "regionId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
   }
 }
 

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AppDiv.SmartAgency.API.Controllers
 {
     [Authorize(JwtBearerDefaults.AuthenticationScheme)]
-    // [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+
     [Route("api/complaint")]
     [ApiController]
     public class ComplaintController : Controller
@@ -21,6 +21,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             _mediator = mediator;
         }
+
         [HttpPost("send-complaint")]
         public async Task<ActionResult<List<GetComplaintResponseDTO>>> SendComplaint([FromBody] OrderComplaintRequest request)
         {

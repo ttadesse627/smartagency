@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Migrations
 {
-    public partial class registerTickAdded : Migration
+    public partial class UpdateTicketData202307160950 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,171 +14,131 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 13, 17, 45, 51, 844, DateTimeKind.Local).AddTicks(7206),
+                defaultValue: new DateTime(2023, 7, 16, 9, 54, 40, 372, DateTimeKind.Local).AddTicks(9169),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 7, 13, 8, 5, 55, 862, DateTimeKind.Local).AddTicks(1941));
-
-            migrationBuilder.AlterColumn<Guid>(
-                name: "ProcessId",
-                table: "ProcessDefinitions",
-                type: "char(36)",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
-                collation: "ascii_general_ci",
-                oldClrType: typeof(Guid),
-                oldType: "char(36)",
-                oldNullable: true)
-                .OldAnnotation("Relational:Collation", "ascii_general_ci");
-
-            migrationBuilder.UpdateData(
-                table: "ProcessDefinitions",
-                keyColumn: "Name",
-                keyValue: null,
-                column: "Name",
-                value: "");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "ProcessDefinitions",
-                type: "longtext",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "longtext",
-                oldNullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
+                oldDefaultValue: new DateTime(2023, 7, 15, 16, 55, 11, 164, DateTimeKind.Local).AddTicks(1826));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(5104));
+                value: new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6190));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(5114));
+                value: new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6212));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(5119));
+                value: new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6223));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(5122));
+                value: new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6233));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(5126));
+                value: new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6242));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(5133));
+                columns: new[] { "CreatedAt", "RequestApproval" },
+                values: new object[] { new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6268), false });
+
+            migrationBuilder.InsertData(
+                table: "ProcessDefinitions",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "ExpiryInterval", "ModifiedAt", "ModifiedBy", "Name", "ProcessId", "RequestApproval", "Step" },
+                values: new object[] { new Guid("6b912c00-9df3-47a1-a524-410abf239616"), new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(6299), null, 0, null, null, "Traveled", new Guid("60209c9d-47b4-497b-8abd-94a753814a86"), true, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Processes",
                 keyColumn: "Id",
                 keyValue: new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 17, 45, 51, 849, DateTimeKind.Local).AddTicks(4925));
+                value: new DateTime(2023, 7, 16, 9, 54, 40, 382, DateTimeKind.Local).AddTicks(5805));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DeleteData(
+                table: "ProcessDefinitions",
+                keyColumn: "Id",
+                keyValue: new Guid("6b912c00-9df3-47a1-a524-410abf239616"));
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedAt",
                 table: "Suffixes",
                 type: "datetime(6)",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 13, 8, 5, 55, 862, DateTimeKind.Local).AddTicks(1941),
+                defaultValue: new DateTime(2023, 7, 15, 16, 55, 11, 164, DateTimeKind.Local).AddTicks(1826),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)",
-                oldDefaultValue: new DateTime(2023, 7, 13, 17, 45, 51, 844, DateTimeKind.Local).AddTicks(7206));
-
-            migrationBuilder.AlterColumn<Guid>(
-                name: "ProcessId",
-                table: "ProcessDefinitions",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci",
-                oldClrType: typeof(Guid),
-                oldType: "char(36)")
-                .OldAnnotation("Relational:Collation", "ascii_general_ci");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "ProcessDefinitions",
-                type: "longtext",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "longtext")
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
+                oldDefaultValue: new DateTime(2023, 7, 16, 9, 54, 40, 372, DateTimeKind.Local).AddTicks(9169));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5408));
+                value: new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2577));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5422));
+                value: new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2590));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5426));
+                value: new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2597));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5429));
+                value: new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2603));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5433));
+                value: new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2609));
 
             migrationBuilder.UpdateData(
                 table: "ProcessDefinitions",
                 keyColumn: "Id",
                 keyValue: new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5439));
+                columns: new[] { "CreatedAt", "RequestApproval" },
+                values: new object[] { new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2634), true });
 
             migrationBuilder.UpdateData(
                 table: "Processes",
                 keyColumn: "Id",
                 keyValue: new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
                 column: "CreatedAt",
-                value: new DateTime(2023, 7, 13, 8, 5, 55, 867, DateTimeKind.Local).AddTicks(5241));
+                value: new DateTime(2023, 7, 15, 16, 55, 11, 172, DateTimeKind.Local).AddTicks(2275));
         }
     }
 }

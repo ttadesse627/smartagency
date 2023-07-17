@@ -39,7 +39,7 @@ public class ApplicantProcessController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("edit -statuses")]
+    [HttpPost("edit-statuses")]
     public async Task<ActionResult> EditOrderStatuses(EditOrderStatusRequest StatusRequest)
     {
         return Ok(await _mediator.Send(new EditOrderStatusCommand(StatusRequest)));

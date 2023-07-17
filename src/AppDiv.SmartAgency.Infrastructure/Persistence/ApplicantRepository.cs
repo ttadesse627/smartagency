@@ -7,7 +7,6 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
-using Newtonsoft.Json.Linq;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
 
@@ -255,11 +254,6 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             Proficiency = l.Proficiency.ToString()
         }
         ).ToList(),
-        // Attachments= new AttachmentsResponseDTO
-        //  {
-        //     Photo= Convert.ToBase64String(_fileService.getFile(id.ToString(), "3x4",null).Item1),
-        //     FullSizePhoto= Convert.ToBase64String(_fileService.getFile(id.ToString(), "Full Size", null).Item1)
-        //  },
         AttachmentTypes = app.Attachments.Where(att => att.ShowOnCv == true).Select(att => att.Title).ToList()
     }).FirstOrDefaultAsync();
         return response;

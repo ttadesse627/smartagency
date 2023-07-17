@@ -3,7 +3,7 @@
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 public record DropdownEnjazResponseDTO
 {
-    public Guid? OrderId { get; set; }
+    public Guid? ApplicantId { get; set; }
     public string? OrderNumber { get; set; }
     public string? SponsorFullName { get; set; }
     public string? EmployeeProfession { get; set; }
