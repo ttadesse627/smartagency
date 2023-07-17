@@ -32,7 +32,6 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         var request = command.Request;
         var response = new ApplicantProcessResponseDTO();
 
-        var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcesses", "Order.Sponsor", "Enjaz");
         var currentPdId = request.PdId;
         var currentPId = new Guid();
         var nextPd = new ProcessDefinition();
@@ -53,7 +52,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             currentPd = await _definitionRepository.GetWithPredicateAsync(def => def.Id == currentPdId, "Process");
             currentPId = currentPd.ProcessId;
             maxStepOfCurrentPds = await _definitionRepository.GetMaxStepAsync(currentPId);
-            currentStatus = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ProcessDefinitionId == request.PdId && appPr.ApplicantId == request.ApplicantId && appPr.Status == ProcessStatus.In);
+
         }
         else
         {
@@ -67,95 +66,87 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         {
             if (nextPd.Process.EnjazRequired)
             {
-                if (applicant.Enjaz != null)
+                if (request.ApplicantIds != null && request.ApplicantIds.Any())
                 {
-                    // Set the applicant's status to 'In' for the next process definitions
-                    var newAppStatus = new ApplicantProcess
+                    foreach (var applicantId in request.ApplicantIds)
                     {
-                        Applicant = applicant,
-                        ProcessDefinition = nextPd,
-                        Date = request.Date,
-                        Status = ProcessStatus.In
-                    };
+                        var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == applicantId, "ApplicantProcesses", "Order.Sponsor", "Enjaz");
+                        currentStatus = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ProcessDefinitionId == request.PdId && appPr.ApplicantId == applicantId && appPr.Status == ProcessStatus.In);
+                        if (applicant.Enjaz != null)
+                        {
+                            // Set the applicant's status to 'In' for the next process definitions
+                            var newAppStatus = new ApplicantProcess
+                            {
+                                Applicant = applicant,
+                                ProcessDefinition = nextPd,
+                                Date = request.Date,
+                                Status = ProcessStatus.In
+                            };
 
-                    // update the status of applicant process for the current process definition
-                    if (currentStatus != null)
-                    {
-                        currentStatus.Status = ProcessStatus.Out;
+                            // update the status of applicant process for the current process definition
+                            if (currentStatus != null)
+                            {
+                                currentStatus.Status = ProcessStatus.Out;
+                            }
+                            try
+                            {
+                                await _applicantProcessRepository.InsertAsync(newAppStatus, cancellationToken);
+                                await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new ApplicationException(ex.Message);
+                            }
+                        }
+                        else
+                        {
+                            response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
+                        }
                     }
-                    try
-                    {
-                        await _applicantProcessRepository.InsertAsync(newAppStatus, cancellationToken);
-                        await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ApplicationException(ex.Message);
-                    }
+
                 }
-                else
-                {
-                    response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
-                }
+
             }
             else
             {
-                // Set the applicant's status to 'In' for the next process definitions
-                var newAppStatus = new ApplicantProcess
+                if (request.ApplicantIds != null && request.ApplicantIds.Any())
                 {
-                    Applicant = applicant,
-                    ProcessDefinition = nextPd,
-                    Date = request.Date,
-                    Status = ProcessStatus.In
-                };
+                    foreach (var applicantId in request.ApplicantIds)
+                    {
+                        var applicant = await _applicantRepository.GetWithPredicateAsync(app => app.Id == applicantId, "ApplicantProcesses", "Order.Sponsor", "Enjaz");
+                        currentStatus = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ProcessDefinitionId == request.PdId && appPr.ApplicantId == applicantId && appPr.Status == ProcessStatus.In);
 
-                // update the status of applicant process for the current process definition
-                if (currentStatus != null)
-                {
-                    currentStatus.Status = ProcessStatus.Out;
-                }
-                try
-                {
-                    await _applicantProcessRepository.InsertAsync(newAppStatus, cancellationToken);
-                    await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException(ex.Message);
+                        // Set the applicant's status to 'In' for the next process definitions
+                        var newAppStatus = new ApplicantProcess
+                        {
+                            Applicant = applicant,
+                            ProcessDefinition = nextPd,
+                            Date = request.Date,
+                            Status = ProcessStatus.In
+                        };
+
+
+                        // update the status of applicant process for the current process definition
+                        if (currentStatus != null)
+                        {
+                            currentStatus.Status = ProcessStatus.Out;
+                        }
+                        try
+                        {
+                            await _applicantProcessRepository.InsertAsync(newAppStatus, cancellationToken);
+                            await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ApplicationException(ex.Message);
+                        }
+                    }
+
                 }
 
                 // Return all the applicants in each process definitions within that Process
                 response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
             }
-        }
-        else
-        {
-            // Set the applicant's status to 'In' for the next process definitions
-            var newAppStatus = new ApplicantProcess
-            {
-                Applicant = applicant,
-                ProcessDefinition = nextPd,
-                Date = request.Date,
-                Status = ProcessStatus.In
-            };
-
-            // update the status of applicant process for the current process definition
-            if (currentStatus != null)
-            {
-                currentStatus.Status = ProcessStatus.Out;
-            }
-            try
-            {
-                await _applicantProcessRepository.InsertAsync(newAppStatus, cancellationToken);
-                await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException(ex.Message);
-            }
-
-            // Return all the applicants in each process definitions within that Process
-            response = await _mediator.Send(new GetApplProcessQuery(currentPId), cancellationToken);
         }
 
         return response;

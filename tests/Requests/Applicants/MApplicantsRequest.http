@@ -1,16 +1,16 @@
 
-@host = http://localhost:5120/api/applicant
+@host = http://192.168.1.13:8000/api/applicant
 
 POST {{host}}/create
 Content-Type: application/json
 
 {
-  "firstName": "alewiya",
+  "firstName": "abebe",
   "middleName": "kedr",
   "lastName": "Koricho",
   "birthDate": "2023-06-15T18:36:08.321Z",
   "gender": "female",
-  "passportNumber": "EP0001",
+  "passportNumber": "EP0004",
   "issuedDate": "2023-06-15T18:36:08.321Z",
   "passportExpiryDate": "2023-06-15T18:36:08.321Z",
   "placeOfBirth": "Finfinne",
@@ -26,18 +26,18 @@ Content-Type: application/json
   "contractPeriod": 2,
   "amharicJobTitle": "የቤት ሰራተኛ",
   "remark": "That is all about!",
-  "issuingCountryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "passportIssuedPlaceId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "maritalStatusId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "healthId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "religionId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "jobtitleId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "experienceId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "languageId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "salaryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "desiredCountryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "brokerNameId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
-  "branchId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+  "issuingCountryId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "passportIssuedPlaceId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "maritalStatusId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "healthId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "religionId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "jobtitleId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "experienceId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "languageId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "salaryId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "desiredCountryId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "brokerNameId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
+  "branchId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
   "partnerId": null,
   "skill": {
     "languageSkills": [
@@ -47,11 +47,11 @@ Content-Type: application/json
         "canSpeak": true,
         "canListen": true,
         "proficiency": "Good",
-        "languageId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+        "languageId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
       }
     ],
     "skills": [
-      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+      "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
     ]
   },
   "applicantExperience": {
@@ -59,7 +59,7 @@ Content-Type: application/json
       {
         "periodLength": 2,
         "position": "Software Engineering",
-        "countryId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+        "countryId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
       }
     ]
   },
@@ -68,13 +68,13 @@ Content-Type: application/json
     "fieldOfStudy": "SE",
     "professionalSkill": "Software Development",
     "qualificationTypes": [
-      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+      "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
     ],
     "levelofQualifications": [
-      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+      "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
     ],
     "awards": [
-      "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+      "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
     ]
   },
   "bankAccount": {
@@ -88,7 +88,7 @@ Content-Type: application/json
     "arabicName": "string",
     "birthDate": "2023-06-15T18:36:08.321Z",
     "gender": "Male",
-    "relationshipId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda",
+    "relationshipId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5",
     "address": {
       "subCity": "Dukem",
       "zone": "East Shoa",
@@ -104,7 +104,7 @@ Content-Type: application/json
       "postCode": "10001",
       "email": "abebe@email.com",
       "website": "abebe.com",
-      "regionId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+      "regionId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
     }
   },
   "witness": {
@@ -133,7 +133,7 @@ Content-Type: application/json
         "zone": "string",
         "woreda": "string",
         "rate": 10,
-        "relationshipId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+        "relationshipId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
       }
     ]
   },
@@ -158,7 +158,7 @@ Content-Type: application/json
       "postCode": "10001",
       "email": "abebe@email.com",
       "website": "abebe.com",
-      "regionId": "e8267e0a-4dfc-4ba3-b2da-ac3545741bda"
+      "regionId": "6aaa88a3-26d9-4e38-a3f7-b7e9fdbd7fb5"
   }
 }
 

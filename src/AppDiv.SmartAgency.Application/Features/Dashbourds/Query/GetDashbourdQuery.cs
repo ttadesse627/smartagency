@@ -12,99 +12,98 @@ using AppDiv.SmartAgency.Application.Mapper;
 
 namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
 {
-    public class GetDashbourdQuery: IRequest<Dictionary<string,Object>>
+    public class GetDashbourdQuery : IRequest<Dictionary<string, Object>>
     {
-        public DateTime? StartDate {get; set;}
-        public DateTime? EndDate {get; set;} 
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public GetDashbourdQuery(DateTime? startDate, DateTime? endDate)
         {
             StartDate = startDate;
             EndDate = endDate;
 
         }
-        
+
     }
 
-    public class GetDashbourdHandler: IRequestHandler<GetDashbourdQuery , Dictionary<string,Object>>
+    public class GetDashbourdHandler : IRequestHandler<GetDashbourdQuery, Dictionary<string, Object>>
     {
 
-       private readonly  IProcessDefinitionRepository _processDefinitionRepository;
-       private readonly  IApplicantProcessRepository _applicantProcessRepository;
+        private readonly IProcessDefinitionRepository _processDefinitionRepository;
+        private readonly IApplicantProcessRepository _applicantProcessRepository;
         private object applicantProcessRepository;
 
         public GetDashbourdHandler(IProcessDefinitionRepository processDefinitionRepository, IApplicantProcessRepository applicantProcessRepository)
-       {
-          _processDefinitionRepository= processDefinitionRepository;  
-          _applicantProcessRepository= applicantProcessRepository;
-       }
+        {
+            _processDefinitionRepository = processDefinitionRepository;
+            _applicantProcessRepository = applicantProcessRepository;
+        }
 
-       public async Task<Dictionary<string,Object>> Handle(GetDashbourdQuery request, CancellationToken cancellationToken)
-       {
+        public async Task<Dictionary<string, Object>> Handle(GetDashbourdQuery request, CancellationToken cancellationToken)
+        {
 
-                  var response = new Dictionary<string, object>
+            var response = new Dictionary<string, object>
                             {
-                                { "thisWeekSummary", null },
+                                //{ "thisWeekSummary", null },
                                 { "thisMonthSummary", null },
                                 { "quickLinks", null},
+                                { "navBars", null}
                             };
-                                  DateTime today = DateTime.Today;
-                              DateTime startOfMonth = new DateTime(today.Year, today.Month, 1);
-                              DateTime endDate = new DateTime(today.Year, today.Month, today.Day + 1);
-                        if (request.StartDate==null || request.EndDate==null)
-                        {
-                            request.StartDate= startOfMonth;
-                            request.EndDate= endDate;
-                        }
+            DateTime today = DateTime.Today;
+            DateTime startOfMonth = new DateTime(today.Year, today.Month, 1);
+            DateTime endDate = new DateTime(today.Year, today.Month, today.Day + 1);
+            if (request.StartDate == null || request.EndDate == null)
+            {
+                request.StartDate = startOfMonth;
+                request.EndDate = endDate;
+            }
 
-          
+
             DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek);
             DateTime endOfWeek = startOfWeek.AddDays(7);
 
-        
-          
 
 
-           var  ThisWeekSummary = await _applicantProcessRepository.GetDashbourdResult(startOfWeek, endOfWeek); 
-           
-           var ThisMonthSummary = await _applicantProcessRepository.GetDashbourdResult(request.StartDate, request.EndDate); 
-           var  QuickLinks= await _applicantProcessRepository.GetQuickLinks();
 
 
-               response["thisWeekSummary"] = ThisWeekSummary;
-               response["thisMonthSummary"] = ThisMonthSummary;
-                 response["quickLinks"] = QuickLinks;
+            // var ThisWeekSummary = await _applicantProcessRepository.GetDashbourdResult(startOfWeek, endOfWeek);
 
-        var res=response;
-            return response;   
-
-      }
+            var ThisMonthSummary = await _applicantProcessRepository.GetDashbourdResult(request.StartDate, request.EndDate);
+            var QuickLinks = await _applicantProcessRepository.GetQuickLinks();
+            var NavBars = await _applicantProcessRepository.GetNavBars(request.StartDate, request.EndDate);
 
 
-  /* var groupedApplicantProcesses = applicantProcesses
-        .Where(ap => ap.CreatedAt >= startOfWeek && ap.CreatedAt < endOfWeek)
-        .GroupBy(ap => ap.ProcessDefinitionId)
-        .Select(g => new { 
-            ProcessDefinitionId = g.Key, 
-            Count = g.Count(),
-            Name = _context.ProcessDefinitions
-                .Where(pd => pd.ProcessDefinitionId == g.Key)
-                .Select(pd => pd.Name)
-                .SingleOrDefault()
-        });
+            //  response["thisWeekSummary"] = ThisWeekSummary;
+            response["thisMonthSummary"] = ThisMonthSummary;
+            response["quickLinks"] = QuickLinks;
+            response["navBars"] = NavBars;
 
-*/
+            var res = response;
+            return response;
 
-        
+        }
 
-      
+
+        /* var groupedApplicantProcesses = applicantProcesses
+              .Where(ap => ap.CreatedAt >= startOfWeek && ap.CreatedAt < endOfWeek)
+              .GroupBy(ap => ap.ProcessDefinitionId)
+              .Select(g => new { 
+                  ProcessDefinitionId = g.Key, 
+                  Count = g.Count(),
+                  Name = _context.ProcessDefinitions
+                      .Where(pd => pd.ProcessDefinitionId == g.Key)
+                      .Select(pd => pd.Name)
+                      .SingleOrDefault()
+              });
+
+      */
+
+
+
+
         // return groupedApplicantProcesses.ToList();
-        
-    
 
 
 
-
-   
-       }   
     }
+}
 

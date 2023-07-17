@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
@@ -10,15 +11,17 @@ using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Create
 {
     public class CreateOnlineApplicantCommandHandler : IRequestHandler<CreateOnlineApplicantCommand, CreateOnlineApplicantCommandResponse>
-{
+    {
         private readonly IOnlineApplicantRepository _onlineApplicantRepository;
+
         public CreateOnlineApplicantCommandHandler(IOnlineApplicantRepository onlineApplicantRepository)
         {
             _onlineApplicantRepository = onlineApplicantRepository;
+
         }
         public async Task<CreateOnlineApplicantCommandResponse> Handle(CreateOnlineApplicantCommand request, CancellationToken cancellationToken)
         {
-           // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
+            // var customerEntity = CustomerMapper.Mapper.Map<Customer>(request.customer);           
 
             var createOnlineApplicantCommandResponse = new CreateOnlineApplicantCommandResponse();
 
@@ -37,32 +40,35 @@ namespace AppDiv.SmartAgency.Application.Features.OnlineApplicants.Command.Creat
             if (createOnlineApplicantCommandResponse.Success)
             {
                 //can use this instead of automapper
-              /*  var partner = new Partner()
-                {
-                    PartnerName=request.partner.PartnerName,
-                    PartnerType=request.partner.PartnerType,
-                    PartnerNameAmharic=request.partner.PartnerNameAmharic,
-                    PartnerNameArabic=request.partner.PartnerNameArabic,
-                    ContactPerson=request.partner.ContactPerson,
-                    IdNumber=request.partner.IdNumber,
-                    ManagerNameAmharic=request.partner.ManagerNameAmharic,
-                    LicenseNumber=request.partner.LicenseNumber,
-                    BankName=request.partner.BankName,
-                    BankAccount=request.partner.BankAccount,
-                    HeaderLogo=request.partner.HeaderLogo,
-                    ReferenceNumber=request.partner.ReferenceNumber,
-                    Address=request.partner.Address
-                };  */
+                /*  var partner = new Partner()
+                  {
+                      PartnerName=request.partner.PartnerName,
+                      PartnerType=request.partner.PartnerType,
+                      PartnerNameAmharic=request.partner.PartnerNameAmharic,
+                      PartnerNameArabic=request.partner.PartnerNameArabic,
+                      ContactPerson=request.partner.ContactPerson,
+                      IdNumber=request.partner.IdNumber,
+                      ManagerNameAmharic=request.partner.ManagerNameAmharic,
+                      LicenseNumber=request.partner.LicenseNumber,
+                      BankName=request.partner.BankName,
+                      BankAccount=request.partner.BankAccount,
+                      HeaderLogo=request.partner.HeaderLogo,
+                      ReferenceNumber=request.partner.ReferenceNumber,
+                      Address=request.partner.Address
+                  };  */
 
-                
-               // await _partnerRepository.InsertAsync(partner, cancellationToken);
+
+                // await _partnerRepository.InsertAsync(partner, cancellationToken);
                 //await _partnerRepository.SaveChangesAsync(cancellationToken);
 
+
+
+
                 var onlineApplicantEntity = CustomMapper.Mapper.Map<OnlineApplicant>(request.onlineApplicant);
-            await _onlineApplicantRepository.InsertAsync(onlineApplicantEntity, cancellationToken);
-            await _onlineApplicantRepository.SaveChangesAsync(cancellationToken);      
+                // await _onlineApplicantRepository.InsertAsync(onlineApplicantEntity, cancellationToken, request.onlineApplicant.Passport);
+                await _onlineApplicantRepository.SaveChangesAsync(cancellationToken);
             }
             return createOnlineApplicantCommandResponse;
         }
-}
+    }
 }
