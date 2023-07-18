@@ -3,10 +3,7 @@ using AppDiv.SmartAgency.Application.Interfaces;
 using System.Reflection;
 using MediatR;
 using AppDiv.SmartAgency.Application.Service;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 
 namespace AppDiv.SmartAgency.Application
 {
@@ -19,6 +16,7 @@ namespace AppDiv.SmartAgency.Application
 
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ITokenValidatorService, TokenValidatorService>();
+            services.AddHttpClient();
 
             return services;
         }

@@ -55,7 +55,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddSingleton<IUserResolverService, UserResolverService>();
             services.AddSingleton<IMailService, MailKitService>();
             #region Repositories DI         
-
+            services.AddTransient<ISmartAgencyDbContext, SmartAgencyDbContext>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAttachmentRepository, AttaachmentRepository>();
@@ -77,7 +77,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IEnjazRepository, EnjazRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IGroupRepository, GroupRepository>();
+
             services.AddTransient<IComplaintRepository, ComplaintRepository>();
             services.AddTransient<ITicketReadyRepository, TicketReadyRepository>();
             services.AddTransient<ITicketRefundRepository, TicketRefundRepository>();
@@ -86,7 +86,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ITraveledApplicantRepository, TraveledApplicantRepository>();
             services.AddTransient<IRevocationTokenRepository, RevocationTokenRepository>();
             services.AddTransient<ILoginHistoryRepository, LoginHistoryRepository>();
-            services.AddScoped<ISmartAgencyDbContext, SmartAgencyDbContext>();
+
 
             services.AddSingleton<IMailService, MailKitService>();
             // services.AddSingleton<ISmsService, TwilioService>();

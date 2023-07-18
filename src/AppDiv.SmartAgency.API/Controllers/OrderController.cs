@@ -11,12 +11,15 @@ using AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Orders.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 
 [Route("api/order")]
 [ApiController]
+
+[AllowAnonymous]
 public class OrderController : ControllerBase
 {
     private readonly IMediator _mediator;

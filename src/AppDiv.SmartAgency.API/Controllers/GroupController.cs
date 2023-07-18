@@ -31,19 +31,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             _Ilog = Ilog; ;
         }
 
-        [HttpGet("get-all")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<SearchModel<FetchGroupDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
-        {
-            return await _mediator.Send(new GetAllGroupQuery(pageNumber, pageSize, searchTerm!, orderBy!, sortingDirection));
-        }
-        [HttpGet("lookup")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<UserGroupResponseDTO> GetDropdown()
-        {
-            return await _mediator.Send(new GetDropDownGroups());
-        }
-
         [HttpPost("create")]
         // [ProducesResponseType(StatusCodes.Status200OK)]
         // [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -59,6 +46,21 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(result);
             }
         }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<SearchModel<FetchGroupDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        {
+            return await _mediator.Send(new GetAllGroupQuery(pageNumber, pageSize, searchTerm!, orderBy!, sortingDirection));
+        }
+        [HttpGet("lookup")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<UserGroupResponseDTO> GetDropdown()
+        {
+            return await _mediator.Send(new GetDropDownGroups());
+        }
+
+
 
         [HttpGet("get/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

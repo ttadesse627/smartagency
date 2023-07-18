@@ -10,9 +10,7 @@ using AppDiv.SmartAgency.Api.Middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-
-
-
+using AppDiv.SmartAgency.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -150,10 +148,15 @@ app.UseCors("CorsPolicy");
 
 // Added for authentication
 // Maintain middleware order
+
+
+
 app.UseAuthentication();
+
 
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<AuthMiddleware>();
 
 app.Run();

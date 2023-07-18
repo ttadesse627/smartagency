@@ -23,7 +23,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
         {
-            return Ok(await _mediator.Send(command));
+            return Ok(await Mediator.Send(command));
         }
         // [HttpPost("resetPassword")]
         // public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
@@ -38,7 +38,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            return Ok(await _mediator.Send(new LogoutCommand()));
+            return Ok(await Mediator.Send(new LogoutCommand()));
         }
     }
 }

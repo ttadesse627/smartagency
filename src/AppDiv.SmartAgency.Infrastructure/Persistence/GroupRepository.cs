@@ -22,5 +22,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             return await _context.UserGroups.Where(ug => groupIds.Contains(ug.Id)).ToListAsync();
         }
+
+        public async Task<List<UserGroup>> GetUserGroupByUserId(string userId)
+        {
+            var response = await _context.UserGroups.Where(ug => ug.ApplicationUsers.Any(apU => apU.Id == userId)).ToListAsync();
+            return response;
+        }
     }
 }

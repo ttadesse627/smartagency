@@ -8,5 +8,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     {
         // Task<UserGroup> GetByIdAsync(Guid id);
         Task<ICollection<UserGroup>> GetMultipleUserGroups(ICollection<Guid> groupIds);
+        Task<List<UserGroup>> GetUserGroupByUserId(string userId);
     }
 }
