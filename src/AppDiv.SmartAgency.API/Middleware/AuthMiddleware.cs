@@ -34,14 +34,6 @@ namespace AppDiv.SmartAgency.API.Middleware
 
             }
 
-            var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-            Console.WriteLine("////////////////////////");
-            Console.WriteLine("////////////////////////");
-            Console.WriteLine("////////////////////////");
-            Console.WriteLine("////////////////////////");
-            Console.WriteLine("////////////////////////");
-
-            Console.WriteLine($"Authorization header: {authHeader}");
 
 
             var tokenValue = context.Request.Headers["Authorization"].FirstOrDefault();

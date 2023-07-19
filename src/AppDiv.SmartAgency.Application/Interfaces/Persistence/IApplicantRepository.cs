@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Utility.Contracts;
 using Newtonsoft.Json.Linq;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence;
 public interface IApplicantRepository : IBaseRepository<Applicant>
@@ -28,6 +29,8 @@ public interface IApplicantRepository : IBaseRepository<Applicant>
     public Task<List<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicants();
 
     public Task<List<NewAssignedVisaResponseDTO>> GetNewAssignedVisa();
+
+    public Task<List<TravelledApplicantsResponseDTO>> GetTravelledApplicants();
 
 
 }

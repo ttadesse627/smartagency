@@ -1,3 +1,6 @@
+using System.ComponentModel.Design.Serialization;
+using System;
+using System.Reflection.Metadata;
 // using AppDiv.CRVS.Application.Exceptions;
 // using AppDiv.CRVS.Application.Contracts.DTOs;
 using MediatR;
@@ -27,6 +30,7 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.Extensions.Primitives;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login
 {
@@ -51,37 +55,65 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.Login
         public async Task<BaseResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             _httpContext.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues headerValue);
-            Guid UserId = _userResolverService.GetUserId();
+
+
+            var tokenValue = headerValue.FirstOrDefault();
             var res = new BaseResponse();
-            if (UserId == null && UserId == Guid.Empty)
+
+            if (tokenValue != null)
             {
-                throw new NotFoundException("User Not Found");
+                var rawToken = tokenValue.Substring("Bearer ".Length);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.ReadJwtToken(rawToken);
+
+                // var tokenValidatorService = context.RequestServices.GetRequiredService<ITokenValidatorService>();
+                // var isValid = await tokenValidatorService.ValidateAsync(token as JwtSecurityToken); 
+                var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == "UserId");
+
+                // Get the user ID value from the claim, or return null if the claim is not found
+                var UserId = userIdClaim?.Value;
+
+
+                //Guid UserId = _userResolverService.GetUserId();
+
+                if (UserId == null)
+                {
+                    throw new NotFoundException("User Not Found");
+                }
+                //  var response = await _userRepository.GetWithPredicateAsync(user => user.Id == UserId);
+                // var responses = _userRepository.GetAll().Where(x => x.PersonalInfoId == UserId).FirstOrDefault();
+                var tokenLogout = new RevocationToken
+                {
+                    Id = Guid.NewGuid(),
+                    Token = tokenValue,
+                    ExpirationDate = DateTime.Now.AddMonths(3)
+                };
+
+
+                var LoginHis = new LoginHistory
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = UserId,
+                    EventType = "Logout",
+                    EventDate = DateTime.Now,
+                    IpAddress = _httpContext.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    Device = _httpContext.HttpContext.Request.Headers["User-Agent"].ToString()
+                };
+                await _tokenRepository.InsertAsync(tokenLogout, cancellationToken);
+                await _loginHistoryRepository.InsertAsync(LoginHis, cancellationToken);
+                await _tokenRepository.SaveChangesAsync(cancellationToken);
+                await _loginHistoryRepository.SaveChangesAsync(cancellationToken);
+
+                res.Success = true;
+                res.Message = "Loggedout successfully";
+
+
             }
-            var response = await _userRepository.GetWithPredicateAsync(user => user.Id == UserId.ToString());
-            var tokenLogout = new RevocationToken
+            else
             {
-                Id = Guid.NewGuid(),
-                Token = headerValue.FirstOrDefault(),
-                ExpirationDate = DateTime.Now.AddMonths(3)
-            };
-            var LoginHis = new LoginHistory
-            {
-                Id = Guid.NewGuid(),
-                UserId = response.Id,
-                EventType = "Logout",
-                EventDate = DateTime.Now,
-                IpAddress = _httpContext.HttpContext.Connection.RemoteIpAddress.ToString(),
-                Device = _httpContext.HttpContext.Request.Headers["User-Agent"].ToString()
-            };
-            await _tokenRepository.InsertAsync(tokenLogout, cancellationToken);
-            await _loginHistoryRepository.InsertAsync(LoginHis, cancellationToken);
-            await _tokenRepository.SaveChangesAsync(cancellationToken);
-            await _loginHistoryRepository.SaveChangesAsync(cancellationToken);
-            res = new BaseResponse
-            {
-                Success = false,
-                Message = "Loggedout successfully"
-            };
+                res.Success = false;
+                res.Message = "invalid token";
+            }
             return res;
         }
     }

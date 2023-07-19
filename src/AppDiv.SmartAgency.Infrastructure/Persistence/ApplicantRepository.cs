@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
@@ -188,6 +189,44 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             SortingDirection = sortingDirection
         };
     }
+
+    ///travelled applicants
+
+    public async Task<List<TravelledApplicantsResponseDTO>> GetTravelledApplicants()
+    {
+
+        var response = await _context.Applicants
+                             .Include(app => app.Order)
+                             .Include(app => app.Order.Partner)
+                             .Include(app => app.Enjaz)
+                             .Include(app => app.Order.Priority)
+                             .Include(app => app.Jobtitle)
+                             .Include(app => app.Salary)
+                             .Include(app => app.Order.Payment)
+                             .Include(app => app.TraveledApplicant)
+                             .Where(app => app.TraveledApplicant != null && app.OrderId != null && app.Enjaz != null)
+                             .Select(app => new TravelledApplicantsResponseDTO
+                             {
+                                 PartnerName = app.Order.Partner.PartnerName,
+                                 OrderNo = app.Order.OrderNumber,
+                                 //   Days = (int)((DateTime.Now - app.TraveledApplicant.CreatedAt).TotalDays),
+                                 EnjazNumber = app.Enjaz.ApplicationNumber,
+                                 OrderCode = app.OrderId.ToString(),
+                                 VisaNumber = app.Order.VisaNumber,
+                                 Employee = $"{app.FirstName} {app.MiddleName} {app.LastName}",
+                                 PassportNo = app.PassportNumber,
+                                 Priority = app.Order.Priority.Value,
+                                 RemainedPayment = app.Order.Payment.RemainingAmount,
+                                 JobTitle = app.Jobtitle.Value,
+                                 Salary = app.Salary.Value
+
+                             }).ToListAsync();
+
+
+        return response;
+
+    }
+
 
 
     public async Task<ApplicantCvResponseDTO> GetApplicantCvDetail(Guid id)

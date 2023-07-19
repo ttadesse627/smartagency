@@ -297,18 +297,28 @@ namespace AppDiv.SmartAgency.Application.Service
         public async Task<ServiceResponse<int>> ChangePassword(string userName, string oldPassword, string newPassword)
         {
             var response = new ServiceResponse<int>();
+            response.Errors = new List<string>();
+
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                response.Message = "could't find user with the given username";
+                response.Message = "Couldn't find user with the given username";
                 return response;
             }
+
+
             var changePResponse = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+
+            Console.WriteLine(changePResponse.Succeeded);
             if (!changePResponse.Succeeded)
             {
                 response.Errors.Add("Change password failed!");
-                throw new Exception($"Change password failed! ");
+                // response.Message= changePResponse.Errors[0].Code;
+                // throw new Exception($"Change password failed! ");
+                response.Success = false;
+                return response;
             }
+            response.Success = true;
             return response;
         }
 

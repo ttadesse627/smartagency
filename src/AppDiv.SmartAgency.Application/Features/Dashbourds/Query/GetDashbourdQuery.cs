@@ -1,14 +1,6 @@
-using System.Reflection.PortableExecutable;
-using System.Reflection.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
-using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Mapper;
 
 namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
 {

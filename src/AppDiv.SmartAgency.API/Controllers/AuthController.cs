@@ -35,7 +35,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("logout")]
+
+        [HttpPost("Logout")]
+        //  [ProducesDefaultResponseType(typeof(AuthResponseDTO))]
         public async Task<IActionResult> Logout()
         {
             return Ok(await Mediator.Send(new LogoutCommand()));

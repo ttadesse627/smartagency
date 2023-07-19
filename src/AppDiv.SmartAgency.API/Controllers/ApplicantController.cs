@@ -15,7 +15,7 @@ using AppDiv.SmartAgency.Application.Features.Applicants.Queries;
 using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -26,7 +26,7 @@ namespace AppDiv.SmartAgency.API.Controllers;
 [ApiController]
 [Route("api/applicant")]
 
-[AllowAnonymous]
+//[AllowAnonymousAttribute]
 public class ApplicantController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -167,6 +167,17 @@ public class ApplicantController : ControllerBase
         };
         return Ok(response);
     }
+
+    [HttpGet("get-travelled-applicants")]
+    public async Task<ActionResult<TravelledApplicantsResponseDTO>> GetTravelledApplicants()
+    {
+        var result = await _mediator.Send(new GetTravelledApplicantsQuery());
+
+        return Ok(result);
+    }
+
+
+
 
     // [HttpGet("get-traveled-applicants")]
     // public async Task<ActionResult<SearchModel<DropdownEnjazResponseDTO>>> GetTraveledApplicants()

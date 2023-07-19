@@ -7,10 +7,9 @@ using AppDiv.SmartAgency.Application.Service;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Infrastructure;
 using AppDiv.SmartAgency.Api.Middleware;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using AppDiv.SmartAgency.API.Middleware;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -157,6 +156,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseMiddleware<AuthMiddleware>();
+//app.UseMiddleware<AuthMiddleware>();
 
 app.Run();

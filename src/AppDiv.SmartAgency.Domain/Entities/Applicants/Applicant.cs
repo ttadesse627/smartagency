@@ -7,6 +7,7 @@ namespace AppDiv.SmartAgency.Domain.Entities.Applicants;
 [Table("Applicants")]
 public class Applicant : PersonalInfo
 {
+
     public string PassportNumber { get; set; } = string.Empty;
     public DateTime IssuedDate { get; set; }
     public DateTime PassportExpiryDate { get; set; }

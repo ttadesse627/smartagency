@@ -27,7 +27,11 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ChangePassword
             var response = await _identityService.ChangePassword(request.UserName, request.OldPassword, request.NewPassword);
             if (!response.Success)
             {
-                throw new BadRequestException($"could not change password {string.Join(",", response.Errors)}");
+                //throw new BadRequestException($"could not change password {string.Join(",", response.Errors)}");
+                response.Message = "Coudn't Change Password";
+                response.Success = false;
+                return response;
+
             }
             response.Message = "password changed successfully";
             return response;

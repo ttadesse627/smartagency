@@ -100,7 +100,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 var complaint = new JObject();
                 complaint["Name"] = "Complaints";
                 complaint["Count"] = complaints;
-                complaint["Path"] = "api/quick-links/get-complaint";
+                complaint["Path"] = "quick-links/get-complaint";
 
                 response.Add(complaint);
             }
@@ -115,7 +115,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
                 newAssignedVisa["Name"] = "New Assigned Visas";
                 newAssignedVisa["Count"] = newAssignedVisas;
-                newAssignedVisa["Path"] = "api/quick-links/get-new-assigned-visa";
+                newAssignedVisa["Path"] = "quick-links/get-new-assigned-visa";
                 response.Add(newAssignedVisa);
 
             }
@@ -132,7 +132,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
                 notProcessedApplicant["Name"] = "Not Processed Applicants";
                 notProcessedApplicant["Count"] = notProcessedApplicants;
-                notProcessedApplicant["Path"] = "api/quick-links/get-not-processed-applicant";
+                notProcessedApplicant["Path"] = "quick-links/get-not-processed-applicant";
 
                 response.Add(notProcessedApplicant);
             }
@@ -144,7 +144,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
                 notAssignedVisa["Name"] = "Not Assigned Visas";
                 notAssignedVisa["Count"] = notAssignedVisas;
-                notAssignedVisa["Path"] = "api/quick-links/get-not-assigned-visa";
+                notAssignedVisa["Path"] = "quick-links/get-not-assigned-visa";
 
                 response.Add(notAssignedVisa);
 
@@ -164,7 +164,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
                 expiredVisa["Name"] = "Expired Visas";
                 expiredVisa["Count"] = expiredVisas;
-                expiredVisa["Path"] = "api/quick-links/get-expired-visa";
+                expiredVisa["Path"] = "quick-links/get-expired-visa";
 
                 response.Add(expiredVisa);
 
@@ -189,7 +189,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
                     penality["Name"] = "Penality";
                     penality["Count"] = penalities;
-                    penality["Path"] = "api/quick-links/get-penality";
+                    penality["Path"] = "quick-links/get-penality";
 
                     response.Add(penality);
 
@@ -209,7 +209,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                                           //new JProperty("Id", g.Key),
                                           new JProperty("Name", g.FirstOrDefault().ProcessDefinition.Name),
                                           new JProperty("Count", g.Count()),
-                                          new JProperty("Path", "api/quick-links/get-dynamic-process/" + g.Key)
+                                          new JProperty("Path", "quick-links/get-dynamic-process/" + g.Key)
                                       )).ToListAsync();
 
             if (expiredProcesses != null)
