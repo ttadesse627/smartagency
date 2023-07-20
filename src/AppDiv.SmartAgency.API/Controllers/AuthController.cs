@@ -20,11 +20,11 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
+        // [HttpPost("forgot-password")]
+        // public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        // {
+        //     return Ok(await Mediator.Send(command));
+        // }
         // [HttpPost("resetPassword")]
         // public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
         // {

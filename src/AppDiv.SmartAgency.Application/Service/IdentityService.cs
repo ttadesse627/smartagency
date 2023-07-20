@@ -332,6 +332,7 @@ namespace AppDiv.SmartAgency.Application.Service
                 response.Success = false;
                 response.Message = "could not find user with the given id";
                 response.Errors?.Add("could not find user with the given id");
+                return response;
             }
 
 
@@ -346,10 +347,10 @@ namespace AppDiv.SmartAgency.Application.Service
             if (!updateResponse.Succeeded)
             {
                 response.Success = false;
-                response.Errors.Add($"User Updating failed! \n {response.Errors}");
+                response.Errors?.Add($"User Updating failed! \n {response.Errors}");
                 throw new Exception($"User Updating failed! \n {response.Errors}");
             }
-
+            response.Success = true;
             return response;
         }
     }

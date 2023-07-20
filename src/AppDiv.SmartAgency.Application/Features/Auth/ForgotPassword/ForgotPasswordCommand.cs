@@ -16,8 +16,8 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
     {
         public string UserName { get; init; }
         public string ClientURI { get; init; }
-
     }
+    /*
     public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, object>
     {
         private readonly IIdentityService _identityService;
@@ -26,8 +26,13 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
         private readonly IOptions<SMTPServerConfiguration> config;
         private readonly SMTPServerConfiguration _config;
         private readonly ILogger<ForgotPasswordCommandHandler> _logger;
-
-        public ForgotPasswordCommandHandler(IIdentityService identityService, IMailService mailService, ISmsService smsService, IOptions<SMTPServerConfiguration> config, ILogger<ForgotPasswordCommandHandler> logger)
+        private readonly HelperService _helperService;
+​
+        public ForgotPasswordCommandHandler(IIdentityService identityService, IMailService mailService,
+            ISmsService smsService, IOptions<SMTPServerConfiguration> config,
+            ILogger<ForgotPasswordCommandHandler> logger,
+            HelperService helperService
+            )
         {
             _identityService = identityService;
             _mailService = mailService;
@@ -35,23 +40,24 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
             this.config = config;
             _config = config.Value;
             _logger = logger;
+            _helperService = helperService;
         }
         public async Task<object> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
         {
             try
             {
-
+​
                 await sendOTP(request, cancellationToken);
                 return new { message = "successfully sent password reset by email and phone" };
-
-
+​
+​
             }
             catch (Exception)
             {
                 throw;
             }
-
-
+​
+​
         }
         // private async Task<bool> sendByEmailAsync(ForgotPasswordCommand request, CancellationToken cancellationToken)
         // {
@@ -66,16 +72,19 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
         //     //     { "token" , token },
         //     //     { "email" , request.Email }
         //     // };
-
+​
         //     // var callback = QueryHelpers.AddQueryString(request.ClientURI, param);
         //     // var emailContent = "Please use the link below to reset your password\n" + callback;
         //     // var subject = "Reset Password";
         //     // await _mailService.SendAsync(body: emailContent, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: request.Email, cancellationToken);
         //     // return  true;
+​
+​
         // }
         private async Task<bool> sendOTP(ForgotPasswordCommand request, CancellationToken cancellationToken)
         {
-
+​
+            //var user = await _identityService.GetUserByName(request.UserName);
             var user = await _identityService.GetByUsernameAsync(request.UserName);
             if (user == null)
             {
@@ -83,16 +92,33 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
             }
             int expirySecond = 120;
             //send sms and get otp code
-            var otpCode = await _smsService.SendOtpAsync(user.PhoneNumber, "", "is your password reset code ", expirySecond, 6, 0);
-            var updateResponse = await _identityService.UpdateUserAsync(user.Id, user.UserName, user.Email, user.FullName, otpCode.ToString(), DateTime.Now.AddSeconds(expirySecond));
-            if (!updateResponse.Success)
+            var policySetting = _helperService.getPasswordPolicySetting();
+            int codeLength = 6;
+            int codeType = 0;
+            if (policySetting != null)
             {
-                throw new Exception(string.Join(",", updateResponse.Errors));
+                codeLength = policySetting.Max;
+                codeType = policySetting.Number && !(policySetting.LowerCase || policySetting.UpperCase || policySetting.OtherChar)
+                            ? 0
+                            : (policySetting.LowerCase || policySetting.UpperCase || policySetting.OtherChar) && !policySetting.Number
+                            ? 1
+                            : 2;
+            }
+​
+            var otpCode = await _smsService.SendOtpAsync(user.PhoneNumber, "", "is your password reset code ", expirySecond, codeLength, codeType);
+            if (otpCode == null)
+            {
+                otpCode = _identityService.GeneratePassword();
+            }
+            var updateResponse = await _identityService.UpdateResetOtp(user.Id, otpCode?.ToString(), DateTime.Now.AddSeconds(expirySecond));
+            if (!updateResponse.Succeeded)
+            {
+                throw new NotFoundException(string.Join(",", updateResponse.Errors));
             }
             //send to email
             var param = new Dictionary<string, string?>
             {
-                { "otp" , otpCode.ToString() },
+                { "otp" , otpCode?.ToString() },
                 { "userName" , request.UserName }
             };
 
@@ -100,9 +126,7 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
             var emailContent = "Please use the link below to reset your password\n" + callback;
             var subject = "Reset Password";
             await _mailService.SendAsync(body: emailContent, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: user.Email, cancellationToken);
-
             return true;
-
         }
-    }
+    }*/
 }
