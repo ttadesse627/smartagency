@@ -18,7 +18,7 @@ public class OrderCriteria
     public Guid? ExperienceId { get; set; }
     public Guid? LanguageId { get; set; }
     public Guid? OrderId { get; set; }
-    
+
     // Navigation properties
     public LookUp? Nationality { get; set; }
     public LookUp? JobTitle { get; set; }

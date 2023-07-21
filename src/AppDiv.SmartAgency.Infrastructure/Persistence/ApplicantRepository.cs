@@ -238,6 +238,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             .Include("Religion")
             .Include("Jobtitle")
             .Include("MaritalStatus")
+            .Include("CurrentNationality")
             .Include("Skills.LookUp")
             .Include("Education.LevelOfQualifications.LookUp")
             .Include("Address")
@@ -262,7 +263,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         PersonalInfo = new PersonalInfoResponseDTO
         {
             Id = app.Id,
-            Nationality = app.CurrentNationality,
+            Nationality = app.CurrentNationality.Value,
             DateOfBirth = app.BirthDate.ToString("yyyy-MM-dd"),
             PlaceOfBirth = app.PlaceOfBirth,
             MaritalStatus = app.MaritalStatus.Value,
@@ -361,7 +362,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             .Include(app => app.Order.Sponsor.Address.City)
             .Include(app => app.Order.Priority)
             .Include(app => app.MaritalStatus)
-            //.Include (app=> app.Gender)
+            .Include(app => app.CurrentNationality)
             .Include(app => app.Religion)
             .Select(app => new
             {
@@ -383,7 +384,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
                     MaritalSatus = app.MaritalStatus.Value,
                     Religion = app.Religion.Value,
                     DateOfBirth = app.BirthDate.ToString("yyyy-MM-dd"),
-                    CurrentNationality = app.CurrentNationality
+                    CurrentNationality = app.CurrentNationality.Value
                 }
             })
         .FirstOrDefaultAsync();

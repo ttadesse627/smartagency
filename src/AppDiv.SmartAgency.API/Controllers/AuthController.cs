@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Features.Auth.Login;
 using AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword;
 using AppDiv.SmartAgency.Application.Features.Auth.ChangePassword;
+using AppDiv.SmartAgency.Application.Features.Auth.ResetPassword;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
@@ -20,16 +21,16 @@ namespace AppDiv.SmartAgency.API.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
-        // [HttpPost("forgot-password")]
-        // public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
-        // {
-        //     return Ok(await Mediator.Send(command));
-        // }
-        // [HttpPost("resetPassword")]
-        // public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
-        // {
-        //     return Ok(await Mediator.Send(command));
-        // }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("resetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
         {

@@ -67,6 +67,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
         public DbSet<LoginHistory> LoginHistories { get; set; }
         public DbSet<RevocationToken> RevocationTokens { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {

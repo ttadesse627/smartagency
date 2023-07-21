@@ -1,8 +1,5 @@
-using AppDiv.SmartAgency.Domain.Entities.Applicants;
-using AppDiv.SmartAgency.Domain.Entities;
+
 using AppDiv.SmartAgency.Domain.Enums;
-using AppDiv.SmartAgency.Domain.Entities.Base;
-using AppDiv.SmartAgency.Domain.Entities.Settings;
 using AppDiv.SmartAgency.Application.Contracts.Request.Common;
 
 
@@ -24,13 +21,13 @@ public record CreateApplicantRequest
     public int NumberOfChildren { get; set; }
     public string? MotherName { get; set; }
     public string? PreviousNationality { get; set; }
-    public string? CurrentNationality { get; set; }
     public decimal Height { get; set; }
     public decimal Weight { get; set; }
     public int ContractPeriod { get; set; }
     public string? AmharicJobTitle { get; set; }
     public string? Remark { get; set; }
     public Guid? IssuingCountryId { get; set; }
+    public Guid? CurrentNationalityId { get; set; }
     public Guid? PassportIssuedPlaceId { get; set; }
     public Guid? MaritalStatusId { get; set; }
     public Guid? HealthId { get; set; }
@@ -42,7 +39,7 @@ public record CreateApplicantRequest
     public Guid? DesiredCountryId { get; set; }
     public Guid? BrokerNameId { get; set; }
     public Guid? BranchId { get; set; }
-  //  public Guid? OrderId {get; set;}
+    //  public Guid? OrderId {get; set;}
     public Guid? PartnerId { get; set; } = null;
     public SkillRequest? Skill { get; set; }
     public ApplicantExperienceRequest? ApplicantExperience { get; set; }

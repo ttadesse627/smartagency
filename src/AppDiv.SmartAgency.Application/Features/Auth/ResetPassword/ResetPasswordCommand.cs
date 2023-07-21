@@ -1,12 +1,13 @@
-// using AppDiv.CRVS.Application.Contracts.Request;
-// using MediatR;
 
-// namespace AppDiv.CRVS.Application.Features.Auth.ResetPassword
-// {
-//     // Customer create command with CustomerResponse
+using AppDiv.SmartAgency.Application.Contracts.Request.Auth;
+using MediatR;
 
-//     public record ResetPasswordCommand(ResetPasswordRequest resetPassword) : IRequest<object>
-//     {
+namespace AppDiv.SmartAgency.Application.Features.Auth.ResetPassword
+{
+    // Customer create command with CustomerResponse
 
-//     }
-// }
+    public record ResetPasswordCommand(ResetPasswordRequest resetPassword) : IRequest<object>
+    {
+
+    }
+}

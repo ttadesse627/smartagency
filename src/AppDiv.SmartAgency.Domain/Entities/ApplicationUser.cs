@@ -9,6 +9,8 @@ namespace AppDiv.SmartAgency.Domain.Entities
     {
         public string? Otp { get; set; }
         public DateTime? OtpExpiredDate { get; set; }
+        public string? PasswordResetOtp { get; set; }
+        public DateTime? PasswordResetOtpExpiredDate { get; set; }
         public string? FullName { get; set; }
         public Guid? PositionId { get; set; }
         public Guid? BranchId { get; set; }

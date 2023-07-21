@@ -79,7 +79,7 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
                                 DepartureTime = appOrder.TicketRegistration?.TicketNumber,
                                 Transit = appOrder.TicketRegistration?.TicketNumber,
                                 ArrivalTime = appOrder.TicketRegistration?.TicketNumber,
-                                TravelStatus = travelStatus,
+                                TravelStatus = travelStatus.ToString(),
                                 StatusName = proDef.Name,
                                 Date = applicantStatus.Date
                             };
@@ -118,7 +118,7 @@ public class OrderStatusQueryHandler : IRequestHandler<OrderStatusQuery, Respons
                                 DepartureTime = appOrder.TicketRegistration?.TicketNumber,
                                 Transit = appOrder.TicketRegistration?.TicketNumber,
                                 ArrivalTime = appOrder.TicketRegistration?.TicketNumber,
-                                TravelStatus = travelStatus,
+                                TravelStatus = travelStatus.ToString(),
                                 StatusName = proDef.Name
                             };
                             response.Items.Add(orderStatusResponse);

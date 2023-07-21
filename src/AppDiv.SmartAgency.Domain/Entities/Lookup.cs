@@ -12,6 +12,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
 
         // Navigation properties
         public ICollection<Applicant>? ApplIssuingCountries { get; set; }
+        public ICollection<Applicant>? ApplCurrentNationalities { get; set; }
         public ICollection<Applicant>? ApplPassportIssuedPlaces { get; set; }
         public ICollection<Applicant>? ApplMaritalStatuses { get; set; }
         public ICollection<Applicant>? ApplHealthes { get; set; }

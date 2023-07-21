@@ -1,5 +1,7 @@
 ﻿
+using System.Security.Authentication;
 using System.Security.Claims;
+using System.Text;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
@@ -15,12 +17,15 @@ namespace AppDiv.SmartAgency.Application.Service
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly HelperService _helperService;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+
+        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, HelperService helperService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _helperService = helperService;
         }
 
         public async Task<bool> AssignUserToRole(string userName, IList<string> roles)
@@ -352,6 +357,158 @@ namespace AppDiv.SmartAgency.Application.Service
             }
             response.Success = true;
             return response;
+        }
+
+
+        public string GeneratePassword()
+        {
+            var policySetting = _helperService.getPasswordPolicySetting();
+            var options = _userManager.Options.Password;
+            int max = 0;
+            bool digit;
+            bool nonAlphanumeric = false;
+            bool lowerCase = false;
+            bool upperCase = false;
+            if (policySetting != null)
+            {
+                max = policySetting.Max;
+                digit = policySetting.Number;
+                nonAlphanumeric = !(policySetting.Number && (policySetting.LowerCase || policySetting.UpperCase || policySetting.OtherChar));
+                lowerCase = policySetting.LowerCase;
+                upperCase = policySetting.UpperCase;
+            }
+            else
+            {
+                max = options.RequiredLength;
+                nonAlphanumeric = options.RequireNonAlphanumeric;
+                digit = options.RequireDigit;
+                lowerCase = options.RequireLowercase;
+                upperCase = options.RequireUppercase;
+
+            }
+
+            StringBuilder password = new StringBuilder();
+            Random random = new Random();
+
+            while (password.Length < max)
+            {
+                char c = (char)random.Next(32, 126);
+
+                password.Append(c);
+
+                if (char.IsDigit(c))
+                    digit = false;
+                else if (char.IsLower(c))
+                    lowerCase = false;
+                else if (char.IsUpper(c))
+                    upperCase = false;
+                else if (!char.IsLetterOrDigit(c))
+                    nonAlphanumeric = false;
+            }
+
+            if (nonAlphanumeric)
+                password.Append((char)random.Next(33, 48));
+            if (digit)
+                password.Append((char)random.Next(48, 58));
+            if (lowerCase)
+                password.Append((char)random.Next(97, 123));
+            if (upperCase)
+                password.Append((char)random.Next(65, 91));
+
+
+            return password.ToString();
+        }
+
+
+        public async Task<Result> UpdateResetOtp(string id, string? otp, DateTime? otpExpiredDate)
+        {
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                return Result.Failure(new string[] { "could not find user with the given id" });
+            }
+            user.PasswordResetOtp = otp;
+            user.PasswordResetOtpExpiredDate = otpExpiredDate;
+            var response = await _userManager.UpdateAsync(user);
+
+            if (!response.Succeeded)
+            {
+                throw new NotFoundException($"User Updating failed! \n {response.Errors}");
+            }
+
+            return Result.Success();
+
+        }
+
+        public async Task<Result> ResetPassword(string? email, string? userName, string password, string token)
+        {
+            var user = email != null
+                        ? await _userManager.FindByEmailAsync(email)
+                        : await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return Result.Failure(new string[] { "user not found" });
+            }
+            var isLoginOtp = user.Otp != null;
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, token, password);
+            if (!resetPassResult.Succeeded)
+            {
+                var errors = resetPassResult.Errors.Select(e => e.Description);
+                throw new NotFoundException($"password reset failed! \n {string.Join(",", errors)}\n {token}");
+            }
+            if (isLoginOtp)//login otp
+            {
+                user.Otp = null;
+                user.OtpExpiredDate = DateTime.Now.AddDays(_helperService.getOtpExpiryDurationSetting());
+            }
+            else
+            {
+                user.PasswordResetOtp = null;
+                user.PasswordResetOtpExpiredDate = null;
+            }
+            await _userManager.UpdateAsync(user);
+            return Result.Success();
+        }
+
+
+        public async Task<(Result, string)> ForgotPassword(string? email, string? userName)
+        {
+            var user = email != null
+                            ? await _userManager.FindByEmailAsync(email)
+                            : await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return (Result.Failure(new string[] { "could not find user with the given email" }), string.Empty);
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            return (Result.Success(), token);
+        }
+
+
+        public async Task<Result> VerifyOtp(string userName, string otp)
+        {
+            var user = await _userManager.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                throw new NotFoundException($"user with username {userName} is not found");
+            }
+            if (user.Otp != otp)
+            {
+                throw new AuthenticationException("invalid otp");
+            }
+            user.Otp = null;
+            user.OtpExpiredDate = DateTime.Now.AddDays(_helperService.getOtpExpiryDurationSetting());
+            await _userManager.UpdateAsync(user);
+
+            return Result.Success();
+        }
+
+        public Task<(Result result, string? email, string? phone)> ReGenerateOtp(string userId, string otp, DateTime otpExpiry)
+        {
+            throw new NotImplementedException();
         }
     }
 }

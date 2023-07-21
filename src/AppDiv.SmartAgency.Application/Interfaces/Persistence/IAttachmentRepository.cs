@@ -10,4 +10,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence;
 public interface IAttachmentRepository : IBaseRepository<Attachment>
 {
     Task<ServiceResponse<AttachmentResponseDTO>> UpdateAttachment(EditAttachmentCommand request);
+    public Task<List<AttachmentDropDownDto>> GetApplicantAttachments();
+    public Task<List<AttachmentDropDownDto>> GetOrderAttachments();
 }

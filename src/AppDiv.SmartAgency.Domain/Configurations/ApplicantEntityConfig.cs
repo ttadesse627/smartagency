@@ -104,6 +104,11 @@ public class ApplicantEntityConfig : IEntityTypeConfiguration<Applicant>
             .HasForeignKey(appl => appl.BranchId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasOne(appl => appl.CurrentNationality)
+            .WithMany(lk => lk.ApplCurrentNationalities)
+            .HasForeignKey(appl => appl.CurrentNationalityId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasMany(appl => appl.Attachments)
             .WithMany(att => att.Applicants);
     }

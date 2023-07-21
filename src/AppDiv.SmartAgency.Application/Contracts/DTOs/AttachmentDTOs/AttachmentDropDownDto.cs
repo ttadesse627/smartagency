@@ -6,6 +6,7 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs
 
     {
         public Guid Key { get; set; }
-        public string Value { get; set; }
+        public string? Value { get; set; }
+        public bool IsRequired { get; set; }
     }
 }

@@ -16,6 +16,8 @@ namespace AppDiv.SmartAgency.Application
 
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ITokenValidatorService, TokenValidatorService>();
+            services.AddScoped<HelperService>();
+
             services.AddHttpClient();
 
             return services;

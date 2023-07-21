@@ -55,10 +55,10 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Query
                 var personalInfo = new PersonalInfoResponseDTO
                 {
                     Id = appResponse.Id,
-                    Nationality = appResponse.CurrentNationality,
+                    Nationality = appResponse.CurrentNationality?.Value,
                     DateOfBirth = appResponse.BirthDate.ToString("yyyy-MM-dd"),
                     PlaceOfBirth = appResponse.PlaceOfBirth,
-                    MaritalStatus = appResponse.MaritalStatus.Value,
+                    MaritalStatus = appResponse.MaritalStatus?.Value,
                     NumberOfChildren = appResponse.NumberOfChildren,
                     Height = appResponse.Height,
                     Weight = appResponse.Weight,

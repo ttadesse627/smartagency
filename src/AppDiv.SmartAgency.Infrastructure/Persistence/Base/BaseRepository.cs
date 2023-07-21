@@ -75,6 +75,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 }
             }
 
+
             // Sorting
             if (!string.IsNullOrEmpty(orderBy))
             {
@@ -100,6 +101,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 SortingDirection = sortingDirection
             };
         }
+
+
+        public virtual IQueryable<T> GetAll()
+        {
+            return _dbContext.Set<T>().AsNoTracking().AsQueryable();
+        }
+
         public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;

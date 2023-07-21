@@ -43,7 +43,7 @@ namespace AppDiv.SmartAgency.Utility.Services
                 message.To.AddRange(from mailAddress in receiversMailAddress select new MailboxAddress("", mailAddress));
                 message.Subject = subject;
                 BodyBuilder bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = $"<div>{textMessage}</div>"; 
+                bodyBuilder.HtmlBody = $"<div>{textMessage}</div>";
                 bodyBuilder.TextBody = textMessage;
 
                 //The ToMessageBody() method creates a message body with HTML/Text content and attachments.

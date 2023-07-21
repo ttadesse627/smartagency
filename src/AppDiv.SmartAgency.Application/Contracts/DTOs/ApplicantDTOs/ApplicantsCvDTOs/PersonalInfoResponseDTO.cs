@@ -11,5 +11,5 @@ public record PersonalInfoResponseDTO
     public decimal Weight { get; set; }
     public string? EducationQualification { get; set; }
     public string? PhoneNumber { get; set; }
-    
+
 }

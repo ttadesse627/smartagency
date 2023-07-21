@@ -19,6 +19,37 @@ public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepo
     {
         _context = dbContext;
     }
+
+    public Task<List<AttachmentDropDownDto>> GetApplicantAttachments()
+    {
+        var response = _context.Attachments
+                           .Where(att => att.Type == Domain.Enums.AttachmentType.Applicant)
+                           .Select(att => new AttachmentDropDownDto
+                           {
+                               Key = att.Id,
+                               Value = att.Title,
+                               IsRequired = att.Required
+
+                           }).ToListAsync();
+
+        return response;
+    }
+
+    public Task<List<AttachmentDropDownDto>> GetOrderAttachments()
+    {
+        var response = _context.Attachments
+                           .Where(att => att.Type == Domain.Enums.AttachmentType.Order)
+                           .Select(att => new AttachmentDropDownDto
+                           {
+                               Key = att.Id,
+                               Value = att.Title,
+                               IsRequired = att.Required
+
+                           }).ToListAsync();
+
+        return response;
+    }
+
     public async Task<ServiceResponse<AttachmentResponseDTO>> UpdateAttachment(EditAttachmentCommand updatedAttachment)
     {
         var serviceResponse = new ServiceResponse<AttachmentResponseDTO>();

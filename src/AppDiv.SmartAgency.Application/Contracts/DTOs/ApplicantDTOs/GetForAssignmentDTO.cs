@@ -10,6 +10,10 @@ public record GetApplForAssignmentDTO
     public string? FirstName { get; set; }
     public int Age { get; set; }
     public string? PassportNumber { get; set; }
-    public string? Religion { get; set; }
-    public string? Language { get; set; }
+    public LookUpItemResponseDTO? Religion { get; set; }
+    public LookUpItemResponseDTO? Language { get; set; }
+    public LookUpItemResponseDTO? Nationality { get; set; }
+    public LookUpItemResponseDTO? JobTitle { get; set; }
+    public LookUpItemResponseDTO? Salary { get; set; }
+    public LookUpItemResponseDTO? Experience { get; set; }
 }

@@ -10,6 +10,7 @@ using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using Microsoft.AspNetCore.Http;
+using AppDiv.SmartAgency.Utility.Config;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {
@@ -50,7 +51,12 @@ namespace AppDiv.SmartAgency.Infrastructure
             });
 
             // services.Configure<RabbitMQConfiguration>(configuration.GetSection(RabbitMQConfiguration.CONFIGURATION_SECTION));
-            // services.Configure<SMTPServerConfiguration>(configuration.GetSection(SMTPServerConfiguration.CONFIGURATION_SECTION));
+            // services.Configure<TwilioConfiguration>(configuration.GetSection(TwilioConfiguration.CONFIGURATION_SECTION));
+
+            services.Configure<SMTPServerConfiguration>(configuration.GetSection(SMTPServerConfiguration.CONFIGURATION_SECTION));
+            services.Configure<AfroMessageConfiguration>(configuration.GetSection(AfroMessageConfiguration.CONFIGURATION_SECTION));
+
+
 
             services.AddSingleton<IUserResolverService, UserResolverService>();
             services.AddSingleton<IMailService, MailKitService>();
@@ -93,6 +99,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IReportsRepository, ReportsRepository>();
+            services.AddScoped<ISettingRepository, SettingRepository>();
 
             services.AddHttpContextAccessor();
 

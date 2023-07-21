@@ -18,7 +18,6 @@ public class Applicant : PersonalInfo
     public int NumberOfChildren { get; set; }
     public string? MotherName { get; set; }
     public string? PreviousNationality { get; set; }
-    public string? CurrentNationality { get; set; }
     public decimal Height { get; set; }
     public decimal Weight { get; set; }
     public int ContractPeriod { get; set; }
@@ -30,6 +29,7 @@ public class Applicant : PersonalInfo
     public bool IsDeleted { get; set; } = false;
     //Foreign keys
     public Guid? IssuingCountryId { get; set; }
+    public Guid? CurrentNationalityId { get; set; }
     public Guid? PassportIssuedPlaceId { get; set; }
     public Guid? MaritalStatusId { get; set; }
     public Guid? HealthId { get; set; }
@@ -60,6 +60,7 @@ public class Applicant : PersonalInfo
     //Navigation Properties
     public Partner? Partner { get; set; }
     public LookUp? IssuingCountry { get; set; }
+    public LookUp? CurrentNationality { get; set; }
     public LookUp? PassportIssuedPlace { get; set; }
     public LookUp? MaritalStatus { get; set; }
     public LookUp? Health { get; set; }

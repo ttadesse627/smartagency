@@ -17,6 +17,16 @@ namespace AppDiv.SmartAgency.Application.Interfaces
         Task<string> GetUserNameAsync(string userId);
         Task<bool> DeleteUserAsync(string userId);
         Task<bool> IsUniqueUserName(string userName);
+
+        Task<Result> ResetPassword(string? email, string? userName, string password, string token);
+        public string GeneratePassword();
+        Task<Result> UpdateResetOtp(string id, string? otp, DateTime? otpExpiredDate);
+
+        Task<(Result result, string resetToken)> ForgotPassword(string? email, string? userName);
+
+        public Task<Result> VerifyOtp(string userName, string otp);
+        public Task<(Result result, string? email, string? phone)> ReGenerateOtp(string userId, string otp, DateTime otpExpiry);
+
         Task<List<(string id, string fullName, string userName, string email)>> GetAllUsersAsync();
         Task<List<(string id, string userName, string email, IList<string> roles)>> GetAllUsersDetailsAsync();
         Task<bool> UpdateUserProfile(string id, string fullName, string email, IList<string> roles);
