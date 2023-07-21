@@ -91,4 +91,17 @@ public class AttachmentController : ControllerBase
     {
         return await _mediator.Send(new GetDropDownAttachmentsQuery());
     }
+    [HttpGet("get-applicant-attachments")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<AttachmentDropDownDto>> GetApplicantAttachments()
+    {
+        return await _mediator.Send(new GetApplicantAttachmentsQuery());
+    }
+    [HttpGet("get-order-attachments")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<AttachmentDropDownDto>> GetOrderAttachments()
+    {
+        return await _mediator.Send(new GetOrderAttachmentsQuery());
+    }
+
 }
