@@ -34,7 +34,7 @@ public class SubmitTraveledApplCommandHandler : IRequestHandler<SubmitTraveledAp
         // var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
 
         var applPros = await _applicantProcessRepository.GetAllWithPredicateAsync(appPr => request.ApplicantIds.Contains(appPr.ApplicantId) && appPr.ProcessDefinitionId.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "Applicant");
-        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcess", "Order.Sponsor");
+        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcesses", "Order.Sponsor");
         var traveld = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "6b912c00-9df3-47a1-a524-410abf239616");
 
 

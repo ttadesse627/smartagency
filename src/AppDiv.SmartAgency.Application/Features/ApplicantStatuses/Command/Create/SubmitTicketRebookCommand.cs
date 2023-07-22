@@ -33,7 +33,7 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
 
 
         var applPros = await _applicantProcessRepository.GetAllWithPredicateAsync(appPr => request.ApplicantIds.Contains(appPr.ApplicantId) && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf");
-        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcess", "Order.Sponsor");
+        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcesses", "Order.Sponsor");
         var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf");
 
 
