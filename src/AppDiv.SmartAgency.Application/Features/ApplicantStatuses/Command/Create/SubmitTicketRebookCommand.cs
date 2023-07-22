@@ -31,33 +31,52 @@ public class SubmitTicketRebookCommandHandler : IRequestHandler<SubmitTicketRebo
     {
         var request = command.Request;
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf");
-        var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId);
+
+        var applPros = await _applicantProcessRepository.GetAllWithPredicateAsync(appPr => request.ApplicantIds.Contains(appPr.ApplicantId) && appPr.ProcessDefinitionId.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf");
+        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcess", "Order.Sponsor");
+        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf");
+
+
+        var applicantStatuses = new List<ApplicantProcess>();
+        var tickRebookApplicants = new List<TicketRebook>();
 
 
         // Update the applicant status on the ApplicantProcess table
-        applPro.Status = ProcessStatus.Out;
-
-        var tktRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf");
-        var appProList = new List<ApplicantProcess>();
-        var applTickRebookProcess = new ApplicantProcess
+        if (applPros != null && applPros.Any())
         {
-            Applicant = applicant1,
-            ProcessDefinition = tktRebook,
-            Date = request.Date,
-            Status = ProcessStatus.In
-        };
+            foreach (var applPro in applPros)
+            {
+                applPro.Status = ProcessStatus.Out;
+            }
+        }
 
-        var tickRebook = new TicketRebook
+        if (applicants != null && applicants.Any())
         {
-            DateInterval = request.DateInterval,
-            Applicant = applicant1
-        };
+            foreach (var applicant1 in applicants)
+            {
+                var applicantStatus = new ApplicantProcess
+                {
+                    Applicant = applicant1,
+                    ProcessDefinition = tktRebook,
+                    Date = (DateTime)request.Date,
+                    Status = ProcessStatus.In
+                };
+                applicantStatuses.Add(applicantStatus);
+
+                var tickRebook = new TicketRebook
+                {
+                    DateInterval = request.DateInterval,
+                    Applicant = applicant1
+                };
+                tickRebookApplicants.Add(tickRebook);
+            }
+        }
+
 
         try
         {
-            await _applicantProcessRepository.InsertAsync(applTickRebookProcess, cancellationToken);
-            await _ticketRebookRepository.InsertAsync(tickRebook, cancellationToken);
+            await _applicantProcessRepository.InsertAsync(applicantStatuses, cancellationToken);
+            await _ticketRebookRepository.InsertAsync(tickRebookApplicants, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
             await _ticketRebookRepository.SaveChangesAsync(cancellationToken);
         }
