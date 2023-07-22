@@ -29,42 +29,73 @@ public class SubmitTicketRebookRegCommandHandler : IRequestHandler<SubmitTicketR
     {
         var request = command.request;
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
-        var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
+        // var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
+        // var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
         var airLine = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.AirLineId);
 
-        applPro.Status = ProcessStatus.Out;
+        var applPros = await _applicantProcessRepository.GetAllWithPredicateAsync(appPr => request.ApplicantIds.Contains(appPr.ApplicantId) && appPr.ProcessDefinitionId.ToString() == "4048b353-039d-41b6-8690-a9aaa2e679cf", "Applicant");
+        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcess", "Order.Sponsor");
+        var registeredApplicants = await _ticketRegistrationRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id));
+        var travel = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616");
 
-        var traveledPr = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "ApplicantProcesses", "ApplicantProcesses.Applicant");
-        var registeredTicket = await _ticketRegistrationRepository.GetWithPredicateAsync(rt => rt.ApplicantId == request.ApplicantId, "AirLine");
-        var appProList = new List<ApplicantProcess>();
+        var applicantStatuses = new List<ApplicantProcess>();
 
-        var applTraveledProcess = new ApplicantProcess
+
+        // Update the applicant status on the ApplicantProcess table
+        if (applPros != null && applPros.Any())
         {
-            Applicant = applicant1,
-            ProcessDefinition = traveledPr,
-            Date = request.Date,
-            Status = ProcessStatus.In
-        };
+            foreach (var applPro in applPros)
+            {
+                applPro.Status = ProcessStatus.Out;
+            }
+        }
 
-        if (registeredTicket != null)
+        if (applicants != null && applicants.Any())
         {
-            registeredTicket.TicketNumber = request.TicketNumber;
-            registeredTicket.AirLine = airLine;
-            registeredTicket.FlightDate = request.FlightDate;
-            registeredTicket.DepartureTime = request.DepartureTime;
-            registeredTicket.Transit = request.Transit;
-            registeredTicket.ArrivalTime = request.ArrivalTime;
-            registeredTicket.Remark = request.Remark;
-            registeredTicket.Applicant = applicant1;
+            foreach (var applicant1 in applicants)
+            {
+                var applicantStatus = new ApplicantProcess
+                {
+                    Applicant = applicant1,
+                    ProcessDefinition = travel,
+                    Date = (DateTime)request.Date,
+                    Status = ProcessStatus.In
+                };
+                applicantStatuses.Add(applicantStatus);
+            }
+        }
+
+        if (registeredApplicants != null && registeredApplicants.Any())
+        {
+            foreach (var registeredTicket in registeredApplicants)
+            {
+                registeredTicket.TicketNumber = request.TicketNumber;
+                registeredTicket.AirLine = airLine;
+                registeredTicket.FlightDate = request.FlightDate;
+                registeredTicket.DepartureTime = request.DepartureTime;
+                registeredTicket.Transit = request.Transit;
+                registeredTicket.ArrivalTime = request.ArrivalTime;
+                registeredTicket.Remark = request.Remark;
+                registeredTicket.Applicant = applicants?.Where(appl => appl.Id == registeredTicket.ApplicantId).FirstOrDefault();
+            }
         }
 
         try
         {
-            await _applicantProcessRepository.InsertAsync(applTraveledProcess, cancellationToken);
+            await _applicantProcessRepository.InsertAsync(applicantStatuses, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
             await _ticketRegistrationRepository.SaveChangesAsync(cancellationToken);
         }
+
+
+
+
+        // try
+        // {
+        //     await _applicantProcessRepository.InsertAsync(applTraveledProcess, cancellationToken);
+        //     await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
+        //     await _ticketRegistrationRepository.SaveChangesAsync(cancellationToken);
+        // }
         catch (Exception ex)
         {
             throw new ApplicationException(ex.Message);

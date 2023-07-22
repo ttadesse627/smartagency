@@ -1,6 +1,7 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
 using AppDiv.SmartAgency.Domain.Enums;
 using MediatR;
@@ -29,26 +30,60 @@ public class SubmitTraveledApplCommandHandler : IRequestHandler<SubmitTraveledAp
     {
         var request = command.request;
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "Applicant");
-        var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
+        // var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "Applicant");
+        // var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "ApplicantProcess", "Order.Sponsor");
+
+        var applPros = await _applicantProcessRepository.GetAllWithPredicateAsync(appPr => request.ApplicantIds.Contains(appPr.ApplicantId) && appPr.ProcessDefinitionId.ToString() == "5b912c00-9df3-47a1-a525-410abf239616", "Applicant");
+        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "ApplicantProcess", "Order.Sponsor");
+        var traveld = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "6b912c00-9df3-47a1-a524-410abf239616");
+
+
+        var applicantStatuses = new List<ApplicantProcess>();
+        var traveldApplicants = new List<TraveledApplicant>();
 
 
         // Update the applicant status on the ApplicantProcess table
-        applPro.Status = ProcessStatus.Out;
-
-        var traveledApplicant = new TraveledApplicant
+        if (applPros != null && applPros.Any())
         {
-            Remark = request.Remark,
-            Applicant = applicant1
-        };
+            foreach (var applPro in applPros)
+            {
+                applPro.Status = ProcessStatus.Out;
+            }
+        }
+
+
+        // var tickReg = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7");
+        if (applicants != null && applicants.Any())
+        {
+            foreach (var applicant1 in applicants)
+            {
+                var applicantStatus = new ApplicantProcess
+                {
+                    Applicant = applicant1,
+                    ProcessDefinition = traveld,
+                    Date = (DateTime)request.Date,
+                    Status = ProcessStatus.In
+                };
+                applicantStatuses.Add(applicantStatus);
+
+                var traveledApplicant = new TraveledApplicant
+                {
+                    Remark = request.Remark,
+                    Applicant = applicant1
+                };
+                traveldApplicants.Add(traveledApplicant);
+            }
+        }
+
 
         try
         {
-            // await _applicantProcessRepository.InsertAsync(applProcess, cancellationToken);
-            await _traveledApplicantRepository.InsertAsync(traveledApplicant, cancellationToken);
+            await _applicantProcessRepository.InsertAsync(applicantStatuses, cancellationToken);
+            await _traveledApplicantRepository.InsertAsync(traveldApplicants, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
             await _traveledApplicantRepository.SaveChangesAsync(cancellationToken);
         }
+
         catch (Exception ex)
         {
             throw new System.ApplicationException(ex.Message);

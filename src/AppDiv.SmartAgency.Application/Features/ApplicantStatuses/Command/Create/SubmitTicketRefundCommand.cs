@@ -31,32 +31,53 @@ public class SubmitTicketRefundCommandHandler : IRequestHandler<SubmitTicketRefu
     {
         var request = command.request;
 
-        var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a", "Applicant");
-        var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "Order.Sponsor");
-        // var ticketOffice = await _lookupRepository.GetWithPredicateAsync(lk => lk.Id == request.TicketOfficeId);
+        // var applPro = await _applicantProcessRepository.GetWithPredicateAsync(appPr => appPr.ApplicantId == request.ApplicantId && appPr.ProcessDefinitionId.ToString() == "00fa1a8e-ac70-400e-8f37-20010f81a27a", "Applicant");
+        // var applicant1 = await _applicantRepository.GetWithPredicateAsync(app => app.Id == request.ApplicantId, "Order.Sponsor");
+
+        var applPros = await _applicantProcessRepository.GetAllWithPredicateAsync(appPr => request.ApplicantIds.Contains(appPr.ApplicantId) && appPr.ProcessDefinitionId.ToString() == "2d9ef769-6d03-4406-9849-430ff9723778", "Applicant");
+        var applicants = await _applicantRepository.GetAllWithPredicateAsync(app => request.ApplicantIds.Contains(app.Id), "Order.Sponsor");
+        var tickRebook = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "3048b353-039d-41b6-8690-a9aaa2e679cf");
+
+        var applicantStatuses = new List<ApplicantProcess>();
+        var tickRefundApplicants = new List<TicketRefund>();
 
 
         // Update the applicant status on the ApplicantProcess table
-        applPro.Status = ProcessStatus.Out;
+        if (applPros != null && applPros.Any())
+        {
+            foreach (var applPro in applPros)
+            {
+                applPro.Status = ProcessStatus.Out;
+            }
+        }
 
-        var tickReg = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id.ToString() == "1dc479ab-fe84-4ca8-828f-9a21de7434e7");
-        var applProcess = new ApplicantProcess
+        if (applicants != null && applicants.Any())
         {
-            Applicant = applicant1,
-            ProcessDefinition = tickReg,
-            Date = (DateTime)request.Date,
-            Status = ProcessStatus.In
-        };
-        var tickRefund = new TicketRefund
-        {
-            DateInterval = request.DateInterval,
-            Applicant = applicant1
-        };
+            foreach (var applicant1 in applicants)
+            {
+                var applicantStatus = new ApplicantProcess
+                {
+                    Applicant = applicant1,
+                    ProcessDefinition = tickRebook,
+                    Date = (DateTime)request.Date,
+                    Status = ProcessStatus.In
+                };
+                applicantStatuses.Add(applicantStatus);
+
+                var tickRefundApplicant = new TicketRefund
+                {
+                    DateInterval = request.DateInterval,
+                    Applicant = applicant1
+                };
+                tickRefundApplicants.Add(tickRefundApplicant);
+            }
+        }
+
 
         try
         {
-            await _applicantProcessRepository.InsertAsync(applProcess, cancellationToken);
-            await _ticketRefundRepository.InsertAsync(tickRefund, cancellationToken);
+            await _applicantProcessRepository.InsertAsync(applicantStatuses, cancellationToken);
+            await _ticketRefundRepository.InsertAsync(tickRefundApplicants, cancellationToken);
             await _applicantProcessRepository.SaveChangesAsync(cancellationToken);
             await _ticketRefundRepository.SaveChangesAsync(cancellationToken);
         }

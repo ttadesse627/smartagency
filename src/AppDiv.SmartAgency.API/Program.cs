@@ -10,6 +10,8 @@ using AppDiv.SmartAgency.Api.Middleware;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 
+//"SECRET": "irzcivkhgugparen",
+
 
 var builder = WebApplication.CreateBuilder(args);
 

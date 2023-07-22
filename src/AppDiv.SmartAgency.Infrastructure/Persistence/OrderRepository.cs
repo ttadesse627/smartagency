@@ -215,8 +215,11 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
     }
 
-    public async Task<List<GetUnAssignedOrdersDropdownResponseDTO>> GetUnAssignedOrdersDropDown()
+    public async Task<GetUnAssignedOrdersResponseDTO> GetUnAssignedOrdersDropDown()
     {
+
+        var res = new GetUnAssignedOrdersResponseDTO();
+
 
         var response = await _context.Orders
                          .Where(or => or.Employees == null || or.Employees.Count() == 0)
@@ -229,7 +232,8 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
                              JobTitle = or.OrderCriteria.JobTitle.Value
                          }).ToListAsync();
 
-        return response;
+        res.Order = response;
+        return res;
     }
 
 
