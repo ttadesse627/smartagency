@@ -35,6 +35,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
                 foreach (var error in validationResult.Errors)
                     createPartnerCommandResponse.ValidationErrors.Add(error.ErrorMessage);
                 createPartnerCommandResponse.Message = createPartnerCommandResponse.ValidationErrors[0];
+                return createPartnerCommandResponse;
             }
             if (createPartnerCommandResponse.Success)
             {
@@ -79,6 +80,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
                 }
             }
             return createPartnerCommandResponse;
+
         }
 
     }

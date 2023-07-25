@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
-     public class CreateLookUpCommandValidator : AbstractValidator<CreateLookUpCommand>
+    public class CreateLookUpCommandValidator : AbstractValidator<CreateLookUpCommand>
     {
         private readonly ILookUpRepository _repo;
         public CreateLookUpCommandValidator(ILookUpRepository repo)
@@ -17,6 +17,7 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
+
         }
     }
 }

@@ -11,6 +11,6 @@ public record SubmitRegisteredTicketRequest
     public string? TicketPrice { get; set; }
     public DateTime Date { get; set; }
     public Guid? AirLineId { get; set; }
-    public Guid? ProcessDefinitionId { get; set; }
+    // public Guid? ProcessDefinitionId { get; set; }
     public ICollection<Guid> ApplicantIds { get; set; }
 }

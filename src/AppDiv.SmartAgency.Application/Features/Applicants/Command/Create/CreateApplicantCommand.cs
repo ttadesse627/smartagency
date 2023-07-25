@@ -30,6 +30,24 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         var response = new ServiceResponse<Int32>();
         var exceptions = new List<Exception>();
         var request = command.ApplicantRequest;
+        var validator = new CreateApplicantCommandValidator(_applicantRepository);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (validationResult.Errors.Count > 0)
+        {
+            response.Success = false;
+            // response.Errors?.Add(validationResult?.Errors.FirstOrDefault().ErrorMessage);
+
+            response.Success = false;
+            response.Errors ??= new List<string>(); // Initialize the errors list if null
+
+            foreach (var error in validationResult.Errors)
+            {
+                response.Errors.Add(error.ErrorMessage);
+            }
+
+            response.Message = "one or more validation error occurs";
+            return response;
+        }
 
         var applicantEntity = CustomMapper.Mapper.Map<Applicant>(request);
         var representativeEntity = CustomMapper.Mapper.Map<Representative>(request.Witness?.Representative);

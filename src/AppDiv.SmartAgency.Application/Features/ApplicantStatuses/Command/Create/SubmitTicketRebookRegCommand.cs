@@ -211,7 +211,7 @@ public class SubmitTicketRebookRegCommandHandler : IRequestHandler<SubmitTicketR
             var traveledAppls = await _applicantProcessRepository.GetAllWithPredicateAsync(applPro => applPro.ProcessDefinitionId == traveled.Id && applPro.Status == ProcessStatus.In, "Applicant");
             foreach (var applicant in traveledAppls)
             {
-                tkRebRegApplicants.Add(new GetTraveledApplicantsResponseDTO()
+                traveledApplicants.Add(new GetTraveledApplicantsResponseDTO()
                 {
                     Id = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,

@@ -183,5 +183,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         {
             return _userResolverService.GetUserId().ToString();
         }
+
+        internal T Set<T>(T tableName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

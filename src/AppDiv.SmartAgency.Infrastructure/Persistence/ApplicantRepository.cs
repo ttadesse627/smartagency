@@ -423,14 +423,15 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         };
 
         showStatus.TravelInformation = travelInfo;
+        var enjazRes = new ShowStatusEnjazResponseDTO();
 
-        var enjazRes = await _context.Enjazs.Where(en => en.ApplicantId == id)
-                     .Select(en => new ShowStatusEnjazResponseDTO
-                     {
-                         Id = en.Id,
-                         ApplicationNumber = en.ApplicationNumber,
-                         TransactionCode = en.TransactionCode
-                     }).FirstOrDefaultAsync();
+        var enjaz = await _context.Enjazs.Where(en => en.ApplicantId == id).FirstOrDefaultAsync();
+        if (enjaz != null)
+        {
+            enjazRes.Id = enjaz.Id;
+            enjazRes.ApplicationNumber = enjaz.ApplicationNumber;
+            enjazRes.TransactionCode = enjaz.TransactionCode;
+        }
 
         showStatus.EnjazResponse = enjazRes;
 
