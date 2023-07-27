@@ -101,6 +101,8 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Create
             RuleFor(app => app.ApplicantRequest.DesiredCountryId)
                 .NotEmpty().WithMessage("Desired country must not be empty!")
                 .NotNull().WithMessage("Desired country must has a value!");
+
+
             /*    
                       RuleFor(app => app.ApplicantRequest.Skill)
                          .NotNull().WithMessage("Skill  must has a value!")
