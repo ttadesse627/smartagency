@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Features.PostImages.Command.Create;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
@@ -25,9 +27,9 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<string>> CreatePostImage(CreatePostImageCommand postImageRequest, CancellationToken token)
+        public async Task<ActionResult<ServiceResponse<Int32>>> CreatePostImage(CreatePostImageRequest postImageRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(postImageRequest);
+            var response = await _mediator.Send(new CreatePostImageCommand(postImageRequest));
             return Ok(response);
         }
 
