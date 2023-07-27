@@ -1,43 +1,47 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.PostImages.Command.Create
 {
     public class CreatePostImageCommandHandler : IRequestHandler<CreatePostImageCommand, string>
-{
-        private readonly IPartnerRepository _partnerRepository;
+    {
         private readonly IFileService _fileService;
 
-       public CreatePostImageCommandHandler(IFileService fileService, IPartnerRepository partnerRepository)
+        public CreatePostImageCommandHandler(IFileService fileService)
         {
             _fileService = fileService;
-            _partnerRepository= partnerRepository;
         }
-        public async Task<string> Handle(CreatePostImageCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreatePostImageCommand command, CancellationToken cancellationToken)
         {
-           
-                var file = request.image.PostImage;
-                var folderName = Path.Combine("Resources", "Sliders");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            var response = new ServiceResponse<Int32>();
 
-                var fileName=Guid.NewGuid().ToString();
-                
-              //var  fileName="postImage1a2f32ad-63e7-4a4a-b665-20871842c978";
-            
-        
-                if(!string.IsNullOrEmpty(file)){
-
-                await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
+            var fileModels = new List<FileModel>();
+            // save order attachment
+            var folderName = Path.Combine("Resources", "Sliders");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            foreach (var image in command.Request.SliderImages)
+            {
+                if (!string.IsNullOrEmpty(image))
+                {
+                    var fileModel = new FileModel
+                    {
+                        Base64String = image,
+                        FileName = Guid.NewGuid().ToString(),
+                        PathToSave = pathToSave,
+                        FileMode = FileMode.Create
+                    };
+                    fileModels.Add(fileModel);
                 }
-
-              return "sucessfully inserted";
             }
-            
+            var fileSaved = await _fileService.UpLoadMultipleFilesAsync(fileModels);
+            if (!fileSaved)
+            {
+                response.Errors?.Add("Couldn't save slider images.");
+            }
+            return "sucessfully inserted";
         }
+    }
 }
