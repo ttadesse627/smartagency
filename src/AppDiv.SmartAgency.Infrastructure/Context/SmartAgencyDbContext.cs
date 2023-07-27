@@ -65,6 +65,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<TicketRebook> TicketRebooks { get; set; }
         public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
         public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
+        public DbSet<RequestedApplicant> RequestedApplicants { get; set; }
         public DbSet<LoginHistory> LoginHistories { get; set; }
         public DbSet<RevocationToken> RevocationTokens { get; set; }
         public DbSet<Setting> Settings { get; set; }
@@ -120,6 +121,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new TicketRebookEntityConfig());
                 modelBuilder.ApplyConfiguration(new TicketRebookRegEntityConfig());
                 modelBuilder.ApplyConfiguration(new TraveledApplicantEntityConfig());
+                modelBuilder.ApplyConfiguration(new RequestedApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new LoginHistoryEntityConfig());
                 modelBuilder.Ignore<PersonalInfo>();
             }

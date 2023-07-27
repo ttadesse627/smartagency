@@ -231,7 +231,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             var response = new List<NavBarResponseDTO>();
 
             var totalApplicants = await _context.Applicants.CountAsync(app => (app.IsDeleted == false) && (app.CreatedAt >= startDate && app.CreatedAt < endDate));
-            var requestedApplicants = await _context.Applicants.CountAsync(app => (app.IsDeleted == false) && (app.IsRequested == true) && (app.CreatedAt >= startDate && app.CreatedAt < endDate));
+            var requestedApplicants = await _context.Applicants.CountAsync(app => (app.IsDeleted == false) && (app.RequestedApplicant != null) && (app.CreatedAt >= startDate && app.CreatedAt < endDate));
             var onlineApplicants = await _context.OnlineApplicants.CountAsync(oApp => (oApp.CreatedAt >= startDate && oApp.CreatedAt < endDate));
             var totalOrders = await _context.Orders.CountAsync(order => (order.IsDeleted == false) && (order.CreatedAt >= startDate && order.CreatedAt < endDate));
             //var travelledApplicants = await _context.TraveledApplicants.CountAsync(tApp => tApp.CreatedAt >= startDate && tApp.CreatedAt <= endDate);

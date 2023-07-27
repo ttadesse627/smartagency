@@ -1462,6 +1462,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             };
         }
 
+        public Task<int> IsPassportUnique(string passportNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        // public Task<int> IsPassportUnique(string passportNumber)
+        // {
+        //        long total_items = await _dbContext.Set<T>().CountAsync()
+        // }
+
         // public Task<List<PropertyInfo>> GetProperties()
         // {
         //     throw new NotImplementedException();

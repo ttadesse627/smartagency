@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Create
 {
-    public class CreatePageCommandValidator :AbstractValidator<CreatePageCommand>
+    public class CreatePageCommandValidator : AbstractValidator<CreatePageCommand>
     {
         private readonly IPageRepository _repo;
         public CreatePageCommandValidator(IPageRepository repo)
@@ -20,7 +20,7 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Create
             RuleFor(p => p.page.Title)
                  .NotEmpty().WithMessage("{PropertyName} is required.")
                  .NotNull()
-                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");    
+                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
         }
     }
 }

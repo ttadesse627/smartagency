@@ -1,6 +1,7 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ComplaintDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Orders;
 using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Application.Features.Complaints.Query;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -9,23 +10,26 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
 {
-    public record SendOrderComplaintCommand(OrderComplaintRequest Request) : IRequest<List<GetComplaintResponseDTO>> { }
-    public class SendOrderComplaintCommandHandler : IRequestHandler<SendOrderComplaintCommand, List<GetComplaintResponseDTO>>
+    public record SendOrderComplaintCommand(OrderComplaintRequest Request) : IRequest<GetOrderComplaintsResponseDTO> { }
+    public class SendOrderComplaintCommandHandler : IRequestHandler<SendOrderComplaintCommand, GetOrderComplaintsResponseDTO>
     {
         private readonly IComplaintRepository _complaintRepository;
         private readonly IApplicantRepository _applicantRepository;
         private readonly ISmartAgencyDbContext _context;
+        private readonly IMediator _mediator;
 
-        public SendOrderComplaintCommandHandler(IComplaintRepository complaintRepository, IApplicantRepository applicantRepository, ISmartAgencyDbContext context)
+        public SendOrderComplaintCommandHandler(IComplaintRepository complaintRepository, IApplicantRepository applicantRepository, ISmartAgencyDbContext context
+            , IMediator mediator)
         {
             _complaintRepository = complaintRepository;
             _applicantRepository = applicantRepository;
             _context = context;
+            _mediator = mediator;
         }
 
-        public async Task<List<GetComplaintResponseDTO>> Handle(SendOrderComplaintCommand command, CancellationToken cancellationToken)
+        public async Task<GetOrderComplaintsResponseDTO> Handle(SendOrderComplaintCommand command, CancellationToken cancellationToken)
         {
-            var response = new List<GetComplaintResponseDTO>();
+            var response = new GetOrderComplaintsResponseDTO();
 
             var applicant = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.Request.ApplicantId);
             var complint = new Complaint
@@ -40,20 +44,8 @@ namespace AppDiv.SmartAgency.Application.Features.Complaints.Command.Create
                 var success = await _complaintRepository.SaveChangesAsync(cancellationToken);
                 if (success)
                 {
-                    var complaints = await _complaintRepository.GetAllWithPredicateAsync(comp => comp.ApplicantId == command.Request.ApplicantId, "User");
-                    if (complaints.Count > 0 || complaints != null)
-                    {
-                        foreach (var complaint in complaints)
-                        {
-                            var comResponse = new GetComplaintResponseDTO
-                            {
-                                Message = complaint.Message,
-                                SenderName = complaint.User.FullName,
-                                Date = complaint.CreatedAt
-                            };
-                            response.Add(comResponse);
-                        }
-                    }
+                    var complaints = await _mediator.Send(new GetOrderComplaintsQuery(applicant.Id));
+                    response = complaints;
                 }
             }
             catch (Exception ex)

@@ -92,6 +92,8 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ITraveledApplicantRepository, TraveledApplicantRepository>();
             services.AddTransient<IRevocationTokenRepository, RevocationTokenRepository>();
             services.AddTransient<ILoginHistoryRepository, LoginHistoryRepository>();
+            services.AddTransient<IRequestedApplicantRepository, RequestedApplicantRepository>();
+
 
 
             services.AddSingleton<IMailService, MailKitService>();

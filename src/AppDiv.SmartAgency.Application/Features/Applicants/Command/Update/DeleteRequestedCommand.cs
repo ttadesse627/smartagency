@@ -10,25 +10,26 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 public record DeleteRequestedCommand(Guid id) : IRequest<ServiceResponse<Int32>> { }
 public class DeleteRequestedCommandHandler : IRequestHandler<DeleteRequestedCommand, ServiceResponse<Int32>>
 {
-    private readonly IApplicantRepository _applicantRepository;
-    public DeleteRequestedCommandHandler(IApplicantRepository applicantRepository)
+    private readonly IRequestedApplicantRepository _requestedApplicantRepository;
+    public DeleteRequestedCommandHandler(IRequestedApplicantRepository applicantRepository)
     {
-        _applicantRepository = applicantRepository;
+        _requestedApplicantRepository = applicantRepository;
     }
     public async Task<ServiceResponse<int>> Handle(DeleteRequestedCommand request, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<Int32>();
-        var applicant = await _applicantRepository.GetAsync(request.id);
+        var applicant = await _requestedApplicantRepository.GetAsync(request.id);
         if (applicant != null)
         {
-            if (applicant.IsRequested)
+            _requestedApplicantRepository.Delete(applicant);
+            try
             {
-                applicant.IsRequested = false;
-                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
+                bool success = await _requestedApplicantRepository.SaveChangesAsync(cancellationToken);
             }
-            if (response.Success)
+            catch (System.Exception)
             {
-                response.Message = "Deleted Successfully!";
+
+                throw;
             }
         }
         else

@@ -23,7 +23,6 @@ public class Applicant : PersonalInfo
     public int ContractPeriod { get; set; }
     public string? AmharicJobTitle { get; set; }
     public string? Remark { get; set; }
-    public bool IsRequested { get; set; } = false;
     public bool IsReserved { get; set; } = false;
     public bool IsBlocked { get; set; } = false;
     public bool IsDeleted { get; set; } = false;
@@ -84,5 +83,6 @@ public class Applicant : PersonalInfo
     public TicketRebook? TicketRebook { get; set; }
     public TicketRebookReg? TicketRebookRegistration { get; set; }
     public TraveledApplicant? TraveledApplicant { get; set; }
+    public RequestedApplicant? RequestedApplicant { get; set; }
     public Enjaz? Enjaz { get; set; }
 }

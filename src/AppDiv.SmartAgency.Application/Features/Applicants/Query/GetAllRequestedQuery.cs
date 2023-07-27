@@ -26,15 +26,53 @@ public class GetAllRequestedQuery : IRequest<SearchModel<ApplicantsResponseDTO>>
 public class GetAllRequestedQueryHandler : IRequestHandler<GetAllRequestedQuery, SearchModel<ApplicantsResponseDTO>>
 {
     private readonly IApplicantRepository _applicantRepository;
+    private readonly IRequestedApplicantRepository _requestedApplicantRepository;
 
-    public GetAllRequestedQueryHandler(IApplicantRepository applicantRepository)
+    public GetAllRequestedQueryHandler(IApplicantRepository applicantRepository, IRequestedApplicantRepository requestedApplicantRepository)
     {
         _applicantRepository = applicantRepository;
+        _requestedApplicantRepository = requestedApplicantRepository;
     }
     public async Task<SearchModel<ApplicantsResponseDTO>> Handle(GetAllRequestedQuery request, CancellationToken cancellationToken)
     {
-        var applicantList = await _applicantRepository.GetAllWithPredicateSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, appl => appl.IsDeleted == false && appl.IsRequested == true, "Partner");
-        var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
+        var response = new SearchModel<ApplicantsResponseDTO>();
+        var applicantList = await _requestedApplicantRepository.GetAllWithPredicateSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, appl => !appl.Applicant.IsDeleted, "Applicant", "Partner", "Applicant.MaritalStatus", "Applicant.Religion", "Applicant.BrokerName");
+        ICollection<ApplicantsResponseDTO> requestedApplicants = new List<ApplicantsResponseDTO>();
+
+        if (applicantList.Items.Any())
+        {
+            foreach (var applicant in applicantList.Items)
+            {
+                if (applicant != null)
+                {
+                    var applicantResponse = new ApplicantsResponseDTO
+                    {
+                        Id = applicant.Applicant.Id,
+                        FirstName = applicant.Applicant.FirstName,
+                        MiddleName = applicant.Applicant.MiddleName,
+                        LastName = applicant.Applicant.LastName,
+                        RegisteredDate = applicant.Applicant.CreatedAt,
+                        PassportNumber = applicant.Applicant.PassportNumber,
+                        Gender = applicant.Applicant.Gender,
+                        MaritalStatus = applicant.Applicant.MaritalStatus?.Value!,
+                        Religion = applicant.Applicant.Religion?.Value,
+                        BrokerName = applicant.Applicant.BrokerName?.Value
+                    };
+                    requestedApplicants.Add(applicantResponse);
+                }
+            }
+            response.CurrentPage = applicantList.CurrentPage;
+            response.Filters = applicantList.Filters;
+            response.Items = requestedApplicants;
+            response.MaxPage = applicantList.MaxPage;
+            response.PagingSize = applicantList.PagingSize;
+            response.SearchKeyWord = applicantList.SearchKeyWord;
+            response.SortingDirection = applicantList.SortingDirection;
+            response.SortingColumn = applicantList.SortingColumn;
+            response.TotalCount = applicantList.TotalCount;
+
+        }
+
 
         return response;
     }

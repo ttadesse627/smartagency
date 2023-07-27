@@ -25,8 +25,8 @@ public record GetApplSearchResultQuery : IRequest<SearchModel<ApplSearchResponse
 
     public GetApplSearchResultQuery
     (
-        int pageNumber, int pageSize, string? orderBy, SortingDirection sortingDirection, 
-        Guid? jobtitleId, Guid? maritalStatusId, int ageFrom, int ageTo, 
+        int pageNumber, int pageSize, string? orderBy, SortingDirection sortingDirection,
+        Guid? jobtitleId, Guid? maritalStatusId, int ageFrom, int ageTo,
         Guid? religionId, Guid? experienceId, Guid? countryId
     )
     {
@@ -46,7 +46,7 @@ public record GetApplSearchResultQuery : IRequest<SearchModel<ApplSearchResponse
 public class GetApplSearchResultQueryHandler : IRequestHandler<GetApplSearchResultQuery, SearchModel<ApplSearchResponseDTO>>
 {
     private readonly IApplicantRepository _applicantRepository;
-     private readonly IFileService _fileService;
+    private readonly IFileService _fileService;
     public GetApplSearchResultQueryHandler(IApplicantRepository applicantRepository, IFileService fileService)
     {
         _applicantRepository = applicantRepository;
@@ -54,7 +54,7 @@ public class GetApplSearchResultQueryHandler : IRequestHandler<GetApplSearchResu
     }
     public async Task<SearchModel<ApplSearchResponseDTO>> Handle(GetApplSearchResultQuery request, CancellationToken cancellationToken)
     {
-        var eagerLoadedProperties = new string[] { "Jobtitle", "MaritalStatus", "Religion", "Experience", "IssuingCountry", "DesiredCountry" };
+        var eagerLoadedProperties = new string[] { "Jobtitle", "MaritalStatus", "Religion", "Experience", "IssuingCountry", "DesiredCountry", "RequestedApplicant" };
         var expressions = new List<Expression<Func<Applicant, bool>>>();
         var searchResponse = new SearchModel<ApplSearchResponseDTO>();
 
@@ -87,24 +87,25 @@ public class GetApplSearchResultQueryHandler : IRequestHandler<GetApplSearchResu
                 expressions.Add(app => app.BirthDate >= maxBirthDate && app.BirthDate >= minBirthDate);
             }
 
-            expressions.Add( app => app.IsDeleted==false && app.IsRequested==false && app.OrderId==null);
+            expressions.Add(app => app.IsDeleted == false && app.RequestedApplicant == null && app.OrderId == null);
         }
         var searchResult = await _applicantRepository.GetAllApplWithPredicateAsync
                                     (
                                         request.PageNumber, request.PageSize, request.OrderBy, request.SortingDirection,
-                                        expressions ,eagerLoadedProperties
+                                        expressions, eagerLoadedProperties
                                     );
 
         searchResponse = CustomMapper.Mapper.Map<SearchModel<ApplSearchResponseDTO>>(searchResult);
-        
-          if(searchResponse!=null || searchResponse.Items.Count()>0){
-              foreach(var item in searchResponse.Items)
-              {
-                item.Path= "api/applicant/get-cv-detail/"+item.Id;
-                item.FullName= searchResult.Items.FirstOrDefault(sr=>sr.Id==item.Id)?.AmharicFullName;
-                item.Photo= Convert.ToBase64String(_fileService.getFile(item.Id.ToString(), "Full Size", null).Item1);
-          }
-          }
+
+        if (searchResponse != null || searchResponse.Items.Count() > 0)
+        {
+            foreach (var item in searchResponse.Items)
+            {
+                item.Path = "api/applicant/get-cv-detail/" + item.Id;
+                item.FullName = searchResult.Items.FirstOrDefault(sr => sr.Id == item.Id)?.AmharicFullName;
+                item.Photo = Convert.ToBase64String(_fileService.getFile(item.Id.ToString(), "Full Size", null).Item1);
+            }
+        }
         return searchResponse;
     }
 }

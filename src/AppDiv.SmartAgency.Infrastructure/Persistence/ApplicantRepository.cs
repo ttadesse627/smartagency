@@ -462,7 +462,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             x => x.ApplicantProcesses.DefaultIfEmpty(), // flatten result
             (pd, appPro) => new StatusInfoResponseDTO
             {
-                Id = pd.ProcessDef.Id,
+                StatusId = pd.ProcessDef.Id,
                 StatusName = pd.ProcessDef.Name,
                 Date = appPro != null ? appPro.Date : null // set Date to null if no matching record in ApplicantProcesses table
             })

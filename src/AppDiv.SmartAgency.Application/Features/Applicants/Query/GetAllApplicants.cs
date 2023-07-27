@@ -48,16 +48,24 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
             {
                 if (i == j)
                 {
-                    itemsArray[i].MaritalStatus = entitiesArray[j].MaritalStatus.Value;
-                    itemsArray[i].Religion = entitiesArray[j].Religion.Value;
-                    itemsArray[i].BrokerName = entitiesArray[j].BrokerName.Value;
-                    itemsArray[i].CreatedAt= entitiesArray[j].CreatedAt.ToString("yyyy-MM-dd");
-                    itemsArray[i].Gender= entitiesArray[j].Gender.ToString();
+                    itemsArray[i].MaritalStatus = entitiesArray[j].MaritalStatus?.Value!;
+                    itemsArray[i].Religion = entitiesArray[j].Religion?.Value;
+                    itemsArray[i].BrokerName = entitiesArray[j].BrokerName?.Value;
+                    itemsArray[i].RegisteredDate = entitiesArray[j].CreatedAt;
+                    itemsArray[i].Gender = entitiesArray[j].Gender;
                 }
                 if (i < j) break;
             }
         }
         response.Items = itemsArray.AsEnumerable();
+        response.CurrentPage = applicantList.CurrentPage;
+        response.Filters = applicantList.Filters;
+        response.MaxPage = applicantList.MaxPage;
+        response.PagingSize = applicantList.PagingSize;
+        response.SearchKeyWord = applicantList.SearchKeyWord;
+        response.SortingDirection = applicantList.SortingDirection;
+        response.SortingColumn = applicantList.SortingColumn;
+        response.TotalCount = applicantList.TotalCount;
 
         return response;
     }

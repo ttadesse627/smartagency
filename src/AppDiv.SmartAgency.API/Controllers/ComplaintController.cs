@@ -23,7 +23,8 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("send-complaint")]
-        public async Task<ActionResult<List<GetComplaintResponseDTO>>> SendComplaint([FromBody] OrderComplaintRequest request)
+        public async Task<ActionResult<GetOrderComplaintsResponseDTO
+        >> SendComplaint([FromBody] OrderComplaintRequest request)
         {
             return Ok(await _mediator.Send(new SendOrderComplaintCommand(request)));
         }

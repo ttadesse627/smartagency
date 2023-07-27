@@ -1,6 +1,6 @@
 
 namespace AppDiv.SmartAgency.Application.Contracts.Request.Orders;
-public record SponsorAddressRequest
+public class SponsorAddressRequest
 {
     public string? Street { get; set; }
     public string? PhoneNumber { get; set; }

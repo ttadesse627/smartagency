@@ -7,6 +7,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDT
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.EditApplicantRequests;
 using AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
@@ -109,10 +110,10 @@ public class ApplicantController : ControllerBase
                     )));
     }
 
-    [HttpPut("request/send-request/{id}")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> RequestApplicant(Guid id)
+    [HttpPut("request/send-request")]
+    public async Task<ActionResult<ServiceResponse<Int32>>> RequestApplicant(SendApplicantRequest request)
     {
-        var response = await _mediator.Send(new RequestApplicantCommand(id));
+        var response = await _mediator.Send(new RequestApplicantCommand(request));
         return Ok(response);
     }
 

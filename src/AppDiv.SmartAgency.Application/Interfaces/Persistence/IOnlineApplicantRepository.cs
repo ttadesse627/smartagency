@@ -8,6 +8,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     {
         Task<OnlineApplicant> GetByIdAsync(Guid id);
         public Task<bool> InsertOnlineApplicant(OnlineApplicant onlineApplicant, CancellationToken cancellationToken, string passportNumber);
-        //Task<Int32> UpdateAsync(Partner partner);
+        public Task<int> GetOnlineApplicantByPassportNumber(string passportNumber);
     }
 }

@@ -37,6 +37,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         }
 
+        public async Task<int> GetOnlineApplicantByPassportNumber(string passportNumber)
+        {
+
+            var res = await _context.OnlineApplicants.CountAsync(oa => oa.Passport == passportNumber);
+            return res;
+        }
+
         public Task<bool> InsertOnlineApplicant(OnlineApplicant onlineApplicant, CancellationToken cancellationToken, string passportNumber)
         {
             throw new NotImplementedException();

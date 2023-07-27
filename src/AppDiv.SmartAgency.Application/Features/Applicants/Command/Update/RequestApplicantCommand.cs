@@ -1,39 +1,54 @@
 
 
 using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.Request.Applicants;
 using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
-public record RequestApplicantCommand(Guid id) : IRequest<ServiceResponse<Int32>> { }
+public record RequestApplicantCommand(SendApplicantRequest Request) : IRequest<ServiceResponse<Int32>> { }
 public class RequestApplicantCommandHandler : IRequestHandler<RequestApplicantCommand, ServiceResponse<Int32>>
 {
     private readonly IApplicantRepository _applicantRepository;
-    public RequestApplicantCommandHandler(IApplicantRepository applicantRepository)
+    private readonly IPartnerRepository _partnerRepository;
+    private readonly IRequestedApplicantRepository _requestedApplicantRepository;
+    public RequestApplicantCommandHandler(IApplicantRepository applicantRepository, IPartnerRepository partnerRepository, IRequestedApplicantRepository requestedApplicantRepository)
     {
         _applicantRepository = applicantRepository;
+        _partnerRepository = partnerRepository;
+        _requestedApplicantRepository = requestedApplicantRepository;
     }
-    public async Task<ServiceResponse<int>> Handle(RequestApplicantCommand request, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<int>> Handle(RequestApplicantCommand command, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<Int32>();
-        var applicant = await _applicantRepository.GetAsync(request.id);
-        if (applicant != null)
+        var applicant = await _applicantRepository.GetAsync(command.Request.ApplicantId);
+        var partner = await _partnerRepository.GetAsync(command.Request.PartnerId);
+        if (applicant != null && partner != null)
         {
-            if (!applicant.IsRequested)
+            var requestedApplicant = new RequestedApplicant
             {
-                applicant.IsRequested = true;
-                response.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
-            }
-            if (response.Success)
+                Applicant = applicant,
+                Partner = partner
+            };
+
+            await _requestedApplicantRepository.InsertAsync(requestedApplicant, cancellationToken);
+            try
             {
-                response.Message = "Request Successful!";
+                var success = await _requestedApplicantRepository.SaveChangesAsync(cancellationToken);
             }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
         }
         else
         {
-            throw new NotFoundException($"The applicant with Id {request.id} is not found!");
+            throw new NotFoundException($"Applicant or partner is not found!");
         }
         return response;
     }
