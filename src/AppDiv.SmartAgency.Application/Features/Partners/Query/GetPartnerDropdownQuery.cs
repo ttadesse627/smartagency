@@ -3,7 +3,6 @@ using MediatR;
 using System.Text;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query;
 public class GetPartnerDropdownQuery : IRequest<PartnerDropdownContainerDTO> { }

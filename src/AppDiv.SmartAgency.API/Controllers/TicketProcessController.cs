@@ -66,9 +66,9 @@ public class TicketProcessController : ControllerBase
     }
 
     [HttpPost("stepback-ticket")]
-    public async Task<ActionResult<TicketProcessResponseDTO>> StepbackTicket(SubmitTraveledApplRequest request)
+    public async Task<ActionResult<TicketProcessResponseDTO>> StepbackTicket(StepbackProcessRequest request)
     {
-        var response = await _mediator.Send(new SubmitTraveledApplCommand(request));
+        var response = await _mediator.Send(new StepbackTicketCommand(request));
         return Ok(response);
     }
 }
