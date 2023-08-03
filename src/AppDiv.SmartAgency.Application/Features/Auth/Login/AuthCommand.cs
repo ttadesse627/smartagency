@@ -9,6 +9,8 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.RoleDTOs;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Text;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login;
 public class AuthCommand : IRequest<AuthResponseDTO>
@@ -41,11 +43,10 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
         {
             throw new AuthenticationException(string.Join(",", response.result.Errors));
         }
-        var explicitLoadedProperties = new Dictionary<string, Utility.Contracts.NavigationPropertyType>
-                                                {
-                                                    { "UserGroups", NavigationPropertyType.COLLECTION }
-                                                };
-        var userData = await _userRepository.GetWithAsync(response.userId!, explicitLoadedProperties);
+
+        var userResponse = new AuthResponseDTO();
+        var explicitLoadedProperties = new String[] { "UserGroups", "Partner", "Partner.Orders", };
+        var userData = await _userRepository.GetWithPredicateAsync(user => user.Id == response.userId!, explicitLoadedProperties);
         string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, response.roles)!);
 
         var userRoles = userData.UserGroups.SelectMany(ug => ug.Roles
@@ -68,13 +69,30 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
                 CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
                 CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
             });
-        return new AuthResponseDTO()
+
+        if (userData.Partner != null)
         {
-            UserId = userData.Id,
-            Username = userData.UserName,
-            Token = token,
-            FullName = userData.FullName!,
-            Roles = userRoles.ToList(),
-        };
+            var words = userData.Partner.PartnerName.Split(' ');
+            var abbrName = new StringBuilder();
+            foreach (var word in words)
+            {
+                abbrName.Append(word.First());
+            }
+            var orderCount = userData.Partner.Orders?.Count + 1;
+            var partResponse = new GetPartnerDropDownDTO
+            {
+                Id = userData.Partner.Id,
+                PartnerName = userData.Partner.PartnerName,
+                OrderNumber = abbrName.ToString() + " 00" + orderCount
+            };
+            userResponse.Partner = partResponse;
+        }
+        userResponse.UserId = userData.Id;
+        userResponse.Username = userData.UserName;
+        userResponse.Token = token;
+        userResponse.FullName = userData.FullName!;
+        userResponse.Roles = userRoles.ToList();
+
+        return userResponse;
     }
 }
