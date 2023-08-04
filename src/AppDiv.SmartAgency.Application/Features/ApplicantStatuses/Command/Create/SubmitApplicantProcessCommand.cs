@@ -104,24 +104,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                         }
                     }
                 }
-                // if (currentStatuses.Any())
-                // {
-                //     foreach (var currentStatus in currentStatuses)
-                //     {
-                //         if (request.ApplicantIds != null && request.ApplicantIds.Any())
-                //         {
-                //             if (request.ApplicantIds.Contains(currentStatus.ApplicantId))
-                //             {
-                //                 // update the status of applicant process for the current process definition
-                //                 if (currentStatus != null)
-                //                 {
-                //                     currentStatus.Status = ProcessStatus.Out;
-                //                 }
-                //             }
-                //         }
 
-                //     }
-                // }
                 try
                 {
                     await _applicantProcessRepository.InsertAsync(newStatuses, cancellationToken);
