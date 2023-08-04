@@ -3,6 +3,7 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
@@ -13,17 +14,22 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Create;
 public record CreateApplicantCommand(CreateApplicantRequest ApplicantRequest) : IRequest<ServiceResponse<Int32>> { }
 public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantCommand, ServiceResponse<Int32>>
 {
+    private readonly ISmartAgencyDbContext _context;
     private readonly IApplicantRepository _applicantRepository;
     private readonly ILookUpRepository _lookUpRepository;
     private readonly IAttachmentRepository _attachmentRepository;
     private readonly IFileService _fileService;
+    private readonly IUserRepository _userRepository;
 
-    public CreateApplicantCommandHandler(IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository, IAttachmentRepository attachmentRepository, IFileService fileService)
+    public CreateApplicantCommandHandler(ISmartAgencyDbContext context, IApplicantRepository applicantRepository,
+    ILookUpRepository lookUpRepository, IAttachmentRepository attachmentRepository, IFileService fileService, IUserRepository userRepository)
     {
+        _context = context;
         _applicantRepository = applicantRepository;
         _lookUpRepository = lookUpRepository;
         _attachmentRepository = attachmentRepository;
         _fileService = fileService;
+        _userRepository = userRepository;
     }
     public async Task<ServiceResponse<Int32>> Handle(CreateApplicantCommand command, CancellationToken cancellationToken)
     {
@@ -54,6 +60,19 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         var witnessList = new List<Witness>();
         var experienceList = new List<Experience>();
         var beneficiaryList = new List<Beneficiary>();
+        var userId = _context.GetCurrentUserId();
+
+        if (!userId.Equals(Guid.Empty))
+        {
+            // var explLoadedProp = new Dictionary<string, NavigationPropertyType>
+            // {"Partner", NavigationPropertyType.REFERENCE};
+            var user = await _userRepository.GetAsync(userId);
+            if (user.PartnerId != null)
+            {
+                applicantEntity.PartnerId = user.PartnerId;
+            }
+        }
+
         foreach (var wtns in request.Witness?.Witnesses!)
         {
             var witnessEntity = CustomMapper.Mapper.Map<Witness>(wtns);
@@ -75,7 +94,6 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         applicantEntity.Representative = representativeEntity;
         applicantEntity.Experiences = experienceList;
         applicantEntity.Beneficiaries = beneficiaryList;
-
 
 
         ICollection<LookUp> levelOfQualifications = new List<LookUp>();
@@ -188,7 +206,6 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
         var attachmentIds = new List<Guid>();
         if (request.Attachment != null)
         {
-
             applicantEntity.OrderId = request.Attachment.OrderId;
             if (request.Attachment?.AttachmentFiles != null && request.Attachment.AttachmentFiles.Count > 0)
             {
@@ -219,7 +236,6 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             // save order attachment
             foreach (var attachment in request.Attachment.AttachmentFiles)
             {
-                // var attach = await _attachmentRepository.GetAsync(attachment.AttachmentId);
                 var attach = attachments.FirstOrDefault(att => att.Id == attachment.AttachmentId);
                 var folderName = Path.Combine("Resources", attach!.Title!);
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
@@ -234,7 +250,6 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
                         FileMode = FileMode.Create
                     };
                     fileModels.Add(fileModel);
-                    // var isSaved = await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
                 }
             }
             var fileSaved = await _fileService.UpLoadMultipleFilesAsync(fileModels);

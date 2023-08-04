@@ -56,6 +56,7 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             {
                 tkReadyApplicants.Add(new GetTicketReadyApplicantsResponseDTO()
                 {
+                    Id = ticketReady.Id,
                     ApplicantId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
@@ -75,7 +76,8 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             {
                 tkRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
                 {
-                    Id = applicant.Applicant.Id,
+                    Id = ticketRegistration.Id,
+                    EmployeeId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber
                 });
             }
@@ -89,6 +91,7 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             {
                 tkRefundApplicants.Add(new GetTicketRefundApplicantsResponseDTO()
                 {
+                    Id = ticketRefund.Id,
                     ApplicantId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
@@ -106,6 +109,7 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             {
                 tkRebookApplicants.Add(new GetTicketRebookApplicantsResponseDTO()
                 {
+                    Id = ticketRebook.Id,
                     ApplicantId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
@@ -122,7 +126,8 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             {
                 tkRebRegApplicants.Add(new GetTicketRegistrationApplicantsResponseDTO()
                 {
-                    Id = applicant.Applicant.Id,
+                    Id = ticketRebookReg.Id,
+                    EmployeeId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                 });
             }
@@ -135,7 +140,8 @@ public class GetTicketProcessApplicantsQueryHandler : IRequestHandler<GetTicketP
             {
                 traveledApplicants.Add(new GetTraveledApplicantsResponseDTO()
                 {
-                    Id = applicant.Applicant.Id,
+                    Id = traveled.Id,
+                    EmployeeId = applicant.Applicant.Id,
                     PassportNumber = applicant.Applicant.PassportNumber,
                     FullName = applicant.Applicant.FirstName + " " + applicant.Applicant.MiddleName + " " + applicant.Applicant.LastName,
                     Date = applicant.Date
