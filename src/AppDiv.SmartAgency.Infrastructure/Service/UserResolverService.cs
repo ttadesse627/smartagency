@@ -1,4 +1,5 @@
 ﻿
+using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Http;
 
@@ -25,6 +26,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
             // {
             //     userId = Guid.Empty;
             // }
+
             var userIdClaim = httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId");
             if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out Guid userId))
             {
@@ -41,6 +43,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
                 return httpContext.HttpContext.Request.Query["locale"].ToArray()[0];
             }
             return string.Empty;
+        }
+
+        public Guid GetId()
+        {
+            return new Guid();
         }
     }
 }
