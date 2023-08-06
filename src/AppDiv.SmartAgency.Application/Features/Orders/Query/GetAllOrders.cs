@@ -76,6 +76,7 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
                             PartnerName = order.Partner.PartnerName
                         };
                         orderDTOs.Add(orderResp);
+                        orderList.TotalCount += 1;
                     }
                 }
                 else
@@ -103,6 +104,13 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
             }
         }
         orderResponse.Items = orderDTOs;
+        orderResponse.CurrentPage = orderList.CurrentPage;
+        orderResponse.MaxPage = orderList.MaxPage;
+        orderResponse.PagingSize = orderList.PagingSize;
+        orderResponse.SearchKeyWord = orderList.SearchKeyWord;
+        orderResponse.SortingColumn = orderList.SortingColumn;
+        orderResponse.SortingDirection = orderList.SortingDirection;
+        orderResponse.TotalCount = orderList.TotalCount;
 
         // var orderResponse = CustomMapper.Mapper.Map<SearchModel<GetOrdersResponseDTO>>(orderList);
         return orderResponse;

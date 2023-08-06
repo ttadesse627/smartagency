@@ -3,8 +3,6 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Enums;
-using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
@@ -29,8 +27,8 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
         var processRespList = new List<GetProcessResponseDTO>();
         var applProList = new List<ApplicantProcess>();
 
-        var processes = await _processRepository.GetAllWithAsync("Country");
-        
+        var processes = await _processRepository.GetAllWithPredicateAsync(process => !process.Id.Equals(Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86")), "Country");
+
         if (processes.Any())
         {
             foreach (var process in processes)

@@ -55,7 +55,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
 
                 definitions.Add(new GetProcessDefinitionResponseDTO
                 {
-                    Name = "ProcessReadyApplicants",
+                    Name = "Process Ready Applicants",
                     NextPdId = nextpdId,
                     ApplicantProcesses = processReadyApplicants
                 });

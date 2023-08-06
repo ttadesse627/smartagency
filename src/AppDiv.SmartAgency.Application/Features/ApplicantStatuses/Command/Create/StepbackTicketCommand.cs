@@ -81,7 +81,6 @@ public class StepbackTicketCommandHandler : IRequestHandler<StepbackTicketComman
                     var applProc = await _applicantProcessRepository.GetWithPredicateAsync(applpr => applpr.ApplicantId == request.ApplicantId && applpr.ProcessDefinitionId == lastPdOfPrevProcess.Id && applpr.Status == ProcessStatus.Out);
                     applProc.Status = ProcessStatus.In;
                     _applicantProcessRepository.Delete(appl => appl.ApplicantId == request.ApplicantId && appl.ProcessDefinitionId == request.ProcessDefinitionId);
-
                 }
 
                 try
