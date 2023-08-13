@@ -1,0 +1,195 @@
+{
+    "deathEvent": {
+        "id": null,
+        "placeOfFuneral": "ewdfdew",
+        "deathPlaceId": "f0a492f7-a4e4-49d0-8720-51742b983d22",
+        "facilityLookupId": "844ac8e3-26fe-43ba-ae30-b50007eeb2d8",
+        "facilityTypeLookupId": "844ac8e3-26fe-43ba-ae30-b50007eeb2d8",
+        "duringDeathId": null,
+        "birthCertificateId": "dcsd",
+        "event": {
+            "id": null,
+            "certificateId": "2510420150007",
+            "eventType": "Death",
+            "regBookNo": null,
+            "civilRegOfficerId": "08db7bcf-5b1e-4e0b-86b2-fc68b6a55bf3",
+            "eventDateEt": "13/11/2015",
+            "eventRegDateEt": "25/11/2015",
+            "eventAddressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+            "eventAddressResponseDTO": {
+                "country": "ad35387a-ee91-11ed-bffd-321f02af6a03",
+                "addressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                "region": "d17132e8-ee91-11ed-bffd-321f02af6a03",
+                "zone": "41b55c91-0108-11ee-a622-fa163e736d71",
+                "woreda": "020f4534-010a-11ee-a622-fa163e736d71",
+                "kebele": "aa2b0866-010a-11ee-a622-fa163e736d71"
+            },
+            "isExampted": false,
+            "eventRegisteredAddressId": "41b55e94-0108-11ee-a622-fa163e736d71",
+            "informantType": "policeOfficer",
+            "eventSupportingDocuments": [
+                {
+                    "base64String": "data:image/jpeg;base64,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",
+                    "type": "0448549d-e96f-4fdf-a518-b1d89920ecd7",
+                    "fullDocData": {
+                        "id": "0448549d-e96f-4fdf-a518-b1d89920ecd7",
+                        "key": "supporting-document-type",
+                        "valueAm": "ሆስፕታል",
+                        "valueOr": "hospitaala",
+                        "status": true,
+                        "_id": "bc380131371f40240524c986563b6126",
+                        "_rev": "1-bc4d60de5a1ec4093259b8509fd5e9ed"
+                    },
+                    "description": "MS0009",
+                    "label": "Deceased"
+                },
+                {
+                    "base64String": "data:image/jpeg;base64,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",
+                    "type": "0448549d-e96f-4fdf-a518-b1d89920ecd7",
+                    "fullDocData": {
+                        "id": "0448549d-e96f-4fdf-a518-b1d89920ecd7",
+                        "key": "supporting-document-type",
+                        "valueAm": "ሆስፕታል",
+                        "valueOr": "hospitaala",
+                        "status": true,
+                        "_id": "bc380131371f40240524c986563b6126",
+                        "_rev": "1-bc4d60de5a1ec4093259b8509fd5e9ed"
+                    },
+                    "description": "efefe",
+                    "label": "Death"
+                },
+                {
+                    "type": "",
+                    "oldType": "fingerPrint",
+                    "label": "Registrar",
+                    "fingerPrint": [
+                        {
+                            "base64Image": "https://tse4.mm.bing.net/th?id=OIP.gGbuJFdJ0C1z9fAOi3CrzAHaMI&pid=Api&P=0&h=180",
+                            "type": "",
+                            "oldType": "fingerPrint",
+                            "description": "description",
+                            "label": "Registrar",
+                            "fingerIndex": 1
+                        },
+                        {
+                            "base64Image": "https://tse4.mm.bing.net/th?id=OIP.gGbuJFdJ0C1z9fAOi3CrzAHaMI&pid=Api&P=0&h=180",
+                            "type": "",
+                            "oldType": "fingerPrint",
+                            "description": "description",
+                            "label": "Registrar",
+                            "fingerIndex": 3
+                        },
+                        {
+                            "base64Image": "https://tse4.mm.bing.net/th?id=OIP.gGbuJFdJ0C1z9fAOi3CrzAHaMI&pid=Api&P=0&h=180",
+                            "type": "",
+                            "oldType": "fingerPrint",
+                            "description": "description",
+                            "label": "Registrar",
+                            "fingerIndex": 6
+                        },
+                        {
+                            "base64Image": "https://tse4.mm.bing.net/th?id=OIP.gGbuJFdJ0C1z9fAOi3CrzAHaMI&pid=Api&P=0&h=180",
+                            "type": "",
+                            "oldType": "fingerPrint",
+                            "description": "description",
+                            "label": "Registrar",
+                            "fingerIndex": 8
+                        }
+                    ]
+                }
+            ],
+            "eventOwener": {
+                "id": null,
+                "firstName": {
+                    "am": "ድፍድ",
+                    "or": "dfcsd"
+                },
+                "middleName": {
+                    "am": "ድፍድ",
+                    "or": "dfd"
+                },
+                "lastName": {
+                    "am": "ፍግፍግ",
+                    "or": "dfd"
+                },
+                "nationalId": "eere",
+                "sexLookupId": "58685f55-76bd-4c3a-8a43-b335b3764683",
+                "birthAddressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                "birthAddressResponseDTO": {
+                    "country": "ad35387a-ee91-11ed-bffd-321f02af6a03",
+                    "addressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                    "region": "d17132e8-ee91-11ed-bffd-321f02af6a03",
+                    "zone": "41b55c91-0108-11ee-a622-fa163e736d71",
+                    "woreda": "020f4534-010a-11ee-a622-fa163e736d71",
+                    "kebele": "aa2b0866-010a-11ee-a622-fa163e736d71"
+                },
+                "nationalityLookupId": "0cb229b6-eea1-11ed-bffd-321f02af6a03",
+                "birthDateEt": "12/11/2015",
+                "religionLookupId": null,
+                "educationalStatusLookupId": null,
+                "typeOfWorkLookupId": null,
+                "titleLookupId": null,
+                "marriageStatusLookupId": null,
+                "residentAddressId": "aa2b0552-010a-11ee-a622-fa163e736d71",
+                "residentAddressResponseDTO": {
+                    "country": "ad35387a-ee91-11ed-bffd-321f02af6a03",
+                    "addressId": "aa2b0552-010a-11ee-a622-fa163e736d71",
+                    "region": "d17132e8-ee91-11ed-bffd-321f02af6a03",
+                    "zone": "41b5495b-0108-11ee-a622-fa163e736d71",
+                    "woreda": "020f44eb-010a-11ee-a622-fa163e736d71",
+                    "kebele": "aa2b0552-010a-11ee-a622-fa163e736d71"
+                },
+                "nationLookupId": null,
+                "phoneNumber": null
+            },
+            "eventRegistrar": {
+                "id": null,
+                "relationshipLookupId": "cf6d67b8-7dcc-445a-b4d1-ecb89733bcf0",
+                "registrarInfo": {
+                    "id": null,
+                    "firstName": {
+                        "am": "እፍርእግ",
+                        "or": "eref"
+                    },
+                    "middleName": {
+                        "am": "ፈገር",
+                        "or": "efe"
+                    },
+                    "lastName": {
+                        "am": "እፍ",
+                        "or": "frgr"
+                    },
+                    "nationalId": "efegffe",
+                    "sexLookupId": "27128301-2380-48bc-8cb3-6f2fc582f923",
+                    "birthAddressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                    "birthAddressResponseDTO": {
+                        "country": "ad35387a-ee91-11ed-bffd-321f02af6a03",
+                        "addressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                        "region": "d17132e8-ee91-11ed-bffd-321f02af6a03",
+                        "zone": "41b55c91-0108-11ee-a622-fa163e736d71",
+                        "woreda": "020f4534-010a-11ee-a622-fa163e736d71",
+                        "kebele": "aa2b0866-010a-11ee-a622-fa163e736d71"
+                    },
+                    "nationalityLookupId": "0cb229b6-eea1-11ed-bffd-321f02af6a03",
+                    "birthDateEt": null,
+                    "religionLookupId": null,
+                    "educationalStatusLookupId": "dac43ac0-eea0-11ed-bffd-321f02af6a03",
+                    "typeOfWorkLookupId": null,
+                    "titleLookupId": "8c35d95e-eea0-11ed-bffd-321f02af6a03",
+                    "marriageStatusLookupId": "06fe081d-ec95-4e10-b2fa-1ec74464f67c",
+                    "residentAddressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                    "residentAddressResponseDTO": {
+                        "country": "ad35387a-ee91-11ed-bffd-321f02af6a03",
+                        "addressId": "aa2b0866-010a-11ee-a622-fa163e736d71",
+                        "region": "d17132e8-ee91-11ed-bffd-321f02af6a03",
+                        "zone": "41b55c91-0108-11ee-a622-fa163e736d71",
+                        "woreda": "020f4534-010a-11ee-a622-fa163e736d71",
+                        "kebele": "aa2b0866-010a-11ee-a622-fa163e736d71"
+                    },
+                    "nationLookupId": "65f8a640-8a8f-460d-84ee-1bef9308f3a5",
+                    "phoneNumber": "+251456465465"
+                }
+            }
+        }
+    }
+}

@@ -5,5 +5,6 @@
         string GetUserEmail();
         Guid GetUserId();
         string GetLocale();
+        Guid GetId();
     }
 }

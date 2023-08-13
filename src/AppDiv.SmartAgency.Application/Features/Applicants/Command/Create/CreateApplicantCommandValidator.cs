@@ -98,94 +98,112 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Create
                 .NotEmpty().WithMessage("Salary must not be empty")
                 .NotNull().WithMessage("Salary must has a value!");
 
+
+
+
+
             RuleFor(app => app.ApplicantRequest.DesiredCountryId)
                 .NotEmpty().WithMessage("Desired country must not be empty!")
                 .NotNull().WithMessage("Desired country must has a value!");
 
+            RuleFor(app => app.ApplicantRequest.Address)
+                .NotNull().WithMessage("Applicant address must have a value");
+            RuleFor(app => app.ApplicantRequest.Address.RegionId)
+                .NotNull().WithMessage("Applicant Region/Country must have a value")
+                .When(app => app.ApplicantRequest.Address != null);
+            RuleFor(app => app.ApplicantRequest.Address.Adress)
+                .NotNull().WithMessage("Applicant address 'address' must have a value")
+                .NotEmpty().WithMessage("Applicant address 'address' must not be an empty string")
+                .When(app => app.ApplicantRequest.Address != null);
 
-            /*    
-                      RuleFor(app => app.ApplicantRequest.Skill)
-                         .NotNull().WithMessage("Skill  must has a value!")
-                          .DependentRules(a)
 
-                      RuleFor(app => app.ApplicantRequest.Skill!.LanguageSkills)
-                         .NotNull().WithMessage("Language Skills  must have value!");
-                      RuleFor(app => app.ApplicantRequest.Skill!.Skills)
-                         .NotNull().WithMessage("Technical Skills must have a value!");
-                      RuleFor(app => app.ApplicantRequest.Education)
-                         .NotNull().WithMessage("education  must has a value!")
-                         .NotEmpty().WithMessage("education must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Education.QualificationTypes)
-                        .NotNull().WithMessage("Qualification types  must has a value!")
-                        .NotEmpty().WithMessage("Qualification types  must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Education.LevelofQualifications)
-                        .NotNull().WithMessage("level of qualifications  must has a value!")
-                        .NotEmpty().WithMessage("level of qualifications  must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Education.QualificationTypes)
-                         .NotNull().WithMessage("Qualification types  must has a value!")
-                         .NotEmpty().WithMessage("Qualification types  must not be empty");
 
-                      RuleFor(app => app.ApplicantRequest.EmergencyContact)
-                           .Must(contact => contact != null).WithMessage("Emergency Contact must have a value!");
+            RuleFor(app => app.ApplicantRequest.Skill)
+               .NotNull().WithMessage("Skill  must has a value!")
+               .NotEmpty().WithMessage("Skill must not be empty");
+            RuleFor(app => app.ApplicantRequest.Skill!.LanguageSkills)
+               .NotNull().WithMessage("Language Skills  must have value!")
+               .NotEmpty().WithMessage("language must not be empty")
+               .When(app => app.ApplicantRequest.Skill != null);
+            RuleFor(app => app.ApplicantRequest.Skill!.Skills)
+               .NotNull().WithMessage("Technical Skills must have a value!")
+               .NotEmpty().WithMessage("Technical Skills must not be empty!")
+               .When(app => app.ApplicantRequest.Skill != null);
+            /*     
+              RuleFor(app => app.ApplicantRequest.Education)
+                 .NotNull().WithMessage("education  must has a value!")
+                 .NotEmpty().WithMessage("education must not be empty");
+              RuleFor(app => app.ApplicantRequest.Education.QualificationTypes)
+                .NotNull().WithMessage("Qualification types  must has a value!")
+                .NotEmpty().WithMessage("Qualification types  must not be empty");
+              RuleFor(app => app.ApplicantRequest.Education.LevelofQualifications)
+                .NotNull().WithMessage("level of qualifications  must has a value!")
+                .NotEmpty().WithMessage("level of qualifications  must not be empty");
+              RuleFor(app => app.ApplicantRequest.Education.QualificationTypes)
+                 .NotNull().WithMessage("Qualification types  must has a value!")
+                 .NotEmpty().WithMessage("Qualification types  must not be empty");
 
-                      RuleFor(app => app.ApplicantRequest.EmergencyContact)
-                          .NotNull().When(app => app.ApplicantRequest.EmergencyContact != null)
-                          .DependentRules(() =>
-                          {
-                              RuleFor(app => app.ApplicantRequest.EmergencyContact.NameOfContactPerson)
-                                  .NotNull().WithMessage("NameOfContactPerson must have a value!")
-                                  .NotEmpty().WithMessage("NameOfContactPerson must not be empty");
+              RuleFor(app => app.ApplicantRequest.EmergencyContact)
+                   .Must(contact => contact != null).WithMessage("Emergency Contact must have a value!");
 
-                              RuleFor(app => app.ApplicantRequest.EmergencyContact.RelationshipId)
-                                  .NotNull().WithMessage("Relationship must have a value!")
-                                  .NotEmpty().WithMessage("Relationship must not be empty");
-                          })
-                          .When(app => app.ApplicantRequest.EmergencyContact != null, ApplyConditionTo.CurrentValidator);
-                      RuleFor(app => app.ApplicantRequest.EmergencyContact.Address)
-                         .NotNull().WithMessage("Contact Person Address  must has a value!");
-                      RuleFor(app => app.ApplicantRequest.EmergencyContact.Address.RegionId)
-                         .NotNull().WithMessage("Contact person Region/Country  must has a value!")
-                         .NotEmpty().WithMessage("Contact person Region/Country must not be empty");
-                      RuleFor(app => app.ApplicantRequest.EmergencyContact.Address.Adress)
-                         .NotNull().WithMessage("Contact Person Adress  must has a value!")
-                         .NotEmpty().WithMessage("Contact Person Address address must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Witness)
-                         .NotNull().WithMessage(" Witness must has a value!");
-                      RuleFor(app => app.ApplicantRequest.Witness.Representative)
-                         .NotNull().WithMessage("Representative   must has a value!")
-                         .NotEmpty().WithMessage("Represenatative  must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Witness.Representative.FullName)
-                        .NotNull().WithMessage("Representative Fullname must has a value!")
-                        .NotEmpty().WithMessage("Represenatative Fullname must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Witness.Witnesses)
-                         .NotNull().WithMessage("Witness  must has a value!")
-                         .NotEmpty().WithMessage("Witness  must not be empty")
-                         .ForEach(witness =>
-                               witness.NotEmpty().WithMessage("witness must not be empty")
-                                      .NotNull().WithMessage("witness must has a value")
-                                      .ChildRules(w =>
-                                      {
-                                          w.RuleFor(witness => witness.FullName)
-                                               .NotEmpty().WithMessage(" witnesse's fullname must not be empty")
-                                               .NotNull().WithMessage("Witnesse's fullname must has a value!");
-                                          w.RuleFor(witness => witness.Address)
-                                                .NotEmpty().WithMessage("witnesse's Address must not be empty")
-                                                .NotNull().WithMessage("Witnesse's Address must has a value");
-                                          w.RuleFor(witness => witness.PhoneNumber)
-                                                .NotEmpty().WithMessage("witnesse's Phonenumber must not be empty")
-                                                .NotNull().WithMessage("Witnesse's phonenumber must has a value");
-                                      })
-                               );
-                      RuleFor(app => app.ApplicantRequest.Address)
-                          .NotNull().WithMessage("Applicant address must have a value")
-                          .NotEmpty().WithMessage("Applicant address must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Address.RegionId)
-                           .NotNull().WithMessage("Applicant Region/Country must have a value")
-                           .NotEmpty().WithMessage("Applicant Region/Country  must not be empty");
-                      RuleFor(app => app.ApplicantRequest.Address.Adress)
-                           .NotNull().WithMessage("Applicant address 'address' must have a value")
-                           .NotEmpty().WithMessage("Applicant address '' must not be string");
-          */
+              RuleFor(app => app.ApplicantRequest.EmergencyContact)
+                  .NotNull().When(app => app.ApplicantRequest.EmergencyContact != null)
+                  .DependentRules(() =>
+                  {
+                      RuleFor(app => app.ApplicantRequest.EmergencyContact.NameOfContactPerson)
+                          .NotNull().WithMessage("NameOfContactPerson must have a value!")
+                          .NotEmpty().WithMessage("NameOfContactPerson must not be empty");
+
+                      RuleFor(app => app.ApplicantRequest.EmergencyContact.RelationshipId)
+                          .NotNull().WithMessage("Relationship must have a value!")
+                          .NotEmpty().WithMessage("Relationship must not be empty");
+                  })
+                  .When(app => app.ApplicantRequest.EmergencyContact != null, ApplyConditionTo.CurrentValidator);
+              RuleFor(app => app.ApplicantRequest.EmergencyContact.Address)
+                 .NotNull().WithMessage("Contact Person Address  must has a value!");
+              RuleFor(app => app.ApplicantRequest.EmergencyContact.Address.RegionId)
+                 .NotNull().WithMessage("Contact person Region/Country  must has a value!")
+                 .NotEmpty().WithMessage("Contact person Region/Country must not be empty");
+              RuleFor(app => app.ApplicantRequest.EmergencyContact.Address.Adress)
+                 .NotNull().WithMessage("Contact Person Adress  must has a value!")
+                 .NotEmpty().WithMessage("Contact Person Address address must not be empty");
+              RuleFor(app => app.ApplicantRequest.Witness)
+                 .NotNull().WithMessage(" Witness must has a value!");
+              RuleFor(app => app.ApplicantRequest.Witness.Representative)
+                 .NotNull().WithMessage("Representative   must has a value!")
+                 .NotEmpty().WithMessage("Represenatative  must not be empty");
+              RuleFor(app => app.ApplicantRequest.Witness.Representative.FullName)
+                .NotNull().WithMessage("Representative Fullname must has a value!")
+                .NotEmpty().WithMessage("Represenatative Fullname must not be empty");
+              RuleFor(app => app.ApplicantRequest.Witness.Witnesses)
+                 .NotNull().WithMessage("Witness  must has a value!")
+                 .NotEmpty().WithMessage("Witness  must not be empty")
+                 .ForEach(witness =>
+                       witness.NotEmpty().WithMessage("witness must not be empty")
+                              .NotNull().WithMessage("witness must has a value")
+                              .ChildRules(w =>
+                              {
+                                  w.RuleFor(witness => witness.FullName)
+                                       .NotEmpty().WithMessage(" witnesse's fullname must not be empty")
+                                       .NotNull().WithMessage("Witnesse's fullname must has a value!");
+                                  w.RuleFor(witness => witness.Address)
+                                        .NotEmpty().WithMessage("witnesse's Address must not be empty")
+                                        .NotNull().WithMessage("Witnesse's Address must has a value");
+                                  w.RuleFor(witness => witness.PhoneNumber)
+                                        .NotEmpty().WithMessage("witnesse's Phonenumber must not be empty")
+                                        .NotNull().WithMessage("Witnesse's phonenumber must has a value");
+                              })
+                       );
+              RuleFor(app => app.ApplicantRequest.Address)
+                  .NotNull().WithMessage("Applicant address must have a value")
+                  .NotEmpty().WithMessage("Applicant address must not be empty");
+              RuleFor(app => app.ApplicantRequest.Address.RegionId)
+                   .NotNull().WithMessage("Applicant Region/Country must have a value")
+                   .NotEmpty().WithMessage("Applicant Region/Country  must not be empty");
+              RuleFor(app => app.ApplicantRequest.Address.Adress)
+                   .NotNull().WithMessage("Applicant address 'address' must have a value")
+                   .NotEmpty().WithMessage("Applicant address '' must not be string");
+  */
 
 
 
