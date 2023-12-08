@@ -105,12 +105,8 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                         AuthorizedPerson = selectedCompanyInformation.CompanySetting.AuthorizedPerson,
                         PenalityInterval = selectedCompanyInformation.CompanySetting.PenalityInterval,
                         PenalityAmount = selectedCompanyInformation.CompanySetting.PenalityAmount,
-
                     }
-
                 };
-
-
 
                 var companyImageId = selectedCompanyInformation.Id.ToString();
 
@@ -120,7 +116,6 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                 //string fileName = "Slider" + id.ToString() + ".jpg"; // Replace ".jpg" with the actual file extension
                 (byte[], string, string) fileResult1 = _fileService.getFile(companyImageId, fileType1, null);
                 (byte[], string, string) fileResult2 = _fileService.getFile(companyImageId, fileType2, null);
-
 
                 // Convert the byte array of the image content to a Base64 encoded string
                 string fileContent1 = Convert.ToBase64String(fileResult1.Item1);
@@ -136,19 +131,13 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
 
                 companyInformationResponse.Success = true;
 
-
-
-
                 Console.WriteLine("//////////////////////");
                 Console.WriteLine("//////////////////////");
                 Console.WriteLine("//////////////////////");
                 Console.WriteLine("//////////////////////");
                 Console.WriteLine(_userResolver.GetUserId());
-
-
             }
             return companyInformationResponse;
-
         }
     }
 }
