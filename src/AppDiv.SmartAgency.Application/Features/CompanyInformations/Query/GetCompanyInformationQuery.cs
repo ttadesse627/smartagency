@@ -9,12 +9,7 @@ using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
 {
     // Customer GetCustomerByIdQuery with Customer response
-    public class GetCompanyInformationQuery : IRequest<ServiceResponse<GetCompanyInformationResponseDTO>>
-    {
-
-
-    }
-
+    public class GetCompanyInformationQuery : IRequest<ServiceResponse<GetCompanyInformationResponseDTO>> { }
     public class GetCompanyInformationHandler : IRequestHandler<GetCompanyInformationQuery, ServiceResponse<GetCompanyInformationResponseDTO>>
     {
         private readonly ICompanyInformationRepository _companyInformationRepository;
@@ -125,7 +120,6 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                 var response1 = new { FileName = fileResult1.Item2 + fileResult1.Item3, FileContent = fileContent1 };
                 var response2 = new { FileName = fileResult2.Item2 + fileResult2.Item3, FileContent = fileContent2 };
 
-
                 companyInformationResponse.Data.LetterLogo = fileContent1;
                 companyInformationResponse.Data.LetterBackGround = fileContent2;
 
@@ -135,6 +129,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                 Console.WriteLine("//////////////////////");
                 Console.WriteLine("//////////////////////");
                 Console.WriteLine("//////////////////////");
+
                 Console.WriteLine(_userResolver.GetUserId());
             }
             return companyInformationResponse;
