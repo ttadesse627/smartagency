@@ -1,11 +1,9 @@
-
-
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence

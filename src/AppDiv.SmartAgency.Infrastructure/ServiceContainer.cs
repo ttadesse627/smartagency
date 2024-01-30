@@ -63,7 +63,6 @@ namespace AppDiv.SmartAgency.Infrastructure
             #region Repositories DI         
             services.AddTransient<ISmartAgencyDbContext, SmartAgencyDbContext>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAttachmentRepository, AttaachmentRepository>();
             services.AddTransient<ILookUpRepository, LookUpRepository>();
             services.AddTransient<IPartnerRepository, PartnerRepository>();
