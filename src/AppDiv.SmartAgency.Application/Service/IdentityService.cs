@@ -64,12 +64,12 @@ namespace AppDiv.SmartAgency.Application.Service
         public async Task<ServiceResponse<int>> CreateUserAsync(ApplicationUser user, string password)
         {
             var response = new ServiceResponse<int>();
-            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            var existingUser = await _userManager.FindByEmailAsync(user.Email!);
             if (existingUser != null)
             {
                 response.Errors?.Add("user with the given email already exists");
             }
-            existingUser = await _userManager.FindByNameAsync(user.UserName);
+            existingUser = await _userManager.FindByNameAsync(user.UserName!);
             if (existingUser != null)
             {
                 response.Errors?.Add("username is already taken");
@@ -135,7 +135,7 @@ namespace AppDiv.SmartAgency.Application.Service
                 x.Email
             }).ToListAsync();
 
-            return users.Select(user => (user.Id, user.FullName, user.UserName, user.Email)).ToList();
+            return users.Select(user => (user.Id, user.FullName, user.UserName, user.Email)).ToList()!;
         }
 
         public Task<List<(string id, string userName, string email, IList<string> roles)>> GetAllUsersDetailsAsync()
@@ -151,7 +151,7 @@ namespace AppDiv.SmartAgency.Application.Service
                 x.Name
             }).ToListAsync();
 
-            return roles.Select(role => (role.Id, role.Name)).ToList();
+            return roles.Select(role => (role.Id, role.Name)).ToList()!;
         }
         public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId)
         {
@@ -161,13 +161,13 @@ namespace AppDiv.SmartAgency.Application.Service
                 throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return (user.Id, user.FullName, user.UserName, user.Email, roles);
+            return (user.Id, user.FullName, user.UserName, user.Email, roles)!;
         }
 
         public async Task<ApplicationUser> GetByUsernameAsync(string userName)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
-            return user;
+            return user!;
         }
 
         public async Task<ApplicationUser> GetUserDetailsByUserNameAsync(string userName)
@@ -207,7 +207,7 @@ namespace AppDiv.SmartAgency.Application.Service
             {
                 throw new NotFoundException("User not found");
             }
-            return await _userManager.GetUserNameAsync(user);
+            return (await _userManager.GetUserNameAsync(user))!;
         }
 
         public async Task<List<string>> GetUserRolesAsync(string userId)
@@ -218,7 +218,7 @@ namespace AppDiv.SmartAgency.Application.Service
                 throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return roles.ToList();
+            return [.. roles];
         }
 
         public async Task<bool> IsInRoleAsync(string userId, string role)
@@ -246,9 +246,12 @@ namespace AppDiv.SmartAgency.Application.Service
         public async Task<bool> UpdateUserProfile(string id, string fullName, string email, IList<string> roles)
         {
             var user = await _userManager.FindByIdAsync(id);
-            user.FullName = fullName;
-            user.Email = email;
-            var result = await _userManager.UpdateAsync(user);
+            if (user != null)
+            {
+                user.FullName = fullName;
+                user.Email = email;
+            }
+            var result = await _userManager.UpdateAsync(user!);
 
             return result.Succeeded;
         }
@@ -256,7 +259,7 @@ namespace AppDiv.SmartAgency.Application.Service
         public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
-            return (role.Id, role.Name);
+            return (role!.Id, role.Name)!;
         }
 
         public async Task<bool> UpdateRole(string id, string roleName)
@@ -264,7 +267,7 @@ namespace AppDiv.SmartAgency.Application.Service
             if (roleName != null)
             {
                 var role = await _roleManager.FindByIdAsync(id);
-                role.Name = roleName;
+                role!.Name = roleName;
                 var result = await _roleManager.UpdateAsync(role);
                 return result.Succeeded;
             }
@@ -274,9 +277,9 @@ namespace AppDiv.SmartAgency.Application.Service
         public async Task<bool> UpdateUsersRole(string userName, IList<string> usersRole)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var existingRoles = await _userManager.GetRolesAsync(user);
-            var result = await _userManager.RemoveFromRolesAsync(user, existingRoles);
-            result = await _userManager.AddToRolesAsync(user, usersRole);
+            var existingRoles = await _userManager.GetRolesAsync(user!);
+            var result = await _userManager.RemoveFromRolesAsync(user!, existingRoles);
+            result = await _userManager.AddToRolesAsync(user!, usersRole);
 
             return result.Succeeded;
         }
@@ -446,7 +449,7 @@ namespace AppDiv.SmartAgency.Application.Service
         {
             var user = email != null
                         ? await _userManager.FindByEmailAsync(email)
-                        : await _userManager.FindByNameAsync(userName);
+                        : await _userManager.FindByNameAsync(userName!);
             if (user == null)
             {
                 return Result.Failure(new string[] { "user not found" });
@@ -477,7 +480,7 @@ namespace AppDiv.SmartAgency.Application.Service
         {
             var user = email != null
                             ? await _userManager.FindByEmailAsync(email)
-                            : await _userManager.FindByNameAsync(userName);
+                            : await _userManager.FindByNameAsync(userName!);
             if (user == null)
             {
                 return (Result.Failure(new string[] { "could not find user with the given email" }), string.Empty);

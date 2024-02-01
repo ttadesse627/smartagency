@@ -16,7 +16,7 @@ namespace AppDiv.SmartAgency.Application.Service
         public async Task<bool> ValidateAsync(JwtSecurityToken token)
         {
             var httpContext = new HttpContextAccessor().HttpContext;
-            httpContext.Request.Headers.TryGetValue("Authorization", out StringValues headerValue);
+            httpContext!.Request.Headers.TryGetValue("Authorization", out StringValues headerValue);
             var tokenId = headerValue.FirstOrDefault();
             var expiredToken = await _tokenRepository.GetAllWithPredicateAsync(x => x.ExpirationDate <= DateTime.Now);
             if (expiredToken.FirstOrDefault() != null)

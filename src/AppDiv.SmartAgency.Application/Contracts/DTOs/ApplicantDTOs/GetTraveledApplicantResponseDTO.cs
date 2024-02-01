@@ -4,9 +4,9 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 public record GetTraveledApplicantResponseDTO
 {
     public Guid Id { get; set; }
-    public string FullName { get; set; }
-    public string PassportNumber { get; set; }
-    public string VisaNumber { get; set; }
-    public string SponsorName { get; set; }
-    public string PortOfArrival { get; set; }
+    public required string FullName { get; set; }
+    public required string PassportNumber { get; set; }
+    public required string VisaNumber { get; set; }
+    public required string SponsorName { get; set; }
+    public required string PortOfArrival { get; set; }
 }

@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -13,7 +9,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+                cfg.ShouldMapProperty = p => p.GetMethod!.IsPublic || p.GetMethod.IsAssembly;
                 cfg.AddProfile<SmartAgencyMappingProfile>();
             });
 

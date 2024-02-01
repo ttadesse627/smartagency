@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using Org.BouncyCastle.Crypto.Prng;
 
 namespace AppDiv.SmartAgency.Application.Service
 {
@@ -15,7 +16,7 @@ namespace AppDiv.SmartAgency.Application.Service
         }
         public static string GenerateRandomCode()
         {
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            using var rngCryptoServiceProvider = RandomNumberGenerator.Create();
             var randomBytes = new byte[4];
             rngCryptoServiceProvider.GetBytes(randomBytes);
 

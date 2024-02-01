@@ -1,10 +1,7 @@
 
-using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace AppDiv.SmartAgency.Application.Common;
-
-
 public class PaginatedList<T>
 {
     public IReadOnlyCollection<T> Items { get; }
@@ -32,10 +29,10 @@ public class PaginatedList<T>
 
     public bool HasNextPage => PageNumber < TotalPages;
 
-    public static async Task<PaginatedList<T>> CreateAsync(IEnumerable<T> source, int pageNumber, int pageSize)
+    public static PaginatedList<T> Create(IEnumerable<T> source, int pageNumber, int pageSize)
     {
         var count = source.Count();
         var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         return new PaginatedList<T>(items, count, pageNumber, pageSize);
-    } 
+    }
 }

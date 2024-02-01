@@ -22,7 +22,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             _mediator = mediator;
         }
 
-        [AllowAnonymousAttribute]
+        [AllowAnonymous]
 
         [HttpPost("create")]
         public async Task<ActionResult> CreateCompanyInformation([FromBody] CreateCompanyInformationRequest companyInformationRequest)

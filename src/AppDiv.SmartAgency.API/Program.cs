@@ -9,11 +9,17 @@ using AppDiv.SmartAgency.Infrastructure;
 using AppDiv.SmartAgency.Api.Middleware;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 //"SECRET": "irzcivkhgugparen",
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseKestrel(options =>
+{
+    options.Listen(IPAddress.Any, port: 8000);
+});
 
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
