@@ -15,7 +15,6 @@ using AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Applicants.Queries;
 using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
-using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,20 +27,15 @@ namespace AppDiv.SmartAgency.API.Controllers;
 [Route("api/applicant")]
 
 //[AllowAnonymousAttribute]
-public class ApplicantController : ControllerBase
+public class ApplicantController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public ApplicantController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
 
     [HttpPost("create")]
 
     [RoleBasedAuthorizationMetadata("Applicant", "CanAdd")]
     public async Task<ActionResult<ServiceResponse<Int32>>> CreateApplicant(CreateApplicantRequest request)
     {
-        var response = await _mediator.Send(new CreateApplicantCommand(request));
+        var response = await Mediator.Send(new CreateApplicantCommand(request));
         return Ok(response);
     }
 
@@ -50,13 +44,13 @@ public class ApplicantController : ControllerBase
     [RoleBasedAuthorizationMetadata("Applicant", "CanView")]
     public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetAllApplicants(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+        return Ok(await Mediator.Send(new GetAllApplicants(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
     [RoleBasedAuthorizationMetadata("Applicant", "CanViewDetail")]
     [HttpGet("get/{id}")]
     public async Task<ActionResult<GetApplicantResponseDTO>> GetAllApplicants(Guid id)
     {
-        return Ok(await _mediator.Send(new GetSingleApplicantQuery(id)));
+        return Ok(await Mediator.Send(new GetSingleApplicantQuery(id)));
     }
 
 
@@ -67,7 +61,7 @@ public class ApplicantController : ControllerBase
     {
         try
         {
-            var response = await _mediator.Send(new DeleteApplicantCommand(id));
+            var response = await Mediator.Send(new DeleteApplicantCommand(id));
             return Ok(response);
         }
         catch (System.Exception ex)
@@ -84,7 +78,7 @@ public class ApplicantController : ControllerBase
         {
             if (request.Id == id)
             {
-                var response = await _mediator.Send(new EditApplicantCommand(request));
+                var response = await Mediator.Send(new EditApplicantCommand(request));
                 return Ok(response);
             }
             else return BadRequest();
@@ -103,7 +97,7 @@ public class ApplicantController : ControllerBase
        Guid? religionId = null, Guid? experienceId = null, Guid? countryId = null
    )
     {
-        return Ok(await _mediator.Send(new GetApplSearchResultQuery(
+        return Ok(await Mediator.Send(new GetApplSearchResultQuery(
                         pageNumber, pageSize, orderBy, sortingDirection,
                         jobTitleId, maritalStatusId, ageFrom, ageTo,
                         religionId, experienceId, countryId
@@ -113,27 +107,27 @@ public class ApplicantController : ControllerBase
     [HttpPut("request/send-request")]
     public async Task<ActionResult<ServiceResponse<Int32>>> RequestApplicant(SendApplicantRequest request)
     {
-        var response = await _mediator.Send(new RequestApplicantCommand(request));
+        var response = await Mediator.Send(new RequestApplicantCommand(request));
         return Ok(response);
     }
 
     [HttpGet("request/get-all")]
     public async Task<ActionResult<ApplicantsResponseDTO>> GetAllRequestedApplicants(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
-        return Ok(await _mediator.Send(new GetAllRequestedQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+        return Ok(await Mediator.Send(new GetAllRequestedQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
 
     [HttpDelete("request/delete/{id}")]
     public async Task<ActionResult<ServiceResponse<Int32>>> DeleteRequested(Guid id)
     {
-        var response = await _mediator.Send(new DeleteRequestedCommand(id));
+        var response = await Mediator.Send(new DeleteRequestedCommand(id));
         return Ok(response);
     }
 
     [HttpGet("get-unassigned")]
     public async Task<ActionResult<GetUnAssignedApplicantsDTO>> GetUnassignedApplicants()
     {
-        return Ok(await _mediator.Send(new GetUnassignedApplicantsQuery()));
+        return Ok(await Mediator.Send(new GetUnassignedApplicantsQuery()));
     }
 
 
@@ -143,20 +137,20 @@ public class ApplicantController : ControllerBase
 
     public async Task<ActionResult<ApplicantCvResponseDTO>> GetApplicantCvDetail(Guid id)
     {
-        return Ok(await _mediator.Send(new GetApplicantCvDetailQuery(id)));
+        return Ok(await Mediator.Send(new GetApplicantCvDetailQuery(id)));
     }
 
     [HttpGet("get-attachments")]
 
     public async Task<ActionResult<string>> GetApplicantAttachments(Guid ApplicantId, string AttachmentType)
     {
-        return Ok(await _mediator.Send(new GetApplicantAttachmentsQuery(ApplicantId, AttachmentType)));
+        return Ok(await Mediator.Send(new GetApplicantAttachmentsQuery(ApplicantId, AttachmentType)));
     }
 
     [HttpGet("get-unassigned-orders-dropdown")]
     public async Task<ActionResult<Object>> GetUnAssignedOrdersDropdown()
     {
-        return Ok(await _mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
+        return Ok(await Mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
     }
 
     [HttpGet("get-for-enjaz")]
@@ -164,7 +158,7 @@ public class ApplicantController : ControllerBase
     {
         var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
         {
-            Items = await _mediator.Send(new GetForEnjazQuery())
+            Items = await Mediator.Send(new GetForEnjazQuery())
         };
         return Ok(response);
     }
@@ -172,7 +166,7 @@ public class ApplicantController : ControllerBase
     [HttpGet("get-travelled-applicants")]
     public async Task<ActionResult<TravelledApplicantsResponseDTO>> GetTravelledApplicants()
     {
-        var result = await _mediator.Send(new GetTravelledApplicantsQuery());
+        var result = await Mediator.Send(new GetTravelledApplicantsQuery());
 
         return Ok(result);
     }
@@ -185,7 +179,7 @@ public class ApplicantController : ControllerBase
     // {
     //     var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
     //     {
-    //         Items = await _mediator.Send(new GetForEnjazQuery())
+    //         Items = await Mediator.Send(new GetForEnjazQuery())
     //     };
     //     return Ok(response);
     // }

@@ -4,5 +4,5 @@
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 public record UserPartnerResponseDTO
 {
-    public string PartnerName { get; set; }
+    public required string PartnerName { get; set; }
 }

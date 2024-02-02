@@ -12,10 +12,10 @@ namespace AppDiv.SmartAgency.Application.Features.Attachments.Query
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string SearchTerm { get; set; }
-        public string OrderBy { get; set; }
+        public string? SearchTerm { get; set; }
+        public string? OrderBy { get; set; }
         public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-        public GetAllAttachments(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
+        public GetAllAttachments(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;

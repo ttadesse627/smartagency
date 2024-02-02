@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs
 {
-    public record CreatePersonalInfoDTO 
+    public record CreatePersonalInfoDTO
     {
-      public string FirstName { get; set; }
+        public required string FirstName { get; set; }
     }
 }

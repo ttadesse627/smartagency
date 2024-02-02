@@ -56,8 +56,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
     {
         public SmartAgencyMappingProfile()
         {
-            CreateMap<Customer, CustomerResponseDTO>().ReverseMap();
-
             CreateMap<Attachment, CreateAttachmentResponseDTO>().ReverseMap();
             CreateMap<Attachment, CreateAttachmentCommand>().ReverseMap();
             CreateMap<Attachment, AttachmentResponseDTO>().ReverseMap();
@@ -240,7 +238,6 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
             CreateMap<CompanyWitnessRequest, Witness>().ReverseMap();
-            CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
             CreateMap<CompanyInformation, GetCompanyInformationResponseDTO>()
                 .ForMember(dest => dest.LetterLogo, opt => opt.Ignore())
@@ -257,7 +254,7 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<Address, CompanyAddressRequest>().ReverseMap();
             CreateMap<CompanySetting, CompanySettingRequest>().ReverseMap();
             CreateMap<Witness, WitnessRequest>().ReverseMap();
-            CreateMap<CountryOperationRequest, CountryOperation>().ReverseMap();
+            CreateMap<CountryOperationRequest, CountryOperation>();
             CreateMap<CompanyInformation, CompanyInformationResponseDTO>();
 
             CreateMap<Process, GetProcessResponseDTO>();

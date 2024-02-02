@@ -108,10 +108,10 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Create
 
             RuleFor(app => app.ApplicantRequest.Address)
                 .NotNull().WithMessage("Applicant address must have a value");
-            RuleFor(app => app.ApplicantRequest.Address.RegionId)
+            RuleFor(app => app.ApplicantRequest.Address!.RegionId)
                 .NotNull().WithMessage("Applicant Region/Country must have a value")
                 .When(app => app.ApplicantRequest.Address != null);
-            RuleFor(app => app.ApplicantRequest.Address.Adress)
+            RuleFor(app => app.ApplicantRequest.Address!.Adress)
                 .NotNull().WithMessage("Applicant address 'address' must have a value")
                 .NotEmpty().WithMessage("Applicant address 'address' must not be an empty string")
                 .When(app => app.ApplicantRequest.Address != null);

@@ -9,18 +9,15 @@ using System.Linq.Dynamic.Core;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.EnjazDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class ApplicantRepository : BaseRepository<Applicant>, IApplicantRepository
 {
     private readonly SmartAgencyDbContext _context;
-    private readonly IFileService _fileService;
-    public ApplicantRepository(SmartAgencyDbContext dbContext, IFileService fileService) : base(dbContext)
+    public ApplicantRepository(SmartAgencyDbContext dbContext) : base(dbContext)
     {
         _context = dbContext;
-        _fileService = fileService;
     }
     public override async Task InsertAsync(Applicant applicant, CancellationToken cancellationToken)
     {
@@ -37,17 +34,17 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         return applicant;
     }
 
-    public async Task<List<Applicant>> GetAll()
-    {
-        var response = new List<Applicant>();
-        var applicants = await _context.Applicants.ToListAsync();
+    // public async Task<List<Applicant>> GetAll()
+    // {
+    //     var response = new List<Applicant>();
+    //     var applicants = await _context.Applicants.ToListAsync();
 
-        if (applicants.Count >= 0)
-        {
-            response = applicants;
-        }
-        return response;
-    }
+    //     if (applicants.Count >= 0)
+    //     {
+    //         response = applicants;
+    //     }
+    //     return response;
+    // }
     public async Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber)
     {
         var serviceResponse = new ServiceResponse<Applicant>();
@@ -474,5 +471,15 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         return showStatus;
     }
 
+    async Task<List<Applicant>> IApplicantRepository.GetAll()
+    {
+        var response = new List<Applicant>();
+        var applicants = await _context.Applicants.ToListAsync();
 
+        if (applicants.Count >= 0)
+        {
+            response = applicants;
+        }
+        return response;
+    }
 }
