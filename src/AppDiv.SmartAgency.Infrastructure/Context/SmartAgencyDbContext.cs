@@ -72,7 +72,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
-            this.ChangeTracker.LazyLoadingEnabled = false;
+            ChangeTracker.LazyLoadingEnabled = false;
             _userResolverService = userResolverService;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

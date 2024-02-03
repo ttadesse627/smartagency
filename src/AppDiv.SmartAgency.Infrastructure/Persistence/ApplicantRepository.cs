@@ -471,15 +471,15 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         return showStatus;
     }
 
-    async Task<List<Applicant>> IApplicantRepository.GetAll()
-    {
-        var response = new List<Applicant>();
-        var applicants = await _context.Applicants.ToListAsync();
+    // async Task<List<Applicant>> IApplicantRepository.GetAll()
+    // {
+    //     var response = new List<Applicant>();
+    //     var applicants = await _context.Applicants.ToListAsync();
 
-        if (applicants.Count >= 0)
-        {
-            response = applicants;
-        }
-        return response;
-    }
+    //     if (applicants.Count >= 0)
+    //     {
+    //         response = applicants;
+    //     }
+    //     return response;
+    // }
 }

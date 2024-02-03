@@ -73,7 +73,7 @@ namespace AppDiv.SmartAgency.API.Middleware
                 {
 
                     var allowedRoles = endpoint.Metadata.GetMetadata<RoleBasedAuthorizationMetadata>()?.AllowedRoles;
-                    if (allowedRoles != null && allowedRoles.Any())
+                    if (allowedRoles != null && allowedRoles.Length != 0)
                     {
 
 
@@ -124,7 +124,7 @@ namespace AppDiv.SmartAgency.API.Middleware
                                     {
                                         var actionName = allowedRoles[1];
                                         var propertyInfo = typeof(RoleDto).GetProperty(actionName);
-                                        if (propertyInfo != null && propertyInfo.PropertyType == typeof(bool) && (bool)propertyInfo.GetValue(userRole))
+                                        if (propertyInfo != null && propertyInfo.PropertyType == typeof(bool) && (bool)propertyInfo.GetValue(userRole)!)
                                         {
                                             await _next(context);
                                             return;

@@ -35,7 +35,7 @@ namespace AppDiv.SmartAgency.API.Controllers
 
         [HttpGet("get-image")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get([FromQuery] string id)
+        public IActionResult Get([FromQuery] string id)
         {
             var postImageId = id;
 
@@ -70,11 +70,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 return BadRequest(e.Message);
             }
-
-
-            // return File(response.file,
-            //     "application/octet-stream"
-            //    , response.fileName+response.fileExtenion);
 
         }
 

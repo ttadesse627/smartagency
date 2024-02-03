@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
@@ -9,13 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
-    public class ApplicantFollowupStatusRepository : BaseRepository<ApplicantFollowupStatus>, IApplicantFollowupStatusRepository
+    public class ApplicantFollowupStatusRepository(SmartAgencyDbContext dbContext) : BaseRepository<ApplicantFollowupStatus>(dbContext), IApplicantFollowupStatusRepository
     {
-        private readonly SmartAgencyDbContext _context;
-        public ApplicantFollowupStatusRepository(SmartAgencyDbContext dbContext) : base(dbContext)
-        {
-            _context = dbContext;
-        }
+        private readonly SmartAgencyDbContext _context = dbContext;
 
         public override async Task InsertAsync(ApplicantFollowupStatus applicantFollowupStatus, CancellationToken cancellationToken)
         {

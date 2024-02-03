@@ -15,16 +15,12 @@ namespace AppDiv.SmartAgency.API.Controllers
 
     [ApiController]
     [Route("api/partner")]
-    public class PartnerController : ControllerBase
+    public class PartnerController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public PartnerController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpPost("create")]
-        public async Task<ActionResult<PartnerResponseDTO>> CreatePartner(CreatePartnerRequest partnerRequest, CancellationToken token)
+        public async Task<ActionResult<PartnerResponseDTO>> CreatePartner(CreatePartnerRequest partnerRequest)
         {
             var response = await _mediator.Send(new CreatePartnerCommand(partnerRequest));
             return Ok(response);

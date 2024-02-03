@@ -85,7 +85,7 @@ namespace AppDiv.SmartAgency.Api.Middleware
 
         private static IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
         {
-            IReadOnlyDictionary<string, string[]> errors = null;
+            IReadOnlyDictionary<string, string[]> errors = null!;
             if (exception is ValidationException validationException)
             {
                 errors = validationException.ErrorsDictionary;

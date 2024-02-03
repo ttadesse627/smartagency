@@ -1,4 +1,5 @@
 ﻿using AppDiv.SmartAgency.Infrastructure.Context;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.API.Helpers
@@ -17,8 +18,7 @@ namespace AppDiv.SmartAgency.API.Helpers
                     }
                     catch (Exception ex)
                     {
-                        //Log errors or do anything you think it's needed
-                        throw;
+                        throw new Exception(ex.Message);
                     }
                 }
             }
