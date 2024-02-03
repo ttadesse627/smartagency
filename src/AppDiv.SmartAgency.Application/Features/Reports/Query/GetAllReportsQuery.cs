@@ -17,7 +17,7 @@ namespace AppDiv.SmartAgency.Application.Features.Reports.Query
 
         public async Task<JObject> Handle(GetAllReportsQuery request, CancellationToken cancellationToken)
         {
-            var response = await _reportsRepository.GetReportData(request.ReportName, request.query.Columns, request.query.Filters, request.query.Aggregates);
+            var response = await _reportsRepository.GetReportData(request.ReportName, request.query?.Columns, request.query?.Filters, request.query?.Aggregates);
             return response;
         }
     }

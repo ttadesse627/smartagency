@@ -1,12 +1,9 @@
-
-using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Utility.Exceptions;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.GetOrderDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
-using AppDiv.SmartAgency.Domain.Entities.Orders;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Query;
@@ -67,7 +64,7 @@ public class GetSingleOrderHandler : IRequestHandler<GetSingleOrder, GetOrderRes
             }
 
             // Set sponsor attachment
-            if (orderResponse.Sponsor.Attachment != null)
+            if (orderResponse.Sponsor!.Attachment != null)
             {
                 var folderName = orderResponse.Sponsor.Attachment.Title;
                 if (folderName != null)
@@ -79,11 +76,11 @@ public class GetSingleOrderHandler : IRequestHandler<GetSingleOrder, GetOrderRes
                         AttachmentFile = sponsorFile,
                         Attachment = new AttachmentDropDownDto
                         {
-                            Key = orderResponse.Attachment.Id,
+                            Key = orderResponse.Attachment!.Id,
                             Value = orderResponse.Attachment.Title
                         }
                     };
-                    orderResponseDTO.Sponsor.Attachment = attachmentFile;
+                    orderResponseDTO.Sponsor!.Attachment = attachmentFile;
                 }
             }
         }

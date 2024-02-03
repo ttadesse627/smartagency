@@ -12,15 +12,13 @@ public record CreateOrderCommand(CreateOrderRequest Request) : IRequest<ServiceR
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ServiceResponse<Int32>>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IApplicantRepository _applicantRepository;
     private readonly IAttachmentRepository _attachmentRepository;
     private readonly IFileService _fileService;
     private readonly IMediator _mediator;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository, IAttachmentRepository attachmentRepository, IFileService fileService, IMediator mediator)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, IAttachmentRepository attachmentRepository, IFileService fileService, IMediator mediator)
     {
         _orderRepository = orderRepository;
-        _applicantRepository = applicantRepository;
         _attachmentRepository = attachmentRepository;
         _fileService = fileService;
         _mediator = mediator;
@@ -73,7 +71,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ser
             }
 
             // save sponsor attachment
-            if (command.Request.Sponsor.AttachmentFile != null)
+            if (command.Request.Sponsor != null && command.Request.Sponsor.AttachmentFile != null)
             {
                 if (command.Request.Sponsor.AttachmentFile.AttachmentId != null && command.Request.Sponsor.AttachmentFile.AttachmentFile != null)
                 {

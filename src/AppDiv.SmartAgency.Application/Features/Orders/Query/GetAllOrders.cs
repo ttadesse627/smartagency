@@ -10,10 +10,10 @@ public record GetAllOrders : IRequest<SearchModel<GetOrdersResponseDTO>>
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public string SearchTerm { get; set; } = string.Empty;
-    public string OrderBy { get; set; } = string.Empty;
+    public string? SearchTerm { get; set; } = string.Empty;
+    public string? OrderBy { get; set; } = string.Empty;
     public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-    public GetAllOrders(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
+    public GetAllOrders(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
@@ -69,11 +69,11 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
                             EmployeeName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName,
                             JobTitle = order.OrderCriteria?.JobTitle?.Value,
                             Salary = order.OrderCriteria?.Salary?.Value,
-                            TotalAmount = order.Payment.TotalAmount,
+                            TotalAmount = order.Payment!.TotalAmount,
                             PaidAmount = order.Payment.PaidAmount,
                             SponsorIdNumber = order.Sponsor?.IdNumber,
-                            SponsorFullName = order.Sponsor.FullName,
-                            PartnerName = order.Partner.PartnerName
+                            SponsorFullName = order.Sponsor!.FullName,
+                            PartnerName = order.Partner!.PartnerName
                         };
                         orderDTOs.Add(orderResp);
                         orderList.TotalCount += 1;
@@ -93,11 +93,11 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrders, SearchModel<Get
                         EmployeeName = null,
                         JobTitle = order.OrderCriteria?.JobTitle?.Value,
                         Salary = order.OrderCriteria?.Salary?.Value,
-                        TotalAmount = order.Payment.TotalAmount,
+                        TotalAmount = order.Payment!.TotalAmount,
                         PaidAmount = order.Payment.PaidAmount,
                         SponsorIdNumber = order.Sponsor?.IdNumber,
-                        SponsorFullName = order.Sponsor.FullName,
-                        PartnerName = order.Partner.PartnerName
+                        SponsorFullName = order.Sponsor!.FullName,
+                        PartnerName = order.Partner!.PartnerName
                     };
                     orderDTOs.Add(orderResp);
                 }

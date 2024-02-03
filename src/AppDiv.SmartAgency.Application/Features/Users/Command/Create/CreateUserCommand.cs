@@ -1,6 +1,5 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
@@ -10,25 +9,21 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
 {
-    public record CreateUserCommand(AddUserRequest request) : IRequest<ServiceResponse<int>> { }
+    public record CreateUserCommand(AddUserRequest Request) : IRequest<ServiceResponse<int>> { }
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ServiceResponse<int>>
+    public class CreateUserCommandHandler(IIdentityService identityService, IGroupRepository groupRepository) : IRequestHandler<CreateUserCommand, ServiceResponse<int>>
     {
-        private readonly IIdentityService _identityService;
-        private readonly IGroupRepository _groupRepository;
-        public CreateUserCommandHandler(IIdentityService identityService, IGroupRepository groupRepository)
-        {
-            _identityService = identityService;
-            _groupRepository = groupRepository;
-        }
+        private readonly IIdentityService _identityService = identityService;
+        private readonly IGroupRepository _groupRepository = groupRepository;
+
         public async Task<ServiceResponse<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
             var response = new ServiceResponse<int>();
-            var request = command.request;
+            var request = command.Request;
             if (request.Password != request.ConfirmationPassword)
             {
                 var msg = "The password doesn't match";
-                response.Errors.Add(msg);
+                response.Errors?.Add(msg);
                 throw new BadRequestException("The password doesn't match");
             }
 
@@ -49,19 +44,19 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
             }
             if (validationResult.IsValid)
             {
-                var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>(request);
-               
+                var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>((object)request);
+
                 mappedUser.Email = request.Address.Email;
                 if (request.UserGroups.Count > 0)
                 {
-                    var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
+                    var listGroup = await _groupRepository.GetMultipleUserGroups((ICollection<Guid>)request.UserGroups);
                     mappedUser.UserGroups = listGroup;
                 }
 
-                var createResponse = await _identityService.CreateUserAsync(mappedUser, request.Password);
+                var createResponse = await _identityService.CreateUserAsync(mappedUser, (string)request.Password);
                 if (!createResponse.Success)
                 {
-                    throw new BadRequestException($"could not create user \n{string.Join(",", createResponse.Errors)}");
+                    throw new BadRequestException($"could not create user \n{string.Join(",", createResponse.Errors!)}");
                 }
                 else
                 {

@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
 {
-    public class DeletePartnerCommand: IRequest<String>
+    public class DeletePartnerCommand(Guid Id) : IRequest<String>
     {
-        public Guid Id { get; private set; }
-
-        public DeletePartnerCommand(Guid Id)
-        {
-            this.Id = Id;
-        }
+        public Guid Id { get; private set; } = Id;
     }
 
-   
+
     // lookUp delete command handler with string response as output
     public class DeletePartnerCommmandHandler : IRequestHandler<DeletePartnerCommand, String>
     {
@@ -27,9 +18,9 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
 
         public DeletePartnerCommmandHandler(IPartnerRepository partnerRepository, IAddressRepository addressRepository, IFileService fileService)
         {
-             _fileService = fileService;
-            _partnerRepository= partnerRepository;
-            _addressRepository= addressRepository;
+            _fileService = fileService;
+            _partnerRepository = partnerRepository;
+            _addressRepository = addressRepository;
         }
 
         public async Task<string> Handle(DeletePartnerCommand request, CancellationToken cancellationToken)
@@ -37,16 +28,16 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
             try
             {
                 var partnerEntity = await _partnerRepository.GetByIdAsync(request.Id);
-                var AddressId=partnerEntity.AddressId; 
+                var AddressId = partnerEntity.AddressId;
                 await _partnerRepository.DeleteAsync(partnerEntity.Id);
-                await _addressRepository.DeleteAsync(AddressId);
-                 await _partnerRepository.SaveChangesAsync(cancellationToken);
-                  await _addressRepository.SaveChangesAsync(cancellationToken);
+                await _addressRepository.DeleteAsync(AddressId!);
+                await _partnerRepository.SaveChangesAsync(cancellationToken);
+                await _addressRepository.SaveChangesAsync(cancellationToken);
 
-        string fileName = request.Id.ToString() + "*"; // Replace "." with the actual file extension
-        var response = _fileService.DeleteFile(fileName, "PartnersHeaderLogo");
+                string fileName = request.Id.ToString() + "*"; // Replace "." with the actual file extension
+                var response = _fileService.DeleteFile(fileName, "PartnersHeaderLogo");
 
-  
+
 
             }
             catch (Exception exp)
@@ -58,5 +49,5 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
         }
     }
 }
- 
+
 

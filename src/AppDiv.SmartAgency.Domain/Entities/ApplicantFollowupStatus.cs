@@ -5,7 +5,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
 {
     public class ApplicantFollowupStatus : BaseAuditableEntity
     {
-        public string PassportNumber { get; set; }
+        public string PassportNumber { get; set; } = null!;
         public DateTime Month { get; set; }
         public string? Remark { get; set; }
 

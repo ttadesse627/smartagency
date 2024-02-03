@@ -7,15 +7,15 @@ using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Domain.Entities
 {
-    public class Deposit :BaseAuditableEntity
+    public class Deposit : BaseAuditableEntity
     {
-        public string PassportNumber{get; set;}
-        public double DepositAmount{get; set;}
-        public DateTime Month{get; set;}
-        public string DepositedBy{get; set;}
+        public string PassportNumber { get; set; } = null!;
+        public double DepositAmount { get; set; }
+        public DateTime Month { get; set; }
+        public string? DepositedBy { get; set; }
 
-        public Guid ApplicantId{get; set;}
-        public Applicant? Applicant{get; set;}
+        public Guid ApplicantId { get; set; }
+        public Applicant? Applicant { get; set; }
 
     }
 }

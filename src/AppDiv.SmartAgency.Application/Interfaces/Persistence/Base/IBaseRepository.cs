@@ -28,7 +28,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
         Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
         Task<List<T>> GetAllWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
 
-        Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
+        Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
         Task<T> GetAsync(object id);
         Task<T> GetAsync(object[] id);
         T GetAtIndex(int i);

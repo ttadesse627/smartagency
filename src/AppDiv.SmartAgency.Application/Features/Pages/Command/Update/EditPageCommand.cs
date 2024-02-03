@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PageDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
@@ -13,10 +9,10 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Command.Update
     public class EditPageCommand : IRequest<PageResponseDTO>
     {
         public Guid Id { get; set; }
-        public string Category { get; set; }
-        public string Link { get; set; }
-        public string Title { get; set; }
-        public string PageContent { get; set; }
+        public string? Category { get; set; }
+        public string? Link { get; set; }
+        public string? Title { get; set; }
+        public string? PageContent { get; set; }
 
 
 

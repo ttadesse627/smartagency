@@ -7,20 +7,10 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Processes.Query;
 public class GetProcessQuery : IRequest<ResponseContainerDTO<List<GetProcessResponseDTO>>> { }
-public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseContainerDTO<List<GetProcessResponseDTO>>>
+public class GetProcessQueryHandler(IProcessRepository processRepository) : IRequestHandler<GetProcessQuery, ResponseContainerDTO<List<GetProcessResponseDTO>>>
 {
-    private readonly IProcessRepository _processRepository;
-    private readonly IProcessDefinitionRepository _processDefRepository;
-    private readonly IApplicantRepository _applicantRepository;
-    private readonly IApplicantProcessRepository _applicantProcessRepository;
-    public GetProcessQueryHandler(IProcessRepository processRepository, IApplicantProcessRepository applicantProcessRepository,
-    IProcessDefinitionRepository processDefRepository, IApplicantRepository applicantRepository)
-    {
-        _processRepository = processRepository;
-        _processDefRepository = processDefRepository;
-        _applicantProcessRepository = applicantProcessRepository;
-        _applicantRepository = applicantRepository;
-    }
+    private readonly IProcessRepository _processRepository = processRepository;
+
     public async Task<ResponseContainerDTO<List<GetProcessResponseDTO>>> Handle(GetProcessQuery query, CancellationToken cancellationToken)
     {
         var response = new ResponseContainerDTO<List<GetProcessResponseDTO>>();
@@ -29,7 +19,7 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
 
         var processes = await _processRepository.GetAllWithPredicateAsync(process => !process.Id.Equals(Guid.Parse("60209c9d-47b4-497b-8abd-94a753814a86")), "Country");
 
-        if (processes.Any())
+        if (processes.Count != 0)
         {
             foreach (var process in processes)
             {
@@ -42,7 +32,7 @@ public class GetProcessQueryHandler : IRequestHandler<GetProcessQuery, ResponseC
                     IsVisaRequired = process.VisaRequired,
                     EnjazRequired = process.EnjazRequired
                 };
-                processRespList.Add(processResponse);
+                processRespList!.Add(processResponse);
                 if (processRespList != null && processRespList.Count > 0)
                 {
                     _ = processRespList.OrderBy(p => p.Step); // Change this to .Sort() to preserve performance.

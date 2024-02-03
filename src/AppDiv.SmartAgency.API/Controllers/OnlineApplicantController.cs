@@ -22,7 +22,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(OnlineApplicantRequest onlineApplicantRequest, CancellationToken token)
+        public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(OnlineApplicantRequest onlineApplicantRequest, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new CreateOnlineApplicantCommand(onlineApplicantRequest));
             return Ok(response);
@@ -41,33 +41,33 @@ namespace AppDiv.SmartAgency.API.Controllers
             return await _mediator.Send(new GetOnlineApplicantByIdQuery(id));
         }
 
-      /*  [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeleteOnlineApplicant(Guid id)
+        /*  [HttpDelete("Delete/{id}")]
+          public async Task<ActionResult> DeleteOnlineApplicant(Guid id)
+          {
+              try
+              {
+                  string result = string.Empty;
+                  result = await _mediator.Send(new DeleteOnlineApplicantCommand(id));
+                  return Ok(result);
+              }
+              catch (Exception exp)
+              {
+                  return BadRequest(exp.Message);
+              }
+          }*/
+
+        [HttpDelete("Delete")]
+        public async Task<ActionResult> DeleteOnlineApplicants([FromQuery] List<Guid> ids)
         {
+
             try
             {
                 string result = string.Empty;
-                result = await _mediator.Send(new DeleteOnlineApplicantCommand(id));
+                result = await _mediator.Send(new DeleteOnlineApplicantCommand(ids));
                 return Ok(result);
+
             }
             catch (Exception exp)
-            {
-                return BadRequest(exp.Message);
-            }
-        }*/
-
-       [HttpDelete("Delete")]
-        public async Task<ActionResult> DeleteOnlineApplicants([FromQuery]List<Guid> ids)
-        {
-
-            try
-            {
-                string result = string.Empty;
-                result= await _mediator.Send(new DeleteOnlineApplicantCommand(ids));
-                return Ok(result);
-            
-            }
-            catch( Exception exp)
             {
                 return BadRequest(exp.Message);
             }

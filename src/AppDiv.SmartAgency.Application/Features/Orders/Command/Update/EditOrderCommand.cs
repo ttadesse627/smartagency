@@ -68,27 +68,30 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                     // save order attachment
                     var orderFile = editOrderRequest.AttachmentFile.AttachmentFile;
                     var orderAttachmentName = await _attachmentRepository.GetAsync(editOrderRequest.AttachmentFile?.AttachmentId!);
-                    var orderFolderName = Path.Combine("Resources", orderAttachmentName.Title);
-                    var orderPathToSave = Path.Combine(Directory.GetCurrentDirectory(), orderFolderName);
-                    var orderFileName = orderEntity.Id.ToString();
-                    if (!string.IsNullOrEmpty(orderFile))
+                    if (orderAttachmentName != null)
                     {
-                        orderFileSaved = await _fileService.UploadBase64FileAsync(orderFile, orderFileName, orderPathToSave, FileMode.Create);
-                        if (orderFileSaved == true)
+                        var orderFolderName = Path.Combine("Resources", orderAttachmentName.Title!);
+                        var orderPathToSave = Path.Combine(Directory.GetCurrentDirectory(), orderFolderName);
+                        var orderFileName = orderEntity.Id.ToString();
+                        if (!string.IsNullOrEmpty(orderFile))
                         {
-                            response.Errors?.Add("Couldn't save order attachment.");
+                            orderFileSaved = await _fileService.UploadBase64FileAsync(orderFile, orderFileName, orderPathToSave, FileMode.Create);
+                            if (orderFileSaved == true)
+                            {
+                                response.Errors?.Add("Couldn't save order attachment.");
+                            }
                         }
                     }
                 }
 
-                if (editOrderRequest.Sponsor?.AttachmentFile != null)
+                if (editOrderRequest.Sponsor != null && editOrderRequest.Sponsor?.AttachmentFile != null)
                 {
                     // save sponsor attachment
                     var sponsorFile = editOrderRequest.Sponsor?.AttachmentFile?.AttachmentFile;
                     var sponsorAttachmentName = await _attachmentRepository.GetAsync(editOrderRequest.AttachmentFile?.AttachmentId!);
                     var sponsorFolderName = Path.Combine("Resources", sponsorAttachmentName.Title!);
                     var sponsorPathToSave = Path.Combine(Directory.GetCurrentDirectory(), sponsorFolderName);
-                    var sponsoFileName = orderEntity.Sponsor?.Id.ToString();
+                    var sponsoFileName = orderEntity.Sponsor!.Id.ToString();
                     if (!string.IsNullOrEmpty(sponsorFile))
                     {
                         orderFileSaved = await _fileService.UploadBase64FileAsync(sponsorFile, sponsoFileName, sponsorPathToSave, FileMode.Create);

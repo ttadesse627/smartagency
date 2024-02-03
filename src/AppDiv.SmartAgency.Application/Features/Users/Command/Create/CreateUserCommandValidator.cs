@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces;
 using FluentValidation;
 
@@ -12,8 +8,8 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
         private readonly IIdentityService _repo;
         public CreateUserCommandValidator(IIdentityService repo)
         {
-            this._repo = repo;
-            RuleFor(u => u.request.UserName)
+            _repo = repo;
+            RuleFor(u => u.Request.UserName)
             .NotNull()
             .NotEmpty()
             .MustAsync(BeUniqueUsername).WithMessage("userName already exists ")

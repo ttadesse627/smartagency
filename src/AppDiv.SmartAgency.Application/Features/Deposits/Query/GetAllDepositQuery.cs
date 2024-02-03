@@ -16,10 +16,10 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
 
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string SearchTerm { get; set; } = string.Empty;
-        public string OrderBy { get; set; } = string.Empty;
+        public string? SearchTerm { get; set; } = string.Empty;
+        public string? OrderBy { get; set; } = string.Empty;
         public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-        public GetAllDepositQuery(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
+        public GetAllDepositQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;

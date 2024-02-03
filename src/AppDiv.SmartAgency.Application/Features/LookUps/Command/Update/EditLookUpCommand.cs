@@ -10,8 +10,8 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
     public record EditLookUpCommand : IRequest<ServiceResponse<Int32>>
     {
         public Guid Id { get; set; }
-        public string Category { get; set; }
-        public string Value { get; set; }
+        public string? Category { get; set; }
+        public string? Value { get; set; }
     }
 
 
