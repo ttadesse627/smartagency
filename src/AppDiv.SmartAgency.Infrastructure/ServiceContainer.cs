@@ -9,7 +9,6 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
-using Microsoft.AspNetCore.Http;
 using AppDiv.SmartAgency.Utility.Config;
 
 namespace AppDiv.SmartAgency.Infrastructure
@@ -67,7 +66,6 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ILookUpRepository, LookUpRepository>();
             services.AddTransient<IPartnerRepository, PartnerRepository>();
             services.AddTransient<IApplicantRepository, ApplicantRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IOnlineApplicantRepository, OnlineApplicantRepository>();
             services.AddTransient<IDepositRepository, DepositRepository>();
@@ -96,7 +94,6 @@ namespace AppDiv.SmartAgency.Infrastructure
 
 
             services.AddSingleton<IMailService, MailKitService>();
-            // services.AddSingleton<ISmsService, TwilioService>();
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IReportsRepository, ReportsRepository>();

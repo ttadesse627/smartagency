@@ -29,6 +29,10 @@ namespace AppDiv.SmartAgency.API.Controllers
         public async Task<ActionResult<ServiceResponse<int>>> CreateLookUp(CreateLookUpRequest lookUpRequest, CancellationToken token)
         {
             var response = await _mediator.Send(new CreateLookUpCommand(lookUpRequest));
+            if (response.Errors?.Count != 0 || !response.Success)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 
@@ -75,6 +79,8 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 if (command.Id == id)
                 {
+                    Console.WriteLine("url id: " + id);
+                    Console.WriteLine("body id: " + command.Id);
                     var result = await _mediator.Send(command);
                     return Ok(result);
                 }

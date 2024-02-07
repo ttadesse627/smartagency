@@ -13,7 +13,12 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
         public CreateLookUpCommandValidator(ILookUpRepository repo)
         {
             _repo = repo;
-            RuleFor(p => p.lookUp.Value)
+            RuleFor(p => p.LookUp.Category.Trim())
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull()
+                .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
+
+            RuleFor(p => p.LookUp.Value.Trim())
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
