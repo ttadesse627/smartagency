@@ -1,6 +1,4 @@
-﻿
-using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Entities.Base;
+﻿using AppDiv.SmartAgency.Domain.Entities.Base;
 using Microsoft.AspNetCore.Identity;
 
 namespace AppDiv.SmartAgency.Domain.Entities

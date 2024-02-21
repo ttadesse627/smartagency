@@ -3,7 +3,6 @@ using AppDiv.SmartAgency.Application.Contracts.Request.LookUps;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
@@ -26,7 +25,9 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
             {
                 createLookUpCommandResponse.Errors = [];
                 foreach (var error in validationResult.Errors)
+                {
                     createLookUpCommandResponse.Errors.Add(error.ErrorMessage);
+                }
                 createLookUpCommandResponse.Message = createLookUpCommandResponse.Errors[0];
             }
             if (validationResult.IsValid)
@@ -51,6 +52,8 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
                 createLookUpCommandResponse.Success = false;
                 createLookUpCommandResponse.Errors?.AddRange((IEnumerable<string>)validationResult.Errors);
             }
+
+
             return createLookUpCommandResponse;
         }
     }

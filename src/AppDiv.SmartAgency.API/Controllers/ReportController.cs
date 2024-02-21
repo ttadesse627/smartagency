@@ -1,5 +1,6 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.ReportRequests;
+using AppDiv.SmartAgency.Application.Features.Reports.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Reports.Query;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
@@ -22,26 +23,20 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-reports")]
-        public async Task<ActionResult<JObject>> getReports()
+        public async Task<ActionResult<JObject>> GetReports()
         {
             return Ok(await _reportRepository.GetReports());
         }
 
-        // [HttpPost("create-report")]
-        // public async Task<ActionResult<ServiceResponse<Int32>>> CreateAsync(string reportName, string reportType, ReportsQueryRequest query)
-        // {
-        //     var result = await _mediator.Send(new CreateReportCmd(reportName, reportType, query));
-        //     return Ok(result);
-        // }
         [HttpPost("create")]
-        public async Task<ActionResult<ServiceResponse<Int32>>> CreateReportAsync([FromBody] CreateReportRequest createReport)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateReportAsync([FromBody] CreateReportRequest createReport)
         {
             var result = await _mediator.Send(new CreateReportCommand(createReport.ReportName, createReport.ReportQuery));
             return Ok(result);
         }
 
         [HttpPost("get/{reportName}")]
-        public async Task<ActionResult<JObject>> getDaynamicViewData(string reportName, ReportsQueryRequest? query = null)
+        public async Task<ActionResult<JObject>> GetDaynamicViewData(string reportName, ReportsQueryRequest? query = null)
         {
             var response = new JObject();
             if (!string.IsNullOrEmpty(reportName) || !string.IsNullOrWhiteSpace(reportName))

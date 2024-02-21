@@ -1,5 +1,3 @@
-
-
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.LookUpDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.LookUps;
@@ -29,7 +27,7 @@ namespace AppDiv.SmartAgency.API.Controllers
         public async Task<ActionResult<ServiceResponse<int>>> CreateLookUp(CreateLookUpRequest lookUpRequest, CancellationToken token)
         {
             var response = await _mediator.Send(new CreateLookUpCommand(lookUpRequest));
-            if (response.Errors?.Count != 0 || !response.Success)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

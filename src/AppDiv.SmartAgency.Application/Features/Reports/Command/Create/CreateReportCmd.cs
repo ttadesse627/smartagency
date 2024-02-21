@@ -6,13 +6,10 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using MediatR;
 
 public record CreateReportCmd(string ReportName, string ReportType, ReportsQueryRequest query) : IRequest<ServiceResponse<Int32>> { }
-public class CreateReportCmdHandler : IRequestHandler<CreateReportCmd, ServiceResponse<Int32>>
+public class CreateReportCmdHandler(IReportsRepository reportsRepository) : IRequestHandler<CreateReportCmd, ServiceResponse<Int32>>
 {
-    private readonly IReportsRepository _reportRepository;
-    public CreateReportCmdHandler(IReportsRepository reportsRepository)
-    {
-        _reportRepository = reportsRepository;
-    }
+    private readonly IReportsRepository _reportRepository = reportsRepository;
+
     public async Task<ServiceResponse<Int32>> Handle(CreateReportCmd command, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<Int32>();

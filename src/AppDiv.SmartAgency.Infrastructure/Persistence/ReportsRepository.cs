@@ -330,7 +330,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return response;
         }
-        
+
         // The Last Implementation to applied
         public async Task<ServiceResponse<Int32>> CreateReportAsync(string reportName, string query)
         {
