@@ -33,12 +33,13 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
     {
         var expLoadedProps = new string[] { "MaritalStatus", "Religion", "BrokerName" };
         var applicantList = await _applicantRepository.GetAllWithSearchAsync(
-            request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection,
-            null, expLoadedProps);
+            request.SearchTerm, null, expLoadedProps);
+
+        var paginatedApplicants = await _applicantRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, applicantList, request.OrderBy);
 
         var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
         var itemsArray = response.Items.ToArray();
-        var entitiesArray = applicantList.Items.ToArray();
+        var entitiesArray = paginatedApplicants.Items.ToArray();
         for (var i = 0; i < itemsArray.Length; i++)
         {
             for (var j = 0; j < entitiesArray.Length; j++)
@@ -55,14 +56,14 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
             }
         }
         response.Items = itemsArray.AsEnumerable();
-        response.CurrentPage = applicantList.CurrentPage;
-        response.Filters = applicantList.Filters;
-        response.MaxPage = applicantList.MaxPage;
-        response.PagingSize = applicantList.PagingSize;
-        response.SearchKeyWord = applicantList.SearchKeyWord;
-        response.SortingDirection = applicantList.SortingDirection;
-        response.SortingColumn = applicantList.SortingColumn;
-        response.TotalCount = applicantList.TotalCount;
+        response.CurrentPage = paginatedApplicants.CurrentPage;
+        response.Filters = paginatedApplicants.Filters;
+        response.MaxPage = paginatedApplicants.MaxPage;
+        response.PagingSize = paginatedApplicants.PagingSize;
+        response.SearchKeyWord = paginatedApplicants.SearchKeyWord;
+        response.SortingDirection = paginatedApplicants.SortingDirection;
+        response.SortingColumn = paginatedApplicants.SortingColumn;
+        response.TotalCount = paginatedApplicants.TotalCount;
 
         return response;
     }

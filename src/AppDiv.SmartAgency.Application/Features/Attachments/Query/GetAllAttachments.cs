@@ -3,7 +3,6 @@ using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
-using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 
 namespace AppDiv.SmartAgency.Application.Features.Attachments.Query
@@ -38,8 +37,9 @@ namespace AppDiv.SmartAgency.Application.Features.Attachments.Query
         }
         public async Task<SearchModel<AttachmentResponseDTO>> Handle(GetAllAttachments request, CancellationToken cancellationToken)
         {
-            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null);
-            var attachmentResponse = CustomMapper.Mapper.Map<SearchModel<AttachmentResponseDTO>>(attachmentList);
+            var attachmentList = await _attachmentRepository.GetAllWithSearchAsync(request.SearchTerm!);
+            var paginatedUsers = await _attachmentRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, attachmentList, request.OrderBy);
+            var attachmentResponse = CustomMapper.Mapper.Map<SearchModel<AttachmentResponseDTO>>(paginatedUsers);
             return attachmentResponse;
         }
     }

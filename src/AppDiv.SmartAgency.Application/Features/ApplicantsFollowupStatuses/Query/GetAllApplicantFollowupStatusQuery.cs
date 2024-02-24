@@ -43,11 +43,10 @@ namespace AppDiv.SmartAgency.Application.Features.ApplicantsFollowupStatuses.Que
         }
         public async Task<SearchModel<ApplicantFollowupStatusResponseDTO>> Handle(GetAllApplicantFollowupStatusQuery request, CancellationToken cancellationToken)
         {
-            var followupList = await _applicantFollowupStatusRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Applicant", "FollowupStatus");
-            var followupResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantFollowupStatusResponseDTO>>(followupList);
+            var followupList = await _applicantFollowupStatusRepository.GetAllWithSearchAsync(request.SearchTerm!);
+            var paginatedFollowup = await _applicantFollowupStatusRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, followupList, request.OrderBy);
+            var followupResponse = CustomMapper.Mapper.Map<SearchModel<ApplicantFollowupStatusResponseDTO>>(paginatedFollowup);
             return followupResponse;
-
-            // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
     }
 }

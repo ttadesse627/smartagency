@@ -12,7 +12,7 @@ using System.Linq.Dynamic.Core;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T>(SmartAgencyDbContext dbContext) : IBaseRepository<T> where T : class
     {
         private static readonly MethodInfo OrderByAscMethod = typeof(Queryable).GetMethods()
             .Where(method => method.Name == "OrderBy")
@@ -24,17 +24,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             .Where(method => method.GetParameters().Length == 2)
             .Single();
 
-        private readonly SmartAgencyDbContext _dbContext;
-        public BaseRepository(SmartAgencyDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        private readonly SmartAgencyDbContext _dbContext = dbContext;
 
         #region We also added this methods to be shared accross multiple entities, models and any other area
-        public virtual async Task<SearchModel<T>> GetAllWithSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        public virtual async Task<IQueryable<T>> GetAllWithSearchAsync(string? searchTerm = "", Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
-            long maxPage = 1, totalItems = 0;
-
             var parameter = Expression.Parameter(typeof(T), "x");
             var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
 
@@ -47,7 +41,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 var propertyExpr = Expression.Property(parameter, prop);
                 var containsExpr = Expression.Call(
                                         propertyExpr,
-                                        typeof(string).GetMethod("Contains", new[] { typeof(string) })!,
+                                        typeof(string).GetMethod("Contains", [typeof(string)])!,
                                         Expression.Constant(searchTerm));
 
                 var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
@@ -65,7 +59,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             {
                 list = list.Include(nav_property);
             }
-            totalItems = list.LongCount();
+
+            return list;
+        }
+        public virtual async Task<SearchModel<T>> PaginateItems(int pageNumber, int pageSize, string orderBy, SortingDirection sortingDirection, IQueryable<T> items)
+        {
+            long maxPage = 1;
+
+            long totalItems = items.LongCount();
             if (totalItems > 0)
             {
                 maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
@@ -75,28 +76,26 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 }
             }
 
-
             // Sorting
             if (!string.IsNullOrEmpty(orderBy))
             {
                 var orderExpression = $"{orderBy} {(sortingDirection == SortingDirection.Ascending ? "ascending" : "descending")}";
-                list = list.OrderBy(orderExpression);
+                items = items.OrderBy(orderExpression);
 
             }
 
             // Pagination
             var skipAmount = (pageNumber - 1) * pageSize;
-            list = list.Skip(skipAmount).Take(pageSize);
+            items = items.Skip(skipAmount).Take(pageSize);
 
-            var result = await list.ToListAsync();
+            var result = await items.ToListAsync();
             return new SearchModel<T>
             {
                 CurrentPage = pageNumber,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Items = list,
+                Items = result,
                 TotalCount = totalItems,
-                SearchKeyWord = searchTerm,
                 SortingColumn = orderBy,
                 SortingDirection = sortingDirection
             };

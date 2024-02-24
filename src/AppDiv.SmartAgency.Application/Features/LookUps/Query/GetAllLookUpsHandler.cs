@@ -23,9 +23,9 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Query
         }
         public async Task<SearchModel<LookUpResponseDTO>> Handle(GetAllLookUps request, CancellationToken cancellationToken)
         {
-
-            var lookUpList = await _lookUpRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, lk => lk.CreatedBy == "00000000-0000-0000-0000-000000000000");
-            var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<LookUpResponseDTO>>(lookUpList);
+            var attachmentList = await _lookUpRepository.GetAllWithSearchAsync(request.SearchTerm!, lk => lk.CreatedBy == Guid.Empty.ToString());
+            var paginatedLookup = await _lookUpRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, attachmentList, request.OrderBy);
+            var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<LookUpResponseDTO>>(paginatedLookup);
 
             return paginatedListResp;
         }

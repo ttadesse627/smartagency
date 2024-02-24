@@ -36,12 +36,13 @@ namespace AppDiv.SmartAgency.Application.Features.Enjazs.Query
         }
         public async Task<SearchModel<EnjazResponseDTO>> Handle(GetAllEnjazsQuery request, CancellationToken cancellationToken)
         {
-            var enjazsList = await _applicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, applicant => applicant.Enjaz != null && applicant.OrderId != null, "Enjaz", "Order", "Order.Sponsor");
+            var enjazsList = await _applicantRepository.GetAllWithSearchAsync(request.SearchTerm!, applicant => applicant.Enjaz != null && applicant.OrderId != null, "Enjaz", "Order", "Order.Sponsor");
+            var paginatedEnjazs = await _applicantRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, enjazsList, request.OrderBy);
             var enjazResponse = new SearchModel<EnjazResponseDTO>();
             var enjazRespList = new List<EnjazResponseDTO>();
-            if (enjazsList != null && enjazsList.Items.Any())
+            if (paginatedEnjazs != null && paginatedEnjazs.Items.Any())
             {
-                foreach (var applicant in enjazsList.Items)
+                foreach (var applicant in paginatedEnjazs.Items)
                 {
                     if (applicant.Enjaz != null)
                     {

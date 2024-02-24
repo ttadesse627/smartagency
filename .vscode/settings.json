@@ -12,7 +12,8 @@
       "driver": "MySQL",
       "name": "DotNetCoreApiConnection",
       "database": "smartagency",
-      "username": "root"
+      "username": "root",
+      "askForPassword": true
     }
   ]
 }

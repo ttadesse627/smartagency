@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
@@ -42,9 +38,12 @@ public class GetAllOnlineApplicantHandler : IRequestHandler<GetAllOnlineApplican
     public async Task<SearchModel<OnlineApplicantResponseDTO>> Handle(GetAllOnlineApplicantQuery request, CancellationToken cancellationToken)
     {
 
-        // var explLoaded = new string[] { "MaritalStatus", "DesiredCountry", "Experience" };
-        var onlineApplicantList = await _onlineApplicantRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "MaritalStatus", "DesiredCountry", "Experience");
-        var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<OnlineApplicantResponseDTO>>(onlineApplicantList);
+        var onlineApplicantList = await _onlineApplicantRepository.GetAllWithSearchAsync
+                            (
+                                request.SearchTerm!, null, ["MaritalStatus", "DesiredCountry", "Experience"]
+                            );
+        var paginatedOnlineApplicants = await _onlineApplicantRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, onlineApplicantList, request.OrderBy);
+        var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<OnlineApplicantResponseDTO>>(paginatedOnlineApplicants);
         return paginatedListResp;
     }
 }

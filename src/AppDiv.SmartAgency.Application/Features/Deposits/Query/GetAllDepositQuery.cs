@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
@@ -42,11 +38,10 @@ namespace AppDiv.SmartAgency.Application.Features.Deposits.Query
         }
         public async Task<SearchModel<DepositResponseDTO>> Handle(GetAllDepositQuery request, CancellationToken cancellationToken)
         {
-            var depositList = await _depositRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Applicant");
-            var depositResponse = CustomMapper.Mapper.Map<SearchModel<DepositResponseDTO>>(depositList);
+            var depositList = await _depositRepository.GetAllWithSearchAsync(request.SearchTerm!, null, "Applicant");
+            var paginatedDeposit = await _depositRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, depositList, request.OrderBy);
+            var depositResponse = CustomMapper.Mapper.Map<SearchModel<DepositResponseDTO>>(paginatedDeposit);
             return depositResponse;
-
-            // return (List<Customer>)await _customerQueryRepository.GetAllAsync();
         }
     }
 }

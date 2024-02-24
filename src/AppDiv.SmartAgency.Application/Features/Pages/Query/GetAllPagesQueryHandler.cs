@@ -12,8 +12,6 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Query
 {
     public class GetAllPagesQueryHandler : IRequestHandler<GetAllPagesQuery, SearchModel<PageResponseDTO>>
     {
-        // private readonly ISmartAgencyDbContext _context;
-        // private readonly IMapper _mapper;
         private readonly IPageRepository _pageRepository;
 
         public GetAllPagesQueryHandler(IPageRepository pageRepository)
@@ -22,9 +20,9 @@ namespace AppDiv.SmartAgency.Application.Features.Pages.Query
         }
         public async Task<SearchModel<PageResponseDTO>> Handle(GetAllPagesQuery request, CancellationToken cancellationToken)
         {
-
-            var pageList = await _pageRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection);
-            var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<PageResponseDTO>>(pageList);
+            var pageList = await _pageRepository.GetAllWithSearchAsync(request.SearchTerm!);
+            var paginatedPages = await _pageRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, pageList, request.OrderBy);
+            var paginatedListResp = CustomMapper.Mapper.Map<SearchModel<PageResponseDTO>>(paginatedPages);
 
             return paginatedListResp;
         }

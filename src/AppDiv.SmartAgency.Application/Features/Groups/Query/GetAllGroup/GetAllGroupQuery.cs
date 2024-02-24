@@ -8,7 +8,6 @@ using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
 
 {
-    // Customer query with List<Customer> response
     public class GetAllGroupQuery : IRequest<SearchModel<FetchGroupDTO>>
     {
         public int PageNumber { get; set; }
@@ -37,10 +36,9 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
         }
         public async Task<SearchModel<FetchGroupDTO>> Handle(GetAllGroupQuery request, CancellationToken cancellationToken)
         {
-
-            var groups = await _groupRepository.GetAllWithSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, gr => gr.Id != null);
-
-            var groupResponse = CustomMapper.Mapper.Map<SearchModel<FetchGroupDTO>>(groups);
+            var userGroups = await _groupRepository.GetAllWithSearchAsync(request.SearchTerm!, gr => gr.Id != null);
+            var paginatedUsers = await _groupRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, userGroups, request.OrderBy);
+            var groupResponse = CustomMapper.Mapper.Map<SearchModel<FetchGroupDTO>>(paginatedUsers);
             return groupResponse;
         }
     }
