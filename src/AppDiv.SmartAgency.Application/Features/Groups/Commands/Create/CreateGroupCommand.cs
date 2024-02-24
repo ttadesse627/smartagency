@@ -1,10 +1,8 @@
 
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
 {
@@ -46,14 +44,14 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
                 var result = await _groupRepository.SaveChangesAsync(cancellationToken);
                 if (result)
                 {
-                    response.Data= Convert.ToInt32(result);
+                    response.Data = Convert.ToInt32(result);
                     response.Success = true;
                     response.Message = "Created Successfully!";
                 }
             }
             catch (Exception ex)
             {
-                response.Data=0;
+                response.Data = 0;
                 response.Errors?.Add(ex.Message);
                 //throw new BadRequestException(ex.Message);
             }

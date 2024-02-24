@@ -1,5 +1,3 @@
-
-
 using AppDiv.SmartAgency.API.Middleware;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
@@ -24,7 +22,7 @@ namespace AppDiv.SmartAgency.API.Controllers;
 // [Authorize(JwtBearerDefaults.AuthenticationScheme)]
 
 [ApiController]
-[Route("api/applicant")]
+[Route("api/[controller]")]
 
 //[AllowAnonymousAttribute]
 public class ApplicantController : ApiControllerBase
@@ -33,7 +31,7 @@ public class ApplicantController : ApiControllerBase
     [HttpPost("create")]
 
     [RoleBasedAuthorizationMetadata("Applicant", "CanAdd")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> CreateApplicant(CreateApplicantRequest request)
+    public async Task<ActionResult<ServiceResponse<int>>> CreateApplicant(CreateApplicantRequest request)
     {
         var response = await Mediator.Send(new CreateApplicantCommand(request));
         return Ok(response);
@@ -57,7 +55,7 @@ public class ApplicantController : ApiControllerBase
     [HttpDelete("delete/{id}")]
 
     [RoleBasedAuthorizationMetadata("Applicant", "CanDelete")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> DeleteApplicant(Guid id)
+    public async Task<ActionResult<ServiceResponse<int>>> DeleteApplicant(Guid id)
     {
         try
         {

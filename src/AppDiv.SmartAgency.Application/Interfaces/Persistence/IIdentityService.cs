@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
+﻿using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces

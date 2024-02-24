@@ -1,7 +1,7 @@
-﻿using AppDiv.CRVS.Application.Interfaces.Persistence.Settings;
-using AppDiv.CRVS.Domain.Entities.Settings;
+﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence.Settings;
+using AppDiv.SmartAgency.Domain.Entities.Settings;
 
-namespace AppDiv.CRVS.Test.FakeData
+namespace AppDiv.SmartAgency.Test.FakeData
 {
     public class FakeSuffixData
     {

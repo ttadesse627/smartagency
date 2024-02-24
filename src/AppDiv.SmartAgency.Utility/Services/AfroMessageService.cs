@@ -34,7 +34,7 @@ public class AfroMessageService : ISmsService
             otpCode = decodedData?.response.code;
 
         }
-        return otpCode;
+        return otpCode!;
     }
     public async Task SendSMS(string to, string message)
     {
@@ -57,7 +57,7 @@ public class AfroMessageService : ISmsService
                 request.Headers.Add("Authorization", $"Bearer {_config.Token}");
                 var response = await client.SendAsync(request);
                 // Ensure the response was successful
-                // response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
             }
 

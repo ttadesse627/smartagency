@@ -10,6 +10,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
 		<PackageReference Include="MimeKit" Version="3.4.3" />
+		<PackageReference Include="Twilio" Version="7.0.0-rc.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 </Project>

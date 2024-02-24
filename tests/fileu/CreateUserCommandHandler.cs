@@ -1,18 +1,18 @@
 using System.Linq;
 using System.Net.Cache;
-using AppDiv.CRVS.Application.Exceptions;
-using AppDiv.CRVS.Application.Interfaces;
-using AppDiv.CRVS.Application.Interfaces.Persistence;
-using AppDiv.CRVS.Application.Mapper;
-using AppDiv.CRVS.Domain;
-using AppDiv.CRVS.Domain.Entities;
-using AppDiv.CRVS.Domain.Repositories;
-using AppDiv.CRVS.Utility.Config;
-using AppDiv.CRVS.Utility.Services;
+using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Application.Interfaces;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
+using AppDiv.SmartAgency.Domain;
+using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Domain.Repositories;
+using AppDiv.SmartAgency.Utility.Config;
+using AppDiv.SmartAgency.Utility.Services;
 using MediatR;
 using Microsoft.Extensions.Options;
 
-namespace AppDiv.CRVS.Application.Features.User.Command.Create
+namespace AppDiv.SmartAgency.Application.Features.User.Command.Create
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResponse>
     {
@@ -58,18 +58,18 @@ namespace AppDiv.CRVS.Application.Features.User.Command.Create
             }
             if (CreateUserCommadResponse.Success)
             {
-           
+
                 var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
 
-              
-                var user =  CustomMapper.Mapper.Map<ApplicationUser>(request);
+
+                var user = CustomMapper.Mapper.Map<ApplicationUser>(request);
                 user.PhoneNumber = user.PersonalInfo.ContactInfo.Phone;
                 user.UserGroups = listGroup;
 
                 var response = await _identityService.createUser(user);
                 if (!response.result.Succeeded)
                 {
-                    throw new BadRequestException($"could not create user \n{string.Join(",",response.result.Errors)}");
+                    throw new BadRequestException($"could not create user \n{string.Join(",", response.result.Errors)}");
                 }
 
                 // save profile image
@@ -77,20 +77,21 @@ namespace AppDiv.CRVS.Application.Features.User.Command.Create
                 var folderName = Path.Combine("Resources", "UserProfiles");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 var fileName = response.id;
-                if(!string.IsNullOrEmpty(file)){
+                if (!string.IsNullOrEmpty(file))
+                {
 
-                await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
+                    await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
                 }
 
                 //send password by email    
                 var content = response.password + "  is your default password you can login and change it";
-                var subject = "Welcome to OCRVS";
+                var subject = "Welcome to OSmartAgency";
                 await _mailService.SendAsync(body: content, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: user.Email, cancellationToken);
 
                 //send password by phone 
-                await _smsService.SendSMS(user.PhoneNumber , subject +"\n"+content);
-            
-            
+                await _smsService.SendSMS(user.PhoneNumber, subject + "\n" + content);
+
+
             }
             return CreateUserCommadResponse;
         }

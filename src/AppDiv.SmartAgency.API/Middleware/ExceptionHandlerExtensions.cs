@@ -1,4 +1,4 @@
-﻿namespace AppDiv.SmartAgency.Api.Middleware
+﻿namespace AppDiv.SmartAgency.API.Middleware
 {
     public static class ExceptionHandlerExtensions
     {

@@ -5,10 +5,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using System.Security.Authentication;
-using AppDiv.SmartAgency.Utility.Contracts;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.RoleDTOs;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Text;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 

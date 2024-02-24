@@ -222,18 +222,18 @@ public async Task<ActionResult> create([FromBody] CreateCompanyCommand command)
 
 ### 1.
 
-using AppDiv.CRVS.Application.Exceptions;
-using AppDiv.CRVS.Application.Contracts.DTOs;
+using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using MediatR;
-using AppDiv.CRVS.Application.Interfaces;
+using AppDiv.SmartAgency.Application.Interfaces;
 using Microsoft.Extensions.Logging;
-using AppDiv.CRVS.Domain.Repositories;
-using AppDiv.CRVS.Utility.Contracts;
-using AppDiv.CRVS.Domain;
-using AppDiv.CRVS.Application.Interfaces.Persistence;
-using AppDiv.CRVS.Domain.Entities;
+using AppDiv.SmartAgency.Domain.Repositories;
+using AppDiv.SmartAgency.Utility.Contracts;
+using AppDiv.SmartAgency.Domain;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using AppDiv.CRVS.Application.Common;
+using AppDiv.SmartAgency.Application.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
@@ -245,7 +245,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Primitives;
-namespace AppDiv.CRVS.Application.Features.Auth.Login
+namespace AppDiv.SmartAgency.Application.Features.Auth.Login
 {
 public class LogoutCommand : IRequest<BaseResponse>
 {
@@ -308,21 +308,21 @@ return res;
 ### 2.
 
 <
-<using AppDiv.CRVS.API.Helpers;
-using AppDiv.CRVS.Application;
+<using AppDiv.SmartAgency.API.Helpers;
+using AppDiv.SmartAgency.Application;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using AppDiv.CRVS.Application.Service;
-using AppDiv.CRVS.Application.Interfaces;
-using AppDiv.CRVS.Infrastructure;
-using AppDiv.CRVS.Api.Middleware;
+using AppDiv.SmartAgency.Application.Service;
+using AppDiv.SmartAgency.Application.Interfaces;
+using AppDiv.SmartAgency.Infrastructure;
+using AppDiv.SmartAgency.Api.Middleware;
 using System.Security.Claims;
-using AppDiv.CRVS.Infrastructure.Hub;
+using AppDiv.SmartAgency.Infrastructure.Hub;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Cors;
-using AppDiv.CRVS.Infrastructure.Hub.ChatHub;
+using AppDiv.SmartAgency.Infrastructure.Hub.ChatHub;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson(); ;
 // For authentication
@@ -432,7 +432,7 @@ if (app.Environment.IsDevelopment())
 // app.MigrateDatabase();
 using (var scope = app.Services.CreateScope())
 {
-var initialiser = scope.ServiceProvider.GetRequiredService<CRVSDbContextInitializer>();
+var initialiser = scope.ServiceProvider.GetRequiredService<SmartAgencyDbContextInitializer>();
 await initialiser.InitialiseAsync();
 await initialiser.SeedAsync();
 }

@@ -49,11 +49,11 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
                 mappedUser.Email = request.Address.Email;
                 if (request.UserGroups.Count > 0)
                 {
-                    var listGroup = await _groupRepository.GetMultipleUserGroups((ICollection<Guid>)request.UserGroups);
+                    var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
                     mappedUser.UserGroups = listGroup;
                 }
 
-                var createResponse = await _identityService.CreateUserAsync(mappedUser, (string)request.Password);
+                var createResponse = await _identityService.CreateUserAsync(mappedUser, request.Password);
                 if (!createResponse.Success)
                 {
                     throw new BadRequestException($"could not create user \n{string.Join(",", createResponse.Errors!)}");
@@ -78,7 +78,7 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
 
                 // //send password by email    
                 // var content = response.password + "  is your default password you can login and change it";
-                // var subject = "Welcome to OCRVS";
+                // var subject = "Welcome to Smart Employment Agency";
                 // await _mailService.SendAsync(body: content, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: user.Email, cancellationToken);
 
                 // //send password by phone 

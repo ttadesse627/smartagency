@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using ApplicationException = AppDiv.SmartAgency.Utility.Exceptions.AppException;
 
-namespace AppDiv.SmartAgency.Api.Middleware
+namespace AppDiv.SmartAgency.API.Middleware
 {
     public class ExceptionHandlerMiddleware
     {
@@ -71,14 +71,14 @@ namespace AppDiv.SmartAgency.Api.Middleware
         private static string GetTitle(Exception exception) =>
             exception switch
             {
-                SqlException sqlException =>
-                    exception.InnerException.Message.ToLower().Contains("with unique index") ? "Can not insert duplicate entry. The same entry already added to the database." :
+                SqlException =>
+                    exception.InnerException is not null ? (exception.InnerException.Message.ToLower().Contains("with unique index") ? "Can not insert duplicate entry. The same entry already added to the database." :
                     exception.InnerException.Message.ToLower().Contains("the delete statement conflicted with the reference constraint") ? "The record you are trying to delete is being referenced by other items in the database. Please delete those items before." :
-                    "Server Error",
-                DbUpdateException efException =>
-                    exception.InnerException.Message.ToLower().Contains("with unique index") ? "Can not insert duplicate entry. The same record is already added to the database." :
+                    "Server Error") : "Server Error",
+                DbUpdateException =>
+                    exception.InnerException is not null ? (exception.InnerException.Message.ToLower().Contains("with unique index") ? "Can not insert duplicate entry. The same record is already added to the database." :
                     exception.InnerException.Message.ToLower().Contains("the delete statement conflicted with the reference constraint") ? "The record you are trying to delete is being referenced by other items in the database. Please delete those items before." :
-                    "Server Error",
+                    "Server Error") : "Server Error",
                 ApplicationException applicationException => applicationException.Title,
                 _ => "Server Error"
             };

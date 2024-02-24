@@ -1,7 +1,5 @@
 
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.RoleDTOs;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;

@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "mtxr.sqltools",
-        "vadimcn.vscode-lldb"
+        "vadimcn.vscode-lldb",
+        "mtxr.sqltools-driver-mysql"
     ]
 }

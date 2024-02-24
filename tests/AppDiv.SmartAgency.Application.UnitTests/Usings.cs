@@ -1,2 +1,2 @@
 global using Xunit;
-global using AppDiv.CRVS.Interfaces.Persistence.Settings;
+global using AppDiv.SmartAgency.Interfaces.Persistence.Settings;

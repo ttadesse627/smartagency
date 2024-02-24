@@ -6,12 +6,12 @@ using System.Text;
 using AppDiv.SmartAgency.Application.Service;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Infrastructure;
-using AppDiv.SmartAgency.Api.Middleware;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using AppDiv.SmartAgency.API.Middleware;
+using AppDiv.SmartAgency.Utility.Services;
 
-//"SECRET": "irzcivkhgugparen",
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,8 +24,15 @@ builder.WebHost.UseKestrel(options =>
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
+Console.WriteLine(Environment.CurrentDirectory);
+
 // For authentication
 var _key = builder.Configuration["Jwt:Key"];
+if (Encoding.UTF8.GetByteCount(_key) < 32)
+{
+    _key = RandomKeyGenerator.generateRandomKey();
+}
+// var _key = RandomKeyGenerator.generateRandomKey();
 var _issuer = builder.Configuration["Jwt:Issuer"];
 var _audience = builder.Configuration["Jwt:Audience"];
 var _expirtyMinutes = builder.Configuration["Jwt:ExpiryMinutes"];
@@ -119,29 +126,26 @@ builder.Services.AddSwaggerGen(c =>
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
 
                     }
                 });
 
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Bearer", policy =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Bearer", policy =>
     {
         policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("UserId");
     });
-});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // app.MigrateDatabase();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -152,11 +156,6 @@ app.UseHttpsRedirection();
 // Must be betwwen app.UseRouting() and app.UseEndPoints()
 // maintain middleware order
 app.UseCors("CorsPolicy");
-
-// Added for authentication
-// Maintain middleware order
-
-
 
 app.UseAuthentication();
 

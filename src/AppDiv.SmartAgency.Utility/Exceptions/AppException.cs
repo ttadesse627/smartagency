@@ -1,10 +1,7 @@
 ﻿namespace AppDiv.SmartAgency.Utility.Exceptions
 {
-    public abstract class AppException : Exception
+    public abstract class AppException(string title, string message) : Exception(message)
     {
-        protected AppException(string title, string message)
-            : base(message) => Title = title;
-
-        public string Title { get; }
+        public string Title { get; } = title;
     }
 }

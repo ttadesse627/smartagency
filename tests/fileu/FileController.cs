@@ -1,9 +1,9 @@
 
-using AppDiv.CRVS.Application.Interfaces;
+using AppDiv.SmartAgency.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace AppDiv.CRVS.API.Controllers
+namespace AppDiv.SmartAgency.API.Controllers
 {
     public class FileController : ApiControllerBase
     {
@@ -15,13 +15,13 @@ namespace AppDiv.CRVS.API.Controllers
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get([FromQuery] Guid id , [FromQuery]string fileType)
+        public async Task<IActionResult> Get([FromQuery] Guid id, [FromQuery] string fileType)
         {
-              var response = _fileService.getFile(id.ToString(),fileType);
+            var response = _fileService.getFile(id.ToString(), fileType);
 
             return File(response.file,
                             "application/octet-stream"
-                            , response.fileName+response.fileExtenion);
+                            , response.fileName + response.fileExtenion);
         }
 
     }

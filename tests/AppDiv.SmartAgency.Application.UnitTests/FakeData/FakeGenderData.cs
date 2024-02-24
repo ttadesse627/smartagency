@@ -1,8 +1,8 @@
 ﻿
 
-using AppDiv.CRVS.Domain.Entities.Settings;
+using AppDiv.SmartAgency.Domain.Entities.Settings;
 
-namespace AppDiv.CRVS.Test.FakeData
+namespace AppDiv.SmartAgency.Test.FakeData
 {
     public class FakeGenderData
     {

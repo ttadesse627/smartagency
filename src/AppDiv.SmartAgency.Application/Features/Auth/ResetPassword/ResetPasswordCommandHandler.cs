@@ -1,11 +1,3 @@
-
-// using System.Text;
-// using AppDiv.CRVS.Application.Exceptions;
-// using AppDiv.CRVS.Application.Interfaces;
-// using AppDiv.CRVS.Domain.Repositories;
-// using MediatR;
-// using Microsoft.AspNetCore.WebUtilities;
-
 using System.Security.Authentication;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Utility.Exceptions;

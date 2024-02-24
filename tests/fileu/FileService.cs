@@ -1,13 +1,13 @@
 
 using System;
-using AppDiv.CRVS.Application.Exceptions;
-using AppDiv.CRVS.Application.Interfaces;
-using AppDiv.CRVS.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Exceptions;
+using AppDiv.SmartAgency.Application.Interfaces;
+using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp.Formats;
 
-namespace AppDiv.CRVS.Infrastructure.Services
+namespace AppDiv.SmartAgency.Infrastructure.Services
 {
     public class FileService : IFileService
     {
@@ -60,11 +60,11 @@ namespace AppDiv.CRVS.Infrastructure.Services
 
             try
             {
-                 if (!Directory.Exists(pathToSave))
-                    {
-                        // If folder does not exist, create it
-                        Directory.CreateDirectory(pathToSave);
-                    }
+                if (!Directory.Exists(pathToSave))
+                {
+                    // If folder does not exist, create it
+                    Directory.CreateDirectory(pathToSave);
+                }
 
                 // Convert the Base64 string to a byte array.
                 string myString = base64String.Substring(base64String.IndexOf(',') + 1);

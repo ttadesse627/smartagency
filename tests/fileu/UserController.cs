@@ -1,19 +1,19 @@
-using AppDiv.CRVS.Application.Common;
-using AppDiv.CRVS.Application.Contracts.DTOs;
-using AppDiv.CRVS.Application.Features.Lookups.Query.GetAllUser;
-using AppDiv.CRVS.Application.Features.User.Command.Create;
-using AppDiv.CRVS.Application.Features.User.Command.Delete;
-using AppDiv.CRVS.Application.Features.User.Command.Update;
-using AppDiv.CRVS.Application.Features.User.Query;
-using AppDiv.CRVS.Application.Features.User.Query.GetUserById;
-using AppDiv.CRVS.Domain;
+using AppDiv.SmartAgency.Application.Common;
+using AppDiv.SmartAgency.Application.Contracts.DTOs;
+using AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser;
+using AppDiv.SmartAgency.Application.Features.User.Command.Create;
+using AppDiv.SmartAgency.Application.Features.User.Command.Delete;
+using AppDiv.SmartAgency.Application.Features.User.Command.Update;
+using AppDiv.SmartAgency.Application.Features.User.Query;
+using AppDiv.SmartAgency.Application.Features.User.Query.GetUserById;
+using AppDiv.SmartAgency.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-namespace AppDiv.CRVS.API.Controllers
+namespace AppDiv.SmartAgency.API.Controllers
 {
     public class UserController : ApiControllerBase
     {

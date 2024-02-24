@@ -1,10 +1,10 @@
-using AppDiv.CRVS.Application.Contracts.Request;
+using AppDiv.SmartAgency.Application.Contracts.Request;
 using MediatR;
 
 
-namespace AppDiv.CRVS.Application.Features.User.Command.Create
+namespace AppDiv.SmartAgency.Application.Features.User.Command.Create
 {
-    public record CreateUserCommand: IRequest<CreateUserCommandResponse>
+    public record CreateUserCommand : IRequest<CreateUserCommandResponse>
     {
         public string UserName { get; set; }
         public string Email { get; set; }
