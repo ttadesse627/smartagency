@@ -19,10 +19,7 @@ namespace AppDiv.SmartAgency.Application.UnitTests.Customers
         private CustomerRepository _customerRepository;
         private GenderRepository _genderRepository;
         private SuffixRepository _suffixRepository;
-        public CustomerCreateCommandTest()
-        {
-
-        }
+        public CustomerCreateCommandTest() { }
         public void Dispose()
         {
             _Context.Database.EnsureDeleted();

@@ -32,7 +32,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
     {
         var request = command.request;
         var response = new ServiceResponse<Int32>();
-        ICollection<UserGroup> listGroup = new List<UserGroup>();
+        List<UserGroup> listGroup = [];
         if (request.UserGroups.Count > 0)
         {
             listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);

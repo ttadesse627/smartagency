@@ -45,14 +45,13 @@ namespace AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser
         }
         public async Task<SearchModel<UserResponseDTO>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
         {
-            var eagerLoadedProperties = new string[] { "UserGroups" };
 
             var userList = await _userRepository.GetAllWithSearchAsync
                             (
-                                request.SearchTerm!, user => user.UserName != null, eagerLoadedProperties
+                                request.SearchTerm!, user => user.UserName != null, ["UserGroups"]
                             );
             var paginatedUsers = await _userRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, userList, request.OrderBy);
-            var userResponse = CustomMapper.Mapper.Map<SearchModel<UserResponseDTO>>(userList);
+            var userResponse = CustomMapper.Mapper.Map<SearchModel<UserResponseDTO>>(paginatedUsers);
             return userResponse;
         }
     }

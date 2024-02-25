@@ -77,11 +77,11 @@ namespace AppDiv.SmartAgency.Application.Service
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
-                response.Errors = result.ToApplicationResult().Errors.ToList();
+                response.Errors = [.. result.ToApplicationResult().Errors];
             }
             else
             {
-                var userClaim = await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id));
+                await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id));
                 string userId = await _userManager.GetUserIdAsync(user);
                 response.Success = true;
                 response.Message = $"Successfully created with new Id {userId}";

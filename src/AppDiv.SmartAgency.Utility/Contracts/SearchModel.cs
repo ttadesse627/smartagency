@@ -11,11 +11,11 @@ namespace AppDiv.SmartAgency.Utility.Contracts
         public long TotalCount { get; set; }
         public string SearchKeyWord { get; set; } = String.Empty;
         public int PagingSize { get; set; }
-        public Dictionary<string, string> Filters { get; set; } = new Dictionary<string, string> { };
-        public Dictionary<string, string[]> ObjectFilters { get; set; } = new Dictionary<string, string[]> { };
-        public string SortingColumn { get; set; } = null!;
+        public Dictionary<string, string> Filters { get; set; } = [];
+        public Dictionary<string, string[]> ObjectFilters { get; set; } = [];
+        public string? SortingColumn { get; set; }
         public SortingDirection SortingDirection { get; set; }
-        public string[] Tags { get; set; } = new string[] { };
+        public string[] Tags { get; set; } = [];
 
         public int GetPageSize()
         {

@@ -22,53 +22,53 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
     {
         private readonly IUserResolverService _userResolverService;
 
-        public DbSet<AuditLog> AuditLogs { get; set; }
-        public DbSet<Suffix> Suffixes { get; set; }
-        public DbSet<Attachment> Attachments { get; set; }
-        public DbSet<LookUp> LookUps { get; set; }
-        public DbSet<Partner> Partners { get; set; }
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<BankAccount> BankAccounts { get; set; }
-        public DbSet<Beneficiary> Beneficiaries { get; set; }
-        public DbSet<Education> Educations { get; set; }
-        public DbSet<EmergencyContact> EmergencyContacts { get; set; }
-        public DbSet<Experience> Experiences { get; set; }
-        public DbSet<LanguageSkill> LanguageSkills { get; set; }
-        public DbSet<Representative> Representatives { get; set; }
-        public DbSet<Witness> Witnesses { get; set; }
-        public DbSet<Skill> Skills { get; set; }
-        public DbSet<QualificationType> QualificationTypes { get; set; }
-        public DbSet<LevelOfQualification> LevelOfQualifications { get; set; }
-        public DbSet<Award> Awards { get; set; }
-        public DbSet<OnlineApplicant> OnlineApplicants { get; set; }
-        public DbSet<Deposit> Deposits { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Sponsor> Sponsors { get; set; }
-        public DbSet<OrderCriteria> OrderCriterias { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Page> Pages { get; set; }
-        public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; }
-        public DbSet<CompanyInformation> CompanyInformations { get; set; }
-        public DbSet<CompanySetting> CompanySettings { get; set; }
-        public DbSet<CountryOperation> CountryOperations { get; set; }
-        public DbSet<Process> Processes { get; set; }
-        public DbSet<ProcessDefinition> ProcessDefinitions { get; set; }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<UserGroup> UserGroups { get; set; }
-        public DbSet<Enjaz> Enjazs { get; set; }
-        public DbSet<ApplicantProcess> ApplicantProcesses { get; set; }
-        public DbSet<Complaint> Complaints { get; set; }
-        public DbSet<TicketReady> TicketReadies { get; set; }
-        public DbSet<TicketRegistration> TicketRegistrations { get; set; }
-        public DbSet<TicketRefund> TicketRefunds { get; set; }
-        public DbSet<TicketRebook> TicketRebooks { get; set; }
-        public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; }
-        public DbSet<TraveledApplicant> TraveledApplicants { get; set; }
-        public DbSet<RequestedApplicant> RequestedApplicants { get; set; }
-        public DbSet<LoginHistory> LoginHistories { get; set; }
-        public DbSet<RevocationToken> RevocationTokens { get; set; }
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; } = null!;
+        public DbSet<Suffix> Suffixes { get; set; } = null!;
+        public DbSet<Attachment> Attachments { get; set; } = null!;
+        public DbSet<LookUp> LookUps { get; set; } = null!;
+        public DbSet<Partner> Partners { get; set; } = null!;
+        public DbSet<Address> Addresses { get; set; } = null!;
+        public DbSet<Applicant> Applicants { get; set; } = null!;
+        public DbSet<BankAccount> BankAccounts { get; set; } = null!;
+        public DbSet<Beneficiary> Beneficiaries { get; set; } = null!;
+        public DbSet<Education> Educations { get; set; } = null!;
+        public DbSet<EmergencyContact> EmergencyContacts { get; set; } = null!;
+        public DbSet<Experience> Experiences { get; set; } = null!;
+        public DbSet<LanguageSkill> LanguageSkills { get; set; } = null!;
+        public DbSet<Representative> Representatives { get; set; } = null!;
+        public DbSet<Witness> Witnesses { get; set; } = null!;
+        public DbSet<Skill> Skills { get; set; } = null!;
+        public DbSet<QualificationType> QualificationTypes { get; set; } = null!;
+        public DbSet<LevelOfQualification> LevelOfQualifications { get; set; } = null!;
+        public DbSet<Award> Awards { get; set; } = null!;
+        public DbSet<OnlineApplicant> OnlineApplicants { get; set; } = null!;
+        public DbSet<Deposit> Deposits { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Sponsor> Sponsors { get; set; } = null!;
+        public DbSet<OrderCriteria> OrderCriterias { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
+        public DbSet<Page> Pages { get; set; } = null!;
+        public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; } = null!;
+        public DbSet<CompanyInformation> CompanyInformations { get; set; } = null!;
+        public DbSet<CompanySetting> CompanySettings { get; set; } = null!;
+        public DbSet<CountryOperation> CountryOperations { get; set; } = null!;
+        public DbSet<Process> Processes { get; set; } = null!;
+        public DbSet<ProcessDefinition> ProcessDefinitions { get; set; } = null!;
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+        public DbSet<UserGroup> UserGroups { get; set; } = null!;
+        public DbSet<Enjaz> Enjazs { get; set; } = null!;
+        public DbSet<ApplicantProcess> ApplicantProcesses { get; set; } = null!;
+        public DbSet<Complaint> Complaints { get; set; } = null!;
+        public DbSet<TicketReady> TicketReadies { get; set; } = null!;
+        public DbSet<TicketRegistration> TicketRegistrations { get; set; } = null!;
+        public DbSet<TicketRefund> TicketRefunds { get; set; } = null!;
+        public DbSet<TicketRebook> TicketRebooks { get; set; } = null!;
+        public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; } = null!;
+        public DbSet<TraveledApplicant> TraveledApplicants { get; set; } = null!;
+        public DbSet<RequestedApplicant> RequestedApplicants { get; set; } = null!;
+        public DbSet<LoginHistory> LoginHistories { get; set; } = null!;
+        public DbSet<RevocationToken> RevocationTokens { get; set; } = null!;
+        public DbSet<Setting> Settings { get; set; } = null!;
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
@@ -176,9 +176,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             return new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                DateFormatString = "yyyy-MM-dd hh:mm:ss",
+                DateFormatString = "yyyy-MM-dd HH:mm:ss",
                 StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-                Formatting = Newtonsoft.Json.Formatting.Indented
+                Formatting = Formatting.Indented
             };
         }
         public string GetCurrentUserId()

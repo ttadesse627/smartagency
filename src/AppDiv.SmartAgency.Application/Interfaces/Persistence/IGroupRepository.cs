@@ -6,8 +6,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
     public interface IGroupRepository : IBaseRepository<UserGroup>
     {
-        // Task<UserGroup> GetByIdAsync(Guid id);
-        Task<ICollection<UserGroup>> GetMultipleUserGroups(ICollection<Guid> groupIds);
+        Task<List<UserGroup>> GetMultipleUserGroups(ICollection<Guid> groupIds);
         Task<List<UserGroup>> GetUserGroupByUserId(string userId);
     }
 }

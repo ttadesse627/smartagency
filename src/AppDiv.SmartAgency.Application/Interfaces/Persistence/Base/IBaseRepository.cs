@@ -23,7 +23,7 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence.Base
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>> orderBy, int skip, int limit);
         Task<IEnumerable<T>> GetAllWithAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
         Task<IEnumerable<T>> GetAllWithAsync(params string[] eagerLoadedProperties);
-        Task<IQueryable<T>> GetAllWithSearchAsync(string? searchTerm = "", Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
+        Task<IQueryable<T>> GetAllWithSearchAsync(string? searchTerm = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
         Task<SearchModel<T>> GetAllWithPredicateFilterAsync(int pageNumber, int pageSize, List<Filter>? filters = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);
         Task<SearchModel<T>> PaginateItems(int pageNumber, int pageSize, SortingDirection sortingDirection, IQueryable<T> items, string? orderBy = null);
         Task<T> GetWithPredicateAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties);

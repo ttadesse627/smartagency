@@ -1,5 +1,4 @@
-﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
+﻿using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Contracts;
@@ -27,25 +26,34 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         private readonly SmartAgencyDbContext _dbContext = dbContext;
 
         #region We also added this methods to be shared accross multiple entities, models and any other area
-        public virtual async Task<IQueryable<T>> GetAllWithSearchAsync(string? searchTerm = "", Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        public virtual async Task<IQueryable<T>> GetAllWithSearchAsync(string? searchTerm = null, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
+            await Task.CompletedTask;
             var parameter = Expression.Parameter(typeof(T), "x");
-            var body = Expression.Equal(Expression.Constant(null), Expression.Constant("")); // initial binary expression
-
-            var stringProperties = typeof(T).GetProperties()
+            var body = Expression.Equal(Expression.Constant(null), Expression.Constant(null)); // initial binary expression
+            int propertyCount = 0;
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var stringProperties = typeof(T).GetProperties()
                 .Where(p => p.PropertyType == typeof(string))
                 .ToList();
 
-            foreach (var prop in stringProperties)
-            {
-                var propertyExpr = Expression.Property(parameter, prop);
-                var containsExpr = Expression.Call(
-                                        propertyExpr,
-                                        typeof(string).GetMethod("Contains", [typeof(string)])!,
-                                        Expression.Constant(searchTerm));
+                foreach (var prop in stringProperties)
+                {
+                    propertyCount += 1;
+                    var propertyExpr = Expression.Property(parameter, prop);
+                    var containsExpr = Expression.Call(
+                                            propertyExpr,
+                                            typeof(string).GetMethod("Contains", [typeof(string)])!,
+                                            Expression.Constant(searchTerm));
 
-                var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
-                body = Expression.Or(body, binaryExpr);
+                    var binaryExpr = Expression.Equal(containsExpr, Expression.Constant(true));
+                    if (propertyCount == 1)
+                    {
+                        body = Expression.And(body, binaryExpr);
+                    }
+                    else body = Expression.Or(body, binaryExpr);
+                }
             }
 
             var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
@@ -62,7 +70,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             return list;
         }
-        public virtual async Task<SearchModel<T>> PaginateItems(int pageNumber, int pageSize, string orderBy, SortingDirection sortingDirection, IQueryable<T> items)
+        public virtual async Task<SearchModel<T>> PaginateItems(int pageNumber, int pageSize, SortingDirection sortingDirection, IQueryable<T> items, string? orderBy = null)
         {
             long maxPage = 1;
 

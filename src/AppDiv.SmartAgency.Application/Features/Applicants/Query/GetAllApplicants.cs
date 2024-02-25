@@ -37,7 +37,7 @@ public class GetAllApplicantsHandler : IRequestHandler<GetAllApplicants, SearchM
 
         var paginatedApplicants = await _applicantRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, applicantList, request.OrderBy);
 
-        var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(applicantList);
+        var response = CustomMapper.Mapper.Map<SearchModel<ApplicantsResponseDTO>>(paginatedApplicants);
         var itemsArray = response.Items.ToArray();
         var entitiesArray = paginatedApplicants.Items.ToArray();
         for (var i = 0; i < itemsArray.Length; i++)
