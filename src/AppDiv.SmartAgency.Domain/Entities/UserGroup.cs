@@ -22,6 +22,6 @@ namespace AppDiv.SmartAgency.Domain.Entities
                 RolesStr = value.ToString();
             }
         }
-        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; } = Array.Empty<ApplicationUser>();
+        public virtual ICollection<ApplicationUser>? ApplicationUsers { get; set; }
     }
 }

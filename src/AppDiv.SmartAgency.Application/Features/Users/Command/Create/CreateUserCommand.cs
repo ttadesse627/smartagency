@@ -44,7 +44,7 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
             }
             if (validationResult.IsValid)
             {
-                var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>((object)request);
+                var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>(request);
 
                 mappedUser.Email = request.Address.Email;
                 if (request.UserGroups.Count > 0)

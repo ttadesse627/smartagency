@@ -52,7 +52,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public ICollection<OrderCriteria>? LookUpCriteriaLanguages { get; set; }
         public CountryOperation? CountryOperation { get; set; }
         public ICollection<Process>? ProcessCountries { get; set; }
-        public ICollection<ApplicationUser>? UserPosition { get; set; }
-        public ICollection<ApplicationUser>? UserBranch { get; set; }
+        public ICollection<ApplicationUser>? UserPositions { get; set; }
+        public ICollection<ApplicationUser>? UserBranchs { get; set; }
     }
 }

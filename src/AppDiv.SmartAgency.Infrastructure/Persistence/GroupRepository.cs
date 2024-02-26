@@ -15,7 +15,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         public async Task<List<UserGroup>> GetUserGroupByUserId(string userId)
         {
-            var response = await _context.UserGroups.Where(ug => ug.ApplicationUsers.Any(apU => apU.Id == userId)).ToListAsync();
+            var response = await _context.UserGroups.Where(ug => ug.ApplicationUsers!.Any(apU => apU.Id == userId)).ToListAsync();
             return response;
         }
     }

@@ -1,0 +1,25 @@
+@host = http://127.0.0.1:8000/api/User
+
+POST {{host}}/Create
+Content-Type: application/json
+
+{
+  "userName": "tufa",
+  "fullName": "Tufa Dhugo",
+  "positionId": "886a59f6-d4b4-451a-a0ce-a05bd7c06619",
+  "branchId": "bf87855d-6b05-4ce5-8572-2c5128d60377",
+  "address": {
+    "subCity": "Dukem",
+    "zone": "Bishoftu",
+    "woreda": "Melka",
+    "phoneNumber": "+251946938942",
+    "adress": "Dukem",
+    "email": "ttadesse625@gmail.com",
+    "regionId": "57d1cac2-a9b2-42ef-8cb2-f027b5a0c8f4"
+  },
+  "userGroups": [
+    # "22b4b7c3-92d6-4e97-bd70-df4ba248f92d"
+  ],
+  "password": "tufa@123",
+  "confirmationPassword": "tufa@123"
+}

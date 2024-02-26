@@ -10,12 +10,12 @@ namespace AppDiv.SmartAgency.Domain.Configurations
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.HasOne(user => user.Position)
-                .WithMany(lk => lk.UserPosition)
+                .WithMany(lk => lk.UserPositions)
                 .HasForeignKey(fk => fk.PositionId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(user => user.Branch)
-                .WithMany(lk => lk.UserBranch)
+                .WithMany(lk => lk.UserBranchs)
                 .HasForeignKey(fk => fk.BranchId)
                 .OnDelete(DeleteBehavior.SetNull);
 

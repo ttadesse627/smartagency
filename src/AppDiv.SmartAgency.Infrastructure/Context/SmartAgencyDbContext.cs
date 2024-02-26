@@ -54,7 +54,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<CountryOperation> CountryOperations { get; set; } = null!;
         public DbSet<Process> Processes { get; set; } = null!;
         public DbSet<ProcessDefinition> ProcessDefinitions { get; set; } = null!;
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+        public DbSet<ApplicationUser>? ApplicationUsers { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; } = null!;
         public DbSet<Enjaz> Enjazs { get; set; } = null!;
         public DbSet<ApplicantProcess> ApplicantProcesses { get; set; } = null!;
