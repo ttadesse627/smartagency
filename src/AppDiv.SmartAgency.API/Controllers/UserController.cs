@@ -53,7 +53,11 @@ namespace AppDiv.SmartAgency.API.Controllers
                 if (request.Id == id)
                 {
                     var result = await Mediator.Send(new UpdateUserCommand(request));
-                    return Ok(result);
+                    if (result.Success)
+                    {
+                        return Ok(result);
+                    }
+                    else return BadRequest(result);
                 }
                 else
                 {

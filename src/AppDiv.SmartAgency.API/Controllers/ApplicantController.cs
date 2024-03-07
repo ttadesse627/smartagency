@@ -19,18 +19,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
 
-// [Authorize(JwtBearerDefaults.AuthenticationScheme)]
 
 [ApiController]
 [Route("api/[controller]")]
 
-//[AllowAnonymousAttribute]
 public class ApplicantController : ApiControllerBase
 {
 
     [HttpPost("create")]
 
-    [RoleBasedAuthorizationMetadata("Applicant", "CanAdd")]
+    // [RoleBasedAuthorizationMetadata("Applicant", "CanAdd")]
     public async Task<ActionResult<ServiceResponse<int>>> CreateApplicant(CreateApplicantRequest request)
     {
         var response = await Mediator.Send(new CreateApplicantCommand(request));
@@ -39,12 +37,12 @@ public class ApplicantController : ApiControllerBase
 
     [HttpGet("get-all")]
 
-    [RoleBasedAuthorizationMetadata("Applicant", "CanView")]
+    // [RoleBasedAuthorizationMetadata("Applicant", "CanView")]
     public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
         return Ok(await Mediator.Send(new GetAllApplicants(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
-    [RoleBasedAuthorizationMetadata("Applicant", "CanViewDetail")]
+    // [RoleBasedAuthorizationMetadata("Applicant", "CanViewDetail")]
     [HttpGet("get/{id}")]
     public async Task<ActionResult<GetApplicantResponseDTO>> GetAllApplicants(Guid id)
     {
@@ -54,7 +52,7 @@ public class ApplicantController : ApiControllerBase
 
     [HttpDelete("delete/{id}")]
 
-    [RoleBasedAuthorizationMetadata("Applicant", "CanDelete")]
+    // [RoleBasedAuthorizationMetadata("Applicant", "CanDelete")]
     public async Task<ActionResult<ServiceResponse<int>>> DeleteApplicant(Guid id)
     {
         try
@@ -62,15 +60,15 @@ public class ApplicantController : ApiControllerBase
             var response = await Mediator.Send(new DeleteApplicantCommand(id));
             return Ok(response);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
 
     [HttpPut("edit/{id}")]
-    [RoleBasedAuthorizationMetadata("Applicant", "CanUpdate")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> EditApplicant(Guid id, [FromBody] EditApplicantRequest request)
+    // [RoleBasedAuthorizationMetadata("Applicant", "CanUpdate")]
+    public async Task<ActionResult<ServiceResponse<int>>> EditApplicant(Guid id, [FromBody] EditApplicantRequest request)
     {
         try
         {
@@ -81,7 +79,7 @@ public class ApplicantController : ApiControllerBase
             }
             else return BadRequest();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
@@ -103,7 +101,7 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpPut("request/send-request")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> RequestApplicant(SendApplicantRequest request)
+    public async Task<ActionResult<ServiceResponse<int>>> RequestApplicant(SendApplicantRequest request)
     {
         var response = await Mediator.Send(new RequestApplicantCommand(request));
         return Ok(response);
@@ -116,7 +114,7 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpDelete("request/delete/{id}")]
-    public async Task<ActionResult<ServiceResponse<Int32>>> DeleteRequested(Guid id)
+    public async Task<ActionResult<ServiceResponse<int>>> DeleteRequested(Guid id)
     {
         var response = await Mediator.Send(new DeleteRequestedCommand(id));
         return Ok(response);
@@ -146,7 +144,7 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet("get-unassigned-orders-dropdown")]
-    public async Task<ActionResult<Object>> GetUnAssignedOrdersDropdown()
+    public async Task<ActionResult<object>> GetUnAssignedOrdersDropdown()
     {
         return Ok(await Mediator.Send(new GetUnAssignedOrdersDrodownQuery()));
     }

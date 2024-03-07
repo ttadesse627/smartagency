@@ -6,12 +6,12 @@ using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Domain.Entities
 {
-    public class Page: BaseAuditableEntity
+    public class Page : BaseAuditableEntity
     {
-        public string? Category { get; set; }="Normal";
-        public string Link { get; set; }
-        public string Title { get; set; }
-        public string? PageContent{ get; set; }
-}
+        public string? Category { get; set; }
+        public string? Link { get; set; }
+        public string? Title { get; set; }
+        public string? PageContent { get; set; }
+    }
 
 }

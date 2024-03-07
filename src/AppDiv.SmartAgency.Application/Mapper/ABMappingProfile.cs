@@ -276,6 +276,9 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<AddUserRequest, ApplicationUser>()
                 .ForMember(dest => dest.UserGroups, opt => opt.Ignore())
                 .ForMember(dest => dest.Email, opt => opt.Ignore());
+            CreateMap<UpdateUserRequest, ApplicationUser>()
+                .ForMember(dest => dest.UserGroups, opt => opt.Ignore())
+                .ForMember(dest => dest.Email, opt => opt.Ignore());
             CreateMap<ApplicationUser, UserResponseDTO>();
             CreateMap<ApplicationUser, UserDetailsResponseDTO>();
             CreateMap<SearchModel<ApplicationUser>, SearchModel<UserResponseDTO>>();

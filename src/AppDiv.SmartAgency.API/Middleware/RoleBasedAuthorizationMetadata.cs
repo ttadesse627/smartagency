@@ -2,15 +2,10 @@
 
 namespace AppDiv.SmartAgency.API.Middleware
 {
-    public class RoleBasedAuthorizationMetadata : Attribute
+    public class RoleBasedAuthorizationMetadata(params string[] allowedRoles) : Attribute
     {
 
 
-        public string[] AllowedRoles { get; }
-
-        public RoleBasedAuthorizationMetadata(params string[] allowedRoles)
-        {
-            AllowedRoles = allowedRoles;
-        }
+        public string[] AllowedRoles { get; } = allowedRoles;
     }
 }

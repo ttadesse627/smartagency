@@ -15,17 +15,14 @@ namespace AppDiv.SmartAgency.API.Controllers;
 
 [ApiController]
 [Route("api/attachment")]
-public class AttachmentController : ControllerBase
+public class AttachmentController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public AttachmentController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
+
     [HttpPost("create")]
     public async Task<ActionResult<ServiceResponse<int>>> CreateAttachment(CreateAttachmentRequest attachmentRequest, CancellationToken token)
     {
-        var response = await _mediator.Send(new CreateAttachmentCommand(attachmentRequest));
+        var response = await _mediator.Send(new CreateAttachmentCommand(attachmentRequest), token);
         return Ok(response);
     }
     [HttpGet("get-all")]
@@ -50,7 +47,7 @@ public class AttachmentController : ControllerBase
             result.Message = $"The attachment with id {id} is successfully deleted!";
             result.Success = true;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             result.Message = ex.Message;
             result.Success = false;

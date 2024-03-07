@@ -7,34 +7,28 @@ using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
-public record EditOrderCommand(EditOrderRequest editOrderRequest) : IRequest<ServiceResponse<Int32>>
+public record EditOrderCommand(EditOrderRequest EditOrderRequest) : IRequest<ServiceResponse<Int32>>
 {
 }
 
-public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, ServiceResponse<Int32>>
+public class EditOrderCommandHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository, IAttachmentRepository attachmentRepository, IFileService fileService) : IRequestHandler<EditOrderCommand, ServiceResponse<Int32>>
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly IApplicantRepository _applicantRepository;
-    private readonly IAttachmentRepository _attachmentRepository;
-    private readonly IFileService _fileService;
-    public EditOrderCommandHandler(IOrderRepository orderRepository, IApplicantRepository applicantRepository, IAttachmentRepository attachmentRepository, IFileService fileService)
+    private readonly IOrderRepository _orderRepository = orderRepository;
+    private readonly IApplicantRepository _applicantRepository = applicantRepository;
+    private readonly IAttachmentRepository _attachmentRepository = attachmentRepository;
+    private readonly IFileService _fileService = fileService;
+
+    public async Task<ServiceResponse<int>> Handle(EditOrderCommand request, CancellationToken cancellationToken)
     {
-        _orderRepository = orderRepository;
-        _applicantRepository = applicantRepository;
-        _attachmentRepository = attachmentRepository;
-        _fileService = fileService;
-    }
-    public async Task<ServiceResponse<Int32>> Handle(EditOrderCommand request, CancellationToken cancellationToken)
-    {
-        var editOrderRequest = request.editOrderRequest;
+        var editOrderRequest = request.EditOrderRequest;
         var response = new ServiceResponse<int>();
-        var updateResponse = new ServiceResponse<String>();
+        var updateResponse = new ServiceResponse<string>();
 
         var eagerLoadedProperties = new string[]
                                     {
-                                        "PortOfArrival", "Priority","VisaType","PortOfArrival","AttachmentFile","OrderCriteria",
-                                        "OrderCriteria.Nationality","OrderCriteria.JobTitle","OrderCriteria.Salary","OrderCriteria.Religion",
-                                        "OrderCriteria.Experience","OrderCriteria.Language","Sponsor","Sponsor.Address","Sponsor.Address.Region",
+                                        "PortOfArrival", "Priority","VisaType","PortOfArrival","Attachment","OrderCriteria","OrderCriteria.Nationality",
+                                        "OrderCriteria.JobTitle","OrderCriteria.Salary","OrderCriteria.Religion","OrderCriteria.Experience",
+                                        "OrderCriteria.Language","Sponsor","Sponsor.Address","Sponsor.Address.Region",
                                         "Sponsor.Address.Country","Sponsor.Address.City","Payment","Employees","Partner"
                                     };
         var serviceResponse = await _orderRepository.GetWithPredicateAsync(order => order.Id == editOrderRequest.Id, eagerLoadedProperties);
@@ -44,7 +38,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
         {
             if (!orderEntity.OrderCriteria!.Equals(null) || !orderEntity.Sponsor!.Equals(null) || !orderEntity.Payment!.Equals(null))
             {
-                CustomMapper.Mapper.Map(request.editOrderRequest, orderEntity);
+                CustomMapper.Mapper.Map(request.EditOrderRequest, orderEntity);
 
             }
             if (editOrderRequest.EmployeeIds != null && editOrderRequest.EmployeeIds.Count > 0)
@@ -52,7 +46,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                 IEnumerable<Applicant> appOrders = new List<Applicant>();
                 appOrders = await _applicantRepository.GetByIdsAsync(editOrderRequest.EmployeeIds, appl => appl.IsDeleted == false);
 
-                if (appOrders.Count() > 0)
+                if (appOrders.Any())
                 {
                     orderEntity.Employees = appOrders.ToList();
                 }
@@ -67,7 +61,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                 {
                     // save order attachment
                     var orderFile = editOrderRequest.AttachmentFile.AttachmentFile;
-                    var orderAttachmentName = await _attachmentRepository.GetAsync(editOrderRequest.AttachmentFile?.AttachmentId!);
+                    var orderAttachmentName = await _attachmentRepository.GetAsync((object)editOrderRequest.AttachmentFile?.AttachmentId!);
                     if (orderAttachmentName != null)
                     {
                         var orderFolderName = Path.Combine("Resources", orderAttachmentName.Title!);
@@ -88,7 +82,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Service
                 {
                     // save sponsor attachment
                     var sponsorFile = editOrderRequest.Sponsor?.AttachmentFile?.AttachmentFile;
-                    var sponsorAttachmentName = await _attachmentRepository.GetAsync(editOrderRequest.AttachmentFile?.AttachmentId!);
+                    var sponsorAttachmentName = await _attachmentRepository.GetAsync((object)editOrderRequest.AttachmentFile?.AttachmentId!);
                     var sponsorFolderName = Path.Combine("Resources", sponsorAttachmentName.Title!);
                     var sponsorPathToSave = Path.Combine(Directory.GetCurrentDirectory(), sponsorFolderName);
                     var sponsoFileName = orderEntity.Sponsor!.Id.ToString();

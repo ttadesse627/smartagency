@@ -365,5 +365,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-src/AppDiv.SmartAgency.API/appsettings.json
-src/AppDiv.SmartAgency.API/appsettings.json
+/Properties
+/tests
+/NoteBooks

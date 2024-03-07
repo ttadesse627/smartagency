@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
-using AppDiv.SmartAgency.Utility.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
@@ -32,5 +31,16 @@ public class UserRepository(SmartAgencyDbContext context) : BaseRepository<Appli
 
         return queryableUsers;
     }
+
+    // public async Task<bool> UpdateUserAsync(ApplicationUser user, CancellationToken cancellationToken)
+    // {
+    //     bool success = false;
+    //     if (user is not null)
+    //     {
+    //         _context.Users.Update(user);
+    //         int count = await _context.SaveChangesAsync(cancellationToken);
+    //         count > 0 && 
+    //     }
+    // }
 }
 

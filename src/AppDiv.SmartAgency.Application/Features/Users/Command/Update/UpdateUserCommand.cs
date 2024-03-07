@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace AppDiv.SmartAgency.Application.Features.User.Command.Update;
-public record UpdateUserCommand(UpdateUserRequest request) : IRequest<ServiceResponse<Int32>> { }
+public record UpdateUserCommand(UpdateUserRequest request) : IRequest<ServiceResponse<int>> { }
 
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, ServiceResponse<Int32>>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, ServiceResponse<int>>
 {
     private readonly IIdentityService _identityService;
     private readonly IGroupRepository _groupRepository;
@@ -28,37 +28,37 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Servi
         _identityService = identityService;
         _userRepository = userRepository;
     }
-    public async Task<ServiceResponse<Int32>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<int>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
-        var response = new ServiceResponse<Int32>();
+        ServiceResponse<int> response = new ServiceResponse<int>();
         List<UserGroup> listGroup = [];
-        if (request.UserGroups.Count > 0)
+        if (request.UserGroups?.Count > 0)
         {
             listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
         }
-        var explLoadedProps = new string[] { "Partner", "Address", "Address.Region", "UserGroups" };
-        var user = await _userRepository.GetWithPredicateAsync(appl => appl.Id == request.Id.ToString(), explLoadedProps);
-
+        // var explLoadedProps = new string[] { "Partner", "Address", "Address.Region", "UserGroups" };
+        // var user = await _userRepository.GetWithPredicateAsync(appl => appl.Id == request.Id.ToString(), explLoadedProps);
+        var user = CustomMapper.Mapper.Map<ApplicationUser>(request);
         if (user != null)
         {
-            user.FullName = request.FullName;
-            user.Email = request.Email;
-            user.UserName = request.UserName;
-            user.PositionId = request.PositionId;
-            user.BranchId = request.BranchId;
-            user.PartnerId = request.PartnerId;
-            user.Address = CustomMapper.Mapper.Map<Address>(request.Address);
+            user.Email = request.Address!.Email;
             user.UserGroups = listGroup;
-        }
+            await _userRepository.UpdateAsync(user, user => user.Id);
+            try
+            {
+                response.Success = await _userRepository.SaveChangesAsync(cancellationToken);
+                if (response.Success)
+                {
+                    response.Message = "The user is successfully Updated!";
+                    response.Data = 1;
+                }
 
-        try
-        {
-            response.Success = await _userRepository.SaveChangesAsync(cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            response.Errors?.Add(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(ex.Message);
+            }
         }
         return response;
     }
