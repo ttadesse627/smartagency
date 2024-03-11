@@ -7,15 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 
 namespace AppDiv.SmartAgency.API.Controllers;
-[ApiController]
-[Route("api/ticket-process")]
-public class TicketProcessController : ControllerBase
+public class TicketProcessController(IMediator mediator) : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public TicketProcessController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet("get-ticket-process")]
     public async Task<ActionResult<TicketProcessResponseDTO>> GetOnTicketProcessApplicants()

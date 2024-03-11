@@ -1,4 +1,3 @@
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
 using AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Query;
@@ -6,35 +5,26 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.Applicants;
 using AppDiv.SmartAgency.Domain.Enums;
-using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 public record SubmitApplicantProcessCommand(SubmitApplicantProcessRequest Request) : IRequest<ApplicantProcessResponseDTO> { }
-public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantProcessCommand, ApplicantProcessResponseDTO>
+public class ApplicantProcessCommandHandler(IApplicantProcessRepository applicantProcessRepository,
+                                    IApplicantRepository applicantRepository, IProcessDefinitionRepository definitionRepository, IMediator mediator) : IRequestHandler<SubmitApplicantProcessCommand, ApplicantProcessResponseDTO>
 {
-    private readonly IMediator _mediator;
-    private readonly IProcessDefinitionRepository _definitionRepository;
-    private readonly IProcessRepository _processRepository;
-    private readonly IApplicantProcessRepository _applicantProcessRepository;
-    private readonly IApplicantRepository _applicantRepository;
-    public ApplicantProcessCommandHandler(IProcessRepository processRepository, IApplicantProcessRepository applicantProcessRepository,
-                                        IApplicantRepository applicantRepository, IProcessDefinitionRepository definitionRepository, IMediator mediator)
-    {
-        _processRepository = processRepository;
-        _applicantProcessRepository = applicantProcessRepository;
-        _applicantRepository = applicantRepository;
-        _definitionRepository = definitionRepository;
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
+    private readonly IProcessDefinitionRepository _definitionRepository = definitionRepository;
+    private readonly IApplicantProcessRepository _applicantProcessRepository = applicantProcessRepository;
+    private readonly IApplicantRepository _applicantRepository = applicantRepository;
+
     public async Task<ApplicantProcessResponseDTO> Handle(SubmitApplicantProcessCommand command, CancellationToken cancellationToken)
     {
         var request = command.Request;
         var response = new ApplicantProcessResponseDTO();
         var applicants = new List<Applicant>();
 
-        if (request.ApplicantIds != null && request.ApplicantIds.Any())
+        if (request.ApplicantIds != null && request.ApplicantIds.Count != 0)
         {
             applicants.AddRange(await _applicantRepository.GetByIdsAsync(request.ApplicantIds, app => !app.IsDeleted, "ApplicantProcesses", "Order.Sponsor", "Enjaz"));
         }
@@ -60,7 +50,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             currentPd = await _definitionRepository.GetWithPredicateAsync(def => def.Id == currentPdId, "Process");
             currentPId = currentPd.ProcessId;
             maxStepOfCurrentPds = await _definitionRepository.GetMaxStepAsync(currentPId);
-            if (request.ApplicantIds != null && request.ApplicantIds.Any())
+            if (request.ApplicantIds != null && request.ApplicantIds.Count != 0)
             {
                 foreach (var applicantId in request.ApplicantIds)
                 {
@@ -78,9 +68,9 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         var lastPds = processDefs.Where(pd => pd.Step.Equals(maxStepOfCurrentPds));
         if (lastPds.Contains(currentPd))
         {
-            if (nextPd.Process.EnjazRequired)
+            if (nextPd.Process!.EnjazRequired)
             {
-                if (applicants.Any())
+                if (applicants.Count != 0)
                 {
                     foreach (var applicant in applicants)
                     {
@@ -118,7 +108,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
             }
             else
             {
-                if (applicants.Any())
+                if (applicants.Count != 0)
                 {
                     foreach (var applicant in applicants)
                     {
@@ -135,11 +125,11 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                         }
                     }
                 }
-                if (currentStatuses.Any())
+                if (currentStatuses.Count != 0)
                 {
                     foreach (var currentStatus in currentStatuses)
                     {
-                        if (request.ApplicantIds != null && request.ApplicantIds.Any())
+                        if (request.ApplicantIds != null && request.ApplicantIds.Count != 0)
                         {
                             if (request.ApplicantIds.Contains(currentStatus.ApplicantId))
                             {
@@ -166,7 +156,7 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
         }
         else
         {
-            if (applicants.Any())
+            if (applicants.Count != 0)
             {
                 foreach (var applicant in applicants)
                 {
@@ -183,11 +173,11 @@ public class ApplicantProcessCommandHandler : IRequestHandler<SubmitApplicantPro
                     }
                 }
             }
-            if (currentStatuses.Any())
+            if (currentStatuses.Count != 0)
             {
                 foreach (var currentStatus in currentStatuses)
                 {
-                    if (request.ApplicantIds != null && request.ApplicantIds.Any())
+                    if (request.ApplicantIds != null && request.ApplicantIds.Count != 0)
                     {
                         if (request.ApplicantIds.Contains(currentStatus.ApplicantId))
                         {

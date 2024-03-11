@@ -5,30 +5,19 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Partners.Query
 {
-    // Customer GetCustomerByIdQuery with Customer response
     public record GetPartnerByIdQuery(Guid Id) : IRequest<PartnerResponseDTO> { }
 
-    public class GetPartnerByIdHandler : IRequestHandler<GetPartnerByIdQuery, PartnerResponseDTO>
+    public class GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService) : IRequestHandler<GetPartnerByIdQuery, PartnerResponseDTO>
     {
-        private readonly IPartnerRepository _partnerRepository;
-        private readonly IFileService _fileService;
+        private readonly IPartnerRepository _partnerRepository = partnerRepository;
+        private readonly IFileService _fileService = fileService;
 
-        public GetPartnerByIdHandler(IPartnerRepository partnerRepository, IFileService fileService)
-        {
-            _partnerRepository = partnerRepository;
-            _fileService = fileService;
-        }
         public async Task<PartnerResponseDTO> Handle(GetPartnerByIdQuery request, CancellationToken cancellationToken)
         {
-
             var selectedPartner = await _partnerRepository.GetByIdAsync(request.Id);
-
-            // var postImageId= "postImage" + id.ToString();
             var headerLogoId = request.Id.ToString();
 
             var folder = "PartnersHeaderLogo";
-
-            //string fileName = "Slider" + id.ToString() + ".jpg"; // Replace ".jpg" with the actual file extension
             (byte[], string, string) fileResult = _fileService.getFile(headerLogoId, folder, null);
 
             // Convert the byte array of the image content to a Base64 encoded string

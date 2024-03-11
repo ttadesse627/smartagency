@@ -1,4 +1,3 @@
-using AppDiv.SmartAgency.API.Middleware;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.ApplicantsCvDTOs;
@@ -13,22 +12,14 @@ using AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Applicants.Queries;
 using AppDiv.SmartAgency.Application.Features.Applicants.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
-
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace AppDiv.SmartAgency.API.Controllers;
-
-
-[ApiController]
-[Route("api/[controller]")]
-
 public class ApplicantController : ApiControllerBase
 {
 
     [HttpPost("create")]
-
-    // [RoleBasedAuthorizationMetadata("Applicant", "CanAdd")]
     public async Task<ActionResult<ServiceResponse<int>>> CreateApplicant(CreateApplicantRequest request)
     {
         var response = await Mediator.Send(new CreateApplicantCommand(request));
@@ -36,23 +27,18 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpGet("get-all")]
-
-    // [RoleBasedAuthorizationMetadata("Applicant", "CanView")]
     public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicants(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
         return Ok(await Mediator.Send(new GetAllApplicants(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
     }
-    // [RoleBasedAuthorizationMetadata("Applicant", "CanViewDetail")]
+
     [HttpGet("get/{id}")]
     public async Task<ActionResult<GetApplicantResponseDTO>> GetAllApplicants(Guid id)
     {
         return Ok(await Mediator.Send(new GetSingleApplicantQuery(id)));
     }
 
-
     [HttpDelete("delete/{id}")]
-
-    // [RoleBasedAuthorizationMetadata("Applicant", "CanDelete")]
     public async Task<ActionResult<ServiceResponse<int>>> DeleteApplicant(Guid id)
     {
         try
@@ -67,7 +53,6 @@ public class ApplicantController : ApiControllerBase
     }
 
     [HttpPut("edit/{id}")]
-    // [RoleBasedAuthorizationMetadata("Applicant", "CanUpdate")]
     public async Task<ActionResult<ServiceResponse<int>>> EditApplicant(Guid id, [FromBody] EditApplicantRequest request)
     {
         try
@@ -84,7 +69,7 @@ public class ApplicantController : ApiControllerBase
             return BadRequest(ex.Message);
         }
     }
-    // [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+
     [HttpGet("search-applicant")]
     public async Task<ActionResult<ApplSearchResponseDTO>> GetSearchResult
    (
@@ -126,18 +111,13 @@ public class ApplicantController : ApiControllerBase
         return Ok(await Mediator.Send(new GetUnassignedApplicantsQuery()));
     }
 
-
-    //get applicant detail for cv
-
     [HttpGet("get-cv-detail/{id}")]
-
     public async Task<ActionResult<ApplicantCvResponseDTO>> GetApplicantCvDetail(Guid id)
     {
         return Ok(await Mediator.Send(new GetApplicantCvDetailQuery(id)));
     }
 
     [HttpGet("get-attachments")]
-
     public async Task<ActionResult<string>> GetApplicantAttachments(Guid ApplicantId, string AttachmentType)
     {
         return Ok(await Mediator.Send(new GetApplicantAttachmentsQuery(ApplicantId, AttachmentType)));
@@ -166,18 +146,5 @@ public class ApplicantController : ApiControllerBase
 
         return Ok(result);
     }
-
-
-
-
-    // [HttpGet("get-traveled-applicants")]
-    // public async Task<ActionResult<SearchModel<DropdownEnjazResponseDTO>>> GetTraveledApplicants()
-    // {
-    //     var response = new ResponseContainerDTO<List<DropdownEnjazResponseDTO>>
-    //     {
-    //         Items = await Mediator.Send(new GetForEnjazQuery())
-    //     };
-    //     return Ok(response);
-    // }
 
 }

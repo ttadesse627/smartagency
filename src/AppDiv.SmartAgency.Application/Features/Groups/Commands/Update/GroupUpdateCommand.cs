@@ -2,6 +2,7 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Update
@@ -20,9 +21,8 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Update
             var groupEntity = new UserGroup
             {
                 Id = request.group.Id,
-                GroupName = request.group.GroupName,
-                DescriptionStr = request.group.Description,
-                Roles = request.group.Roles,
+                Name = request.group.Name,
+                Permissions = CustomMapper.Mapper.Map<List<Permission>>(request.group.Permissions),
             };
             try
             {

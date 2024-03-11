@@ -13,7 +13,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence;
 public class AttaachmentRepository : BaseRepository<Attachment>, IAttachmentRepository
 {
     private readonly SmartAgencyDbContext _context;
-    private readonly IMapper _mapper;
 
     public AttaachmentRepository(SmartAgencyDbContext dbContext) : base(dbContext)
     {

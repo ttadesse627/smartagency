@@ -54,8 +54,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<CountryOperation> CountryOperations { get; set; } = null!;
         public DbSet<Process> Processes { get; set; } = null!;
         public DbSet<ProcessDefinition> ProcessDefinitions { get; set; } = null!;
-        public DbSet<ApplicationUser>? ApplicationUsers { get; set; }
+        public DbSet<ApplicationUser> AppUsers { get; set; } = null!;
         public DbSet<UserGroup> UserGroups { get; set; } = null!;
+        public DbSet<Permission> Permissions { get; set; } = null!;
+        public DbSet<RolePermission> RolePermissions { get; set; } = null!;
         public DbSet<Enjaz> Enjazs { get; set; } = null!;
         public DbSet<ApplicantProcess> ApplicantProcesses { get; set; } = null!;
         public DbSet<Complaint> Complaints { get; set; } = null!;
@@ -87,6 +89,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             #region Entity Configuration
             {
                 modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new UserGroupEntityConfig());
+                modelBuilder.ApplyConfiguration(new RolePermissionEntityConfig());
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
@@ -129,6 +133,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
             SeedData.Seedprocesses(modelBuilder);
             SeedData.SeedprocessDefinitions(modelBuilder);
+            SeedData.SeedPermissions(modelBuilder);
 
             #region Audit Config
             Audit.Core.Configuration.Setup()

@@ -4,45 +4,31 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
 {
-    public class GetDashbourdQuery : IRequest<Dictionary<string, Object>>
+    public class GetDashbourdQuery(DateTime? startDate, DateTime? endDate) : IRequest<Dictionary<string, Object>>
     {
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-        public GetDashbourdQuery(DateTime? startDate, DateTime? endDate)
-        {
-            StartDate = startDate;
-            EndDate = endDate;
-
-        }
-
+        public DateTime? StartDate { get; set; } = startDate;
+        public DateTime? EndDate { get; set; } = endDate;
     }
 
-    public class GetDashbourdHandler : IRequestHandler<GetDashbourdQuery, Dictionary<string, Object>>
+    public class GetDashbourdHandler(IProcessDefinitionRepository processDefinitionRepository, IApplicantProcessRepository applicantProcessRepository) : IRequestHandler<GetDashbourdQuery, Dictionary<string, Object>>
     {
 
-        private readonly IProcessDefinitionRepository _processDefinitionRepository;
-        private readonly IApplicantProcessRepository _applicantProcessRepository;
-        private object applicantProcessRepository;
-
-        public GetDashbourdHandler(IProcessDefinitionRepository processDefinitionRepository, IApplicantProcessRepository applicantProcessRepository)
-        {
-            _processDefinitionRepository = processDefinitionRepository;
-            _applicantProcessRepository = applicantProcessRepository;
-        }
+        private readonly IProcessDefinitionRepository _processDefinitionRepository = processDefinitionRepository;
+        private readonly IApplicantProcessRepository _applicantProcessRepository = applicantProcessRepository;
 
         public async Task<Dictionary<string, Object>> Handle(GetDashbourdQuery request, CancellationToken cancellationToken)
         {
 
             var response = new Dictionary<string, object>
                             {
-                                //{ "thisWeekSummary", null },
-                                { "thisMonthSummary", null },
-                                { "quickLinks", null},
-                                { "navBars", null}
+                                { "thisWeekSummary", "" },
+                                { "thisMonthSummary", "" },
+                                { "quickLinks", ""},
+                                { "navBars", ""}
                             };
             DateTime today = DateTime.Today;
-            DateTime startOfMonth = new DateTime(today.Year, today.Month, 1);
-            DateTime endDate = new DateTime(today.Year, today.Month, today.Day + 1);
+            DateTime startOfMonth = new(today.Year, today.Month, 1);
+            DateTime endDate = new(today.Year, today.Month, today.Day + 1);
             if (request.StartDate == null || request.EndDate == null)
             {
                 request.StartDate = startOfMonth;
@@ -57,7 +43,7 @@ namespace AppDiv.SmartAgency.Application.Features.Dashbourds.Query
 
 
 
-            // var ThisWeekSummary = await _applicantProcessRepository.GetDashbourdResult(startOfWeek, endOfWeek);
+            var ThisWeekSummary = await _applicantProcessRepository.GetDashbourdResult(startOfWeek, endOfWeek);
 
             var ThisMonthSummary = await _applicantProcessRepository.GetDashbourdResult(request.StartDate, request.EndDate);
             var QuickLinks = await _applicantProcessRepository.GetQuickLinks();

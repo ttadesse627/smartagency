@@ -17,11 +17,11 @@ public class UserRepository(SmartAgencyDbContext context) : BaseRepository<Appli
 
         if (predicate is not null)
         {
-            queryableUsers = _context.ApplicationUsers.Where(predicate).AsQueryable();
+            queryableUsers = _context.Users.Where(predicate).AsQueryable();
         }
         else
         {
-            queryableUsers = _context.ApplicationUsers.AsQueryable();
+            queryableUsers = _context.Users.AsQueryable();
         }
 
         foreach (var nav_property in eagerLoadedProperties)

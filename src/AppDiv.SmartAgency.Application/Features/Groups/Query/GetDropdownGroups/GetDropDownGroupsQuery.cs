@@ -23,7 +23,7 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup
             var dropDownResponse = new List<DropDownDto>();
             foreach (var grItem in grpdropDowns)
             {
-                dropDownResponse.Add(new DropDownDto { Key = grItem.Id, Value = grItem.GroupName });
+                dropDownResponse.Add(new DropDownDto { Key = grItem.Id, Value = grItem.Name! });
             }
 
             userGroups.UserGroups = dropDownResponse;

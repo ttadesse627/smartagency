@@ -10,24 +10,22 @@ public class GetPartnerDropdownQuery : IRequest<PartnerDropdownContainerDTO> { }
 public class GetPartnerDropdownQueryHandler : IRequestHandler<GetPartnerDropdownQuery, PartnerDropdownContainerDTO>
 {
     private readonly IPartnerRepository _partnerRepository;
-    private readonly ISmartAgencyDbContext _dbContext;
 
-    public GetPartnerDropdownQueryHandler(IPartnerRepository partnerQueryRepository, ISmartAgencyDbContext dbContext)
+    public GetPartnerDropdownQueryHandler(IPartnerRepository partnerQueryRepository)
     {
         _partnerRepository = partnerQueryRepository;
-        _dbContext = dbContext;
     }
     public async Task<PartnerDropdownContainerDTO> Handle(GetPartnerDropdownQuery request, CancellationToken cancellationToken)
     {
         var partnerResponse = new PartnerDropdownContainerDTO();
         var partnerList = await _partnerRepository.GetAllWithAsync("Orders");
 
-        if (partnerList.Count() > 0)
+        if (partnerList.Any())
         {
             var partners = new List<GetPartnerDropDownDTO>();
             foreach (var partner in partnerList)
             {
-                var words = partner.PartnerName.Split(' ');
+                var words = partner.PartnerName!.Split(' ');
                 var abbrName = new StringBuilder();
                 foreach (var word in words)
                 {

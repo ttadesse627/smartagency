@@ -2,18 +2,17 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
+using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
 {
-    public record CreateGroupCommand(AddGroupRequest group) : IRequest<ServiceResponse<int>> { }
-    public class CreateGroupCommandHAndler : IRequestHandler<CreateGroupCommand, ServiceResponse<int>>
+    public record CreateGroupCommand(AddGroupRequest Group) : IRequest<ServiceResponse<int>> { }
+    public class CreateGroupCommandHAndler(IGroupRepository groupRepository) : IRequestHandler<CreateGroupCommand, ServiceResponse<int>>
     {
-        private readonly IGroupRepository _groupRepository;
-        public CreateGroupCommandHAndler(IGroupRepository groupRepository)
-        {
-            _groupRepository = groupRepository;
-        }
+        private readonly IGroupRepository _groupRepository = groupRepository;
+
         public async Task<ServiceResponse<int>> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
             var response = new ServiceResponse<int>();
@@ -29,13 +28,19 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
             //     foreach (var error in validationResult.Errors)
             //         response.Errors.Add(error.ErrorMessage);
             //     response.Message = response.Errors[0];
-            // }  //can use this instead of automapper
+            // }
+            var permissions = new List<Permission>();
+            if (request.Group.Permissions.Count != 0)
+            {
+                foreach (var permission in request.Group.Permissions)
+                {
+                    permissions.Add(new() { Name = permission.Name, Actions = permission.Actions });
+                }
+            }
             var group = new UserGroup
             {
-                Id = Guid.NewGuid(),
-                GroupName = request.group.GroupName,
-                DescriptionStr = request.group.Description,
-                Roles = request.group.Roles
+                Name = request.Group.Name,
+                Permissions = permissions
             };
 
             try
@@ -53,7 +58,7 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
             {
                 response.Data = 0;
                 response.Errors?.Add(ex.Message);
-                //throw new BadRequestException(ex.Message);
+                throw new BadRequestException(ex.Message);
             }
             return response;
         }

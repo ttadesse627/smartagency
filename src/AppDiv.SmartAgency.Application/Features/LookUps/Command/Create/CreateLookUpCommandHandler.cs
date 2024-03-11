@@ -6,10 +6,7 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
 {
-    public record CreateLookUpCommand(CreateLookUpRequest LookUp) : IRequest<ServiceResponse<int>>
-    {
-
-    }
+    public record CreateLookUpCommand(CreateLookUpRequest LookUp) : IRequest<ServiceResponse<int>> { }
     public class CreateLookUpCommandHandler(ILookUpRepository lookUpRepository) : IRequestHandler<CreateLookUpCommand, ServiceResponse<int>>
     {
         private readonly ILookUpRepository _lookUpRepository = lookUpRepository;
@@ -34,8 +31,8 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Create
             {
                 var lookUp = new LookUp()
                 {
-                    Category = request.LookUp.Category,
-                    Value = request.LookUp.Value
+                    Category = request.LookUp.Category!,
+                    Value = request.LookUp.Value!
                 };
 
                 await _lookUpRepository.InsertAsync(lookUp, cancellationToken);

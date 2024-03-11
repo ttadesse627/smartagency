@@ -1,5 +1,3 @@
-
-
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Attachments;
@@ -12,10 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
-
-[ApiController]
-[Route("api/attachment")]
-public class AttachmentController(IMediator mediator) : ControllerBase
+public class AttachmentController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -83,19 +78,16 @@ public class AttachmentController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("lookup")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<AttachmntResponseDTO> GetDropdown()
     {
         return await _mediator.Send(new GetDropDownAttachmentsQuery());
     }
     [HttpGet("get-applicant-attachments")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AttachmentDropDownDto>> GetApplicantAttachments()
     {
         return await _mediator.Send(new GetApplicantAttachmentsQuery());
     }
     [HttpGet("get-order-attachments")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AttachmentDropDownDto>> GetOrderAttachments()
     {
         return await _mediator.Send(new GetOrderAttachmentsQuery());

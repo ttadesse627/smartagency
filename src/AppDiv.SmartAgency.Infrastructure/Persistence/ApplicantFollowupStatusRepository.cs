@@ -19,7 +19,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             var followupStatus = await _context.ApplicantFollowupStatuses
                          .Include(a => a.Applicant)
                          .Include(a => a.FollowupStatus)
-                         .FirstOrDefaultAsync(a => a.Id == Id);
+                         .FirstAsync(a => a.Id == Id);
             return followupStatus;
 
         }

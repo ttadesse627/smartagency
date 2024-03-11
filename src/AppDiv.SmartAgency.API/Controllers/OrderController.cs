@@ -10,22 +10,12 @@ using AppDiv.SmartAgency.Application.Features.Orders.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Orders.Query;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
-
-[Route("api/order")]
-[ApiController]
-
-[AllowAnonymous]
-public class OrderController : ControllerBase
+public class OrderController(IMediator mediator) : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public OrderController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     [HttpPost("create")]
     public async Task<ActionResult<ServiceResponse<String>>> Create(CreateOrderRequest request)

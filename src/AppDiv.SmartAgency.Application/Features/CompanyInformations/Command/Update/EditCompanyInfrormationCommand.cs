@@ -12,18 +12,18 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Up
     public class EditCompanyInformationCommand : IRequest<string>
     {
         public Guid Id { get; set; }
-        public string CompanyName { get; set; }
+        public string? CompanyName { get; set; }
 
-        public string CompanyNameAmharic { get; set; }
+        public string? CompanyNameAmharic { get; set; }
 
-        public string CompanyNameArabic { get; set; }
+        public string? CompanyNameArabic { get; set; }
 
         public string? ContractNumber { get; set; }
 
-        public string? licenseNumber { get; set; }
-        public string AssurancePolicyNumber { get; set; }
+        public string? LicenseNumber { get; set; }
+        public string? AssurancePolicyNumber { get; set; }
 
-        public string GeneralManager { get; set; }
+        public string? GeneralManager { get; set; }
         public string? GeneralManagerAmharic { get; set; }
         public string? ViceManager { get; set; }
         public string? ViceManagerAmharic { get; set; }
@@ -37,77 +37,77 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Up
         public EditCompanySettingRequest? CompanySetting { get; set; }
 
     }
-}
 
-public class EditCompanyInformationCommandHandler : IRequestHandler<EditCompanyInformationCommand, string>
-{
-    private readonly IFileService _fileService;
-    private readonly ICompanyInformationRepository _companyInformationRepository;
-    public EditCompanyInformationCommandHandler(ICompanyInformationRepository companyInformationRepository, IFileService fileService)
+    public class EditCompanyInformationCommandHandler : IRequestHandler<EditCompanyInformationCommand, string>
     {
-        _companyInformationRepository = companyInformationRepository;
-        _fileService = fileService;
-    }
-    public async Task<string> Handle(EditCompanyInformationCommand request, CancellationToken cancellationToken)
-    {
-        //var fetchedcompanyInformationEntity =await _companyInformationRepository.update(request.Id);
-        var companyInformationEntity = CustomMapper.Mapper.Map<CompanyInformation>(request);
-
-        var witnesses = new List<Witness>();
-        foreach (var witness in request.Witness.Witnesses)
+        private readonly IFileService _fileService;
+        private readonly ICompanyInformationRepository _companyInformationRepository;
+        public EditCompanyInformationCommandHandler(ICompanyInformationRepository companyInformationRepository, IFileService fileService)
         {
-            var witns = CustomMapper.Mapper.Map<Witness>(witness);
-            witnesses.Add(witns);
+            _companyInformationRepository = companyInformationRepository;
+            _fileService = fileService;
         }
-        companyInformationEntity.Witnesses = witnesses;
-
-
-
-        try
+        public async Task<string> Handle(EditCompanyInformationCommand request, CancellationToken cancellationToken)
         {
-            // fetchedcompanyInformationEntity = companyInformationEntity;
-            // var res= await _companyInformationRepository.SaveChangesAsync(cancellationToken);
+            //var fetchedcompanyInformationEntity =await _companyInformationRepository.update(request.Id);
+            var companyInformationEntity = CustomMapper.Mapper.Map<CompanyInformation>(request);
 
-            var res = await _companyInformationRepository.UpdateAsync(companyInformationEntity);
-            await _companyInformationRepository.SaveChangesAsync(cancellationToken);
-
-            if (res >= 1)
+            var witnesses = new List<Witness>();
+            foreach (var witness in request.Witness!.Witnesses!)
             {
+                var witns = CustomMapper.Mapper.Map<Witness>(witness);
+                witnesses.Add(witns);
+            }
+            companyInformationEntity.Witnesses = witnesses;
 
-                // save headerlogo;
-                var file = request.LetterLogo;
-                var folderName = Path.Combine("Resources", "CompanyLetterLogo");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                var fileName = request.Id.ToString();
-                if (!string.IsNullOrEmpty(file))
+
+
+            try
+            {
+                // fetchedcompanyInformationEntity = companyInformationEntity;
+                // var res= await _companyInformationRepository.SaveChangesAsync(cancellationToken);
+
+                var res = await _companyInformationRepository.UpdateAsync(companyInformationEntity);
+                await _companyInformationRepository.SaveChangesAsync(cancellationToken);
+
+                if (res >= 1)
                 {
 
-                    await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
-
-                    var file2 = request.LetterLogo;
-                    var folderName2 = Path.Combine("Resources", "CompanyLetterBackground");
-                    var pathToSave2 = Path.Combine(Directory.GetCurrentDirectory(), folderName2);
-                    var fileName2 = request.Id.ToString();
+                    // save headerlogo;
+                    var file = request.LetterLogo;
+                    var folderName = Path.Combine("Resources", "CompanyLetterLogo");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    var fileName = request.Id.ToString();
                     if (!string.IsNullOrEmpty(file))
                     {
 
-                        await _fileService.UploadBase64FileAsync(file2, fileName2, pathToSave2, FileMode.Create);
+                        await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
 
+                        var file2 = request.LetterLogo;
+                        var folderName2 = Path.Combine("Resources", "CompanyLetterBackground");
+                        var pathToSave2 = Path.Combine(Directory.GetCurrentDirectory(), folderName2);
+                        var fileName2 = request.Id.ToString();
+                        if (!string.IsNullOrEmpty(file))
+                        {
+
+                            await _fileService.UploadBase64FileAsync(file2, fileName2, pathToSave2, FileMode.Create);
+
+                        }
                     }
                 }
             }
+
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message);
+            }
+
+
+            //  var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
+            // cd cvar partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
+
+            return "sucessfully updated";
         }
-
-        catch (Exception exp)
-        {
-            throw new ApplicationException(exp.Message);
-        }
-
-
-        //  var modifiedPartner = await _partnerQueryRepository.GetByIdAsync(request.Id);
-        // cd cvar partnerResponse = CustomMapper.Mapper.Map<PartnerResponseDTO>(modifiedPartner);
-
-        return "sucessfully updated";
     }
 }
 

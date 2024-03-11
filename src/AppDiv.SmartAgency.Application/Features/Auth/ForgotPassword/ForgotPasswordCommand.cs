@@ -1,6 +1,4 @@
-﻿
-using AppDiv.SmartAgency.Application.Exceptions;
-using AppDiv.SmartAgency.Application.Interfaces;
+﻿using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Service;
 using AppDiv.SmartAgency.Utility.Config;
 using AppDiv.SmartAgency.Utility.Exceptions;
@@ -9,14 +7,13 @@ using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Text;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
 {
     public record ForgotPasswordCommand : IRequest<object>
     {
-        public string UserName { get; init; }
-        public string ClientURI { get; init; }
+        public string UserName { get; init; } = string.Empty;
+        public string ClientURI { get; init; } = string.Empty;
     }
 
     public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, object>
@@ -106,30 +103,5 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
             await _mailService.SendAsync(body: emailContent, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: user.Email, cancellationToken);
             return true;
         }
-
-
-        // private async Task<bool> sendByEmailAsync(ForgotPasswordCommand request, CancellationToken cancellationToken)
-        // {
-        //     // var response = await _identityService.ForgotPassword(request.Email);
-        //     // if (!response.result.Succeeded)
-        //     // {
-        //     //     throw new Exception(response.result.Errors.ToString());
-        //     // }
-        //     // var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(response.resetToken)); 
-        //     // var param = new Dictionary<string, string?>
-        //     // {
-        //     //     { "token" , token },
-        //     //     { "email" , request.Email }
-        //     // };
-        //     // var callback = QueryHelpers.AddQueryString(request.ClientURI, param);
-        //     // var emailContent = "Please use the link below to reset your password\n" + callback;
-        //     // var subject = "Reset Password";
-        //     // await _mailService.SendAsync(body: emailContent, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: request.Email, cancellationToken);
-        //     // return  true;
-
-
-        // }
-
-
     }
 }

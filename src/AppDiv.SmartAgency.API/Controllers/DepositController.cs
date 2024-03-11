@@ -1,7 +1,3 @@
-
-
-
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Deposits;
 using AppDiv.SmartAgency.Application.Features.Deposits.Command.Create;
@@ -14,21 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-
-    [ApiController]
-    [Route("api/deposit")]
-    public class DepositController : ControllerBase
+    public class DepositController(IMediator mediator) : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        public DepositController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpPost("create")]
         public async Task<ActionResult<DepositResponseDTO>> CreateDeposit(CreateDepositRequest depositRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(new CreateDepositCommand(depositRequest));
+            var response = await _mediator.Send(new CreateDepositCommand(depositRequest), token);
             return Ok(response);
         }
 
@@ -36,25 +25,21 @@ namespace AppDiv.SmartAgency.API.Controllers
         public async Task<ActionResult<DepositResponseDTO>> GetAllDeposits(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return Ok(await _mediator.Send(new GetAllDepositQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
-
         }
 
-
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<CreateDepositRequest> Get(Guid id)
         {
             return await _mediator.Send(new GetDepositByIdQuery(id));
         }
 
-
-       /* [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult> DeleteDeposit(Guid id)
+        [HttpDelete("Delete")]
+        public async Task<ActionResult> DeleteDeposits([FromQuery] List<Guid> ids)
         {
             try
             {
                 string result = string.Empty;
-                result = await _mediator.Send(new DeleteDepositCommand(id));
+                result = await _mediator.Send(new DeleteDepositCommand(ids));
                 return Ok(result);
             }
             catch (Exception exp)
@@ -62,23 +47,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-*/
-       
-
-        [HttpDelete("Delete")]
-
-         public async Task<ActionResult> DeleteDeposits([FromQuery]List<Guid> ids){
-
-            try
-            {
-              string result= string.Empty;
-              result= await _mediator.Send(new DeleteDepositCommand(ids));
-              return Ok(result);
-            }
-            catch(Exception exp){
-                return BadRequest(exp.Message);
-            }
-         }
 
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditDepositCommand command)
@@ -94,15 +62,11 @@ namespace AppDiv.SmartAgency.API.Controllers
                 {
                     return BadRequest();
                 }
-
-                //var result = await _mediator.Send(command,id);
             }
             catch (Exception exp)
             {
                 return BadRequest(exp.Message);
             }
-
-
         }
     }
 

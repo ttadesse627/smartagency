@@ -1,6 +1,4 @@
-
 using MediatR;
-
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
@@ -16,12 +14,7 @@ using AppDiv.SmartAgency.Application.Features.Groups.Commands.Delete;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    [EnableCors("CorsPolicy")]
-    [Route("api/group")]
-    [ApiController]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member,User")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class GroupController : ControllerBase
+    public class GroupController : ApiControllerBase
     {
         private readonly ISender _mediator;
         private readonly ILogger<GroupController> _Ilog;
@@ -32,8 +25,6 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpPost("create")]
-        // [ProducesResponseType(StatusCodes.Status200OK)]
-        // [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<GroupDTO>> CreateGroup([FromBody] CreateGroupCommand request)
         {
             var result = await _mediator.Send(request);
@@ -48,13 +39,11 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<SearchModel<FetchGroupDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        public async Task<SearchModel<FetchGroupDTO>> Get(int pageNumber = 1, int pageSize = 10, string searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return await _mediator.Send(new GetAllGroupQuery(pageNumber, pageSize, searchTerm!, orderBy!, sortingDirection));
         }
         [HttpGet("lookup")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<UserGroupResponseDTO> GetDropdown()
         {
             return await _mediator.Send(new GetDropDownGroups());
@@ -63,7 +52,6 @@ namespace AppDiv.SmartAgency.API.Controllers
 
 
         [HttpGet("get/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<GroupDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetGroupbyId(id));

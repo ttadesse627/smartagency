@@ -9,21 +9,15 @@ using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
-    public class ApplicantProcessRepository : BaseRepository<ApplicantProcess>, IApplicantProcessRepository
+    public class ApplicantProcessRepository(SmartAgencyDbContext dbContext) : BaseRepository<ApplicantProcess>(dbContext), IApplicantProcessRepository
     {
-        private readonly SmartAgencyDbContext _context;
-
-        public ApplicantProcessRepository(SmartAgencyDbContext dbContext) : base(dbContext)
-        {
-            _context = dbContext;
-
-        }
+        private readonly SmartAgencyDbContext _context = dbContext;
 
         public async Task<object> GetDashbourdResult(DateTime? startDate, DateTime? endDate)
         {
 
 
-            var response = new List<Object>();
+            var response = new List<object>();
 
             var groupedApplicantProcesses = await _context.ApplicantProcesses
                                    .Include(ap => ap.ProcessDefinition)
@@ -32,7 +26,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                                    .Select(g => new
                                    {
                                        Count = g.Count(),
-                                       Name = g.FirstOrDefault().ProcessDefinition.Name
+                                       Name = g.FirstOrDefault()!.ProcessDefinition.Name
                                    }).ToListAsync();
 
 
@@ -46,11 +40,8 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 }
             }
 
-            // var numberOfAssignedVisa = await _context.Orders
-            //                         .CountAsync(o => (o.Employees != null && o.Employees.Count > 0) && o.CreatedAt >= startDate && o.CreatedAt < endDate);
-
             var numberOfAssignedVisas = await _context.Applicants
-                                    .CountAsync(app => (app.OrderId != null) && (app.Order.CreatedAt >= startDate && app.Order.CreatedAt < endDate));
+                                    .CountAsync(app => (app.OrderId != null) && (app.Order!.CreatedAt >= startDate && app.Order.CreatedAt < endDate));
 
 
 
@@ -154,7 +145,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             var expiredVisas = await _context.Applicants
                         .Where(app => app.OrderId != null && app.IsDeleted == false)
                         .Join(_context.Orders.Where(o => !o.IsDeleted), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
-                        .Join(_context.CountryOperations, ao => ao.Order.Sponsor.Address.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
+                        .Join(_context.CountryOperations, ao => ao.Order.Sponsor!.Address!.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
                         .Where(aoc => DateTime.Compare(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays), DateTime.Now) < 0).CountAsync();
 
             if (expiredVisas > 0)
@@ -180,7 +171,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
 
                 var penalities = await _context.Applicants
-                   .CountAsync(app => (app.IsDeleted == false) && (app.TraveledApplicant == null) && (app.OrderId != null) && (app.Order.IsDeleted == false) && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now) < 0));
+                   .CountAsync(app => (app.IsDeleted == false) && (app.TraveledApplicant == null) && (app.OrderId != null) && (app.Order!.IsDeleted == false) && (DateTime.Compare(app.Order.CreatedAt.AddDays(settings.PenalityInterval), DateTime.Now) < 0));
 
 
                 if (penalities > 0)
@@ -196,10 +187,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 }
             }
 
-
-            //dynamic processes
-
-
             var expiredProcesses = await _context.ApplicantProcesses
                           .Include(ap => ap.ProcessDefinition)
                           .Where(ap => ap.Status == ProcessStatus.In)
@@ -207,7 +194,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                           .GroupBy(ap => ap.ProcessDefinitionId)
                           .Select(g => new JObject(
                                           //new JProperty("Id", g.Key),
-                                          new JProperty("Name", g.FirstOrDefault().ProcessDefinition.Name),
+                                          new JProperty("Name", g.FirstOrDefault()!.ProcessDefinition.Name),
                                           new JProperty("Count", g.Count()),
                                           new JProperty("Path", "quick-links/get-dynamic-process/" + g.Key)
                                       )).ToListAsync();

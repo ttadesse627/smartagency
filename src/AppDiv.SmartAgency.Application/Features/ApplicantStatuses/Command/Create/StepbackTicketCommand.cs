@@ -63,7 +63,7 @@ public class StepbackTicketCommandHandler : IRequestHandler<StepbackTicketComman
         else
         {
             var process = currentPd.Process;
-            var processDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id);
+            var processDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process!.Id);
             var proDefinitions = processDefs.OrderBy(pd => pd.Step).ToList();
 
             var currentPdIndex = proDefinitions.FindIndex(pd => pd.Id == currentPd.Id);
@@ -73,12 +73,12 @@ public class StepbackTicketCommandHandler : IRequestHandler<StepbackTicketComman
             {
                 // This is the first process definition for the current process,
                 // move the applicant to the prevous process
-                var prevProcess = await _processRepository.GetWithPredicateAsync(p => p.Step == process.Step - 1, "ProcessDefinitions");
+                var prevProcess = await _processRepository.GetWithPredicateAsync(p => p.Step == process!.Step - 1, "ProcessDefinitions");
                 if (prevProcess != null)
                 {
                     // Set the applicant's status to 'In' for the last process definition of the previous process
                     var lastPdOfPrevProcess = prevProcess.ProcessDefinitions?.OrderBy(pd => pd.Step).Last();
-                    var applProc = await _applicantProcessRepository.GetWithPredicateAsync(applpr => applpr.ApplicantId == request.ApplicantId && applpr.ProcessDefinitionId == lastPdOfPrevProcess.Id && applpr.Status == ProcessStatus.Out);
+                    var applProc = await _applicantProcessRepository.GetWithPredicateAsync(applpr => applpr.ApplicantId == request.ApplicantId && applpr.ProcessDefinitionId == lastPdOfPrevProcess!.Id && applpr.Status == ProcessStatus.Out);
                     applProc.Status = ProcessStatus.In;
                     _applicantProcessRepository.Delete(appl => appl.ApplicantId == request.ApplicantId && appl.ProcessDefinitionId == request.ProcessDefinitionId);
                 }

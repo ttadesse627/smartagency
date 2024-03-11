@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.Pagess;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Features.PostImages.Command.Create;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Utility.Exceptions;
@@ -14,35 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    [ApiController]
-    [Route("api/postImage")]
-    public class PostImageController : ControllerBase
+    public class PostImageController(IMediator mediator, IFileService fileService) : ApiControllerBase
     {
-        private IMediator _mediator;
-        private IFileService _fileService;
-        public PostImageController(IMediator mediator, IFileService fileService)
-        {
-            _mediator = mediator;
-            _fileService = fileService;
-        }
+        private readonly IMediator _mediator = mediator;
+        private readonly IFileService _fileService = fileService;
 
         [HttpPost("create")]
         public async Task<ActionResult<ServiceResponse<Int32>>> CreatePostImage(CreatePostImageRequest postImageRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(new CreatePostImageCommand(postImageRequest));
+            var response = await _mediator.Send(new CreatePostImageCommand(postImageRequest), token);
             return Ok(response);
         }
 
         [HttpGet("get-image")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get([FromQuery] string id)
         {
             var postImageId = id;
-
-
             // var response = _fileService.getFile(id.ToString(),fileType , folderType);
-
-
 
             try
             {
@@ -74,7 +56,6 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get-all-sliders")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetAllSliders()
         {
             try
@@ -100,7 +81,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             }
         }
         [HttpDelete("delete-slider")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult<String> DeleteSlider([FromQuery] string id)
         {
             try
@@ -109,9 +89,6 @@ namespace AppDiv.SmartAgency.API.Controllers
                 string fileName = id + "*"; // Replace "." with the actual file extension
                 var response = _fileService.DeleteFile(fileName, folderName);
                 return response;
-
-
-                // return NoContent();
             }
 
             catch (NotFoundException e)

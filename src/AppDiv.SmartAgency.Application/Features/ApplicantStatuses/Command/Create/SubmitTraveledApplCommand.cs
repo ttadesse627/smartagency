@@ -9,26 +9,16 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Create;
 public record SubmitTraveledApplCommand(SubmitTraveledApplRequest request) : IRequest<TicketProcessResponseDTO> { }
-public class SubmitTraveledApplCommandHandler : IRequestHandler<SubmitTraveledApplCommand, TicketProcessResponseDTO>
+public class SubmitTraveledApplCommandHandler(IApplicantProcessRepository applicantProcessRepository,
+IApplicantRepository applicantRepository, IMediator mediator,
+IProcessDefinitionRepository proDefRepository, ITraveledApplicantRepository traveledApplicantRepository) : IRequestHandler<SubmitTraveledApplCommand, TicketProcessResponseDTO>
 {
-    private readonly IMediator _mediator;
-    private readonly IProcessDefinitionRepository _proDefRepository;
-    private readonly IApplicantProcessRepository _applicantProcessRepository;
-    private readonly IApplicantRepository _applicantRepository;
-    private readonly ITraveledApplicantRepository _traveledApplicantRepository;
-    private readonly ILookUpRepository _lookupRepository;
+    private readonly IMediator _mediator = mediator;
+    private readonly IProcessDefinitionRepository _proDefRepository = proDefRepository;
+    private readonly IApplicantProcessRepository _applicantProcessRepository = applicantProcessRepository;
+    private readonly IApplicantRepository _applicantRepository = applicantRepository;
+    private readonly ITraveledApplicantRepository _traveledApplicantRepository = traveledApplicantRepository;
 
-    public SubmitTraveledApplCommandHandler(IApplicantProcessRepository applicantProcessRepository,
-    IApplicantRepository applicantRepository, ILookUpRepository lookUpRepository, IMediator mediator,
-    IProcessDefinitionRepository proDefRepository, ITraveledApplicantRepository traveledApplicantRepository)
-    {
-        _mediator = mediator;
-        _applicantProcessRepository = applicantProcessRepository;
-        _applicantRepository = applicantRepository;
-        _proDefRepository = proDefRepository;
-        _traveledApplicantRepository = traveledApplicantRepository;
-        _lookupRepository = lookUpRepository;
-    }
     public async Task<TicketProcessResponseDTO> Handle(SubmitTraveledApplCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
@@ -62,7 +52,7 @@ public class SubmitTraveledApplCommandHandler : IRequestHandler<SubmitTraveledAp
                 {
                     Applicant = applicant1,
                     ProcessDefinition = traveld,
-                    Date = (DateTime)request.Date,
+                    Date = (DateTime)request.Date!,
                     Status = ProcessStatus.In
                 };
                 applicantStatuses.Add(applicantStatus);
@@ -85,12 +75,12 @@ public class SubmitTraveledApplCommandHandler : IRequestHandler<SubmitTraveledAp
 
             if (appStatusSuccess || appTicketSuccess)
             {
-                response = await _mediator.Send(new GetTicketProcessApplicantsQuery());
+                response = await _mediator.Send(new GetTicketProcessApplicantsQuery(), cancellationToken);
             }
         }
         catch (Exception ex)
         {
-            throw new System.ApplicationException(ex.Message);
+            throw new ApplicationException(ex.Message);
         }
 
         return response;

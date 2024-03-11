@@ -24,8 +24,8 @@ public record OrderStatusResponseDTO
     public string? DepartureTime { get; set; }
     public string? Transit { get; set; }
     public string? ArrivalTime { get; set; }
-    public string TravelStatus { get; set; }
-    public string StatusName { get; set; }
+    public string? TravelStatus { get; set; }
+    public string? StatusName { get; set; }
     public DateTime? Date { get; set; }
 
 

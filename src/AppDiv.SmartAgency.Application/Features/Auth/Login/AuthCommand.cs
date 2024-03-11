@@ -5,9 +5,9 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using System.Security.Authentication;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.RoleDTOs;
 using System.Text;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login;
 public class AuthCommand : IRequest<AuthResponseDTO>
@@ -33,45 +33,34 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
 
     public async Task<AuthResponseDTO> Handle(AuthCommand request, CancellationToken cancellationToken)
     {
+        var (result, roles, userId) = await _identityService.AuthenticateUser(request.UserName, request.Password);
 
-        var response = await _identityService.AuthenticateUser(request.UserName, request.Password);
-
-        if (!response.result.Succeeded)
+        if (!result.Succeeded)
         {
-            throw new AuthenticationException(string.Join(",", response.result.Errors));
+            throw new AuthenticationException(string.Join(",", result.Errors));
         }
 
         var userResponse = new AuthResponseDTO();
         var explicitLoadedProperties = new String[] { "UserGroups", "Partner", "Partner.Orders", };
-        var userData = await _userRepository.GetWithPredicateAsync(user => user.Id == response.userId!, explicitLoadedProperties);
-        string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, response.roles)!);
+        var userData = await _userRepository.GetWithPredicateAsync(user => user.Id == userId!, explicitLoadedProperties);
+        string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, roles)!);
 
-        var userRoles = userData.UserGroups.SelectMany(ug => ug.Roles
-            .Select(r => new RoleDto
-            {
-                Page = r.Value<string>("Page") ?? "",
-                Title = r.Value<string>("Title") ?? "",
-                CanAdd = r.Value<bool>("CanAdd"),
-                CanDelete = r.Value<bool>("CanDelete"),
-                CanViewDetail = r.Value<bool>("CanViewDetail"),
-                CanView = r.Value<bool>("CanView"),
-                CanUpdate = r.Value<bool>("CanUpdate")
-            })).GroupBy(r => r.Page.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new RoleDto
-            {
-                Page = g.Key,
-                Title = g.FirstOrDefault()?.Title ?? "",
-                CanAdd = g.Aggregate(false, (acc, x) => acc || x.CanAdd),
-                CanDelete = g.Aggregate(false, (acc, x) => acc || x.CanDelete),
-                CanUpdate = g.Aggregate(false, (acc, x) => acc || x.CanUpdate),
-                CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
-                CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
-            });
+        var userRoles = userData.UserGroups.SelectMany(ug => ug.Permissions
+                                 .Select(r => new PermissionDto
+                                 {
+                                     Name = r.Name,
+                                     Actions = r.Actions.Select(ac => ac.ToString()).ToList()
+                                 })).GroupBy(r => r.Name.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
+                                 {
+                                     Name = g.Key,
+                                     Actions = g.SelectMany(p => p.Actions).ToList()
+                                 }).ToList();
 
         if (userData.Partner != null)
         {
-            var words = userData.Partner.PartnerName.Split(' ');
+            var words = userData.Partner.PartnerName?.Split(' ');
             var abbrName = new StringBuilder();
-            foreach (var word in words)
+            foreach (var word in words!)
             {
                 abbrName.Append(word.First());
             }
@@ -85,10 +74,10 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
             userResponse.Partner = partResponse;
         }
         userResponse.UserId = userData.Id;
-        userResponse.Username = userData.UserName;
+        userResponse.Username = userData.UserName!;
         userResponse.Token = token;
         userResponse.FullName = userData.FullName!;
-        userResponse.Roles = userRoles.ToList();
+        userResponse.Permissions = [.. userRoles];
 
         return userResponse;
     }

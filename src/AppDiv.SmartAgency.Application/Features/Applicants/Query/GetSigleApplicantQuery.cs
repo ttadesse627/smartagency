@@ -1,25 +1,16 @@
-
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs.GetSingleApplResponseDTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Query;
-public record GetSingleApplicantQuery(Guid id) : IRequest<GetApplicantResponseDTO>
+public record GetSingleApplicantQuery(Guid Id) : IRequest<GetApplicantResponseDTO>
 { }
-public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicantQuery, GetApplicantResponseDTO>
+public class GetSingleApplicantQueryHandler(IApplicantRepository applicantRepository, IFileService fileService) : IRequestHandler<GetSingleApplicantQuery, GetApplicantResponseDTO>
 {
-    private readonly IMediator _mediator;
-    private readonly IApplicantRepository _applicantRepository;
-    private readonly IFileService _fileService;
-    public GetSingleApplicantQueryHandler(IApplicantRepository applicantRepository, IMediator mediator, IFileService fileService)
-    {
-        _applicantRepository = applicantRepository;
-        _mediator = mediator;
-        _fileService = fileService;
-    }
+    private readonly IApplicantRepository _applicantRepository = applicantRepository;
+    private readonly IFileService _fileService = fileService;
+
     public async Task<GetApplicantResponseDTO> Handle(GetSingleApplicantQuery request, CancellationToken cancellationToken)
     {
         var eagerLoadedProperties = new string[]
@@ -32,7 +23,7 @@ public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicant
                                         "Education.Awards.LookUp","BankAccount","EmergencyContact.Relationship", "Attachments",
                                         "EmergencyContact.Address.Region","Witnesses","Beneficiaries.Relationship","Address.Region"
                                     };
-        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.id && appl.IsDeleted == false, eagerLoadedProperties);
+        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == request.Id && appl.IsDeleted == false, eagerLoadedProperties);
         var attachmentFiles = applicantEntity.Attachments;
         var fileTypes = new List<string>();
         if (attachmentFiles != null && attachmentFiles.Count > 0)
@@ -48,7 +39,7 @@ public class GetSingleApplicantQueryHandler : IRequestHandler<GetSingleApplicant
         {
             applicantResponse.BirthDate = birthDate.ToString("yyyy-MM-dd");
         }
-        applicantResponse.Gender = applicantResponse.Gender.ToString();
+        applicantResponse.Gender = applicantResponse.Gender?.ToString();
 
         var fileResults = _fileService.GetFiles(fileTypes, applicantEntity.Id.ToString());
         var attchFiles = new List<ApplicantAttachmentResponseDTO>();

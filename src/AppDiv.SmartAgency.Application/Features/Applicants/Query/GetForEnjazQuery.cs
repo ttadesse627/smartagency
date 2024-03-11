@@ -56,10 +56,10 @@ public class GetForEnjazQueryHandler : IRequestHandler<GetForEnjazQuery, List<Dr
                 var resp = new DropdownEnjazResponseDTO
                 {
                     ApplicantId = applicant.Id,
-                    OrderNumber = applicant.Order.OrderNumber,
-                    SponsorFullName = applicant.Order.Sponsor?.FullName,
-                    EmployeeProfession = applicant.Jobtitle.Value,
-                    EmployeeLanguage = applicant.Language.Value,
+                    OrderNumber = applicant.Order?.OrderNumber,
+                    SponsorFullName = applicant.Order?.Sponsor?.FullName,
+                    EmployeeProfession = applicant.Jobtitle?.Value,
+                    EmployeeLanguage = applicant.Language?.Value,
                     PassportNumber = applicant.PassportNumber,
                     EmployeeFullName = applicant.FirstName + " " + applicant.MiddleName + " " + applicant.LastName
                 };

@@ -368,3 +368,5 @@ FodyWeavers.xsd
 /Properties
 /tests
 /NoteBooks
+/Migrations
+src\AppDiv.SmartAgency.Infrastructure\Migrations

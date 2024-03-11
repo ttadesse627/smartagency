@@ -8,5 +8,6 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
     {
         Task<List<UserGroup>> GetMultipleUserGroups(ICollection<Guid> groupIds);
         Task<List<UserGroup>> GetUserGroupByUserId(string userId);
+        IQueryable<UserGroup> GetMultipleUserGroupsBySearch(string? searchTerm);
     }
 }

@@ -1,7 +1,5 @@
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 
@@ -23,10 +21,34 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
 
         public async Task<SearchModel<FetchGroupDTO>> Handle(GetAllGroupQuery request, CancellationToken cancellationToken)
         {
-            var userGroups = await _groupRepository.GetAllWithSearchAsync(request.SearchTerm, gr => gr.Id != null);
+            var userGroups = _groupRepository.GetMultipleUserGroupsBySearch(request.SearchTerm);
             var paginatedUsers = await _groupRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, userGroups, request.OrderBy);
-            var groupResponse = CustomMapper.Mapper.Map<SearchModel<FetchGroupDTO>>(paginatedUsers);
-            return groupResponse;
+            var groupResponse = paginatedUsers.Items.Select(ug => new FetchGroupDTO
+            {
+                Id = ug.Id,
+                Name = ug.Name,
+                Permissions = ug.Permissions.Select(p => new PermissionDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Actions = p.Actions.Select(ac => ac.ToString()).ToList()
+                }).ToList()
+            });
+            return new SearchModel<FetchGroupDTO>
+            {
+                Items = groupResponse,
+                CurrentPage = paginatedUsers.CurrentPage,
+                MaxPage = paginatedUsers.MaxPage,
+                TotalCount = paginatedUsers.TotalCount,
+                SearchKeyWord = paginatedUsers.SearchKeyWord,
+                PagingSize = paginatedUsers.PagingSize,
+                Filters = paginatedUsers.Filters,
+                ObjectFilters = paginatedUsers.ObjectFilters,
+                SortingColumn = paginatedUsers.SortingColumn,
+                SortingDirection = paginatedUsers.SortingDirection,
+                Tags = paginatedUsers.Tags,
+
+            };
         }
     }
 }

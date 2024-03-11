@@ -6,20 +6,15 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Query;
 public record GetApplProcessQuery(Guid ProcessId) : IRequest<ApplicantProcessResponseDTO> { }
-public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, ApplicantProcessResponseDTO>
+public class GetApplProcessQueryHandler(
+    IApplicantRepository applicantRepository, IProcessRepository processRepository, IProcessDefinitionRepository definitionRepository,
+    IApplicantProcessRepository applicantProcessRepository) : IRequestHandler<GetApplProcessQuery, ApplicantProcessResponseDTO>
 {
-    private readonly IProcessRepository _processRepository;
-    private readonly IProcessDefinitionRepository _definitionRepository;
-    private readonly IApplicantRepository _applicantRepository;
-    private readonly IApplicantProcessRepository _applicantProcessRepository;
+    private readonly IProcessRepository _processRepository = processRepository;
+    private readonly IProcessDefinitionRepository _definitionRepository = definitionRepository;
+    private readonly IApplicantRepository _applicantRepository = applicantRepository;
+    private readonly IApplicantProcessRepository _applicantProcessRepository = applicantProcessRepository;
 
-    public GetApplProcessQueryHandler(IApplicantRepository applicantRepository, IProcessRepository processRepository, IProcessDefinitionRepository definitionRepository, IApplicantProcessRepository applicantProcessRepository)
-    {
-        _applicantRepository = applicantRepository;
-        _processRepository = processRepository;
-        _definitionRepository = definitionRepository;
-        _applicantProcessRepository = applicantProcessRepository;
-    }
     public async Task<ApplicantProcessResponseDTO> Handle(GetApplProcessQuery query, CancellationToken cancellationToken)
     {
         var applProLoadedProperties = new string[] { "Applicant", "Applicant.Order", "Applicant.Order.Sponsor" };
@@ -77,7 +72,7 @@ public class GetApplProcessQueryHandler : IRequestHandler<GetApplProcessQuery, A
             }
             else
             {
-                nextpdId = processDefs.Where(p => p.Step == pd.Step + 1).FirstOrDefault().Id;
+                nextpdId = processDefs.Where(p => p.Step == pd.Step + 1).FirstOrDefault()!.Id;
             }
             var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();

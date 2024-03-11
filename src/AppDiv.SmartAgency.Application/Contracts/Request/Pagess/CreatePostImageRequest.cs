@@ -7,6 +7,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Pagess
 {
     public class CreatePostImageRequest
     {
-        public ICollection<String> SliderImages { get; set; }
+        public ICollection<string> SliderImages { get; set; } = [];
     }
 }

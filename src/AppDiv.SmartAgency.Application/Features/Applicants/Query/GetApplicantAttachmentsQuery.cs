@@ -9,17 +9,15 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Query
 
     public class GetApplicantAttachmentsQueryHandler : IRequestHandler<GetApplicantAttachmentsQuery, string>
     {
-        private readonly IApplicantRepository _applicantRepository;
         private readonly IFileService _fileService;
 
-        public GetApplicantAttachmentsQueryHandler(IApplicantRepository applicantRepository, IFileService fileService)
+        public GetApplicantAttachmentsQueryHandler(IFileService fileService)
         {
-            _applicantRepository = applicantRepository;
             _fileService = fileService;
         }
         public async Task<string> Handle(GetApplicantAttachmentsQuery query, CancellationToken cancellationToken)
         {
-            string? response = null;
+            await Task.CompletedTask;
             if (query.ApplicantId == null)
             {
                 throw new BadRequestException("The applicant id should not be null");
@@ -33,7 +31,7 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Query
             {
                 throw new BadRequestException("The attachment type should not be null or white space.");
             }
-            response = Convert.ToBase64String(_fileService.getFile(query.ApplicantId.ToString(), query.AttachmentType, null).file);
+            string? response = Convert.ToBase64String(_fileService.getFile(query.ApplicantId.ToString(), query.AttachmentType, null).file);
 
             return response;
         }

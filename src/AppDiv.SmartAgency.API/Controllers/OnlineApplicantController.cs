@@ -10,21 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-
-    [ApiController]
-    [Route("api/onlineApplicant")]
-    public class OnlineApplicantController : ControllerBase
+    public class OnlineApplicantController(IMediator mediator) : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        public OnlineApplicantController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpPost("create")]
         public async Task<ActionResult<OnlineApplicantResponseDTO>> CreateOnlineApplicant(OnlineApplicantRequest onlineApplicantRequest, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new CreateOnlineApplicantCommand(onlineApplicantRequest));
+            var response = await _mediator.Send(new CreateOnlineApplicantCommand(onlineApplicantRequest), cancellationToken);
             return Ok(response);
         }
 
@@ -35,31 +28,14 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<OnlineApplicantResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetOnlineApplicantByIdQuery(id));
         }
 
-        /*  [HttpDelete("Delete/{id}")]
-          public async Task<ActionResult> DeleteOnlineApplicant(Guid id)
-          {
-              try
-              {
-                  string result = string.Empty;
-                  result = await _mediator.Send(new DeleteOnlineApplicantCommand(id));
-                  return Ok(result);
-              }
-              catch (Exception exp)
-              {
-                  return BadRequest(exp.Message);
-              }
-          }*/
-
         [HttpDelete("Delete")]
         public async Task<ActionResult> DeleteOnlineApplicants([FromQuery] List<Guid> ids)
         {
-
             try
             {
                 string result = string.Empty;

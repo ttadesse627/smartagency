@@ -2,9 +2,7 @@
 using AppDiv.SmartAgency.Domain.Entities.Base;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Contracts;
-using Audit.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Linq.Dynamic.Core;
@@ -115,7 +113,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return _dbContext.Set<T>().AsNoTracking().AsQueryable();
         }
 
-        public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
+        public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>> predicate, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
 
@@ -231,7 +229,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             var entityList = new List<T>();
 
-            if (Ids.Count() > 0 && Ids != null)
+            if (Ids.Any())
             {
                 foreach (var id in Ids)
                 {
@@ -1419,6 +1417,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         }
         public async Task<List<PropertyInfo>> GetProperties()
         {
+            await Task.CompletedTask;
             var properties = typeof(T).GetProperties().ToList();
             // foreach (var prop in properties)
             // {

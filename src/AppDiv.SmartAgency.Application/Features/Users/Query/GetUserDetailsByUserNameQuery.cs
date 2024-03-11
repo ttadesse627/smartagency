@@ -9,22 +9,17 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 
 namespace AppDiv.SmartAgency.Application.Features.Users.Query
 {
-    public record GetUserDetailsByUserNameQuery(string username) : IRequest<UserDetailsResponseDTO> { }
-    public class GetUserDetailsByUserNameQueryHandler : IRequestHandler<GetUserDetailsByUserNameQuery, UserDetailsResponseDTO>
+    public record GetUserDetailsByUserNameQuery(string Username) : IRequest<UserDetailsResponseDTO> { }
+    public class GetUserDetailsByUserNameQueryHandler(IIdentityService identityService, IUserRepository usesrRepository) : IRequestHandler<GetUserDetailsByUserNameQuery, UserDetailsResponseDTO>
     {
-        private readonly IIdentityService _identityService;
-        private readonly IUserRepository _userRepository;
+        private readonly IIdentityService _identityService = identityService;
+        private readonly IUserRepository _userRepository = usesrRepository;
 
-        public GetUserDetailsByUserNameQueryHandler(IIdentityService identityService, IUserRepository usesrRepository)
-        {
-            _identityService = identityService;
-            _userRepository = usesrRepository;
-        }
         public async Task<UserDetailsResponseDTO> Handle(GetUserDetailsByUserNameQuery request, CancellationToken cancellationToken)
         {
             var expLoadedProps = new string[] { "Address", "UserGroups", "Position", "Branch", "Partner", "Address.Region" };
 
-            var user = await _userRepository.GetWithPredicateAsync(user => user.UserName == request.username, expLoadedProps);
+            var user = await _userRepository.GetWithPredicateAsync(user => user.UserName == request.Username, expLoadedProps);
             var response = new UserDetailsResponseDTO();
 
             if (user.UserGroups == null || user.UserGroups.Count == 0)
@@ -40,15 +35,17 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Query
                     Email = user.Email,
                     Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address)
                 };
-            }else{
-                response.Id= user.Id;
+            }
+            else
+            {
+                response.Id = user.Id;
                 response.FullName = user.FullName;
-                response.UserName= user.UserName;
+                response.UserName = user.UserName;
                 response.Email = user.Email;
                 response.Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address);
-        
+
             }
-            
+
             return response;
         }
     }

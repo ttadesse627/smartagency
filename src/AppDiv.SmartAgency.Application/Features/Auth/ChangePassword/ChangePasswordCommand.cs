@@ -9,9 +9,9 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ChangePassword
 {
     public record ChangePasswordCommand : IRequest<ServiceResponse<int>>
     {
-        public string UserName { get; init; }
-        public string OldPassword { get; init; }
-        public string NewPassword { get; init; }
+        public string UserName { get; init; } = string.Empty;
+        public string OldPassword { get; init; } = string.Empty;
+        public string NewPassword { get; init; } = string.Empty;
 
     }
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ServiceResponse<int>>

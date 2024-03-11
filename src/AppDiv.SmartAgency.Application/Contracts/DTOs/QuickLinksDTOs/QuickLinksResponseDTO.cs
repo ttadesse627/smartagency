@@ -7,8 +7,8 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs
 {
     public class QuickLinksResponseDTO
     {
-        public string Name {get; set;}
-        public int Count {get; set;}
-        public  string Path {get; set;}
+        public string? Name { get; set; }
+        public int Count { get; set; }
+        public string? Path { get; set; }
     }
 }

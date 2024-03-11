@@ -1,6 +1,3 @@
-
-
-using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Domain.Entities;
@@ -9,15 +6,11 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Create
 {
-    public class CreateCompanyInformationCommandHandler : IRequestHandler<CreateCompanyInformationCommand, CreateCompanyInformationCommandResponse>
+    public class CreateCompanyInformationCommandHandler(ICompanyInformationRepository companyInformationRepository, IFileService fileService) : IRequestHandler<CreateCompanyInformationCommand, CreateCompanyInformationCommandResponse>
     {
-        private readonly ICompanyInformationRepository _companyInformationRepository;
-        private readonly IFileService _fileService;
-        public CreateCompanyInformationCommandHandler(ICompanyInformationRepository companyInformationRepository, IFileService fileService)
-        {
-            _companyInformationRepository = companyInformationRepository;
-            _fileService = fileService;
-        }
+        private readonly ICompanyInformationRepository _companyInformationRepository = companyInformationRepository;
+        private readonly IFileService _fileService = fileService;
+
         public async Task<CreateCompanyInformationCommandResponse> Handle(CreateCompanyInformationCommand request, CancellationToken cancellationToken)
         {
             var createCompanyInformationCommandResponse = new CreateCompanyInformationCommandResponse();
@@ -29,7 +22,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Cr
             if (validationResult.Errors.Count > 0)
             {
                 createCompanyInformationCommandResponse.Success = false;
-                createCompanyInformationCommandResponse.ValidationErrors = new List<string>();
+                createCompanyInformationCommandResponse.ValidationErrors = [];
                 foreach (var error in validationResult.Errors)
                     createCompanyInformationCommandResponse.ValidationErrors.Add(error.ErrorMessage);
                 createCompanyInformationCommandResponse.Message = createCompanyInformationCommandResponse.ValidationErrors[0];
@@ -39,7 +32,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Cr
 
                 var companyInformationEntity = CustomMapper.Mapper.Map<CompanyInformation>(request.companyInformation);
                 var witnesses = new List<Witness>();
-                foreach (var witness in request.companyInformation.Witness.Witnesses)
+                foreach (var witness in request.companyInformation.Witness!.Witnesses!)
                 {
                     var witns = CustomMapper.Mapper.Map<Witness>(witness);
                     witnesses.Add(witns);

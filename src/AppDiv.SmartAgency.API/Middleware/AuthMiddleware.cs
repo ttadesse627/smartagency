@@ -1,6 +1,6 @@
 
 using System.IdentityModel.Tokens.Jwt;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.RoleDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Utility.Contracts;
@@ -83,45 +83,49 @@ namespace AppDiv.SmartAgency.API.Middleware
                         if (userId != null)
                         {
 
-                            var explicitLoadedProperties = new Dictionary<string, Utility.Contracts.NavigationPropertyType>
+                            var explicitLoadedProperties = new Dictionary<string, NavigationPropertyType>
                                                 {
                                                     { "UserGroups", NavigationPropertyType.COLLECTION }
                                                 };
                             var userData = await userRepository.GetWithAsync(userId, explicitLoadedProperties);
 
 
-                            var userRoles = userData.UserGroups.SelectMany(ug => ug.Roles
-                                 .Select(r => new RoleDto
+                            var userRoles = userData.UserGroups.SelectMany(ug => ug.Permissions
+                                 .Select(r => new PermissionDto
                                  {
-                                     Page = r.Value<string>("Page") ?? "",
-                                     Title = r.Value<string>("Title") ?? "",
-                                     CanAdd = r.Value<bool>("CanAdd"),
-                                     CanDelete = r.Value<bool>("CanDelete"),
-                                     CanViewDetail = r.Value<bool>("CanViewDetail"),
-                                     CanView = r.Value<bool>("CanView"),
-                                     CanUpdate = r.Value<bool>("CanUpdate")
-                                 })).GroupBy(r => r.Page.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new RoleDto
+                                     Name = r.Name,
+                                     Actions = r.Actions.Select(ac => ac.ToString()).ToList()
+                                     //  Page = r.Value<string>("Page") ?? "",
+                                     //  Title = r.Value<string>("Title") ?? "",
+                                     //  CanAdd = r.Value<bool>("CanAdd"),
+                                     //  CanDelete = r.Value<bool>("CanDelete"),
+                                     //  CanViewDetail = r.Value<bool>("CanViewDetail"),
+                                     //  CanView = r.Value<bool>("CanView"),
+                                     //  CanUpdate = r.Value<bool>("CanUpdate")
+                                 })).GroupBy(r => r.Name.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
                                  {
-                                     Page = g.Key,
-                                     Title = g.FirstOrDefault()?.Title ?? "",
-                                     CanAdd = g.Aggregate(false, (acc, x) => acc || x.CanAdd),
-                                     CanDelete = g.Aggregate(false, (acc, x) => acc || x.CanDelete),
-                                     CanUpdate = g.Aggregate(false, (acc, x) => acc || x.CanUpdate),
-                                     CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
-                                     CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
+                                     Name = g.Key,
+                                     Actions = g.SelectMany(p => p.Actions).ToList()
+                                     //  Page = g.Key,
+                                     //  Title = g.FirstOrDefault()?.Title ?? "",
+                                     //  CanAdd = g.Aggregate(false, (acc, x) => acc || x.CanAdd),
+                                     //  CanDelete = g.Aggregate(false, (acc, x) => acc || x.CanDelete),
+                                     //  CanUpdate = g.Aggregate(false, (acc, x) => acc || x.CanUpdate),
+                                     //  CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
+                                     //  CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
                                  }).ToList();
 
 
-                            if (userRoles != null && userRoles.Any())
+                            if (userRoles != null && userRoles.Count != 0)
                             {
 
                                 // var pageName = allowedRoles[0];
                                 foreach (var userRole in userRoles)
                                 {
-                                    if (allowedRoles[0] == userRole.Page)
+                                    if (allowedRoles[0] == userRole.Name)
                                     {
                                         var actionName = allowedRoles[1];
-                                        var propertyInfo = typeof(RoleDto).GetProperty(actionName);
+                                        var propertyInfo = typeof(PermissionDto).GetProperty(actionName);
                                         if (propertyInfo != null && propertyInfo.PropertyType == typeof(bool) && (bool)propertyInfo.GetValue(userRole)!)
                                         {
                                             await _next(context);
@@ -129,9 +133,6 @@ namespace AppDiv.SmartAgency.API.Middleware
                                         }
                                     }
                                 }
-
-
-
                             }
                             else
                             {

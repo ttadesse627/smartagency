@@ -46,8 +46,8 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
             {
                 var mappedUser = CustomMapper.Mapper.Map<ApplicationUser>(request);
 
-                mappedUser.Email = request.Address.Email;
-                if (request.UserGroups.Count > 0)
+                mappedUser.Email = request.Address?.Email;
+                if (request.UserGroups?.Count > 0)
                 {
                     var listGroup = await _groupRepository.GetMultipleUserGroups(request.UserGroups);
                     mappedUser.UserGroups = listGroup;
@@ -64,27 +64,6 @@ namespace AppDiv.SmartAgency.Application.Features.Users.Command.Create
                     response.Success = true;
                     response.Message = "Created successfully!";
                 }
-
-                // save profile image
-                // var file = request.UserImage;
-                // var folderName = Path.Combine("Resources", "UserProfiles");
-                // var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                // var fileName = response.id;
-                // if (!string.IsNullOrEmpty(file))
-                // {
-
-                //     await _fileService.UploadBase64FileAsync(file, fileName, pathToSave, FileMode.Create);
-                // }
-
-                // //send password by email    
-                // var content = response.password + "  is your default password you can login and change it";
-                // var subject = "Welcome to Smart Employment Agency";
-                // await _mailService.SendAsync(body: content, subject: subject, senderMailAddress: _config.SENDER_ADDRESS, receiver: user.Email, cancellationToken);
-
-                // //send password by phone 
-                // await _smsService.SendSMS(user.PhoneNumber, subject + "\n" + content);
-
-
             }
             return response;
         }

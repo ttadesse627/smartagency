@@ -1,9 +1,7 @@
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CompanyInformationDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateApplicantRequests;
 using AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Application.Mapper;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
@@ -28,7 +26,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
         {
             var companyInformationResponse = new ServiceResponse<GetCompanyInformationResponseDTO>();
             var allCompanyInformation = await _companyInformationRepository.GetAllWithAsync("Address", "Witnesses", "CountryOperations", "CompanySetting", "CountryOperations.LookUpCountryOperation", "Address.Region");
-            if (allCompanyInformation.Count() > 0)
+            if (allCompanyInformation.Any())
             {
                 var selectedCompanyInformation = allCompanyInformation.First();
                 // companyInformationResponse.Data = CustomMapper.Mapper.Map<GetCompanyInformationResponseDTO>(selectedCompanyInformation);
@@ -43,7 +41,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                     CompanyNameAmharic = selectedCompanyInformation.CompanyNameAmharic,
                     CompanyNameArabic = selectedCompanyInformation.CompanyNameArabic,
                     ContractNumber = selectedCompanyInformation.ContractNumber,
-                    licenseNumber = selectedCompanyInformation.licenseNumber,
+                    LicenseNumber = selectedCompanyInformation.licenseNumber,
                     AssurancePolicyNumber = selectedCompanyInformation.AssurancePolicyNumber,
                     GeneralManager = selectedCompanyInformation.AssurancePolicyNumber,
                     GeneralManagerAmharic = selectedCompanyInformation.GeneralManagerAmharic,
@@ -54,13 +52,13 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                     {
                         Region = new Contracts.DTOs.LookUpDTOs.LookUpItemResponseDTO
                         {
-                            Id = selectedCompanyInformation.Address.RegionId,
-                            Value = selectedCompanyInformation.Address.Region.Value
+                            Id = selectedCompanyInformation.Address?.RegionId,
+                            Value = selectedCompanyInformation.Address?.Region?.Value
                         },
-                        SubCity = selectedCompanyInformation.Address.SubCity,
-                        Zone = selectedCompanyInformation.Address.Zone,
-                        Woreda = selectedCompanyInformation.Address.Woreda,
-                        Adress = selectedCompanyInformation.Address.Adress,
+                        SubCity = selectedCompanyInformation.Address?.SubCity,
+                        Zone = selectedCompanyInformation.Address?.Zone,
+                        Woreda = selectedCompanyInformation.Address?.Woreda,
+                        Adress = selectedCompanyInformation.Address!.Adress,
                         PostCode = selectedCompanyInformation.Address.PostCode,
                         PhoneNumber = selectedCompanyInformation.Address.PhoneNumber,
                         HouseNumber = selectedCompanyInformation.Address.HouseNumber,
@@ -73,7 +71,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
 
                     Witness = new CompanyWitnssRequest
                     {
-                        Witnesses = selectedCompanyInformation.Witnesses.Select(wit => new CompanyWitnessRequest
+                        Witnesses = selectedCompanyInformation.Witnesses?.Select(wit => new CompanyWitnessRequest
                         {
                             FullName = wit.FullName,
                             Address = wit.Address,
@@ -81,12 +79,12 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
                         }).ToList()
                     },
 
-                    CountryOperations = selectedCompanyInformation.CountryOperations.Select(co => new CountryOperationResponseDTO
+                    CountryOperations = selectedCompanyInformation.CountryOperations?.Select(co => new CountryOperationResponseDTO
                     {
                         Country = new Contracts.DTOs.LookUpDTOs.LookUpItemResponseDTO
                         {
                             Id = co.CountryId,
-                            Value = co.LookUpCountryOperation.Value
+                            Value = co.LookUpCountryOperation?.Value
                         },
                         LicenseNumber = co.LicenseNumber,
                         VisaExpiryDays = co.VisaExpiryDays
@@ -94,7 +92,7 @@ namespace AppDiv.SmartAgency.Application.Features.CompanyInformations.Query
 
                     CompanySetting = new CompanySettingRequest
                     {
-                        FileNumberStartFrom = selectedCompanyInformation.CompanySetting.FileNumberStartFrom,
+                        FileNumberStartFrom = selectedCompanyInformation.CompanySetting!.FileNumberStartFrom,
                         PrintedDocumentSubmitDays = selectedCompanyInformation.CompanySetting.PrintedDocumentSubmitDays,
                         AmountOfDeposit = selectedCompanyInformation.CompanySetting.AmountOfDeposit,
                         AuthorizedPerson = selectedCompanyInformation.CompanySetting.AuthorizedPerson,

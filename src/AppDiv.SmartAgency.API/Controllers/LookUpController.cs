@@ -5,28 +5,23 @@ using AppDiv.SmartAgency.Application.Features.LookUps.Command.Create;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.LookUps.Command.Update;
 using AppDiv.SmartAgency.Application.Features.LookUps.Query;
+using AppDiv.SmartAgency.Domain.Enums;
+using AppDiv.SmartAgency.Infrastructure.Authentication;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    [AllowAnonymous]
-    [ApiController]
-    [Route("api/lookup")]
-    public class LookUpController : ControllerBase
+    public class LookUpController(IMediator mediator) : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        public LookUpController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
+        [HasPermission(PermissionEnum.WriteMember)]
         [HttpPost("create")]
         public async Task<ActionResult<ServiceResponse<int>>> CreateLookUp(CreateLookUpRequest lookUpRequest, CancellationToken token)
         {
-            var response = await _mediator.Send(new CreateLookUpCommand(lookUpRequest));
+            var response = await _mediator.Send(new CreateLookUpCommand(lookUpRequest), token);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -34,6 +29,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(response);
         }
 
+        [HasPermission(PermissionEnum.ReadMember)]
         [HttpGet("get-all-lookup")]
         public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
@@ -41,18 +37,15 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("get/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<LookUpResponseDTO> Get(Guid id)
         {
             return await _mediator.Send(new GetLookUpByIdQuery(id));
         }
+
         [HttpGet("get/categories")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<Dictionary<string, List<LookUpItemResponseDTO>>> Get([FromQuery] List<string> category)
         {
-
             var items = await _mediator.Send(new GetLookUpByCategoryQuery(category));
-
             return items;
         }
 
@@ -70,6 +63,7 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
+
         [HttpPut("edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditLookUpCommand command)
         {
@@ -77,8 +71,6 @@ namespace AppDiv.SmartAgency.API.Controllers
             {
                 if (command.Id == id)
                 {
-                    Console.WriteLine("url id: " + id);
-                    Console.WriteLine("body id: " + command.Id);
                     var result = await _mediator.Send(command);
                     return Ok(result);
                 }

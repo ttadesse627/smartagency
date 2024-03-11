@@ -1,5 +1,4 @@
-﻿using AppDiv.SmartAgency.Application.Contracts.DTOs;
-using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
+﻿using AppDiv.SmartAgency.Application.Contracts.DTOs.AttachmentDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.CategoryDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.DepositDTOs;

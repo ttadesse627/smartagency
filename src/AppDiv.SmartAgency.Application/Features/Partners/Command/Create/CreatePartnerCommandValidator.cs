@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using FluentValidation;
 
@@ -25,22 +21,13 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Create
                 .NotEmpty().WithMessage("Contact Person is required")
                 .NotNull().WithMessage("Contact Person must has a value")
                 .MaximumLength(100).WithMessage("Contact Person must not exceed 100 characters");
-            RuleFor(p => p.partner.Address.CountryId)
+            RuleFor(p => p.partner.Address!.CountryId)
                 .NotEmpty().WithMessage("Country is required")
                 .NotNull().WithMessage("Country must has a value");
-            RuleFor(p => p.partner.Address.CityId)
+            RuleFor(p => p.partner.Address!.CityId)
                .NotEmpty().WithMessage("City  is required")
                .NotNull().WithMessage("City must has a value");
-            // RuleFor(p => p.partner.HeaderLogo)
-            //     .NotEmpty().WithMessage
-
-
-
-
-
-
         }
-
 
         private bool BeValidBase64Image(string image)
         {

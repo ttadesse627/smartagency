@@ -19,7 +19,7 @@ namespace AppDiv.SmartAgency.Domain.Entities
         public Partner? Partner { get; set; }
         public ICollection<Complaint>? Complaints { get; set; }
         public virtual Address? Address { get; set; }
-        public virtual ICollection<UserGroup>? UserGroups { get; set; }
+        public virtual ICollection<UserGroup> UserGroups { get; set; } = [];
         public virtual required ICollection<LoginHistory> LoginHistories { get; set; }
 
     }

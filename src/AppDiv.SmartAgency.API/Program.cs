@@ -24,8 +24,6 @@ builder.WebHost.UseKestrel(options =>
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
-Console.WriteLine(Environment.CurrentDirectory);
-
 // For authentication
 var _key = builder.Configuration["Jwt:Key"];
 if (Encoding.UTF8.GetByteCount(_key) < 32)
@@ -89,6 +87,7 @@ builder.Services.AddAuthentication(x =>
 // Dependency injection with key
 builder.Services.AddSingleton<ITokenGeneratorService>(new TokenGeneratorService(_key, _issuer, _audience, _expirtyMinutes));
 
+builder.Services.AddAuthorization();
 // Include Infrastructure/Application Dependency
 builder.Services.AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
@@ -133,13 +132,13 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Bearer", policy =>
-    {
-        policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("UserId");
-    });
+// builder.Services.AddAuthorizationBuilder()
+//     .AddPolicy("Bearer", policy =>
+//     {
+//         policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+//         policy.RequireAuthenticatedUser();
+//         policy.RequireClaim("UserId");
+//     });
 
 var app = builder.Build();
 

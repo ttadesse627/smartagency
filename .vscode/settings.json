@@ -14,6 +14,19 @@
       "database": "smartagency",
       "username": "root",
       "askForPassword": true
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "DotNetCoreApiConnection",
+      "database": "smart_agency_v1",
+      "username": "root"
     }
   ]
 }

@@ -14,7 +14,7 @@ public class GetAllRequestedQuery : IRequest<SearchModel<ApplicantsResponseDTO>>
     public string SearchTerm { get; set; } = string.Empty;
     public string OrderBy { get; set; } = string.Empty;
     public SortingDirection SortingDirection { get; set; } = SortingDirection.Ascending;
-    public GetAllRequestedQuery(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection)
+    public GetAllRequestedQuery(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
@@ -25,12 +25,10 @@ public class GetAllRequestedQuery : IRequest<SearchModel<ApplicantsResponseDTO>>
 }
 public class GetAllRequestedQueryHandler : IRequestHandler<GetAllRequestedQuery, SearchModel<ApplicantsResponseDTO>>
 {
-    private readonly IApplicantRepository _applicantRepository;
     private readonly IRequestedApplicantRepository _requestedApplicantRepository;
 
-    public GetAllRequestedQueryHandler(IApplicantRepository applicantRepository, IRequestedApplicantRepository requestedApplicantRepository)
+    public GetAllRequestedQueryHandler(IRequestedApplicantRepository requestedApplicantRepository)
     {
-        _applicantRepository = applicantRepository;
         _requestedApplicantRepository = requestedApplicantRepository;
     }
     public async Task<SearchModel<ApplicantsResponseDTO>> Handle(GetAllRequestedQuery request, CancellationToken cancellationToken)

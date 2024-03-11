@@ -4,6 +4,6 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.Applicants.CreateAppl
 {
     public record ApplicantExperienceRequest
     {
-public ICollection<ExperienceRequest> Experiences { get; set; }
+        public ICollection<ExperienceRequest>? Experiences { get; set; }
     }
 }

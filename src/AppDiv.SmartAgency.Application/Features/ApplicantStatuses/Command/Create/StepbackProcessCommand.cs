@@ -29,7 +29,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
         var currentPd = await _proDefRepository.GetWithPredicateAsync(pd => pd.Id == request.ProcessDefinitionId, "Process");
 
         var process = currentPd.Process;
-        var processDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id);
+        var processDefs = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process!.Id);
         var proDefinitions = processDefs.OrderBy(pd => pd.Step).ToList();
 
         var currentPdIndex = proDefinitions.FindIndex(pd => pd.Id == currentPd.Id);
@@ -39,12 +39,12 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
         {
             // This is the first process definition for the current process,
             // move the applicant to the prevous process
-            var prevProcess = await _processRepository.GetWithPredicateAsync(p => p.Step == process.Step - 1, "ProcessDefinitions");
+            var prevProcess = await _processRepository.GetWithPredicateAsync(p => p.Step == process!.Step - 1, "ProcessDefinitions");
             if (prevProcess != null)
             {
                 // Set the applicant's status to 'In' for the last process definition of the previous process
                 var lastPdOfPrevProcess = prevProcess.ProcessDefinitions?.OrderBy(pd => pd.Step).Last();
-                var applProc = await _applicantProcessRepository.GetWithPredicateAsync(applpr => applpr.ApplicantId == request.ApplicantId && applpr.ProcessDefinitionId == lastPdOfPrevProcess.Id && applpr.Status == ProcessStatus.Out);
+                var applProc = await _applicantProcessRepository.GetWithPredicateAsync(applpr => applpr.ApplicantId == request.ApplicantId && applpr.ProcessDefinitionId == lastPdOfPrevProcess!.Id && applpr.Status == ProcessStatus.Out);
                 applProc.Status = ProcessStatus.In;
                 _applicantProcessRepository.Delete(appl => appl.ApplicantId == request.ApplicantId && appl.ProcessDefinitionId == request.ProcessDefinitionId);
 
@@ -97,8 +97,8 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
 
         var definitions = new List<GetProcessDefinitionResponseDTO>();
 
-        var processDefinitions = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process.Id, "Process");
-        var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(process.Id);
+        var processDefinitions = await _proDefRepository.GetAllWithPredicateAsync(pd => pd.ProcessId == process!.Id, "Process");
+        var isInitialProcess = await _processRepository.GetMinStepProcessesAsync(process!.Id);
 
         if (isInitialProcess)
         {
@@ -146,7 +146,7 @@ public class StepbackProcessCommandHandler : IRequestHandler<StepbackProcessComm
             }
             else
             {
-                nextpdId = processDefinitions.Where(p => p.Step == pd.Step + 1).FirstOrDefault().Id;
+                nextpdId = processDefinitions.Where(p => p.Step == pd.Step + 1).FirstOrDefault()!.Id;
             }
             var proApps = await _applicantProcessRepository.GetAllWithPredicateAsync(applPr => applPr.Status == ProcessStatus.In && applPr.ProcessDefinitionId == pd.Id, applProLoadedProperties);
             var pdApplicants = new List<GetApplProcessResponseDTO>();

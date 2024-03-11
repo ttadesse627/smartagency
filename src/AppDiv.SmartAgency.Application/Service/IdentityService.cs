@@ -12,30 +12,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Application.Service
 {
-    public class IdentityService : IIdentityService
+    public class IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, HelperService helperService) : IIdentityService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly HelperService _helperService;
-
-
-        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, HelperService helperService)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-            _helperService = helperService;
-        }
+        private readonly UserManager<ApplicationUser> _userManager = userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly HelperService _helperService = helperService;
+        private static readonly string[] errors = new string[] { "could not find user with the given email" };
 
         public async Task<bool> AssignUserToRole(string userName, IList<string> roles)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
-            if (user == null)
-            {
-                throw new NotFoundException("User not found");
-            }
-
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName) ?? throw new NotFoundException("User not found");
             var result = await _userManager.AddToRolesAsync(user, roles);
             return result.Succeeded;
         }
@@ -178,9 +165,9 @@ namespace AppDiv.SmartAgency.Application.Service
                     .Include(usr => usr.Branch)
                     .Include(usr => usr.Partner)
                     .Include(usr => usr.Address)
-                        .ThenInclude(addr => addr.Country)
+                        .ThenInclude(addr => addr!.Country)
                     .Include(usr => usr.Address)
-                        .ThenInclude(addr => addr.Region)
+                        .ThenInclude(addr => addr!.Region)
                     .FirstOrDefaultAsync(x => x.UserName == userName);
             if (user == null)
             {
@@ -192,31 +179,19 @@ namespace AppDiv.SmartAgency.Application.Service
 
         public async Task<string> GetUserIdAsync(string userName)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
-            if (user == null)
-            {
-                throw new NotFoundException("User not found");
-            }
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName) ?? throw new NotFoundException("User not found");
             return await _userManager.GetUserIdAsync(user);
         }
 
         public async Task<string> GetUserNameAsync(string userId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            if (user == null)
-            {
-                throw new NotFoundException("User not found");
-            }
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new NotFoundException("User not found");
             return (await _userManager.GetUserNameAsync(user))!;
         }
 
         public async Task<List<string>> GetUserRolesAsync(string userId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            if (user == null)
-            {
-                throw new NotFoundException("User not found");
-            }
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new NotFoundException("User not found");
             var roles = await _userManager.GetRolesAsync(user);
             return [.. roles];
         }
@@ -304,8 +279,10 @@ namespace AppDiv.SmartAgency.Application.Service
 
         public async Task<ServiceResponse<int>> ChangePassword(string userName, string oldPassword, string newPassword)
         {
-            var response = new ServiceResponse<int>();
-            response.Errors = new List<string>();
+            var response = new ServiceResponse<int>
+            {
+                Errors = []
+            };
 
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
@@ -483,7 +460,7 @@ namespace AppDiv.SmartAgency.Application.Service
                             : await _userManager.FindByNameAsync(userName!);
             if (user == null)
             {
-                return (Result.Failure(new string[] { "could not find user with the given email" }), string.Empty);
+                return (Result.Failure(errors), string.Empty);
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -493,11 +470,7 @@ namespace AppDiv.SmartAgency.Application.Service
 
         public async Task<Result> VerifyOtp(string userName, string otp)
         {
-            var user = await _userManager.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
-            if (user == null)
-            {
-                throw new NotFoundException($"user with username {userName} is not found");
-            }
+            var user = await _userManager.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync() ?? throw new NotFoundException($"user with username {userName} is not found");
             if (user.Otp != otp)
             {
                 throw new AuthenticationException("invalid otp");

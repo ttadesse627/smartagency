@@ -10,6 +10,8 @@ using AppDiv.SmartAgency.Infrastructure.Services;
 using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Config;
+using Microsoft.AspNetCore.Authorization;
+using ClassScheduler.Infrastructure.Authentication;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {
@@ -98,6 +100,10 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IReportsRepository, ReportsRepository>();
             services.AddScoped<ISettingRepository, SettingRepository>();
+
+            services.AddTransient<IPermissionRepository, PermissionRepository>();
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
             services.AddHttpContextAccessor();
 

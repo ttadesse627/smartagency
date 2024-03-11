@@ -39,7 +39,7 @@ namespace AppDiv.SmartAgency.Application.Features.User.Query.GetUserById
                 Address = CustomMapper.Mapper.Map<AddressResponseDTO>(user.Address),
                 UserGroups = CustomMapper.Mapper.Map<List<GroupDTO>>(user.UserGroups)
             };
-        
+
             return response;
 
         }

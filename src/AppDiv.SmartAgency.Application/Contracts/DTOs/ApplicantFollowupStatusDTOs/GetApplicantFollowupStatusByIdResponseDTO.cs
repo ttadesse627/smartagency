@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OnlineApplicantDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.ApplicantFollowupStatuses;
 
 namespace AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantFollowupStatusResponseDTOs
 {
-    public class GetApplicantFollowupStatusByIdResponseDTO 
+    public class GetApplicantFollowupStatusByIdResponseDTO
     {
         public Guid Id { get; set; }
-        public string PassportNumber { get; set; }
+        public string PassportNumber { get; set; } = string.Empty;
         public DateTime? Month { get; set; }
-        public string Remark { get; set; }
-       public OnlineApplicantLookUpResponseDTO FollowupStatus {get; set;} 
-
-       //public string? FollowupStatus {get; set;}
-      //  public Guid ApplicantId {get; set;}
-        
+        public string Remark { get; set; } = string.Empty;
+        public OnlineApplicantLookUpResponseDTO? FollowupStatus { get; set; }
 
     }
 }

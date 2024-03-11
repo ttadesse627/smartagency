@@ -10,19 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-
-    [ApiController]
-
-    [Route("api/companyInformation")]
-    public class CompanyInformationController : ControllerBase
+    public class CompanyInformationController(IMediator mediator) : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        public CompanyInformationController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [AllowAnonymous]
+        private readonly IMediator _mediator = mediator;
 
         [HttpPost("create")]
         public async Task<ActionResult> CreateCompanyInformation([FromBody] CreateCompanyInformationRequest companyInformationRequest)
@@ -31,23 +21,11 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(response);
         }
 
-
-
         [HttpGet("get-company-information")]
         public async Task<ActionResult<GetCompanyInformationResponseDTO>> GetCompanyInformation()
         {
             return Ok(await _mediator.Send(new GetCompanyInformationQuery()));
         }
-        /*
-                [HttpGet("{id}")]
-                [ProducesResponseType(StatusCodes.Status200OK)]
-                public async Task<OnlineApplicantResponseDTO> Get(Guid id)
-                {
-                    return await _mediator.Send(new GetOnlineApplicantByIdQuery(id));
-                }
-
-               */
-
 
         [HttpPut("Edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] EditCompanyInformationCommand command)

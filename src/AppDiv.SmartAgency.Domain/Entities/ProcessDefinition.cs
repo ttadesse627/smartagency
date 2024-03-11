@@ -10,5 +10,5 @@ public class ProcessDefinition : BaseAuditableEntity
     public int ExpiryInterval { get; set; }
     public Guid ProcessId { get; set; }
     public Process? Process { get; set; }
-    public ICollection<ApplicantProcess>? ApplicantProcesses { get; set; }
+    public ICollection<ApplicantProcess> ApplicantProcesses { get; set; } = [];
 }

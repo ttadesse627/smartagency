@@ -1,5 +1,3 @@
-
-
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ProcessDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
@@ -10,15 +8,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
-[ApiController]
-[Route("api/applicant-process")]
-public class ApplicantProcessController : ControllerBase
+public class ApplicantProcessController(IMediator mediator) : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public ApplicantProcessController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
+
     [HttpGet("get/{processId}")]
     public async Task<ActionResult<ApplicantProcessResponseDTO>> GetApplicantProcessses(Guid processId)
     {

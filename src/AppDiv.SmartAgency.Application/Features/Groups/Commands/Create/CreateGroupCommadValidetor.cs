@@ -11,16 +11,16 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Create
         public CreateGroupComadValidetor(IGroupRepository repo)
         {
             _repo = repo;
-            RuleFor(p => p.group.GroupName)
+            RuleFor(p => p.Group.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
-            RuleFor(g => g.group.GroupName)
-              .MustAsync(groupNameUnique)
+            RuleFor(g => g.Group.Name)
+              .MustAsync(GroupNameUnique)
               .WithMessage("A Group Name already exists.");
         }
 
-        private async Task<bool> groupNameUnique(string groupName, CancellationToken token)
+        private async Task<bool> GroupNameUnique(string groupName, CancellationToken token)
         {
             var member = await _repo.GetAsync(groupName);
             if (member == null)

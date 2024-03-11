@@ -11,20 +11,18 @@ namespace AppDiv.SmartAgency.Application.Contracts.Request.CompanyInformations
 {
     public record CreateCompanyInformationRequest
     {
-      
-     
-        public string CompanyName { get; set; }
+        public string? CompanyName { get; set; }
 
-        public string CompanyNameAmharic { get; set; }
+        public string? CompanyNameAmharic { get; set; }
 
-        public string CompanyNameArabic { get; set; }
+        public string? CompanyNameArabic { get; set; }
 
         public string? ContractNumber { get; set; }
 
-        public string? licenseNumber { get; set; }
-        public string AssurancePolicyNumber { get; set; }
+        public string? LicenseNumber { get; set; }
+        public string? AssurancePolicyNumber { get; set; }
 
-        public string GeneralManager { get; set; }
+        public string? GeneralManager { get; set; }
         public string? GeneralManagerAmharic { get; set; }
         public string? ViceManager { get; set; }
         public string? ViceManagerAmharic { get; set; }

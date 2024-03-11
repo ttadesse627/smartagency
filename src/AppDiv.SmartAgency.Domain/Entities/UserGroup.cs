@@ -1,27 +1,12 @@
-using AppDiv.SmartAgency.Domain.Entities.Base;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppDiv.SmartAgency.Domain.Entities
 {
-    public class UserGroup : BaseAuditableEntity
+    public class UserGroup
     {
-        public string GroupName { get; set; } = null!;
-        public string? DescriptionStr { get; set; }
-        public string RolesStr { get; set; } = null!;
-        [NotMapped]
-        public JArray Roles
-        {
-            get
-            {
-                return JsonConvert.DeserializeObject<JArray>(string.IsNullOrEmpty(RolesStr) ? "{}" : RolesStr)!;
-            }
-            set
-            {
-                RolesStr = value.ToString();
-            }
-        }
-        public virtual ICollection<ApplicationUser>? ApplicationUsers { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Name { get; set; } = string.Empty;
+        public ICollection<Permission> Permissions { get; set; } = [];
+        public ICollection<ApplicationUser> AppUsers { get; set; } = [];
     }
 }
+

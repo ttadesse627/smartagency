@@ -12,11 +12,21 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             return await _context.UserGroups.Where(ug => groupIds.Contains(ug.Id)).ToListAsync();
         }
+        public IQueryable<UserGroup> GetMultipleUserGroupsBySearch(string? searchTerm)
+        {
+            return !string.IsNullOrEmpty(searchTerm) ? _context.UserGroups
+                .Include(ug => ug.Permissions)
+                .Where(ug => ug.Name.Contains(searchTerm)) :
+                _context.UserGroups
+                .Include(ug => ug.Permissions);
+        }
 
         public async Task<List<UserGroup>> GetUserGroupByUserId(string userId)
         {
-            var response = await _context.UserGroups.Where(ug => ug.ApplicationUsers!.Any(apU => apU.Id == userId)).ToListAsync();
+            var response = await _context.UserGroups.Where(ug => ug.AppUsers.Any(apU => apU.Id == userId)).ToListAsync();
             return response;
         }
     }
 }
+
+

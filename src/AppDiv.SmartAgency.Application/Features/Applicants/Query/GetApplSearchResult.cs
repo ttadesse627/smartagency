@@ -1,5 +1,3 @@
-
-
 using System.Linq.Expressions;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.ApplicantDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
@@ -43,15 +41,11 @@ public record GetApplSearchResultQuery : IRequest<SearchModel<ApplSearchResponse
         SortingDirection = sortingDirection;
     }
 }
-public class GetApplSearchResultQueryHandler : IRequestHandler<GetApplSearchResultQuery, SearchModel<ApplSearchResponseDTO>>
+public class GetApplSearchResultQueryHandler(IApplicantRepository applicantRepository, IFileService fileService) : IRequestHandler<GetApplSearchResultQuery, SearchModel<ApplSearchResponseDTO>>
 {
-    private readonly IApplicantRepository _applicantRepository;
-    private readonly IFileService _fileService;
-    public GetApplSearchResultQueryHandler(IApplicantRepository applicantRepository, IFileService fileService)
-    {
-        _applicantRepository = applicantRepository;
-        _fileService = fileService;
-    }
+    private readonly IApplicantRepository _applicantRepository = applicantRepository;
+    private readonly IFileService _fileService = fileService;
+
     public async Task<SearchModel<ApplSearchResponseDTO>> Handle(GetApplSearchResultQuery request, CancellationToken cancellationToken)
     {
         var eagerLoadedProperties = new string[] { "Jobtitle", "MaritalStatus", "Religion", "Experience", "IssuingCountry", "DesiredCountry", "RequestedApplicant" };
@@ -91,13 +85,13 @@ public class GetApplSearchResultQueryHandler : IRequestHandler<GetApplSearchResu
         }
         var searchResult = await _applicantRepository.GetAllApplWithPredicateAsync
                                     (
-                                        request.PageNumber, request.PageSize, request.OrderBy, request.SortingDirection,
+                                        request!.PageNumber, request.PageSize, request.OrderBy, request.SortingDirection,
                                         expressions, eagerLoadedProperties
                                     );
 
         searchResponse = CustomMapper.Mapper.Map<SearchModel<ApplSearchResponseDTO>>(searchResult);
 
-        if (searchResponse != null || searchResponse.Items.Count() > 0)
+        if (searchResponse != null || searchResponse?.Items.Count() > 0)
         {
             foreach (var item in searchResponse.Items)
             {
@@ -106,6 +100,6 @@ public class GetApplSearchResultQueryHandler : IRequestHandler<GetApplSearchResu
                 item.Photo = Convert.ToBase64String(_fileService.getFile(item.Id.ToString(), "Full Size", null).Item1);
             }
         }
-        return searchResponse;
+        return searchResponse!;
     }
 }

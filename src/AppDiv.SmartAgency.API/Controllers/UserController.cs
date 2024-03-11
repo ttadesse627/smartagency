@@ -1,5 +1,4 @@
-﻿
-using AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
+﻿using AppDiv.SmartAgency.Application.Features.Users.Command.Delete;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
@@ -27,24 +26,24 @@ namespace AppDiv.SmartAgency.API.Controllers
         }
 
         [HttpGet("user-details/{username}")]
-        [ProducesDefaultResponseType(typeof(UserDetailsResponseDTO))]
         public async Task<IActionResult> GetUserDetailsByUserName(string username)
         {
             var result = await Mediator.Send(new GetUserDetailsByUserNameQuery(username));
             return Ok(result);
         }
+
         [HttpGet("get-all")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<SearchModel<UserResponseDTO>> Get(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {
             return await Mediator.Send(new GetAllUserQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection));
         }
+
         [HttpGet("get/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<UserDetailsResponseDTO> Get(Guid id)
         {
             return await Mediator.Send(new GetUserByIdQuery(id));
         }
+
         [HttpPut("edit/{id}")]
         public async Task<ActionResult> Edit(Guid id, [FromBody] UpdateUserRequest request)
         {

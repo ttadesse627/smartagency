@@ -10,16 +10,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
-
-[ApiController]
-[Route("api/deleted-info")]
-public class DeletedInfoController : ControllerBase
+public class DeletedInfoController(IMediator mediator) : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public DeletedInfoController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
+
     [HttpGet("order/get-all")]
     public async Task<ActionResult<GetOrdersResponseDTO>> GetAllOrdersAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {
@@ -37,6 +31,7 @@ public class DeletedInfoController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetDeletedOrderQuery(id)));
     }
+
     [HttpGet("applicant/get-all")]
     public async Task<ActionResult<ApplicantsResponseDTO>> GetAllApplicantAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {

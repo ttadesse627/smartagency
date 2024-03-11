@@ -9,18 +9,10 @@ using Newtonsoft.Json.Linq;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-    [ApiController]
-    [Route("api/reports")]
-    public class ReportController : ControllerBase
+    public class ReportController(IMediator mediator, IReportsRepository reportsRepository) : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly IReportsRepository _reportRepository;
-
-        public ReportController(IMediator mediator, IReportsRepository reportsRepository)
-        {
-            _mediator = mediator;
-            _reportRepository = reportsRepository;
-        }
+        private readonly IMediator _mediator = mediator;
+        private readonly IReportsRepository _reportRepository = reportsRepository;
 
         [HttpGet("get-reports")]
         public async Task<ActionResult<JObject>> GetReports()

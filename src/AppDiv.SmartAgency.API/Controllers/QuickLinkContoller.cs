@@ -1,4 +1,3 @@
-
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
 using AppDiv.SmartAgency.Application.Features.QuickLinks.Query;
 using MediatR;
@@ -6,19 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers
 {
-
-    [ApiController]
-    [Route("api/quick-links")]
-    public class QuickLinkContoller : ControllerBase
+    public class QuickLinkContoller(IMediator mediator) : ApiControllerBase
     {
-
-
-        private readonly IMediator _mediator;
-
-        public QuickLinkContoller(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet("get-new-assigned-visa")]
         public async Task<ActionResult<NewAssignedVisaResponseDTO>> GetNewAssignedVisa()
@@ -33,18 +22,21 @@ namespace AppDiv.SmartAgency.API.Controllers
             var result = await _mediator.Send(new GetNotAssignedVisaQuery());
             return Ok(result);
         }
+
         [HttpGet("get-not-processed-applicant")]
         public async Task<ActionResult<NotProcessedApplicantResponseDTO>> GetNotProcessedApplicant()
         {
             var result = await _mediator.Send(new GetNotProcessedApplicantQuery());
             return Ok(result);
         }
+
         [HttpGet("get-expired-visa")]
         public async Task<ActionResult<VisaExpiryResponseDTO>> GetExpiredVisa()
         {
             var result = await _mediator.Send(new GetExpiredVisaQuery());
             return Ok(result);
         }
+
         [HttpGet("get-penality")]
         public async Task<ActionResult<PenalityResponseDTO>> GetPenality()
         {
@@ -56,18 +48,14 @@ namespace AppDiv.SmartAgency.API.Controllers
         public async Task<ActionResult<ComplaintResponseDTO>> GetComplaints()
         {
             var result = await _mediator.Send(new GetComplaintQuery());
-            return Ok(result);   
+            return Ok(result);
         }
 
         [HttpGet("get-dynamic-process/{id}")]
         public async Task<ActionResult<DynamicProcessResponseDTO>> GetDynamicProcesses(Guid id)
         {
-            var result= await _mediator.Send(new GetDynamicProcessQuery(id));
+            var result = await _mediator.Send(new GetDynamicProcessQuery(id));
             return Ok(result);
         }
-
-
-
-        
     }
 }
