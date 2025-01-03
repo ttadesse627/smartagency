@@ -19,14 +19,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
             await base.InsertAsync(deposit, cancellationToken);
         }
-        public async Task<Deposit> GetByIdAsync(Guid Id)
+        public async Task<Deposit?> GetByIdAsync(Guid Id)
         {
             var deposit = await _context.Deposits
                      .Include(d => d.Applicant)
                      .FirstOrDefaultAsync(a => a.Id == Id);
             return deposit;
         }
-        public async Task<Int32> UpdateAsync(Deposit deposit)
+        public async Task<int> UpdateAsync(Deposit deposit)
         {
 
             _context.Deposits.Update(deposit);

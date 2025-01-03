@@ -242,7 +242,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 return response;
             }
 
-            if (columns.Count > 0 || columns != null)
+            if (columns?.Count > 0 || columns != null)
             {
                 foreach (var column in columns)
                 {
@@ -273,7 +273,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             if (aggregates != null && aggregates.Count > 0)
             {
                 aggregates.Sort();
-                var lastAggregate = aggregates.Last();
+                _ = aggregates.Last();
 
                 foreach (var aggregate in aggregates)
                 {

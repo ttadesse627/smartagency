@@ -9,7 +9,7 @@ using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Applicants.Command.Update;
-public record EditApplicantCommand(EditApplicantRequest request) : IRequest<ServiceResponse<Int32>>
+public record EditApplicantCommand(EditApplicantRequest Request) : IRequest<ServiceResponse<Int32>>
 { }
 public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand, ServiceResponse<Int32>>
 {
@@ -25,9 +25,9 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
         _fileService = fileService;
     }
 
-    public async Task<ServiceResponse<Int32>> Handle(EditApplicantCommand command, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<int>> Handle(EditApplicantCommand command, CancellationToken cancellationToken)
     {
-        var serviceResponse = new ServiceResponse<Int32>();
+        var serviceResponse = new ServiceResponse<int>();
         var exceptions = new List<Exception>();
 
         var eagerLoadedProperties = new string[]
@@ -35,42 +35,42 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
                                         "Skills.LookUp","Education.QualificationTypes.LookUp",
                                         "Education.LevelOfQualifications.LookUp","Education.Awards.LookUp"
                                     };
-        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.request.Id, eagerLoadedProperties);
+        var applicantEntity = await _applicantRepository.GetWithPredicateAsync(appl => appl.Id == command.Request.Id, eagerLoadedProperties);
 
         if (applicantEntity != null)
         {
-            CustomMapper.Mapper.Map(command.request, applicantEntity);
+            CustomMapper.Mapper.Map(command.Request, applicantEntity);
 
             ICollection<LookUp> qualificationTypesLookup = new List<LookUp>();
             ICollection<LookUp> levelOfQualificationsLookup = new List<LookUp>();
             ICollection<LookUp> awardsLookup = new List<LookUp>();
             ICollection<LookUp> skillsLookup = new List<LookUp>();
 
-            foreach (var qualificationTypeId in command.request.Education?.QualificationTypes!)
+            foreach (var qualificationTypeId in command.Request.Education?.QualificationTypes!)
             {
                 var qt = await _lookUpRepository.GetAsync(qualificationTypeId);
                 qualificationTypesLookup.Add(qt);
             }
-            foreach (var levelOfQualificationId in command.request.Education.LevelofQualifications!)
+            foreach (var levelOfQualificationId in command.Request.Education.LevelofQualifications!)
             {
                 var loq = await _lookUpRepository.GetAsync(levelOfQualificationId);
                 levelOfQualificationsLookup.Add(loq);
             }
-            foreach (var awardId in command.request.Education.Awards!)
+            foreach (var awardId in command.Request.Education.Awards!)
             {
                 var awd = await _lookUpRepository.GetAsync(awardId);
                 awardsLookup.Add(awd);
             }
-            foreach (var skill in command.request.Skills!)
+            foreach (var skill in command.Request.Skills!)
             {
                 var sk = await _lookUpRepository.GetAsync(skill);
                 skillsLookup.Add(sk);
             }
 
             // Update the QualificationTypes
-            if (command.request.Education != null && command.request.Education.QualificationTypes != null)
+            if (command.Request.Education != null && command.Request.Education.QualificationTypes != null)
             {
-                foreach (var qualificationTypeId in command.request.Education.QualificationTypes)
+                foreach (var qualificationTypeId in command.Request.Education.QualificationTypes)
                 {
                     var qt = await _lookUpRepository.GetAsync(qualificationTypeId);
                     if (qt != null)
@@ -97,9 +97,9 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
             }
 
             // Update the LevelOfQualifications
-            if (command.request.Education != null && command.request.Education.LevelofQualifications != null)
+            if (command.Request.Education != null && command.Request.Education.LevelofQualifications != null)
             {
-                foreach (var levelOfQualificationId in command.request.Education.LevelofQualifications)
+                foreach (var levelOfQualificationId in command.Request.Education.LevelofQualifications)
                 {
                     var loq = await _lookUpRepository.GetAsync(levelOfQualificationId);
                     if (loq != null)
@@ -126,9 +126,9 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
             }
 
             // Update the Awards
-            if (command.request.Education != null && command.request.Education.Awards != null)
+            if (command.Request.Education != null && command.Request.Education.Awards != null)
             {
-                foreach (var awardId in command.request.Education.Awards)
+                foreach (var awardId in command.Request.Education.Awards)
                 {
                     var award = await _lookUpRepository.GetAsync(awardId);
                     if (award != null)
@@ -139,7 +139,6 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
 
                         if (existingAward == null)
                         {
-                            // Create a new Award and add it to the list in the parent entity
                             var newAward = new Award
                             {
                                 LookUp = award
@@ -155,9 +154,9 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
             }
 
             // Update the Skills
-            if (command.request.Skills != null)
+            if (command.Request.Skills != null)
             {
-                foreach (var skillId in command.request.Skills)
+                foreach (var skillId in command.Request.Skills)
                 {
                     var skill = await _lookUpRepository.GetAsync(skillId);
                     if (skill != null)
@@ -187,14 +186,14 @@ public class EditApplicantCommandHandler : IRequestHandler<EditApplicantCommand,
             try
             {
                 serviceResponse.Success = await _applicantRepository.SaveChangesAsync(cancellationToken);
-                if (serviceResponse.Success && (command.request.AttachmentFiles?.Count > 0 && command.request.AttachmentFiles != null))
+                if (serviceResponse.Success && command.Request.AttachmentFiles?.Count > 0 && command.Request.AttachmentFiles != null)
                 {
-                    foreach (var attachment in command.request.AttachmentFiles)
+                    foreach (var attachment in command.Request.AttachmentFiles)
                     {
                         // save applicant attachment
                         var file = attachment.AttachmentFile;
                         var attachmentName = await _attachmentRepository.GetAsync(attachment.AttachmentId!);
-                        var folderName = Path.Combine("Resources", attachmentName.Title!);
+                        var folderName = Path.Combine("Resources", attachmentName!.Title!);
                         var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                         var fileName = applicantEntity.Id.ToString();
                         if (!string.IsNullOrEmpty(file))

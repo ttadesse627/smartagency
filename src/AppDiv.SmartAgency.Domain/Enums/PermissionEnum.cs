@@ -10,6 +10,6 @@ public enum PermissionEnum
     ReadMember,
     ReadDetailMember,
     UpdateMember,
-    DeleteMember,
+    DeleteMember
 }
 

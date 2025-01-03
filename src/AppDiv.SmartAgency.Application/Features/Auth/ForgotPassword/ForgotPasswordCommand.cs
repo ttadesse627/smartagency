@@ -16,30 +16,20 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
         public string ClientURI { get; init; } = string.Empty;
     }
 
-    public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, object>
+    public class ForgotPasswordCommandHandler(IIdentityService identityService, IMailService mailService,
+        ISmsService smsService, IOptions<SMTPServerConfiguration> config,
+        ILogger<ForgotPasswordCommandHandler> logger,
+        HelperService helperService
+            ) : IRequestHandler<ForgotPasswordCommand, object>
     {
-        private readonly IIdentityService _identityService;
-        private readonly IMailService _mailService;
-        private readonly ISmsService _smsService;
-        private readonly IOptions<SMTPServerConfiguration> config;
-        private readonly SMTPServerConfiguration _config;
-        private readonly ILogger<ForgotPasswordCommandHandler> _logger;
-        private readonly HelperService _helperService;
+        private readonly IIdentityService _identityService = identityService;
+        private readonly IMailService _mailService = mailService;
+        private readonly ISmsService _smsService = smsService;
+        private readonly IOptions<SMTPServerConfiguration> config = config;
+        private readonly SMTPServerConfiguration _config = config.Value;
+        private readonly ILogger<ForgotPasswordCommandHandler> _logger = logger;
+        private readonly HelperService _helperService = helperService;
 
-        public ForgotPasswordCommandHandler(IIdentityService identityService, IMailService mailService,
-            ISmsService smsService, IOptions<SMTPServerConfiguration> config,
-            ILogger<ForgotPasswordCommandHandler> logger,
-            HelperService helperService
-            )
-        {
-            _identityService = identityService;
-            _mailService = mailService;
-            _smsService = smsService;
-            this.config = config;
-            _config = config.Value;
-            _logger = logger;
-            _helperService = helperService;
-        }
         public async Task<object> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
         {
             try
@@ -67,7 +57,7 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
             }
             int expirySecond = 120;
             //send sms and get otp code
-            var policySetting = _helperService.getPasswordPolicySetting();
+            var policySetting = _helperService.GetPasswordPolicySetting();
             int codeLength = 6;
             int codeType = 0;
             if (policySetting != null)
@@ -80,11 +70,7 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.ForgotPassword
                             : 2;
             }
 
-            var otpCode = await _smsService.SendOtpAsync(user.PhoneNumber, "", "is your password reset code ", expirySecond, codeLength, codeType);
-            if (otpCode == null)
-            {
-                otpCode = _identityService.GeneratePassword();
-            }
+            var otpCode = await _smsService.SendOtpAsync(user.PhoneNumber, "", "is your password reset code ", expirySecond, codeLength, codeType) ?? _identityService.GeneratePassword();
             var updateResponse = await _identityService.UpdateResetOtp(user.Id, otpCode?.ToString(), DateTime.Now.AddSeconds(expirySecond));
             if (!updateResponse.Succeeded)
             {

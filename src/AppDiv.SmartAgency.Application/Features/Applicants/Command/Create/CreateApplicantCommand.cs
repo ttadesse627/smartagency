@@ -67,7 +67,7 @@ public class CreateApplicantCommandHandler : IRequestHandler<CreateApplicantComm
             // var explLoadedProp = new Dictionary<string, NavigationPropertyType>
             // {"Partner", NavigationPropertyType.REFERENCE};
             var user = await _userRepository.GetAsync(userId);
-            if (user.PartnerId != null)
+            if (user?.PartnerId != null)
             {
                 applicantEntity.PartnerId = user.PartnerId;
             }

@@ -12,11 +12,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             _context = context;
         }
 
-        async Task<Setting> ISettingRepository.GetSettingByKey(string key)
+        async Task<Setting?> ISettingRepository.GetSettingByKey(string key)
         {
             return await base.GetAsync(key);
         }
-        async Task<Setting> ISettingRepository.GetByIdAsync(Guid id)
+        async Task<Setting?> ISettingRepository.GetByIdAsync(Guid id)
         {
             return await base.GetAsync(id);
         }

@@ -6,7 +6,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 {
     public class AddressRepository(SmartAgencyDbContext dbContext) : BaseRepository<Address>(dbContext), IAddressRepository
     {
-        public async Task<Address> GetByIdAsync(Guid Id)
+        public async Task<Address?> GetByIdAsync(Guid Id)
         {
             return await base.GetAsync(Id);
         }

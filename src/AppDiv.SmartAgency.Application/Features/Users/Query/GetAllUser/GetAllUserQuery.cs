@@ -40,7 +40,7 @@ namespace AppDiv.SmartAgency.Application.Features.Lookups.Query.GetAllUser
 
             var userList = await _userRepository.GetAllWithSearchAsync
                             (
-                                request.SearchTerm!, user => user.UserName != null, ["UserGroups"]
+                                request.SearchTerm!, user => user.UserName != null, ["UserGroups", "UserGroups.Permissions"]
                             );
             var paginatedUsers = await _userRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, userList, request.OrderBy);
             var userResponse = CustomMapper.Mapper.Map<SearchModel<UserResponseDTO>>(paginatedUsers);

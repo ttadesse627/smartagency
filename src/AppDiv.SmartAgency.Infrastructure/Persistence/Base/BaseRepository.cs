@@ -113,7 +113,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return _dbContext.Set<T>().AsNoTracking().AsQueryable();
         }
 
-        public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string searchTerm, string orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>> predicate, params string[] eagerLoadedProperties)
+        public virtual async Task<SearchModel<T>> GetAllWithPredicateSearchAsync(int pageNumber, int pageSize, string? searchTerm, string? orderBy, SortingDirection sortingDirection, Expression<Func<T, bool>>? predicate, params string[] eagerLoadedProperties)
         {
             long maxPage = 1, totalItems = 0;
 
@@ -179,7 +179,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 PagingSize = pageSize,
                 Items = result,
                 TotalCount = totalItems,
-                SearchKeyWord = searchTerm,
+                SearchKeyWord = searchTerm ?? "",
                 SortingColumn = orderBy,
                 SortingDirection = sortingDirection
             };
@@ -272,19 +272,19 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await list.ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null)
         {
-            return await _dbContext.Set<T>().Where(predicate).ToListAsync();
+            return predicate != null ? await _dbContext.Set<T>().Where(predicate).ToListAsync() : await _dbContext.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllWithAsync(Expression<Func<T, bool>> predicate = null, params string[] eagerLoadedProperties)
+        public virtual async Task<IEnumerable<T>> GetAllWithAsync(Expression<Func<T, bool>>? predicate = null, params string[] eagerLoadedProperties)
         {
             var entiries = _dbContext.Set<T>().AsQueryable();
             foreach (var nav_property in eagerLoadedProperties)
             {
                 entiries = entiries.Include(nav_property);
             }
-            return await entiries.Where(predicate).ToListAsync();
+            return predicate != null ? await entiries.Where(predicate).ToListAsync() : await entiries.ToListAsync();
         }
 
         public virtual T GetAtIndex(int i)
@@ -302,12 +302,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return entiries.ElementAt(i);
         }
 
-        public virtual async Task<T> GetAsync(object id)
+        public virtual async Task<T?> GetAsync(object id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<T> GetWithAsync(object id, Dictionary<String, NavigationPropertyType> explicitLoadedProperties)
+        public virtual async Task<T?> GetWithAsync(object id, Dictionary<String, NavigationPropertyType> explicitLoadedProperties)
         {
             var entity = await _dbContext.Set<T>().FindAsync(id);
             if (entity != null)
@@ -317,10 +317,10 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     switch (nav_property.Value)
                     {
                         case NavigationPropertyType.REFERENCE:
-                            await this._dbContext.Entry(entity).Reference(nav_property.Key).LoadAsync();
+                            await _dbContext.Entry(entity).Reference(nav_property.Key).LoadAsync();
                             break;
                         default:
-                            await this._dbContext.Entry(entity).Collection(nav_property.Key).LoadAsync();
+                            await _dbContext.Entry(entity).Collection(nav_property.Key).LoadAsync();
                             break;
                     }
                 }
@@ -328,12 +328,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return entity;
         }
 
-        public virtual async Task<T> GetAsync(object[] id)
+        public virtual async Task<T?> GetAsync(object[] id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<T> GetWithAsync(object[] id, Dictionary<string, NavigationPropertyType> explicitLoadedProperties)
+        public virtual async Task<T?> GetWithAsync(object[] id, Dictionary<string, NavigationPropertyType> explicitLoadedProperties)
         {
             var entity = await _dbContext.Set<T>().FindAsync(id);
             if (entity != null)
@@ -383,7 +383,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         public virtual async Task DeleteAsync(object id)
         {
-            T entityToDelete = await _dbContext.Set<T>().FindAsync(id);
+            T? entityToDelete = await _dbContext.Set<T>().FindAsync(id);
             if (entityToDelete != null)
             {
                 Delete(entityToDelete);
@@ -392,13 +392,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         public virtual async Task DeleteAsync(IEnumerable<object> ids)
         {
-            List<T> entities = new List<T> { };
+            List<T> entities = [];
             foreach (var id in ids)
             {
-                T entityToDelete = await _dbContext.Set<T>().FindAsync(id);
+                T? entityToDelete = await _dbContext.Set<T>().FindAsync(id);
                 entities.Add(entityToDelete);
             }
-            if (entities != null && entities.Count() > 0)
+            if (entities != null && entities.Count > 0)
             {
                 Delete(entities);
             }
@@ -409,7 +409,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             List<T> entities = new List<T> { };
             foreach (var id in ids)
             {
-                T entityToDelete = await _dbContext.Set<T>().FindAsync(id);
+                T? entityToDelete = await _dbContext.Set<T>().FindAsync(id);
                 entities.Add(entityToDelete);
             }
             if (entities != null && entities.Count() > 0)
@@ -420,7 +420,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         public virtual async Task DeleteAsync(object[] id)
         {
-            T entityToDelete = await _dbContext.Set<T>().FindAsync(id);
+            T? entityToDelete = await _dbContext.Set<T>().FindAsync(id);
             Delete(entityToDelete);
         }
 
@@ -439,7 +439,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             _dbContext.Set<T>().RemoveRange(entities);
         }
 
-        public virtual void Delete(Expression<Func<T, bool>> predicate = null)
+        public virtual void Delete(Expression<Func<T, bool>>? predicate = null)
         {
             IEnumerable<T> list = _dbContext.Set<T>().Where(predicate);
             if (list != null)
@@ -481,7 +481,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             if (entry.State == EntityState.Detached)
             {
                 var set = _dbContext.Set<T>();
-                T attachedEntity = await set.FindAsync(getKey(entity));
+                T? attachedEntity = await set.FindAsync(getKey(entity));
 
                 if (attachedEntity != null)
                 {
@@ -507,7 +507,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             if (entry.State == EntityState.Detached)
             {
                 var set = _dbContext.Set<T>();
-                T attachedEntity = await set.FindAsync(getKey(entity));
+                T? attachedEntity = await set.FindAsync(getKey(entity));
 
                 if (attachedEntity != null)
                 {
@@ -534,7 +534,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 if (entry.State == EntityState.Detached)
                 {
                     var set = _dbContext.Set<T>();
-                    T attachedEntity = await set.FindAsync(getKey(entity));
+                    T? attachedEntity = await set.FindAsync(getKey(entity));
 
                     if (attachedEntity != null)
                     {
@@ -561,7 +561,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             if (entry.State == EntityState.Detached)
             {
                 var set = _dbContext.Set<T>();
-                T attachedEntity = await set.FindAsync(getKey(entity));
+                T? attachedEntity = await set.FindAsync(getKey(entity));
 
                 if (attachedEntity != null)
                 {
@@ -588,7 +588,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 if (entry.State == EntityState.Detached)
                 {
                     var set = _dbContext.Set<T>();
-                    T attachedEntity = await set.FindAsync(getKey(entity));
+                    T? attachedEntity = await set.FindAsync(getKey(entity));
 
                     if (attachedEntity != null)
                     {
@@ -603,37 +603,37 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             }
         }
 
-        public virtual async Task<int> GetCountAsyc(Expression<Func<T, bool>> predicate = null)
+        public virtual async Task<int> GetCountAsyc(Expression<Func<T, bool>>? predicate = null)
         {
             try
             {
                 return await _dbContext.Set<T>().CountAsync(predicate);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }
         }
 
-        public virtual async Task<Dictionary<String, int>> GetGroupedCountAsync(Expression<Func<T, string>> keySelector)
+        public virtual async Task<Dictionary<string, int>> GetGroupedCountAsync(Expression<Func<T, string>>? keySelector)
         {
             return await _dbContext.Set<T>().AsQueryable().GroupBy(keySelector).Select(g => new { name = g.Key, count = g.Count() }).ToDictionaryAsync(k => k.name, i => i.count);
         }
 
-        public virtual async Task<Dictionary<String, int>> GetGroupedCountAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, string>> keySelector)
+        public virtual async Task<Dictionary<string, int>> GetGroupedCountAsync(Expression<Func<T, bool>>? predicate, Expression<Func<T, string>>? keySelector)
         {
             return await _dbContext.Set<T>().Where(predicate).AsQueryable().GroupBy(keySelector).Select(g => new { name = g.Key, count = g.Count() }).ToDictionaryAsync(k => k.name, i => i.count);
         }
 
-        public virtual async Task<T> GetFirstEntryAsync()
+        public virtual async Task<T?> GetFirstEntryAsync()
         {
             return await _dbContext.Set<T>().FirstOrDefaultAsync();
         }
 
-        public virtual async Task<T> GetFirstEntryAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, SortingDirection sorting_direction)
+        public virtual async Task<T?> GetFirstEntryAsync(Expression<Func<T, bool>>? predicate, Expression<Func<T, object>>? orderBy, SortingDirection sorting_direction)
         {
 
-            var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
+            var propertyExpression = orderBy?.Body is UnaryExpression expression ? (MemberExpression)expression.Operand : (MemberExpression)orderBy!.Body;
 
             var parameters = orderBy.Parameters;
 
@@ -673,9 +673,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 return await (sorting_direction == SortingDirection.Ascending ? _dbContext.Set<T>().Where(predicate).OrderBy(newExpression).FirstOrDefaultAsync() : _dbContext.Set<T>().Where(predicate).OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
-            else if (propertyExpression.Type == typeof(Double))
+            else if (propertyExpression.Type == typeof(double))
             {
-                var newExpression = Expression.Lambda<Func<T, Double>>(propertyExpression, parameters);
+                var newExpression = Expression.Lambda<Func<T, double>>(propertyExpression, parameters);
                 return await (sorting_direction == SortingDirection.Ascending ? _dbContext.Set<T>().Where(predicate).OrderBy(newExpression).FirstOrDefaultAsync() : _dbContext.Set<T>().Where(predicate).OrderByDescending(newExpression).FirstOrDefaultAsync());
             }
 
@@ -702,12 +702,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await _dbContext.Set<T>().CountAsync();
         }
 
-        public virtual async Task<T> GetLastEntryAsync()
+        public virtual async Task<T?> GetLastEntryAsync()
         {
             return await _dbContext.Set<T>().LastOrDefaultAsync();
         }
 
-        public virtual async Task<T> GetLastEntryWithAsync(params string[] eagerLoadedProperties)
+        public virtual async Task<T?> GetLastEntryWithAsync(params string[] eagerLoadedProperties)
         {
             var entiries = _dbContext.Set<T>().AsQueryable();
             foreach (var nav_property in eagerLoadedProperties)
@@ -722,12 +722,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(await _dbContext.Set<T>().CountAsync() / (pagingSize * 1.0))));
         }
 
-        public virtual async Task<T> GetLastObjectAsync()
+        public virtual async Task<T?> GetLastObjectAsync()
         {
             return await _dbContext.Set<T>().LastOrDefaultAsync();
         }
 
-        public virtual async Task<T> GetLastObjectWithAsync(params string[] eagerLoadedProperties)
+        public virtual async Task<T?> GetLastObjectWithAsync(params string[] eagerLoadedProperties)
         {
             var entiries = _dbContext.Set<T>().AsQueryable();
             foreach (var nav_property in eagerLoadedProperties)
@@ -737,9 +737,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return await entiries.LastOrDefaultAsync();
         }
 
-        public virtual async Task<SearchModel<T>> GetPagedSearchResultAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page = 0, int pageSize = 15, SortingDirection sorting_direction = SortingDirection.Ascending)
+        public virtual async Task<SearchModel<T>> GetPagedSearchResultAsync(Expression<Func<T, bool>>? predicate, Expression<Func<T, object>>? orderBy, int page = 0, int pageSize = 15, SortingDirection sorting_direction = SortingDirection.Ascending)
         {
-            IEnumerable<T> list = null;
+            IEnumerable<T>? list = null;
             long maxPage = 1;
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
 
@@ -750,7 +750,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 {
                     page = Convert.ToInt32(maxPage);
                 }
-                var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
+                var propertyExpression = orderBy?.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy!.Body;
 
                 var parameters = orderBy.Parameters;
 
@@ -818,14 +818,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 CurrentPage = page,
                 MaxPage = maxPage,
                 PagingSize = pageSize,
-                Items = list,
+                Items = list!,
                 TotalCount = total_items
             };
         }
 
         public virtual async Task<SearchModel<T>> GetSearchResultAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, SortingDirection sorting_direction = SortingDirection.Ascending)
         {
-            IEnumerable<T> list = null;
+            IEnumerable<T> list = [];
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
 
             if (total_items > 0)
@@ -900,12 +900,12 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             };
         }
 
-        public virtual async Task<SearchModel<T>> GetPagedSearchResultWithAsync(Expression<Func<T, bool>> predicate = null, Expression<Func<T, object>> orderBy = null, int page = 0, int pageSize = 0, SortingDirection sorting_direction = SortingDirection.Descending, params string[] eagerLoadedProperties)
+        public virtual async Task<SearchModel<T>> GetPagedSearchResultWithAsync(Expression<Func<T, bool>>? predicate = null, Expression<Func<T, object>>? orderBy = null, int page = 0, int pageSize = 0, SortingDirection sorting_direction = SortingDirection.Descending, params string[] eagerLoadedProperties)
         {
-            IEnumerable<T> list = null;
+            IEnumerable<T> list = [];
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
             var entiries = _dbContext.Set<T>().Where(predicate).AsQueryable();
-            var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
+            var propertyExpression = orderBy?.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy!.Body;
             foreach (var nav_property in eagerLoadedProperties)
             {
                 entiries = entiries.Include(nav_property);
@@ -1004,21 +1004,19 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             };
         }
 
-        public virtual async Task<SearchModel<T>> GetSearchResultWithAsync(Expression<Func<T, bool>> predicate = null, Expression<Func<T, object>> orderBy = null, SortingDirection sorting_direction = SortingDirection.Descending, params string[] eagerLoadedProperties)
+        public virtual async Task<SearchModel<T>> GetSearchResultWithAsync(Expression<Func<T, bool>>? predicate = null, Expression<Func<T, object>>? orderBy = null, SortingDirection sorting_direction = SortingDirection.Descending, params string[] eagerLoadedProperties)
         {
-            IEnumerable<T> list = null;
+            IEnumerable<T> list = [];
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
             var entiries = _dbContext.Set<T>().Where(predicate).AsQueryable();
             foreach (var nav_property in eagerLoadedProperties)
             {
                 entiries = entiries.Include(nav_property);
             }
-
-            int maxPage = 1;
             if (total_items > 0)
             {
 
-                var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
+                var propertyExpression = orderBy?.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy!.Body;
                 var parameters = orderBy.Parameters;
 
                 if (propertyExpression.Type == typeof(string))
@@ -1086,9 +1084,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             };
         }
 
-        public virtual async Task<SearchModel<T2>> GetPagedSearchResultAsync<T2>(Expression<Func<T, T2>> select, Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page = 0, int pageSize = 15, SortingDirection sorting_direction = SortingDirection.Ascending) where T2 : class
+        public virtual async Task<SearchModel<T2>> GetPagedSearchResultAsync<T2>(Expression<Func<T, T2>>? select, Expression<Func<T, bool>>? predicate, Expression<Func<T, object>>? orderBy, int page = 0, int pageSize = 15, SortingDirection sorting_direction = SortingDirection.Ascending) where T2 : class
         {
-            IEnumerable<T2> list = null;
+            IEnumerable<T2> list = [];
             long maxPage = 1;
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
 
@@ -1099,7 +1097,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 {
                     page = Convert.ToInt32(maxPage);
                 }
-                var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
+                var propertyExpression = orderBy?.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy!.Body;
 
                 var parameters = orderBy.Parameters;
 
@@ -1184,9 +1182,9 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             };
         }
 
-        public virtual async Task<SearchModel<T2>> GetPagedSearchResultWithAsync<T2>(Expression<Func<T, T2>> select, Expression<Func<T, bool>> predicate = null, Expression<Func<T, object>> orderBy = null, int page = 0, int pageSize = 0, SortingDirection sorting_direction = SortingDirection.Descending, params string[] eagerLoadedProperties) where T2 : class
+        public virtual async Task<SearchModel<T2>> GetPagedSearchResultWithAsync<T2>(Expression<Func<T, T2>>? select, Expression<Func<T, bool>>? predicate = null, Expression<Func<T, object>>? orderBy = null, int page = 0, int pageSize = 0, SortingDirection sorting_direction = SortingDirection.Descending, params string[] eagerLoadedProperties) where T2 : class
         {
-            IEnumerable<T2> list = null;
+            IEnumerable<T2> list = [];
             long total_items = await _dbContext.Set<T>().LongCountAsync(predicate);
             var entiries = _dbContext.Set<T>().Where(predicate).AsQueryable();
             foreach (var nav_property in eagerLoadedProperties)
@@ -1203,7 +1201,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                     page = Convert.ToInt32(maxPage);
                 }
 
-                var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
+                var propertyExpression = orderBy?.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy!.Body;
                 var parameters = orderBy.Parameters;
 
                 if (propertyExpression.Type == typeof(string))
@@ -1338,13 +1336,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             return success;
         }
 
-        public async Task<T> GetFirstEntryWithAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, SortingDirection sorting_direction, params string[] eagerLoadedProperties)
+        public async Task<T?> GetFirstEntryWithAsync(Expression<Func<T, bool>>? predicate, Expression<Func<T, object>>? orderBy, SortingDirection sorting_direction, params string[] eagerLoadedProperties)
         {
 
-            var propertyExpression = orderBy.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy.Body;
-
+            var propertyExpression = orderBy?.Body is UnaryExpression ? (MemberExpression)((UnaryExpression)orderBy.Body).Operand : (MemberExpression)orderBy!.Body;
             var parameters = orderBy.Parameters;
-
             var entiries = _dbContext.Set<T>().Where(predicate).AsQueryable();
 
             foreach (var nav_property in eagerLoadedProperties)
@@ -1411,7 +1407,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
             }
         }
 
-        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>>? predicate)
         {
             return await this._dbContext.Set<T>().AnyAsync(predicate);
         }
@@ -1419,10 +1415,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             await Task.CompletedTask;
             var properties = typeof(T).GetProperties().ToList();
-            // foreach (var prop in properties)
-            // {
-            //     var stringProps = prop.Name;
-            // }
             return properties;
         }
 
@@ -1472,15 +1464,5 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             throw new NotImplementedException();
         }
-
-        // public Task<int> IsPassportUnique(string passportNumber)
-        // {
-        //        long total_items = await _dbContext.Set<T>().CountAsync()
-        // }
-
-        // public Task<List<PropertyInfo>> GetProperties()
-        // {
-        //     throw new NotImplementedException();
-        // }
     }
 }

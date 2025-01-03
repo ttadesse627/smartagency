@@ -28,8 +28,8 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Command.Delete
             try
             {
                 var partnerEntity = await _partnerRepository.GetByIdAsync(request.Id);
-                var AddressId = partnerEntity.AddressId;
-                await _partnerRepository.DeleteAsync(partnerEntity.Id);
+                var AddressId = partnerEntity?.AddressId;
+                await _partnerRepository.DeleteAsync(partnerEntity?.Id);
                 await _addressRepository.DeleteAsync(AddressId!);
                 await _partnerRepository.SaveChangesAsync(cancellationToken);
                 await _addressRepository.SaveChangesAsync(cancellationToken);

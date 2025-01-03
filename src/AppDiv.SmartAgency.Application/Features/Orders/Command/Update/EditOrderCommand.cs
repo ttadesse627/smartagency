@@ -82,8 +82,8 @@ public class EditOrderCommandHandler(IOrderRepository orderRepository, IApplican
                 {
                     // save sponsor attachment
                     var sponsorFile = editOrderRequest.Sponsor?.AttachmentFile?.AttachmentFile;
-                    var sponsorAttachmentName = await _attachmentRepository.GetAsync((object)editOrderRequest.AttachmentFile?.AttachmentId!);
-                    var sponsorFolderName = Path.Combine("Resources", sponsorAttachmentName.Title!);
+                    var sponsorAttachmentName = await _attachmentRepository.GetAsync(editOrderRequest.AttachmentFile?.AttachmentId);
+                    var sponsorFolderName = Path.Combine("Resources", sponsorAttachmentName?.Title);
                     var sponsorPathToSave = Path.Combine(Directory.GetCurrentDirectory(), sponsorFolderName);
                     var sponsoFileName = orderEntity.Sponsor!.Id.ToString();
                     if (!string.IsNullOrEmpty(sponsorFile))

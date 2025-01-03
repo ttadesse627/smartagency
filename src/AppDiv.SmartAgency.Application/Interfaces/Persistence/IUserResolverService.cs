@@ -2,9 +2,9 @@
 {
     public interface IUserResolverService
     {
-        string GetUserEmail();
+        string? GetUserEmail();
         Guid GetUserId();
-        string GetLocale();
+        string? GetLocale();
         Guid GetId();
     }
 }

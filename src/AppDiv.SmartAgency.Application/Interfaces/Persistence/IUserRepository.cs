@@ -8,5 +8,5 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence;
 public interface IUserRepository : IBaseRepository<ApplicationUser>
 {
     // Task<IQueryable<ApplicationUser>> GetQueryableUsers(string searchTerm, Expression<Func<ApplicationUser, bool>>? predicate = null, params string[] eagerLoadedProperties);
-    // Task<bool> UpdateUserAsync(ApplicationUser user);
+    Task<List<Permission>> GetUserPermissionsAsync(string userId, string controllerName);
 }

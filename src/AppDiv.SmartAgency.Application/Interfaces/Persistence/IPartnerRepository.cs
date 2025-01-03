@@ -7,9 +7,9 @@ using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
-    public interface IPartnerRepository: IBaseRepository<Partner>
+    public interface IPartnerRepository : IBaseRepository<Partner>
     {
-        Task<Partner> GetByIdAsync(Guid id);
-        Task<Int32> UpdateAsync(Partner partner);
+        Task<Partner?> GetByIdAsync(Guid id);
+        Task<int> UpdateAsync(Partner partner);
     }
 }

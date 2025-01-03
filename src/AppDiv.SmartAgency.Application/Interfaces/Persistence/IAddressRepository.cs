@@ -7,8 +7,8 @@ using AppDiv.SmartAgency.Domain.Entities.Base;
 
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
-    public interface IAddressRepository: IBaseRepository<Address>
+    public interface IAddressRepository : IBaseRepository<Address>
     {
-        Task<Address> GetByIdAsync(Guid id);
+        Task<Address?> GetByIdAsync(Guid id);
     }
 }

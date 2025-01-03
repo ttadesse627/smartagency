@@ -6,15 +6,9 @@ using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetGroupById
 {
-    public class GetGroupbyId : IRequest<GroupDTO>
+    public class GetGroupbyId(Guid Id) : IRequest<GroupDTO>
     {
-        public Guid Id { get; private set; }
-
-        public GetGroupbyId(Guid Id)
-        {
-            this.Id = Id;
-        }
-
+        public Guid Id { get; private set; } = Id;
     }
 
     public class GetGroupbyIdHandler : IRequestHandler<GetGroupbyId, GroupDTO>

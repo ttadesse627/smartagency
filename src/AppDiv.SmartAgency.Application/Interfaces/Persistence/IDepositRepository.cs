@@ -9,8 +9,8 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
     public interface IDepositRepository : IBaseRepository<Deposit>
     {
-        Task<Deposit> GetByIdAsync(Guid id);
-        Task<Int32> UpdateAsync(Deposit deposit);
+        Task<Deposit?> GetByIdAsync(Guid id);
+        Task<int> UpdateAsync(Deposit deposit);
 
         Task<int> GetApplicantPassportByPassportNumber(string passportNumber);
 

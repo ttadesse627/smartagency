@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Features.Pages.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Pages.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Pages.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Pages.Query;
+using AppDiv.SmartAgency.Infrastructure.Authentication;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -72,7 +73,5 @@ namespace AppDiv.SmartAgency.API.Controllers
                 return BadRequest(exp.Message);
             }
         }
-
-
     }
 }

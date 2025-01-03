@@ -8,14 +8,10 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup
 {
     public record GetDropDownGroups : IRequest<UserGroupResponseDTO> { }
 
-    public class GetDropDownGroupsHandler : IRequestHandler<GetDropDownGroups, UserGroupResponseDTO>
+    public class GetDropDownGroupsHandler(IGroupRepository groupRepository) : IRequestHandler<GetDropDownGroups, UserGroupResponseDTO>
     {
-        private readonly IGroupRepository _groupRepository;
+        private readonly IGroupRepository _groupRepository = groupRepository;
 
-        public GetDropDownGroupsHandler(IGroupRepository groupRepository)
-        {
-            _groupRepository = groupRepository;
-        }
         public async Task<UserGroupResponseDTO> Handle(GetDropDownGroups request, CancellationToken cancellationToken)
         {
             var grpdropDowns = await _groupRepository.GetAllWithAsync();
@@ -23,7 +19,7 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroup
             var dropDownResponse = new List<DropDownDto>();
             foreach (var grItem in grpdropDowns)
             {
-                dropDownResponse.Add(new DropDownDto { Key = grItem.Id, Value = grItem.Name! });
+                dropDownResponse.Add(new DropDownDto { Key = grItem.Id, Value = grItem.Name });
             }
 
             userGroups.UserGroups = dropDownResponse;

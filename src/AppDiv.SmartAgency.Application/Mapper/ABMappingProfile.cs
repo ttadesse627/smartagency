@@ -48,6 +48,7 @@ using AppDiv.SmartAgency.Application.Contracts.Request.UserRequests;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.UserDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Features.CompanyInformations.Command.Update;
+using AppDiv.SmartAgency.Application.Contracts.Request.Groups;
 
 namespace AppDiv.SmartAgency.Application.Mapper
 {
@@ -284,6 +285,8 @@ namespace AppDiv.SmartAgency.Application.Mapper
             CreateMap<SearchModel<UserGroup>, SearchModel<FetchGroupDTO>>();
             CreateMap<UserGroup, FetchGroupDTO>();
             CreateMap<UserGroup, GroupDTO>();
+            CreateMap<Permission, PermissionDto>();
+            CreateMap<PermissionRequest, Permission>();
 
         }
     }

@@ -90,36 +90,20 @@ namespace AppDiv.SmartAgency.API.Middleware
                             var userData = await userRepository.GetWithAsync(userId, explicitLoadedProperties);
 
 
-                            var userRoles = userData.UserGroups.SelectMany(ug => ug.Permissions
+                            var userRoles = userData?.UserGroups.SelectMany(ug => ug.Permissions
                                  .Select(r => new PermissionDto
                                  {
                                      Name = r.Name,
                                      Actions = r.Actions.Select(ac => ac.ToString()).ToList()
-                                     //  Page = r.Value<string>("Page") ?? "",
-                                     //  Title = r.Value<string>("Title") ?? "",
-                                     //  CanAdd = r.Value<bool>("CanAdd"),
-                                     //  CanDelete = r.Value<bool>("CanDelete"),
-                                     //  CanViewDetail = r.Value<bool>("CanViewDetail"),
-                                     //  CanView = r.Value<bool>("CanView"),
-                                     //  CanUpdate = r.Value<bool>("CanUpdate")
-                                 })).GroupBy(r => r.Name.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
+                                 })).GroupBy(r => r.Name?.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
                                  {
                                      Name = g.Key,
                                      Actions = g.SelectMany(p => p.Actions).ToList()
-                                     //  Page = g.Key,
-                                     //  Title = g.FirstOrDefault()?.Title ?? "",
-                                     //  CanAdd = g.Aggregate(false, (acc, x) => acc || x.CanAdd),
-                                     //  CanDelete = g.Aggregate(false, (acc, x) => acc || x.CanDelete),
-                                     //  CanUpdate = g.Aggregate(false, (acc, x) => acc || x.CanUpdate),
-                                     //  CanView = g.Aggregate(false, (acc, x) => acc || x.CanView),
-                                     //  CanViewDetail = g.Aggregate(false, (acc, x) => acc || x.CanViewDetail)
                                  }).ToList();
 
 
                             if (userRoles != null && userRoles.Count != 0)
                             {
-
-                                // var pageName = allowedRoles[0];
                                 foreach (var userRole in userRoles)
                                 {
                                     if (allowedRoles[0] == userRole.Name)

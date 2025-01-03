@@ -14,20 +14,14 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
             this.httpContext = httpContext;
         }
 
-        public string GetUserEmail()
+        public string? GetUserEmail()
         {
-            return httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "Email")?.Value;
+            return httpContext.HttpContext!.User?.Claims?.SingleOrDefault(p => p.Type == "Email")?.Value;
         }
 
         public Guid GetUserId()
         {
-            // var userId = new Guid(httpContext.HttpContext.User.Claims.SingleOrDefault(p => p.Type == "UserId").Value);
-            // if (string.IsNullOrEmpty(userId.ToString()))
-            // {
-            //     userId = Guid.Empty;
-            // }
-
-            var userIdClaim = httpContext.HttpContext.User?.Claims?.SingleOrDefault(p => p.Type == "UserId");
+            var userIdClaim = httpContext.HttpContext!.User?.Claims?.SingleOrDefault(p => p.Type == "UserId");
             if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out Guid userId))
             {
                 return userId;
@@ -36,12 +30,13 @@ namespace AppDiv.SmartAgency.Infrastructure.Services
             // return userId;
         }
 
-        public string GetLocale()
+        public string? GetLocale()
         {
             if (httpContext.HttpContext != null && httpContext.HttpContext.Request.Query.ContainsKey("locale"))
             {
                 return httpContext.HttpContext.Request.Query["locale"].ToArray()[0];
             }
+
             return string.Empty;
         }
 

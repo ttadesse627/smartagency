@@ -29,7 +29,7 @@ namespace AppDiv.SmartAgency.Application.Features.Partners.Query
             //can use this instead of automapper
             var partnerResponseDTO = new PartnerResponseDTO()
             {
-                Id = selectedPartner.Id,
+                Id = selectedPartner!.Id,
                 PartnerType = selectedPartner.PartnerType,
                 PartnerName = selectedPartner.PartnerName,
                 PartnerNameAmharic = selectedPartner.PartnerNameAmharic!,

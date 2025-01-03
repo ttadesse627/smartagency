@@ -7,9 +7,9 @@ using AppDiv.SmartAgency.Domain.Entities;
 
 namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
-    public interface ICompanyInformationRepository: IBaseRepository<CompanyInformation>
+    public interface ICompanyInformationRepository : IBaseRepository<CompanyInformation>
     {
-        Task<CompanyInformation> GetByIdAsync(Guid id);
+        Task<CompanyInformation?> GetByIdAsync(Guid id);
         Task<Int32> UpdateAsync(CompanyInformation companyInformation);
         Task<CompanyInformation> GetByNameAsync(string name);
     }

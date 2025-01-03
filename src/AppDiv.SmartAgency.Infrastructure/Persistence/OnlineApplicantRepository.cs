@@ -19,19 +19,16 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         public override async Task InsertAsync(OnlineApplicant onlineApplicant, CancellationToken cancellationToken)
         {
-
-
             await base.InsertAsync(onlineApplicant, cancellationToken);
         }
 
-        public async Task<OnlineApplicant> GetByIdAsync(Guid Id)
+        public async Task<OnlineApplicant?> GetByIdAsync(Guid Id)
         {
-            //return await base.GetAsync(Id);
-            var onlineApplicant = _context.OnlineApplicants
+            var onlineApplicant = await _context.OnlineApplicants
                 .Include(a => a.MaritalStatus)
                 .Include(a => a.Experience)
                 .Include(a => a.DesiredCountry)
-                .FirstOrDefault(a => a.Id == Id);
+                .FirstOrDefaultAsync(a => a.Id == Id);
 
             return onlineApplicant;
 

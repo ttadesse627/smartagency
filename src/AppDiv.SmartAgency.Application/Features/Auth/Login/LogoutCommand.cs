@@ -36,8 +36,24 @@ namespace AppDiv.SmartAgency.Application.Features.Auth.Login
                 var token = tokenHandler.ReadJwtToken(rawToken);
 
                 // var tokenValidatorService = context.RequestServices.GetRequiredService<ITokenValidatorService>();
-                // var isValid = await tokenValidatorService.ValidateAsync(token as JwtSecurityToken); 
-                var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == "UserId");
+                // var isValid = await tokenValidatorService.ValidateAsync(token as JwtSecurityToken);
+
+                // List<string> claims = token.Claims.Select(claim => claim.Type).ToList();
+                // foreach (var claim in claims)
+                // {
+                //     if (claim == "sub")
+                //     {
+
+                //     }
+                //     Console.WriteLine(claim);
+                // }
+                var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == "sub");
+                var claimsDict = token.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);
+                foreach (var type in claimsDict)
+                {
+                    Console.WriteLine(type.Key + ": " + type.Value);
+                }
+                Console.WriteLine("After that!!");
 
                 // Get the user ID value from the claim, or return null if the claim is not found
                 var UserId = (userIdClaim?.Value) ?? throw new NotFoundException("User Not Found");

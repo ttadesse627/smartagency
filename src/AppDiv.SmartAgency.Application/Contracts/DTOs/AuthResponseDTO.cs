@@ -5,10 +5,10 @@ namespace AppDiv.SmartAgency.Application.Contracts.DTOs
 {
     public record AuthResponseDTO
     {
-        public string UserId { get; set; } = string.Empty;
-        public string Username { get; set; } = string.Empty;
-        public string Token { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
+        public string? UserId { get; set; }
+        public string? Username { get; set; }
+        public string? Token { get; set; }
+        public string? FullName { get; set; }
         public List<PermissionDto> Permissions { get; set; } = [];
         public GetPartnerDropDownDTO? Partner { get; set; }
     }

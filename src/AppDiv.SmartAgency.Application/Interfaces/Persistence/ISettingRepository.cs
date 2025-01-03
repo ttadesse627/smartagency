@@ -6,8 +6,8 @@ namespace AppDiv.SmartAgency.Application.Interfaces.Persistence
 {
     public interface ISettingRepository : IBaseRepository<Setting>
     {
-        Task<Setting> GetByIdAsync(Guid id);
-        Task<Setting> GetSettingByKey(string key);
+        Task<Setting?> GetByIdAsync(Guid id);
+        Task<Setting?> GetSettingByKey(string key);
 
 
     }

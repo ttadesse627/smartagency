@@ -7,33 +7,33 @@ using AppDiv.SmartAgency.Domain.Entities;
 using MediatR;
 namespace AppDiv.SmartAgency.Application.Features.Groups.Commands.Update
 {
-    public record GroupUpdateCommand(UpdateGroupRequest group) : IRequest<ServiceResponse<int>> { }
-    public class GroupUpdateCommandsHandler : IRequestHandler<GroupUpdateCommand, ServiceResponse<int>>
+    public record GroupUpdateCommand(UpdateGroupRequest Group) : IRequest<ServiceResponse<int>> { }
+    public class GroupUpdateCommandsHandler(IGroupRepository groupRepository) : IRequestHandler<GroupUpdateCommand, ServiceResponse<int>>
     {
-        private readonly IGroupRepository _groupRepository;
-        public GroupUpdateCommandsHandler(IGroupRepository groupRepository)
-        {
-            _groupRepository = groupRepository;
-        }
+        private readonly IGroupRepository _groupRepository = groupRepository;
+
         public async Task<ServiceResponse<int>> Handle(GroupUpdateCommand request, CancellationToken cancellationToken)
         {
             var response = new ServiceResponse<int>();
-            var groupEntity = new UserGroup
+            var updatingGroup = await _groupRepository.GetWithPredicateAsync(ug => ug.Id == request.Group.Id, "Permissions");
+            if (updatingGroup is not null)
             {
-                Id = request.group.Id,
-                Name = request.group.Name,
-                Permissions = CustomMapper.Mapper.Map<List<Permission>>(request.group.Permissions),
-            };
-            try
-            {
-                await _groupRepository.UpdateAsync(groupEntity, x => x.Id);
-                response.Success = await _groupRepository.SaveChangesAsync(cancellationToken);
-
-            }
-            catch (Exception exp)
-            {
-                response.Errors?.Add(exp.Message);
-                throw new ApplicationException(exp.Message);
+                updatingGroup.Name = request.Group.Name;
+                updatingGroup.Permissions = CustomMapper.Mapper.Map<List<Permission>>(request.Group.Permissions);
+                try
+                {
+                    response.Success = await _groupRepository.SaveChangesAsync(cancellationToken);
+                    if (response.Success)
+                    {
+                        response.Message = "Successfully updated the group";
+                        response.Data = 1;
+                    }
+                }
+                catch (Exception exp)
+                {
+                    response.Errors?.Add(exp.Message);
+                    throw new ApplicationException(exp.Message);
+                }
             }
             return response;
         }

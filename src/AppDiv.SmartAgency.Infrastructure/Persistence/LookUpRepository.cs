@@ -17,11 +17,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
         {
             await base.InsertAsync(lookUp, cancellationToken);
         }
-        public async Task<LookUp> GetByIdAsync(Guid Id)
+        public async Task<LookUp?> GetByIdAsync(Guid Id)
         {
             return await base.GetAsync(Id);
         }
-        public async Task<Int32> UpdateAsync(LookUp lookUp)
+        public async Task<int> UpdateAsync(LookUp lookUp)
         {
 
             _context.LookUps.Update(lookUp);

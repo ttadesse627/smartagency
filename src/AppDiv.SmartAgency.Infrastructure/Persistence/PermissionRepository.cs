@@ -1,3 +1,4 @@
+using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
@@ -8,8 +9,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     public class PermissionRepository(SmartAgencyDbContext dbContext) : BaseRepository<LookUp>(dbContext), IPermissionRepository
     {
         private readonly SmartAgencyDbContext _context = dbContext;
-
-        public async Task<HashSet<string>> GetPermissionAsync(string userId)
+        public async Task<HashSet<Permission>> GetPermissionAsync(string userId)
         {
             ICollection<UserGroup>[] userGroups = await _context.Set<ApplicationUser>()
                 .Include(user => user.UserGroups)
@@ -18,13 +18,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
                 .Select(user => user.UserGroups)
                 .ToArrayAsync();
 
+            ICollection<Permission> permissions = [];
+
             return userGroups
                 .SelectMany(ug => ug)
-                .SelectMany(ug => ug.Permissions)
-                .Select(permission => permission.Name)
-                .ToHashSet();
-
-
+                .SelectMany(ug => ug.Permissions).ToHashSet();
         }
     }
 }

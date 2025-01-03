@@ -1,5 +1,4 @@
 using AppDiv.SmartAgency.Application.Common;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Mapper;
 using AppDiv.SmartAgency.Utility.Exceptions;
@@ -15,22 +14,18 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
     }
 
 
-    public class EditLookUpCommandHandler : IRequestHandler<EditLookUpCommand, ServiceResponse<Int32>>
+    public class EditLookUpCommandHandler(ILookUpRepository lookUpRepository) : IRequestHandler<EditLookUpCommand, ServiceResponse<Int32>>
     {
-        private readonly ILookUpRepository _lookUpRepository;
-        public EditLookUpCommandHandler(ILookUpRepository lookUpRepository)
+        private readonly ILookUpRepository _lookUpRepository = lookUpRepository;
+
+        public async Task<ServiceResponse<int>> Handle(EditLookUpCommand request, CancellationToken cancellationToken)
         {
-            _lookUpRepository = lookUpRepository;
-        }
-        public async Task<ServiceResponse<Int32>> Handle(EditLookUpCommand request, CancellationToken cancellationToken)
-        {
-            var response = new ServiceResponse<Int32>();
+            var response = new ServiceResponse<int>();
             var lookUpEntity = await _lookUpRepository.GetAsync(request.Id);
 
             if (lookUpEntity != null)
             {
-                var edited = CustomMapper.Mapper.Map(request, lookUpEntity);
-                lookUpEntity = edited;
+                CustomMapper.Mapper.Map(request, lookUpEntity);
                 try
                 {
                     response.Success = await _lookUpRepository.SaveChangesAsync(cancellationToken);
@@ -42,7 +37,7 @@ namespace AppDiv.SmartAgency.Application.Features.LookUps.Command.Update
                 catch (Exception exp)
                 {
                     response.Errors?.Add(exp.Message);
-                    throw new System.ApplicationException(exp.Message);
+                    throw new ApplicationException(exp.Message);
                 }
             }
             else

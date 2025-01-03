@@ -1,6 +1,4 @@
-﻿
-using MediatR;
-using Microsoft.Extensions.Logging;
+﻿using MediatR;
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
@@ -12,24 +10,15 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login;
 public class AuthCommand : IRequest<AuthResponseDTO>
 {
-    public string UserName { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
+    public required string UserName { get; set; }
+    public required string Password { get; set; }
 }
 
-public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
+public class AuthCommandHandler(IIdentityService identityService, ITokenGeneratorService tokenGenerator, IUserRepository userRepository) : IRequestHandler<AuthCommand, AuthResponseDTO>
 {
-    private readonly ITokenGeneratorService _tokenGenerator;
-    private readonly ILogger<AuthCommandHandler> _logger;
-    private readonly IUserRepository _userRepository;
-    private readonly IIdentityService _identityService;
-
-    public AuthCommandHandler(IIdentityService identityService, ITokenGeneratorService tokenGenerator, ILogger<AuthCommandHandler> logger, IUserRepository userRepository)
-    {
-        _identityService = identityService;
-        _tokenGenerator = tokenGenerator;
-        _logger = logger;
-        _userRepository = userRepository;
-    }
+    private readonly ITokenGeneratorService _tokenGenerator = tokenGenerator;
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IIdentityService _identityService = identityService;
 
     public async Task<AuthResponseDTO> Handle(AuthCommand request, CancellationToken cancellationToken)
     {
@@ -41,20 +30,21 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, AuthResponseDTO>
         }
 
         var userResponse = new AuthResponseDTO();
-        var explicitLoadedProperties = new String[] { "UserGroups", "Partner", "Partner.Orders", };
+        var explicitLoadedProperties = new string[] { "UserGroups", "UserGroups.Permissions", "Partner", "Partner.Orders", };
         var userData = await _userRepository.GetWithPredicateAsync(user => user.Id == userId!, explicitLoadedProperties);
-        string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, roles)!);
 
         var userRoles = userData.UserGroups.SelectMany(ug => ug.Permissions
                                  .Select(r => new PermissionDto
                                  {
                                      Name = r.Name,
                                      Actions = r.Actions.Select(ac => ac.ToString()).ToList()
-                                 })).GroupBy(r => r.Name.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
+                                 })).GroupBy(r => r?.Name?.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
                                  {
                                      Name = g.Key,
                                      Actions = g.SelectMany(p => p.Actions).ToList()
                                  }).ToList();
+        IList<string?> permissions = userRoles.Select(perm => perm.Name).ToList();
+        string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, permissions)!);
 
         if (userData.Partner != null)
         {

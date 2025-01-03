@@ -31,7 +31,7 @@ public class AfroMessageService : ISmsService
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
             var decodedData = JsonConvert.DeserializeObject<AfroMsgResponseModel>(responseBody);
-            otpCode = decodedData?.response.code;
+            otpCode = decodedData?.response?.code;
 
         }
         return otpCode!;
@@ -41,25 +41,22 @@ public class AfroMessageService : ISmsService
         if (to != null)
         {
 
-            using (var client = new HttpClient())
+            using var client = new HttpClient();
+            var url = "https://api.afromessage.com/api/send";
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            var jsonContent = new
             {
-                var url = "https://api.afromessage.com/api/send";
-                var request = new HttpRequestMessage(HttpMethod.Post, url);
-                var jsonContent = new
-                {
-                    to = to,
-                    from = _config.From,
-                    sender = _config.Sender,
-                    message = message,
-                };
-                var json = JsonConvert.SerializeObject(jsonContent);
-                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-                request.Headers.Add("Authorization", $"Bearer {_config.Token}");
-                var response = await client.SendAsync(request);
-                // Ensure the response was successful
-                response.EnsureSuccessStatusCode();
-
-            }
+                to,
+                from = _config.From,
+                sender = _config.Sender,
+                message,
+            };
+            var json = JsonConvert.SerializeObject(jsonContent);
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            request.Headers.Add("Authorization", $"Bearer {_config.Token}");
+            var response = await client.SendAsync(request);
+            // Ensure the response was successful
+            response.EnsureSuccessStatusCode();
 
         }
     }

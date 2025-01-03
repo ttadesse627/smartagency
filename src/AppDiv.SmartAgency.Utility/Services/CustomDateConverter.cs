@@ -30,7 +30,7 @@ namespace AppDiv.SmartAgency.Utility.Services
         private int _day = -1;
         private bool _dateIsUnset = true;
         public DateTime gorgorianDate;
-        public string ethiopianDate;
+        public string ethiopianDate = string.Empty;
 
         //    
         //	** ********************************************************************************
@@ -43,17 +43,17 @@ namespace AppDiv.SmartAgency.Utility.Services
         }
         public CustomDateConverter(string etDate)
         {
-            this.gorgorianDate = this.EthiopicToGregorian(etDate);
+            gorgorianDate = EthiopicToGregorian(etDate);
         }
         public CustomDateConverter(DateTime gcDate)
         {
-            this.ethiopianDate = this.GregorianToEthiopic(gcDate);
+            ethiopianDate = GregorianToEthiopic(gcDate);
         }
         public CustomDateConverter(string etDate, string pattern)
         {
-            this.gorgorianDate = this.EthiopicToGregorian(etDate, pattern);
+            gorgorianDate = EthiopicToGregorian(etDate, pattern);
             var (day, month, year) = getSplitted(etDate, pattern);
-            this.Set(year, month, day);
+            Set(year, month, day);
         }
         public CustomDateConverter(int year, int month, int day, int era)
         {
@@ -67,18 +67,18 @@ namespace AppDiv.SmartAgency.Utility.Services
 
         public virtual void Set(int year, int month, int day, int era)
         {
-            this._year = year;
-            this._month = month;
-            this._day = day;
-            this.SetEra(era);
-            this._dateIsUnset = false;
+            _year = year;
+            _month = month;
+            _day = day;
+            SetEra(era);
+            _dateIsUnset = false;
         }
         public virtual void Set(int year, int month, int day)
         {
-            this._year = year;
-            this._month = month;
-            this._day = day;
-            this._dateIsUnset = false;
+            _year = year;
+            _month = month;
+            _day = day;
+            _dateIsUnset = false;
         }
 
         public virtual int GetDay()
@@ -547,9 +547,9 @@ namespace AppDiv.SmartAgency.Utility.Services
                 string[] items = dateString.Split('/');
                 if (items.Length == 3)
                 {
-                    _incomingDay = System.Convert.ToInt32(items[0]);
-                    _incomingMonth = System.Convert.ToInt32(items[1]);
-                    _incomingYear = System.Convert.ToInt32(items[2]);
+                    _incomingDay = Convert.ToInt32(items[0]);
+                    _incomingMonth = Convert.ToInt32(items[1]);
+                    _incomingYear = Convert.ToInt32(items[2]);
                     DoConvertion();
                 }
             }

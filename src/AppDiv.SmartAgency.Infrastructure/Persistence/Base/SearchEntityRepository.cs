@@ -2,16 +2,11 @@
 using System.Linq.Expressions;
 using AppDiv.SmartAgency.Infrastructure.Context;
 
-public class SearchEntityRepository<TEntity> where TEntity : class
+public class SearchEntityRepository<TEntity>(SmartAgencyDbContext context) where TEntity : class
 {
-    private readonly SmartAgencyDbContext _context;
+    private readonly SmartAgencyDbContext _context = context;
 
-    public SearchEntityRepository(SmartAgencyDbContext context)
-    {
-        _context = context;
-    }
-
-    public IQueryable<TEntity> Search(string searchTerm = "", string columnName = null)
+    public IQueryable<TEntity> Search(string searchTerm = "", string? columnName = null)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
         {

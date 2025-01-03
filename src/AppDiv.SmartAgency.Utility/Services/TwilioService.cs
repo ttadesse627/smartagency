@@ -32,11 +32,12 @@ public class TwilioService : ISmsService
 
     public async Task<string> SendOtpAsync(string to, string prefix, string postfix, int expiration, int codeLength, int codeType)
     {
+        await Task.CompletedTask;
         return "true";
     }
 
     public async Task SendSMS(string to, string message)
     {
-
+        await Task.CompletedTask;
     }
 }

@@ -1,15 +1,12 @@
 
 
 using AppDiv.SmartAgency.Application.Contracts.DTOs.OrderDTOs.OrderStatusDTOs;
-using AppDiv.SmartAgency.Application.Contracts.Request.Enjazs;
 using AppDiv.SmartAgency.Application.Contracts.Request.ProcessRequests;
-using AppDiv.SmartAgency.Application.Features.Enjazs.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Orders.Query;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
 using AppDiv.SmartAgency.Domain.Enums;
-using AppDiv.SmartAgency.Utility.Exceptions;
 using MediatR;
 
 namespace AppDiv.SmartAgency.Application.Features.ApplicantStatuses.Command.Update;
@@ -47,7 +44,7 @@ public class EditOrderStatusCommandHandler : IRequestHandler<EditOrderStatusComm
             if (request.ApplicantId != Guid.Empty)
             {
                 var applicant = await _applicantRepository.GetAsync(request.ApplicantId);
-                if (request.Statuses != null && request.Statuses.Any())
+                if (request.Statuses != null && request.Statuses.Count != 0)
                 {
                     var statuses = new List<ApplicantProcess>();
                     foreach (var status in request.Statuses)
@@ -55,8 +52,8 @@ public class EditOrderStatusCommandHandler : IRequestHandler<EditOrderStatusComm
                         var processDefinition = await _processDefinitionRepository.GetAsync(status.StatusId);
                         var applicantStatus = new ApplicantProcess
                         {
-                            Applicant = applicant,
-                            ProcessDefinition = processDefinition,
+                            Applicant = applicant!,
+                            ProcessDefinition = processDefinition!,
                             Date = status.Date,
                             Status = ProcessStatus.Out
                         };
@@ -81,7 +78,7 @@ public class EditOrderStatusCommandHandler : IRequestHandler<EditOrderStatusComm
                     {
                         var enjaz = new Enjaz
                         {
-                            ApplicantId = applicant.Id,
+                            ApplicantId = applicant!.Id,
                             ApplicationNumber = request.Enjaz.ApplicationNumber,
                             TransactionCode = request.Enjaz.TransactionCode,
                         };
@@ -130,7 +127,7 @@ public class EditOrderStatusCommandHandler : IRequestHandler<EditOrderStatusComm
                         {
                             var folderName = Path.Combine("Resources", "Ticket Files");
                             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                            var fileName = applicant.Id.ToString();
+                            var fileName = applicant!.Id.ToString();
                             await _fileService.UploadBase64FileAsync(request.TravelInfo.TicketFile, fileName, pathToSave, FileMode.Create);
                         }
 
@@ -140,7 +137,7 @@ public class EditOrderStatusCommandHandler : IRequestHandler<EditOrderStatusComm
                         throw new ApplicationException(ex.Message);
                     }
                 }
-                response = await _mediator.Send(new ShowOrderStatusQuery(applicant.Id), cancellationToken);
+                response = await _mediator.Send(new ShowOrderStatusQuery(applicant!.Id), cancellationToken);
             }
         }
 

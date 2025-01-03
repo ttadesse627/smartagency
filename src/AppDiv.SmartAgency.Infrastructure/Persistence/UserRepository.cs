@@ -1,8 +1,8 @@
-
 using System.Linq.Expressions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Infrastructure.Context;
+using AppDiv.SmartAgency.Utility.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppDiv.SmartAgency.Infrastructure.Persistence;
@@ -32,15 +32,15 @@ public class UserRepository(SmartAgencyDbContext context) : BaseRepository<Appli
         return queryableUsers;
     }
 
-    // public async Task<bool> UpdateUserAsync(ApplicationUser user, CancellationToken cancellationToken)
-    // {
-    //     bool success = false;
-    //     if (user is not null)
-    //     {
-    //         _context.Users.Update(user);
-    //         int count = await _context.SaveChangesAsync(cancellationToken);
-    //         count > 0 && 
-    //     }
-    // }
+    public async Task<List<Permission>> GetUserPermissionsAsync(string userId, string controllerName)
+    {
+        List<Permission> permissions = [];
+        ApplicationUser? user = await _context.Users.Include(user => user.UserGroups).ThenInclude(ug => ug.Permissions).FirstOrDefaultAsync(user => user.Id == userId);
+        if (user is not null)
+        {
+            permissions = user.UserGroups.SelectMany(ug => ug.Permissions).Where(per => per.Name == controllerName).ToList();
+        }
+        else throw new NotFoundException("User", userId);
+        return permissions;
+    }
 }
-

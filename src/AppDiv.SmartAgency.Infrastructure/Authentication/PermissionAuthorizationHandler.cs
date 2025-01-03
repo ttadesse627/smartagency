@@ -1,28 +1,36 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+using AppDiv.SmartAgency.Domain.Entities;
+using AppDiv.SmartAgency.Domain.Enums;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ClassScheduler.Infrastructure.Authentication;
-public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScope) : AuthorizationHandler<PermissionRequirement>
+namespace AppDiv.SmartAgency.Infrastructure.Authentication;
+public class PermissionAuthorizationHandler(string controllerName, PermissionEnum controllerAction, IUserRepository userRepository) : IAuthorizationFilter
 {
-    private readonly IServiceScopeFactory _serviceScope = serviceScope;
-
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
+    private readonly string _controllerName = controllerName;
+    private readonly PermissionEnum _controllerAction = controllerAction;
+    private readonly IUserRepository _userRepository = userRepository;
+    public async void OnAuthorization(AuthorizationFilterContext context)
     {
-        string? userId = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
-        if (!Guid.TryParse(userId, out Guid parsedUserId))
+        string? userId = context.HttpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (userId is null)
         {
+            context.Result = new ForbidResult();
             return;
         }
 
-        using IServiceScope serviceScope = _serviceScope.CreateScope();
-        IPermissionRepository permissionRepository = serviceScope.ServiceProvider.GetRequiredService<IPermissionRepository>();
-        HashSet<string> permissions = await permissionRepository.GetPermissionAsync(parsedUserId.ToString());
-
-        if (permissions.Contains(requirement.Permission))
+        List<Permission> permissions = await _userRepository.GetUserPermissionsAsync(userId, _controllerName);
+        foreach (var permission in permissions)
         {
-            context.Succeed(requirement);
+            if (permission.Actions.Contains(_controllerAction))
+            {
+                // return authorization success
+                return;
+            }
         }
+        context.Result = new ForbidResult("UnAuthorized Access!");
+        return;
     }
 }

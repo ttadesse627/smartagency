@@ -47,20 +47,22 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
     // }
     public async Task<ServiceResponse<Applicant>> GetApplicantByPassportNumber(string passportNumber)
     {
-        var serviceResponse = new ServiceResponse<Applicant>();
-        serviceResponse.Data = await _context.Applicants.FirstOrDefaultAsync(a => a.PassportNumber == passportNumber);
+        var serviceResponse = new ServiceResponse<Applicant>
+        {
+            Data = await _context.Applicants.FirstOrDefaultAsync(a => a.PassportNumber == passportNumber)
+        };
 
         return serviceResponse;
     }
     public async Task<int> AddApplicantAsync(Applicant applicant)
     {
-        var response = 0;
+        int response;
         try
         {
             await _context.Applicants.AddAsync(applicant);
             response = 1;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw new Exception("Couldn't add the applicant");
         }
@@ -86,12 +88,12 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
     }
 
 
-    public virtual async Task<SearchModel<Applicant>> GetAllApplWithPredicateAsync(int pageNumber, int pageSize, string orderBy, SortingDirection sortingDirection, List<Expression<Func<Applicant, bool>>> predicates, params string[] eagerLoadedProperties)
+    public virtual async Task<SearchModel<Applicant>> GetAllApplWithPredicateAsync(int pageNumber, int pageSize, string orderBy, SortingDirection sortingDirection, List<Expression<Func<Applicant, bool>>>? predicates, params string[] eagerLoadedProperties)
     {
-        long maxPage = 1, totalItems = 0;
+        long maxPage = 1;
 
         var query = _context.Set<Applicant>().AsQueryable();
-        if (predicates.Count > 0)
+        if (predicates?.Count > 0)
         {
             foreach (var predicate in predicates)
             {
@@ -104,7 +106,7 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             query = query.Include(nav_property);
         }
 
-        totalItems = query.LongCount();
+        long totalItems = query.LongCount();
         if (totalItems > 0)
         {
             maxPage = Convert.ToInt64(Math.Ceiling(Convert.ToDouble(totalItems) / pageSize));
@@ -187,46 +189,40 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         };
     }
 
-    ///travelled applicants
-
     public async Task<List<TravelledApplicantsResponseDTO>> GetTravelledApplicants()
     {
 
         var response = await _context.Applicants
                              .Include(app => app.Order)
-                             .Include(app => app.Order.Partner)
+                             .Include(app => app.Order!.Partner)
                              .Include(app => app.Enjaz)
-                             .Include(app => app.Order.Priority)
+                             .Include(app => app.Order!.Priority)
                              .Include(app => app.Jobtitle)
                              .Include(app => app.Salary)
-                             .Include(app => app.Order.Payment)
+                             .Include(app => app.Order!.Payment)
                              .Include(app => app.TraveledApplicant)
                              .Where(app => app.TraveledApplicant != null && app.OrderId != null && app.Enjaz != null)
                              .Select(app => new TravelledApplicantsResponseDTO
                              {
-                                 PartnerName = app.Order.Partner.PartnerName,
+                                 PartnerName = app.Order!.Partner!.PartnerName,
                                  OrderNo = app.Order.OrderNumber,
                                  //   Days = (int)((DateTime.Now - app.TraveledApplicant.CreatedAt).TotalDays),
-                                 EnjazNumber = app.Enjaz.ApplicationNumber,
+                                 EnjazNumber = app.Enjaz!.ApplicationNumber,
                                  OrderCode = app.OrderId.ToString(),
                                  VisaNumber = app.Order.VisaNumber,
                                  Employee = $"{app.FirstName} {app.MiddleName} {app.LastName}",
                                  PassportNo = app.PassportNumber,
-                                 Priority = app.Order.Priority.Value,
-                                 RemainedPayment = app.Order.Payment.RemainingAmount,
-                                 JobTitle = app.Jobtitle.Value,
-                                 Salary = app.Salary.Value
+                                 Priority = app.Order.Priority!.Value,
+                                 RemainedPayment = app.Order.Payment!.RemainingAmount,
+                                 JobTitle = app.Jobtitle!.Value,
+                                 Salary = app.Salary!.Value
 
                              }).ToListAsync();
 
-
         return response;
-
     }
 
-
-
-    public async Task<ApplicantCvResponseDTO> GetApplicantCvDetail(Guid id)
+    public async Task<ApplicantCvResponseDTO?> GetApplicantCvDetail(Guid id)
     {
 
         var response = await _context.Applicants
@@ -251,28 +247,28 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         {
             RefNumber = "001",
             FullName = $"{app.FirstName} {app.MiddleName} {app.LastName}",
-            Religion = app.Religion.Value,
-            DesiredPosition = app.Jobtitle.Value,
-            Salary = app.Salary.Value,
+            Religion = app.Religion!.Value,
+            DesiredPosition = app.Jobtitle!.Value,
+            Salary = app.Salary!.Value,
             Age = DateTime.Now.Year - app.BirthDate.Year,
             Sex = app.Gender.ToString()
         },
         PersonalInfo = new PersonalInfoResponseDTO
         {
             Id = app.Id,
-            Nationality = app.CurrentNationality.Value,
+            Nationality = app.CurrentNationality!.Value,
             DateOfBirth = app.BirthDate.ToString("yyyy-MM-dd"),
             PlaceOfBirth = app.PlaceOfBirth,
-            MaritalStatus = app.MaritalStatus.Value,
+            MaritalStatus = app.MaritalStatus!.Value,
             NumberOfChildren = app.NumberOfChildren,
             Height = app.Height,
             Weight = app.Weight,
-            EducationQualification = app.Education.LevelOfQualifications.FirstOrDefault().LookUp.Value,
-            PhoneNumber = app.Address.PhoneNumber,
+            EducationQualification = app.Education!.LevelOfQualifications.FirstOrDefault()!.LookUp!.Value,
+            PhoneNumber = app.Address!.PhoneNumber,
         },
         OverseasExperiences = app.Experiences.Select(e => new OverseasExperienceResponseDTO
         {
-            Country = e.Country.Value,
+            Country = e.Country!.Value,
             Period = e.PeriodLength,
             Position = e.Position
         }).ToList(),
@@ -281,18 +277,18 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             PassportNumber = app.PassportNumber,
             IssuedDate = app.IssuedDate.ToString("yy-MM-dd"),
             ExpiryDate = app.PassportExpiryDate.ToString("yy-MM-dd"),
-            PassportIssuedPlace = app.PassportIssuedPlace.Value,
-            NextOfKinName = app.EmergencyContact.NameOfContactPerson,
-            NextOfKinNumber = app.EmergencyContact.Address.PhoneNumber
+            PassportIssuedPlace = app.PassportIssuedPlace!.Value,
+            NextOfKinName = app.EmergencyContact!.NameOfContactPerson,
+            NextOfKinNumber = app.EmergencyContact.Address!.PhoneNumber
         },
-        Skills = app.Skills.Select(s => s.LookUp.Value).ToList(),
+        Skills = app.Skills.Select(s => s.LookUp!.Value).ToList(),
         Languages = app.LanguageSkills.Select(l => new LanguagesResponseDTO
         {
-            LanguageName = l.Language.Value,
+            LanguageName = l.Language!.Value,
             Proficiency = l.Proficiency.ToString()
         }
         ).ToList(),
-        AttachmentTypes = app.Attachments.Where(att => att.ShowOnCv == true).Select(att => att.Title).ToList()
+        AttachmentTypes = app.Attachments.Where(att => att.ShowOnCv == true).Select(att => att.Title).ToList()!
     }).FirstOrDefaultAsync();
         return response;
 
@@ -311,9 +307,9 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
                            Duration = DateTime.Now.Subtract(g.CreatedAt).Days,
                            FullName = g.FirstName + " " + g.MiddleName + " " + g.LastName,
                            Sex = g.Gender.ToString(),
-                           MaritalStatus = g.MaritalStatus.Value,
-                           Religion = g.Religion.Value,
-                           Profession = g.Jobtitle.Value,
+                           MaritalStatus = g.MaritalStatus!.Value,
+                           Religion = g.Religion!.Value,
+                           Profession = g.Jobtitle!.Value,
                            ArabicName = g.ArabicFullName,
                            Age = DateTime.Now.Year - g.BirthDate.Year,
                        }).ToListAsync();
@@ -329,13 +325,13 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
                             .Where(ap => ap.OrderId != null && ap.CreatedAt >= daysAgo)
                             .Select(ap => new NewAssignedVisaResponseDTO
                             {
-                                VisaNumber = ap.Order.VisaNumber,
+                                VisaNumber = ap.Order!.VisaNumber,
                                 Date = ap.Order.OrderDate,
                                 JobTitle = ap.Jobtitle!.Value,
-                                Salary = ap.Salary.Value,
+                                Salary = ap.Salary!.Value,
                                 ApplicantId = ap.Id,
                                 Employee = ap.FirstName + " " + ap.MiddleName + " " + ap.LastName,
-                                Country = ap.DesiredCountry.Value
+                                Country = ap.DesiredCountry!.Value
                             })
 
                             .ToListAsync();
@@ -353,11 +349,11 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
         var appOrderInfo = await _context.Applicants
         .Where(ap => (ap.Id == id) && (ap.IsDeleted == false) && (ap.OrderId != null))
             .Include(app => app.Order)
-            .Include(app => app.Order.Partner)
-            .Include(app => app.Order.Sponsor)
-            .Include(app => app.Order.Sponsor.Address)
-            .Include(app => app.Order.Sponsor.Address.City)
-            .Include(app => app.Order.Priority)
+            .Include(app => app.Order!.Partner)
+            .Include(app => app.Order!.Sponsor)
+            .Include(app => app.Order!.Sponsor!.Address)
+            .Include(app => app.Order!.Sponsor!.Address!.City)
+            .Include(app => app.Order!.Priority)
             .Include(app => app.MaritalStatus)
             .Include(app => app.CurrentNationality)
             .Include(app => app.Religion)
@@ -365,12 +361,12 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
             {
                 orderInfo = new OrderInfoResponseDTO
                 {
-                    OrderNumber = app.Order.OrderNumber,
-                    ClientName = app.Order.Partner.PartnerName,
-                    Priority = app.Order.Priority.Value,
+                    OrderNumber = app.Order!.OrderNumber,
+                    ClientName = app.Order.Partner!.PartnerName,
+                    Priority = app.Order.Priority!.Value,
                     VisaNumber = app.Order.VisaNumber,
-                    Sponsor = app.Order.Sponsor.FullName,
-                    City = app.Order.Sponsor.Address.City.Value
+                    Sponsor = app.Order.Sponsor!.FullName,
+                    City = app.Order.Sponsor.Address!.City!.Value
                 },
                 //applicants info
                 applicantInfo = new ApplicantInfoResponseDTO
@@ -378,10 +374,10 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
                     PassportNumber = app.PassportNumber,
                     FullName = $"{app.FirstName} {app.MiddleName} {app.LastName}",
                     Sex = app.Gender.ToString(),
-                    MaritalSatus = app.MaritalStatus.Value,
-                    Religion = app.Religion.Value,
+                    MaritalSatus = app.MaritalStatus!.Value,
+                    Religion = app.Religion!.Value,
                     DateOfBirth = app.BirthDate.ToString("yyyy-MM-dd"),
-                    CurrentNationality = app.CurrentNationality.Value
+                    CurrentNationality = app.CurrentNationality!.Value
                 }
             })
         .FirstOrDefaultAsync();
@@ -432,23 +428,6 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
 
         showStatus.EnjazResponse = enjazRes;
 
-        //      var statuses= new List<StatusInfoResponseDTO>();
-
-        //      var statusRes= await _context.ApplicantProcesses
-        //                      .Where(appPro=> appPro.ApplicantId==id)
-        //                      .Select(appPro=> new{
-        //                       ProcessStatus= statuses.Select(st=> new StatusInfoResponseDTO{
-        //                         Id= appPro.ProcessDefinitionId,
-        //                         StatusName= appPro.ProcessDefinition.Name,
-        //                         Date= appPro.Date
-
-        //                       }).ToList()}).FirstOrDefaultAsync();   
-
-
-
-        //   showStatus.StatusInformation=statusRes.ProcessStatus;
-
-
         var statusRes = await _context.ProcessDefinitions
         .GroupJoin(
             _context.ApplicantProcesses.Where(appPro => appPro.ApplicantId == id), // join with ApplicantProcesses table
@@ -470,16 +449,4 @@ public class ApplicantRepository : BaseRepository<Applicant>, IApplicantReposito
 
         return showStatus;
     }
-
-    // async Task<List<Applicant>> IApplicantRepository.GetAll()
-    // {
-    //     var response = new List<Applicant>();
-    //     var applicants = await _context.Applicants.ToListAsync();
-
-    //     if (applicants.Count >= 0)
-    //     {
-    //         response = applicants;
-    //     }
-    //     return response;
-    // }
 }

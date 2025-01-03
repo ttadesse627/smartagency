@@ -7,29 +7,26 @@ namespace AppDiv.SmartAgency.Application.Features.Applicants.Query
 {
     public record GetApplicantAttachmentsQuery(Guid ApplicantId, string AttachmentType) : IRequest<string> { }
 
-    public class GetApplicantAttachmentsQueryHandler : IRequestHandler<GetApplicantAttachmentsQuery, string>
+    public class GetApplicantAttachmentsQueryHandler(IFileService fileService) : IRequestHandler<GetApplicantAttachmentsQuery, string>
     {
-        private readonly IFileService _fileService;
+        private readonly IFileService _fileService = fileService;
 
-        public GetApplicantAttachmentsQueryHandler(IFileService fileService)
-        {
-            _fileService = fileService;
-        }
         public async Task<string> Handle(GetApplicantAttachmentsQuery query, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
+            List<string> fields = [];
             if (query.ApplicantId == null)
             {
-                throw new BadRequestException("The applicant id should not be null");
+                fields.Add(query.ApplicantId.ToString());
             }
 
             if (string.IsNullOrEmpty(query.AttachmentType))
             {
-                throw new BadRequestException("The attachment type should not be null or empty.");
+                fields.Add(query.AttachmentType);
             }
-            if (string.IsNullOrWhiteSpace(query.AttachmentType))
+            if (fields.Count > 0)
             {
-                throw new BadRequestException("The attachment type should not be null or white space.");
+                throw new RequiredFeildException("Null Fields", fields);
             }
             string? response = Convert.ToBase64String(_fileService.getFile(query.ApplicantId.ToString(), query.AttachmentType, null).file);
 

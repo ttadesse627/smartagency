@@ -9,7 +9,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
     {
         private readonly SmartAgencyDbContext _context = dbContext;
 
-        public async Task<CompanyInformation> GetByIdAsync(Guid Id)
+        public async Task<CompanyInformation?> GetByIdAsync(Guid Id)
         {
             return await base.GetAsync(Id);
         }

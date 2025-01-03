@@ -254,7 +254,7 @@ namespace AppDiv.SmartAgency.Application.Service
             var user = await _userManager.FindByNameAsync(userName);
             var existingRoles = await _userManager.GetRolesAsync(user!);
             var result = await _userManager.RemoveFromRolesAsync(user!, existingRoles);
-            result = await _userManager.AddToRolesAsync(user!, usersRole);
+            result = await _userManager.AddToRolesAsync(user, usersRole);
 
             return result.Succeeded;
         }
@@ -263,15 +263,13 @@ namespace AppDiv.SmartAgency.Application.Service
         {
             var user = await _userManager.FindByNameAsync(userName);
 
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, password))
+            if (user is not null && await _userManager.CheckPasswordAsync(user, password))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
                 return (Result.Success(), userRoles, user.Id);
 
-
             }
-            string[] errors = new string[] { "Invalid login" };
+            string[] errors = ["Invalid login"];
 
             return (Result.Failure(errors), null, null);
 
@@ -342,7 +340,7 @@ namespace AppDiv.SmartAgency.Application.Service
 
         public string GeneratePassword()
         {
-            var policySetting = _helperService.getPasswordPolicySetting();
+            var policySetting = _helperService.GetPasswordPolicySetting();
             var options = _userManager.Options.Password;
             int max = 0;
             bool digit;
@@ -441,7 +439,7 @@ namespace AppDiv.SmartAgency.Application.Service
             if (isLoginOtp)//login otp
             {
                 user.Otp = null;
-                user.OtpExpiredDate = DateTime.Now.AddDays(_helperService.getOtpExpiryDurationSetting());
+                user.OtpExpiredDate = DateTime.Now.AddDays(_helperService.GetOtpExpiryDurationSetting());
             }
             else
             {
@@ -476,7 +474,7 @@ namespace AppDiv.SmartAgency.Application.Service
                 throw new AuthenticationException("invalid otp");
             }
             user.Otp = null;
-            user.OtpExpiredDate = DateTime.Now.AddDays(_helperService.getOtpExpiryDurationSetting());
+            user.OtpExpiredDate = DateTime.Now.AddDays(_helperService.GetOtpExpiryDurationSetting());
             await _userManager.UpdateAsync(user);
 
             return Result.Success();

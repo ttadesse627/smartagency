@@ -1,10 +1,5 @@
-
-
-using System.Threading;
-using System.Runtime.InteropServices;
 using AppDiv.SmartAgency.Application.Common;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.QuickLinksDTOs;
-using AppDiv.SmartAgency.Application.Exceptions;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities.Orders;
 using AppDiv.SmartAgency.Infrastructure.Context;
@@ -19,12 +14,6 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     public OrderRepository(SmartAgencyDbContext dbContext) : base(dbContext)
     {
         _context = dbContext;
-    }
-
-    public async Task<List<Order>> GetAll()
-    {
-        var orders = await _context.Orders.ToListAsync();
-        return orders;
     }
 
     public async Task<ServiceResponse<Order>> GetOrderAsync(Guid id)
@@ -95,9 +84,9 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         return response;
     }
 
-    public async Task<ServiceResponse<Int32>> SaveDbUpdateAsync()
+    public async Task<ServiceResponse<int>> SaveDbUpdateAsync()
     {
-        var response = new ServiceResponse<Int32>();
+        var response = new ServiceResponse<int>();
         try
         {
             response.Data = await _context.SaveChangesAsync();
@@ -120,17 +109,17 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
                            .Where(or => (or.IsDeleted == false) && (or.Employees == null || or.Employees.Count() == 0))
                            .Select(or => new NotAssignedVisaResponseDTO
                            {
-                               AgencyName = or.Partner.PartnerName,
+                               AgencyName = or.Partner!.PartnerName,
                                OrderNumber = or.OrderNumber,
                                VisaNumber = or.VisaNumber,
                                Duration = DateTime.Now.Subtract(or.CreatedAt).Days,
-                               Job = or.OrderCriteria.JobTitle.Value,
-                               Sponsor = or.Sponsor.FullName,
-                               Age = (int)or.OrderCriteria.Age,
-                               Language = or.OrderCriteria.Language.Value,
-                               Expereince = or.OrderCriteria.Experience.Value,
+                               Job = or.OrderCriteria!.JobTitle!.Value,
+                               Sponsor = or.Sponsor!.FullName,
+                               Age = (int)or.OrderCriteria.Age!,
+                               Language = or.OrderCriteria.Language!.Value,
+                               Expereince = or.OrderCriteria.Experience!.Value,
                                NoOfVisa = or.NumberOfVisa,
-                               Religion = or.OrderCriteria.Religion.Value
+                               Religion = or.OrderCriteria.Religion!.Value
 
                            }).ToListAsync();
 
@@ -144,15 +133,15 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         var response = await _context.Applicants
             .Where(app => app.OrderId != null && !app.IsDeleted)
             .Join(_context.Orders.Where(o => !o.IsDeleted), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
-            .Join(_context.CountryOperations, ao => ao.Order.Sponsor.Address.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
+            .Join(_context.CountryOperations, ao => ao.Order.Sponsor!.Address!.CountryId, co => co.CountryId, (ao, co) => new { ApplicantOrder = ao, CountryOperation = co })
             .Where(aoc => DateTime.Compare(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays), DateTime.Now) < 0)
             .Select(aoc => new VisaExpiryResponseDTO
             {
-                EmployerName = aoc.ApplicantOrder.Order.Sponsor.FullName,
-                EmployerPhoneNumber = aoc.ApplicantOrder.Order.Sponsor.Address.PhoneNumber,
+                EmployerName = aoc.ApplicantOrder.Order.Sponsor!.FullName,
+                EmployerPhoneNumber = aoc.ApplicantOrder.Order.Sponsor.Address!.PhoneNumber,
                 EmployeeName = aoc.ApplicantOrder.Applicant.FirstName,
                 PassportNumber = aoc.ApplicantOrder.Applicant.PassportNumber,
-                WorkingCountry = aoc.ApplicantOrder.Order.Sponsor.Address.Country.Value,
+                WorkingCountry = aoc.ApplicantOrder.Order.Sponsor.Address.Country!.Value,
                 Sex = aoc.ApplicantOrder.Applicant.Gender.ToString(),
                 VisaExpired = aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays),
                 DatePassed = (int)DateTime.Now.Subtract(aoc.ApplicantOrder.Order.CreatedAt.AddDays(aoc.CountryOperation.VisaExpiryDays)).TotalDays
@@ -160,32 +149,24 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             .ToListAsync();
 
         return response;
-
-
     }
 
     public async Task<List<PenalityResponseDTO>> GetPenality()
     {
 
-        // .Join(_context.Orders.Where(o => o.IsDeleted==false), app => app.OrderId, o => o.Id, (app, o) => new { Applicant = app, Order = o })
-        // .AsEnumerable()
-
         var settings = await _context.CompanySettings.FirstOrDefaultAsync();
-
-        var penaltyInterval = TimeSpan.FromDays(settings.PenalityInterval);
-
-
+        var penaltyInterval = TimeSpan.FromDays(settings!.PenalityInterval);
         var response = _context.Applicants
-            .Where(app => app.OrderId != null && app.TraveledApplicant == null && app.Order.IsDeleted == false)
+            .Where(app => app.OrderId != null && app.TraveledApplicant == null && app.Order!.IsDeleted == false)
             .Include(app => app.Order)
-            .Include(app => app.Order.Sponsor)
-            .Include(app => app.Order.Partner)
+            .Include(app => app.Order!.Sponsor)
+            .Include(app => app.Order!.Partner)
             .AsEnumerable()
-            .Where(app => app.Order.CreatedAt.Add(penaltyInterval) < DateTime.Now)
+            .Where(app => app.Order!.CreatedAt.Add(penaltyInterval) < DateTime.Now)
             .Select(res => new PenalityResponseDTO
             {
-                Customer = res.Order.Partner.PartnerName,
-                Sponsor = res.Order.Sponsor.FullName,
+                Customer = res.Order!.Partner!.PartnerName,
+                Sponsor = res.Order.Sponsor!.FullName,
                 Days = (int)(DateTime.Now - res.Order.CreatedAt.Add(penaltyInterval)).TotalDays,
                 Penality = ((int)(DateTime.Now - res.Order.CreatedAt.Add(penaltyInterval)).TotalDays) * settings.PenalityAmount
             })
@@ -198,19 +179,15 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
 
     public async Task<List<ComplaintResponseDTO>> GetComplaints()
     {
-
         var response = await _context.Applicants
                        .Where(ap => ap.OrderId != null && ap.Complaints != null && ap.Complaints.Count() > 0 && ap.Complaints.Any(comp => comp.IsClosed) == false)
                        .Select(s => new ComplaintResponseDTO
                        {
-                           // ApplicantId= s.Id,
                            Employee = s.FirstName,
-                           Sponsor = s.Order.Sponsor.FullName,
+                           Sponsor = s.Order!.Sponsor!.FullName,
                            Path = "api/complaint/get-order-complaints/" + s.Id
 
                        }).ToListAsync();
-
-
         return response;
 
     }
@@ -227,19 +204,12 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
                          {
                              OrderId = or.Id,
                              OrderNumber = or.OrderNumber,
-                             SponsorName = or.Sponsor.FullName,
+                             SponsorName = or.Sponsor!.FullName,
                              VisaNumber = or.VisaNumber,
-                             JobTitle = or.OrderCriteria.JobTitle.Value
+                             JobTitle = or.OrderCriteria!.JobTitle!.Value
                          }).ToListAsync();
 
         res.Order = response;
         return res;
     }
-
-
-
-    // public Task<List<GetUnAssignedOrdersDropdownResponseDTO>> GetUnAssignedOrdersDropDown()
-    // {
-    //     throw new NotImplementedException();
-    // }
 }

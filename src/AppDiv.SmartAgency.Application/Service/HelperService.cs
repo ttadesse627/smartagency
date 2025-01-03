@@ -2,18 +2,13 @@
 using System.Security.Cryptography;
 using AppDiv.SmartAgency.Application.Contracts.DTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using Org.BouncyCastle.Crypto.Prng;
 
 namespace AppDiv.SmartAgency.Application.Service
 {
-    public class HelperService
+    public class HelperService(ISettingRepository settingRepository)
     {
-        private readonly ISettingRepository _settingRepository;
+        private readonly ISettingRepository _settingRepository = settingRepository;
 
-        public HelperService(ISettingRepository settingRepository)
-        {
-            _settingRepository = settingRepository;
-        }
         public static string GenerateRandomCode()
         {
             using var rngCryptoServiceProvider = RandomNumberGenerator.Create();
@@ -23,7 +18,7 @@ namespace AppDiv.SmartAgency.Application.Service
             var randomValue = BitConverter.ToUInt32(randomBytes, 0);
             var code = randomValue.ToString("D6");
 
-            return code.Substring(0, 6);
+            return code[..6];
         }
 
         public static int GetMonthDifference(DateTime startDate, DateTime endDate)
@@ -31,17 +26,13 @@ namespace AppDiv.SmartAgency.Application.Service
             int monthsApart = (endDate.Year - startDate.Year) * 12 + (endDate.Month - startDate.Month);
 
             // Check if the end day is less than the start day
-            if (endDate.Day < startDate.Day)
-            {
-                // Subtract one month if end day is less than start day
-                monthsApart--;
-            }
+            if (endDate.Day < startDate.Day) monthsApart--;
 
             return monthsApart;
         }
-        public int getOtpExpiryDurationSetting()
+        public int GetOtpExpiryDurationSetting()
         {
-            var generalSetting = _settingRepository.GetAll().Where(s => s.Key.ToLower() == "generalsetting").FirstOrDefault();
+            var generalSetting = _settingRepository.GetAll().Where(s => s.Key.Equals("generalsetting", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             int expiryDuration = 15;
             if (generalSetting != null)
             {
@@ -49,10 +40,10 @@ namespace AppDiv.SmartAgency.Application.Service
             }
             return expiryDuration;
         }
-        public PasswordPolicy? getPasswordPolicySetting()
+        public PasswordPolicy? GetPasswordPolicySetting()
         {
             var passwordPolicy = _settingRepository.GetAll()
-                .Where(s => s.Key.ToLower() == "passwordpolicy")
+                .Where(s => s.Key.Equals("passwordpolicy", StringComparison.CurrentCultureIgnoreCase))
                 .FirstOrDefault();
             return passwordPolicy == null ? null : new PasswordPolicy
             {

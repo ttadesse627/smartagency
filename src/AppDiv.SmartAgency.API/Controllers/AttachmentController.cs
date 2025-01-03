@@ -5,21 +5,27 @@ using AppDiv.SmartAgency.Application.Features.Attachments.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Attachments.Command.Update;
 using AppDiv.SmartAgency.Application.Features.Attachments.Query;
+using AppDiv.SmartAgency.Domain.Enums;
+using AppDiv.SmartAgency.Infrastructure.Authentication;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppDiv.SmartAgency.API.Controllers;
+
 public class AttachmentController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
+
+    [HasPermission("Lookups", PermissionEnum.ReadMember)]
     [HttpPost("create")]
     public async Task<ActionResult<ServiceResponse<int>>> CreateAttachment(CreateAttachmentRequest attachmentRequest, CancellationToken token)
     {
         var response = await _mediator.Send(new CreateAttachmentCommand(attachmentRequest), token);
         return Ok(response);
     }
+
     [HttpGet("get-all")]
     public async Task<ActionResult<AttachmentResponseDTO>> GetAllAttachments(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
     {

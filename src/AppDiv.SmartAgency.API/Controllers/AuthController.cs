@@ -14,35 +14,6 @@ namespace AppDiv.SmartAgency.API.Controllers
 
         protected new ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-        [HttpPost("login")]
-        [ProducesDefaultResponseType(typeof(AuthResponseDTO))]
-        public async Task<IActionResult> Login([FromBody] AuthCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
 
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
-
-        [HttpPost("resetPassword")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
-
-        [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
-
-        [HttpPost("Logout")]
-        public async Task<IActionResult> Logout()
-        {
-            return Ok(await Mediator.Send(new LogoutCommand()));
-        }
     }
 }

@@ -11,7 +11,7 @@ using AppDiv.SmartAgency.Utility.Services;
 using AppDiv.SmartAgency.Infrastructure.Context;
 using AppDiv.SmartAgency.Utility.Config;
 using Microsoft.AspNetCore.Authorization;
-using ClassScheduler.Infrastructure.Authentication;
+using AppDiv.SmartAgency.Infrastructure.Authentication;
 
 namespace AppDiv.SmartAgency.Infrastructure
 {
@@ -93,8 +93,6 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddTransient<ILoginHistoryRepository, LoginHistoryRepository>();
             services.AddTransient<IRequestedApplicantRepository, RequestedApplicantRepository>();
 
-
-
             services.AddSingleton<IMailService, MailKitService>();
             services.AddSingleton<ISmsService, AfroMessageService>();
             services.AddTransient<IFileService, FileService>();
@@ -102,8 +100,6 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddScoped<ISettingRepository, SettingRepository>();
 
             services.AddTransient<IPermissionRepository, PermissionRepository>();
-            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
             services.AddHttpContextAccessor();
 
