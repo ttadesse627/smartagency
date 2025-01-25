@@ -14,7 +14,6 @@ using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence.Base;
 using AppDiv.SmartAgency.Infrastructure.Seed;
 using AppDiv.SmartAgency.Domain.Entities.TicketData;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDiv.SmartAgency.Infrastructure.Context
 {
@@ -57,7 +56,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public DbSet<ApplicationUser> AppUsers { get; set; } = null!;
         public DbSet<UserGroup> UserGroups { get; set; } = null!;
         public DbSet<Permission> Permissions { get; set; } = null!;
-        public DbSet<RolePermission> RolePermissions { get; set; } = null!;
         public DbSet<Enjaz> Enjazs { get; set; } = null!;
         public DbSet<ApplicantProcess> ApplicantProcesses { get; set; } = null!;
         public DbSet<Complaint> Complaints { get; set; } = null!;
@@ -90,7 +88,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             {
                 modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
                 modelBuilder.ApplyConfiguration(new UserGroupEntityConfig());
-                modelBuilder.ApplyConfiguration(new RolePermissionEntityConfig());
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
@@ -133,7 +130,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
             SeedData.Seedprocesses(modelBuilder);
             SeedData.SeedprocessDefinitions(modelBuilder);
-            SeedData.SeedPermissions(modelBuilder);
+            // SeedData.SeedPermissions(modelBuilder);
 
             #region Audit Config
             Audit.Core.Configuration.Setup()
@@ -161,14 +158,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                         Exception = auditEvent.Environment.Exception,
                         Culture = auditEvent.Environment.Culture
                     }, GetJsonSerializerSettings());
-                    /*if (auditedEntity.EntityType == typeof(test))
-                    {
-                        var json = auditEntity.AuditData.Replace("'", "\"");
-                        var jo = JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(json);
-                        var referenceNo = jo["ColumnValues"]["ReferenceNumber"];
-                        auditEntity.TablePk = jo["ColumnValues"]["ReferenceNumber"].ToString();
-                    }*/
-                    //else
+
                     {
                         auditEntity.TablePk = auditedEntity.PrimaryKey.First().Value.ToString()!;
                     }
@@ -189,11 +179,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
         public string GetCurrentUserId()
         {
             return _userResolverService.GetUserId().ToString();
-        }
-
-        internal T Set<T>(T tableName)
-        {
-            throw new NotImplementedException();
         }
     }
 }

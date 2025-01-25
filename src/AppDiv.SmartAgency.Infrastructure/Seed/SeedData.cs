@@ -35,38 +35,38 @@ namespace AppDiv.SmartAgency.Infrastructure.Seed
             builder.Entity<ProcessDefinition>().HasData(pDefs);
         }
 
-        internal static void SeedPermissions(ModelBuilder builder)
-        {
-            string permissionName = "Permission";
-            int count = 0;
-            var randomGen = new Random();
+        // internal static void SeedPermissions(ModelBuilder builder)
+        // {
+        //     string permissionName = "Permission";
+        //     int count = 0;
+        //     var randomGen = new Random();
 
-            var permissions = new List<Permission>
-        {
-            new() {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef851"),
-                Name = permissionName+count++,
-                Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
-            },
-            new() {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef852"),
-                Name = permissionName+count++,
-                Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
-            },
-            new()
-            {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef853"),
-                Name = permissionName+count++,
-                Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
-            },
-            new()
-            {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef854"),
-                Name = permissionName+count++,
-                Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
-            }
-        };
-            builder.Entity<Permission>().HasData(permissions);
-        }
+        //     var permissions = new List<Permission>
+        // {
+        //     new() {
+        //         Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef851"),
+        //         Name = permissionName+count++,
+        //         Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
+        //     },
+        //     new() {
+        //         Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef852"),
+        //         Name = permissionName+count++,
+        //         Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
+        //     },
+        //     new()
+        //     {
+        //         Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef853"),
+        //         Name = permissionName+count++,
+        //         Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
+        //     },
+        //     new()
+        //     {
+        //         Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef854"),
+        //         Name = permissionName+count++,
+        //         Actions = randomGen.GetItems(Enum.GetValues<PermissionEnum>(), 4).ToHashSet().ToList()
+        //     }
+        // };
+        //     builder.Entity<Permission>().HasData(permissions);
+        // }
     }
 }
