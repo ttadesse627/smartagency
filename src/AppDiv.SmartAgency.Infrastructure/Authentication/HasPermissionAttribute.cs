@@ -6,6 +6,6 @@ public class HasPermissionAttribute : TypeFilterAttribute
 {
     public HasPermissionAttribute(string controllerName, PermissionEnum permissionAction) : base(typeof(PermissionAuthorizationHandler))
     {
-        Arguments = [controllerName, permissionAction];
+        Arguments = [new PermissionRequirement(controllerName, permissionAction)];
     }
 }

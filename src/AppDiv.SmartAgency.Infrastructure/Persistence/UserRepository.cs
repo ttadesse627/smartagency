@@ -43,4 +43,12 @@ public class UserRepository(SmartAgencyDbContext context) : BaseRepository<Appli
         else throw new NotFoundException("User", userId);
         return permissions;
     }
+    public async Task<bool> PermissionExists(string userId, string controllerName)
+    {
+        var permissionExists = await _context.Users.Include(user => user.UserGroups)
+                            .ThenInclude(ug => ug.Permissions)
+                            .AnyAsync(user => user.Id == userId && user.UserGroups.SelectMany(ug => ug.Permissions).Any(per => per.Name == controllerName));
+
+        return permissionExists;
+    }
 }

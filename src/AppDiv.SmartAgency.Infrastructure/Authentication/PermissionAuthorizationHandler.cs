@@ -3,11 +3,12 @@ using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Domain.Entities;
 using AppDiv.SmartAgency.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AppDiv.SmartAgency.Infrastructure.Authentication;
-public class PermissionAuthorizationHandler(string controllerName, PermissionEnum controllerAction, IUserRepository userRepository) : IAuthorizationFilter
+public class PermissionAuthorizationHandler(string controllerName, PermissionEnum controllerAction, IUserRepository userRepository) : AuthorizeAttribute, IAuthorizationFilter
 {
     private readonly string _controllerName = controllerName;
     private readonly PermissionEnum _controllerAction = controllerAction;
@@ -21,15 +22,7 @@ public class PermissionAuthorizationHandler(string controllerName, PermissionEnu
             return;
         }
 
-        List<Permission> permissions = await _userRepository.GetUserPermissionsAsync(userId, _controllerName);
-        foreach (var permission in permissions)
-        {
-            if (permission.Actions.Contains(_controllerAction))
-            {
-                // return authorization success
-                return;
-            }
-        }
+        if (await _userRepository.PermissionExists(userId, _controllerName)) return;
         context.Result = new ForbidResult("UnAuthorized Access!");
         return;
     }
