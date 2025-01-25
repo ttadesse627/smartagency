@@ -18,11 +18,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseKestrel(options =>
-{
-    options.Listen(IPAddress.Any, port: 8000);
-});
-
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
@@ -95,8 +90,7 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new PermissionRequirement("", AppDiv.SmartAgency.Domain.Enums.PermissionEnum.ReadMember)));
 });
 
-// Register the custom authorization handler
-builder.Services.AddScoped<IAuthorizationFilter, PermissionAuthorizationHandler>();
+
 // Include Infrastructure/Application Dependency
 builder.Services.AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
