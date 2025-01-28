@@ -103,6 +103,12 @@ namespace AppDiv.SmartAgency.Infrastructure
 
             services.AddHttpContextAccessor();
 
+            // Register the custom authorization handler
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+            // Replace the default policy provider with the dynamic policy provider
+            services.AddScoped<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
+
             #endregion Repositories DI
             return services;
         }

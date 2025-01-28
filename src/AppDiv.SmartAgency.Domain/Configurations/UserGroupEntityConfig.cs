@@ -37,21 +37,21 @@ public class UserGroupEntityConfig : IEntityTypeConfiguration<UserGroup>
         {
             new() {
                 Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef851"),
-                Name = PermissionEnum.WriteMember.ToString(),
+                Name = PermissionEnum.Write.ToString(),
             },
             new() {
                 Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef852"),
-                Name = PermissionEnum.ReadMember.ToString(),
+                Name = PermissionEnum.Read.ToString(),
             },
             new()
             {
                 Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef853"),
-                Name = PermissionEnum.DeleteMember.ToString(),
+                Name = PermissionEnum.Delete.ToString(),
             },
             new()
             {
                 Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef854"),
-                Name = PermissionEnum.UpdateMember.ToString(),
+                Name = PermissionEnum.Update.ToString(),
             }
         };
 

@@ -1,11 +1,11 @@
 using AppDiv.SmartAgency.Domain.Enums;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppDiv.SmartAgency.Infrastructure.Authentication;
-public class HasPermissionAttribute : TypeFilterAttribute
+public class HasPermissionAttribute : AuthorizeAttribute
 {
-    public HasPermissionAttribute(string controllerName, PermissionEnum permissionAction) : base(typeof(PermissionAuthorizationHandler))
+    public HasPermissionAttribute(string controllerName, PermissionEnum permissionAction)
     {
-        Arguments = [new PermissionRequirement(controllerName, permissionAction)];
+        Policy = $"{controllerName}.{permissionAction}";
     }
 }

@@ -18,7 +18,7 @@ public class AttachmentController(IMediator mediator) : ApiControllerBase
     private readonly IMediator _mediator = mediator;
 
 
-    [HasPermission("Lookups", PermissionEnum.ReadMember)]
+    [HasPermission("Lookups", PermissionEnum.Read)]
     [HttpPost("create")]
     public async Task<ActionResult<ServiceResponse<int>>> CreateAttachment(CreateAttachmentRequest attachmentRequest, CancellationToken token)
     {

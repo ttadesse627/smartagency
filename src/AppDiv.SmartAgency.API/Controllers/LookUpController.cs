@@ -17,7 +17,7 @@ namespace AppDiv.SmartAgency.API.Controllers
     {
         private readonly IMediator _mediator = mediator;
 
-        [HasPermission("Lookups",PermissionEnum.WriteMember)]
+        [HasPermission("Lookups",PermissionEnum.Write)]
         [HttpPost("create")]
         public async Task<ActionResult<ServiceResponse<int>>> CreateLookUp(CreateLookUpRequest lookUpRequest, CancellationToken token)
         {
@@ -29,7 +29,7 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(response);
         }
 
-        [HasPermission("Lookups",PermissionEnum.ReadMember)]
+        [HasPermission("Lookups",PermissionEnum.Read)]
         [HttpGet("get-all-lookup")]
         public async Task<ActionResult<LookUpResponseDTO>> GetAllLookUps(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
         {

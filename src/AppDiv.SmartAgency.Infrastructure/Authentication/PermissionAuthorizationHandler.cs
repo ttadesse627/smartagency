@@ -1,29 +1,29 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
-using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AppDiv.SmartAgency.Infrastructure.Authentication;
-public class PermissionAuthorizationHandler(string controllerName, PermissionEnum controllerAction, IUserRepository userRepository) : AuthorizeAttribute, IAuthorizationFilter
+public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {
-    private readonly string _controllerName = controllerName;
-    private readonly PermissionEnum _controllerAction = controllerAction;
-    private readonly IUserRepository _userRepository = userRepository;
-    public async void OnAuthorization(AuthorizationFilterContext context)
+    private readonly IUserRepository _userRepository;
+    public PermissionAuthorizationHandler(IUserRepository userRepository)
     {
-        string? userId = context.HttpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-        if (userId is null)
+        _userRepository = userRepository;
+    }
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
+    {
+        // Get the user's permissions from claims (assuming permissions are stored in claims)
+        var userPermissions = context.User.Claims
+            .Where(c => c.Type == "Permission")
+            .Select(c => c.Value)
+            .ToList();
+
+        // Check if the user has the required permission
+        var requiredPermission = $"{requirement.PermissionName}.{requirement.Action}";
+        if (userPermissions.Contains(requiredPermission))
         {
-            context.Result = new ForbidResult();
-            return;
+            context.Succeed(requirement);
         }
 
-        if (await _userRepository.PermissionExists(userId, _controllerName)) return;
-        context.Result = new ForbidResult("UnAuthorized Access!");
-        return;
+        return Task.CompletedTask;
     }
 }

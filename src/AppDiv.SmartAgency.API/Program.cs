@@ -8,11 +8,8 @@ using AppDiv.SmartAgency.Application.Interfaces;
 using AppDiv.SmartAgency.Infrastructure;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using AppDiv.SmartAgency.API.Middleware;
 using AppDiv.SmartAgency.Utility.Services;
-using AppDiv.SmartAgency.Infrastructure.Authentication;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 
 
@@ -82,14 +79,6 @@ builder.Services.AddAuthentication(x =>
 
 // Dependency injection with key
 builder.Services.AddSingleton<ITokenGeneratorService>(new TokenGeneratorService(_key, _issuer, _audience, _expirtyMinutes));
-
-// Add authorization with custom policies
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("DynamicPermissionPolicy", policy =>
-        policy.Requirements.Add(new PermissionRequirement("", AppDiv.SmartAgency.Domain.Enums.PermissionEnum.ReadMember)));
-});
-
 
 // Include Infrastructure/Application Dependency
 builder.Services.AddApplication(builder.Configuration)
