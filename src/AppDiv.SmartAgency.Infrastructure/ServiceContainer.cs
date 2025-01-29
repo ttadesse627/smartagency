@@ -107,7 +107,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             // Replace the default policy provider with the dynamic policy provider
-            services.AddScoped<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
+            services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
 
             #endregion Repositories DI
             return services;
