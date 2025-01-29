@@ -1,5 +1,4 @@
 using AppDiv.SmartAgency.Domain.Entities;
-using AppDiv.SmartAgency.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,53 +10,25 @@ public class UserGroupEntityConfig : IEntityTypeConfiguration<UserGroup>
         builder.HasKey(role => role.Id);
         builder.HasMany(role => role.Permissions)
             .WithMany()
-            .UsingEntity<RolePermission>();
+            .UsingEntity<UserGroupPermission>();
 
         builder.HasMany(ug => ug.AppUsers)
-            .WithMany(user => user.UserGroups);
+            .WithMany(user => user.UserGroups)
+            .UsingEntity<UserGroupUser>(
+                j =>
+                {
+                    j.HasKey(t => new { t.UserGroupId, t.AppUserId });
 
-        builder.HasData(SeedUserGroups());
+                    j.HasOne(ugu => ugu.UserGroup)
+                        .WithMany()
+                        .HasForeignKey(ugu => ugu.UserGroupId);
+
+                    j.HasOne(ugu => ugu.AppUser)
+                        .WithMany()
+                        .HasForeignKey(ugu => ugu.AppUserId);
+                });
 
     }
-
-    internal static List<UserGroup> SeedUserGroups()
-    {
-        var userGroups = new List<UserGroup>
-            {
-                new() {Id = Guid.Parse("96e1ec4d-8ae4-4714-980e-4e1effcdb8f9"), Name = "Admin"},
-                new() {Id = Guid.Parse("96e1ec4d-8ae4-4714-981e-4e1effcdb8f9"), Name = "Memeber"},
-                new() {Id = Guid.Parse("96e1ec4d-8ae4-4724-980e-4e1effcdb8f9"), Name = "Staff"}
-            };
-
-        return userGroups;
-    }
-    internal static List<Permission> SeedPermissions()
-    {
-        var permissions = new List<Permission>
-        {
-            new() {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef851"),
-                Name = PermissionEnum.Write.ToString(),
-            },
-            new() {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef852"),
-                Name = PermissionEnum.Read.ToString(),
-            },
-            new()
-            {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef853"),
-                Name = PermissionEnum.Delete.ToString(),
-            },
-            new()
-            {
-                Id = Guid.Parse("062bf23f-7926-4398-8cd9-c29bfd9ef854"),
-                Name = PermissionEnum.Update.ToString(),
-            }
-        };
-
-        return permissions;
-    }
-
 
 
 }

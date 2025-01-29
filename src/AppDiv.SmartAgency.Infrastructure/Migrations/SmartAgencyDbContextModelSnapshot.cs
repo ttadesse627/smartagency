@@ -1782,7 +1782,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(3784),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4164),
                             EnjazRequired = false,
                             Name = "Ticket Process",
                             Step = 100,
@@ -1834,7 +1834,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("00fa1a8e-ac70-400e-8f37-20010f81a27a"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4175),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4514),
                             ExpiryInterval = 0,
                             Name = "Ready to Issue Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1844,7 +1844,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1dc479ab-fe84-4ca8-828f-9a21de7434e7"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4185),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4524),
                             ExpiryInterval = 0,
                             Name = "Register Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1854,7 +1854,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2d9ef769-6d03-4406-9849-430ff9723778"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4204),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4529),
                             ExpiryInterval = 0,
                             Name = "Refund Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1864,7 +1864,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4208),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4533),
                             ExpiryInterval = 0,
                             Name = "Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1874,7 +1874,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("4048b353-039d-41b6-8690-a9aaa2e679cf"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4211),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4537),
                             ExpiryInterval = 0,
                             Name = "Register Rebook Ticket",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1884,7 +1884,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("5b912c00-9df3-47a1-a525-410abf239616"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4220),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4555),
                             ExpiryInterval = 0,
                             Name = "Travel",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1894,7 +1894,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("6b912c00-9df3-47a1-a524-410abf239616"),
-                            CreatedAt = new DateTime(2025, 1, 25, 14, 37, 39, 846, DateTimeKind.Local).AddTicks(4224),
+                            CreatedAt = new DateTime(2025, 1, 29, 18, 26, 51, 776, DateTimeKind.Local).AddTicks(4558),
                             ExpiryInterval = 0,
                             Name = "Traveled",
                             ProcessId = new Guid("60209c9d-47b4-497b-8abd-94a753814a86"),
@@ -1919,21 +1919,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RevocationTokens");
-                });
-
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.RolePermission", b =>
-                {
-                    b.Property<Guid>("PermissionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UserGroupId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("PermissionId", "UserGroupId");
-
-                    b.HasIndex("UserGroupId");
-
-                    b.ToTable("RolePermission");
                 });
 
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.Setting", b =>
@@ -1976,7 +1961,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2025, 1, 25, 14, 37, 39, 837, DateTimeKind.Local).AddTicks(8110));
+                        .HasDefaultValue(new DateTime(2025, 1, 29, 18, 26, 51, 767, DateTimeKind.Local).AddTicks(6671));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -2198,23 +2183,47 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserGroups");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("96e1ec4d-8ae4-4714-980e-4e1effcdb8f9"),
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("96e1ec4d-8ae4-4714-981e-4e1effcdb8f9"),
-                            Name = "Memeber"
-                        },
-                        new
-                        {
-                            Id = new Guid("96e1ec4d-8ae4-4724-980e-4e1effcdb8f9"),
-                            Name = "Staff"
-                        });
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.UserGroupPermission", b =>
+                {
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserGroupId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("PermissionId", "UserGroupId");
+
+                    b.HasIndex("UserGroupId");
+
+                    b.ToTable("UserGroupPermission");
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.UserGroupUser", b =>
+                {
+                    b.Property<Guid>("UserGroupId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AppUsersId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("UserGroupsId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("UserGroupId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("AppUsersId");
+
+                    b.HasIndex("UserGroupsId");
+
+                    b.ToTable("UserGroupUser");
                 });
 
             modelBuilder.Entity("ApplicantAttachment", b =>
@@ -2230,21 +2239,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasIndex("AttachmentsId");
 
                     b.ToTable("ApplicantAttachment");
-                });
-
-            modelBuilder.Entity("ApplicationUserUserGroup", b =>
-                {
-                    b.Property<string>("AppUsersId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid>("UserGroupsId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("AppUsersId", "UserGroupsId");
-
-                    b.HasIndex("UserGroupsId");
-
-                    b.ToTable("ApplicationUserUserGroup");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -3075,21 +3069,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Process");
                 });
 
-            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.RolePermission", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", null)
-                        .WithMany()
-                        .HasForeignKey("UserGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.TicketData.TicketReady", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", "Applicant")
@@ -3168,6 +3147,52 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.Navigation("Applicant");
                 });
 
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.UserGroupPermission", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", null)
+                        .WithMany()
+                        .HasForeignKey("UserGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppDiv.SmartAgency.Domain.Entities.UserGroupUser", b =>
+                {
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("AppUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", "UserGroup")
+                        .WithMany()
+                        .HasForeignKey("UserGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", null)
+                        .WithMany()
+                        .HasForeignKey("UserGroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("UserGroup");
+                });
+
             modelBuilder.Entity("ApplicantAttachment", b =>
                 {
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Applicants.Applicant", null)
@@ -3179,21 +3204,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Migrations
                     b.HasOne("AppDiv.SmartAgency.Domain.Entities.Attachment", null)
                         .WithMany()
                         .HasForeignKey("AttachmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ApplicationUserUserGroup", b =>
-                {
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("AppUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppDiv.SmartAgency.Domain.Entities.UserGroup", null)
-                        .WithMany()
-                        .HasForeignKey("UserGroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
