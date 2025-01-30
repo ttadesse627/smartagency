@@ -7,10 +7,10 @@ public class UserGroupEntityConfig : IEntityTypeConfiguration<UserGroup>
 {
     public void Configure(EntityTypeBuilder<UserGroup> builder)
     {
-        builder.HasKey(role => role.Id);
-        builder.HasMany(role => role.Permissions)
-            .WithMany()
-            .UsingEntity<UserGroupPermission>();
+        builder.HasKey(ug => ug.Id);
+        builder.HasMany(ug => ug.Permissions)
+            .WithOne()
+            .HasForeignKey(p => p.GroupId);
 
         builder.HasMany(ug => ug.AppUsers)
             .WithMany(user => user.UserGroups)

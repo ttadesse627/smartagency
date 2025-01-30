@@ -20,55 +20,57 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
     public class SmartAgencyDbContext : AuditIdentityDbContext<ApplicationUser>, ISmartAgencyDbContext
     {
         private readonly IUserResolverService _userResolverService;
-
-        public DbSet<AuditLog> AuditLogs { get; set; } = null!;
-        public DbSet<Suffix> Suffixes { get; set; } = null!;
-        public DbSet<Attachment> Attachments { get; set; } = null!;
-        public DbSet<LookUp> LookUps { get; set; } = null!;
-        public DbSet<Partner> Partners { get; set; } = null!;
+        
         public DbSet<Address> Addresses { get; set; } = null!;
         public DbSet<Applicant> Applicants { get; set; } = null!;
+        public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; } = null!;
+        public DbSet<ApplicantProcess> ApplicantProcesses { get; set; } = null!;
+        public DbSet<ApplicationUser> AppUsers { get; set; } = null!;
+        public DbSet<Attachment> Attachments { get; set; } = null!;
+        public DbSet<AuditLog> AuditLogs { get; set; } = null!;
+        public DbSet<Award> Awards { get; set; } = null!;
         public DbSet<BankAccount> BankAccounts { get; set; } = null!;
         public DbSet<Beneficiary> Beneficiaries { get; set; } = null!;
-        public DbSet<Education> Educations { get; set; } = null!;
-        public DbSet<EmergencyContact> EmergencyContacts { get; set; } = null!;
-        public DbSet<Experience> Experiences { get; set; } = null!;
-        public DbSet<LanguageSkill> LanguageSkills { get; set; } = null!;
-        public DbSet<Representative> Representatives { get; set; } = null!;
-        public DbSet<Witness> Witnesses { get; set; } = null!;
-        public DbSet<Skill> Skills { get; set; } = null!;
-        public DbSet<QualificationType> QualificationTypes { get; set; } = null!;
-        public DbSet<LevelOfQualification> LevelOfQualifications { get; set; } = null!;
-        public DbSet<Award> Awards { get; set; } = null!;
-        public DbSet<OnlineApplicant> OnlineApplicants { get; set; } = null!;
-        public DbSet<Deposit> Deposits { get; set; } = null!;
-        public DbSet<Order> Orders { get; set; } = null!;
-        public DbSet<Sponsor> Sponsors { get; set; } = null!;
-        public DbSet<OrderCriteria> OrderCriterias { get; set; } = null!;
-        public DbSet<Payment> Payments { get; set; } = null!;
-        public DbSet<Page> Pages { get; set; } = null!;
-        public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; } = null!;
         public DbSet<CompanyInformation> CompanyInformations { get; set; } = null!;
         public DbSet<CompanySetting> CompanySettings { get; set; } = null!;
+        public DbSet<Complaint> Complaints { get; set; } = null!;
         public DbSet<CountryOperation> CountryOperations { get; set; } = null!;
+        public DbSet<Deposit> Deposits { get; set; } = null!;
+        public DbSet<Education> Educations { get; set; } = null!;
+        public DbSet<EmergencyContact> EmergencyContacts { get; set; } = null!;
+        public DbSet<Enjaz> Enjazs { get; set; } = null!;
+        public DbSet<Experience> Experiences { get; set; } = null!;
+        public DbSet<LanguageSkill> LanguageSkills { get; set; } = null!;
+        public DbSet<LevelOfQualification> LevelOfQualifications { get; set; } = null!;
+        public DbSet<LoginHistory> LoginHistories { get; set; } = null!;
+        public DbSet<LookUp> LookUps { get; set; } = null!;
+        public DbSet<OnlineApplicant> OnlineApplicants { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<OrderCriteria> OrderCriterias { get; set; } = null!;
+        public DbSet<Page> Pages { get; set; } = null!;
+        public DbSet<Partner> Partners { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
+        public DbSet<Permission> Permissions { get; set; } = null!;
         public DbSet<Process> Processes { get; set; } = null!;
         public DbSet<ProcessDefinition> ProcessDefinitions { get; set; } = null!;
-        public DbSet<ApplicationUser> AppUsers { get; set; } = null!;
-        public DbSet<UserGroup> UserGroups { get; set; } = null!;
-        public DbSet<Permission> Permissions { get; set; } = null!;
-        public DbSet<Enjaz> Enjazs { get; set; } = null!;
-        public DbSet<ApplicantProcess> ApplicantProcesses { get; set; } = null!;
-        public DbSet<Complaint> Complaints { get; set; } = null!;
-        public DbSet<TicketReady> TicketReadies { get; set; } = null!;
-        public DbSet<TicketRegistration> TicketRegistrations { get; set; } = null!;
-        public DbSet<TicketRefund> TicketRefunds { get; set; } = null!;
-        public DbSet<TicketRebook> TicketRebooks { get; set; } = null!;
-        public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; } = null!;
-        public DbSet<TraveledApplicant> TraveledApplicants { get; set; } = null!;
+        public DbSet<QualificationType> QualificationTypes { get; set; } = null!;
         public DbSet<RequestedApplicant> RequestedApplicants { get; set; } = null!;
-        public DbSet<LoginHistory> LoginHistories { get; set; } = null!;
+        public DbSet<Representative> Representatives { get; set; } = null!;
+        public DbSet<Resource> Resources { get; set; } = null!;
         public DbSet<RevocationToken> RevocationTokens { get; set; } = null!;
         public DbSet<Setting> Settings { get; set; } = null!;
+        public DbSet<Skill> Skills { get; set; } = null!;
+        public DbSet<Sponsor> Sponsors { get; set; } = null!;
+        public DbSet<Suffix> Suffixes { get; set; } = null!;
+        public DbSet<TicketReady> TicketReadies { get; set; } = null!;
+        public DbSet<TicketRebook> TicketRebooks { get; set; } = null!;
+        public DbSet<TicketRebookReg> TicketRebookRegistrations { get; set; } = null!;
+        public DbSet<TicketRefund> TicketRefunds { get; set; } = null!;
+        public DbSet<TicketRegistration> TicketRegistrations { get; set; } = null!;
+        public DbSet<TraveledApplicant> TraveledApplicants { get; set; } = null!;
+        public DbSet<UserGroup> UserGroups { get; set; } = null!;
+        public DbSet<Witness> Witnesses { get; set; } = null!;
+
 
         public SmartAgencyDbContext(DbContextOptions<SmartAgencyDbContext> options, IUserResolverService userResolverService) : base(options)
         {
@@ -124,6 +126,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new TraveledApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new RequestedApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new LoginHistoryEntityConfig());
+                modelBuilder.ApplyConfiguration(new PermissionEntityConfig());
                 modelBuilder.Ignore<PersonalInfo>();
             }
             #endregion
