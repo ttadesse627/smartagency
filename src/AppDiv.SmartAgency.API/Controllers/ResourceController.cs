@@ -4,6 +4,7 @@ using AppDiv.SmartAgency.Application.Contracts.DTOs.ResourceDTOs;
 using AppDiv.SmartAgency.Application.Features.Resources.Command.Create;
 using AppDiv.SmartAgency.Application.Features.Resources.Command.Delete;
 using AppDiv.SmartAgency.Application.Features.Resources.Command.Update;
+using AppDiv.SmartAgency.Application.Features.Resources.Query;
 using AppDiv.SmartAgency.Domain.Enums;
 using AppDiv.SmartAgency.Infrastructure.Authentication;
 using AppDiv.SmartAgency.Utility.Contracts;
@@ -28,11 +29,11 @@ namespace AppDiv.SmartAgency.API.Controllers
             return Ok(response);
         }
 
-        [HasPermission("Resources",PermissionEnum.Read)]
+        [HasPermission("Resource",PermissionEnum.Read)]
         [HttpGet("get-all")]
-        public async Task<ActionResult<ResourceResponseDTO>> GetAllResources(int pageNumber = 1, int pageSize = 10, string? searchTerm = "", string? orderBy = null, SortingDirection sortingDirection = SortingDirection.Ascending)
+        public async Task<ActionResult<IEnumerable<ResourceResponseDTO>>> GetAllResources()
         {
-            return Ok(await _mediator.Send(new GetAllResourcesQuery(pageNumber, pageSize, searchTerm, orderBy, sortingDirection)));
+            return Ok(await _mediator.Send(new GetAllResourcesQuery()));
         }
 
         [HttpGet("get/{id}")]
