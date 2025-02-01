@@ -6,6 +6,7 @@ using System.Security.Authentication;
 using System.Text;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.PartnersDTOs;
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ResourceDTOs;
 
 namespace AppDiv.SmartAgency.Application.Features.Auth.Login;
 public class AuthCommand : IRequest<AuthResponseDTO>
@@ -30,20 +31,25 @@ public class AuthCommandHandler(IIdentityService identityService, ITokenGenerato
         }
 
         var userResponse = new AuthResponseDTO();
-        var explicitLoadedProperties = new string[] { "UserGroups", "UserGroups.Permissions", "Partner", "Partner.Orders", };
+        var explicitLoadedProperties = new string[] { "UserGroups", "UserGroups.Permissions", "UserGroups.Permissions.Resource", "Partner", "Partner.Orders", };
         var userData = await _userRepository.GetWithPredicateAsync(user => user.Id == userId!, explicitLoadedProperties);
 
         var userRoles = userData.UserGroups.SelectMany(ug => ug.Permissions
                                  .Select(r => new PermissionDto
                                  {
-                                     Name = r.Name,
+                                     Resource = new ResourceResponseDTO
+                                     {
+                                         Id = r.Resource.Id,
+                                         Name = r.Resource.Name
+                                     },
                                      Actions = r.Actions.Select(ac => ac.ToString()).ToList()
-                                 })).GroupBy(r => r?.Name?.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
+                                 })).GroupBy(r => r?.Resource.Name?.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
                                  {
-                                     Name = g.Key,
+                                     Resource = new ResourceResponseDTO { Id = g.First().Resource.Id, Name = g.Key },
                                      Actions = g.SelectMany(p => p.Actions).ToList()
                                  }).ToList();
-        IList<string?> permissions = userRoles.Select(perm => perm.Name).ToList();
+        // IList<string?> permissions = [.. userRoles.Select(perm => perm.Resource.Name)];
+        IList<string?> permissions = [.. userRoles.SelectMany(p => p.Actions.Select(ac => $"{p.Resource.Name}.{ac}"))];
         string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, permissions)!);
 
         if (userData.Partner != null)

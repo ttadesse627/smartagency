@@ -100,6 +100,7 @@ namespace AppDiv.SmartAgency.Infrastructure
             services.AddScoped<ISettingRepository, SettingRepository>();
 
             services.AddTransient<IPermissionRepository, PermissionRepository>();
+            services.AddTransient<IResourceRepository, ResourceRepository>();
 
             services.AddHttpContextAccessor();
 

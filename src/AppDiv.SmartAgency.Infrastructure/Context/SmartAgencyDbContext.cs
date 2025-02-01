@@ -20,7 +20,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
     public class SmartAgencyDbContext : AuditIdentityDbContext<ApplicationUser>, ISmartAgencyDbContext
     {
         private readonly IUserResolverService _userResolverService;
-        
+
         public DbSet<Address> Addresses { get; set; } = null!;
         public DbSet<Applicant> Applicants { get; set; } = null!;
         public DbSet<ApplicantFollowupStatus> ApplicantFollowupStatuses { get; set; } = null!;
@@ -130,10 +130,17 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.Ignore<PersonalInfo>();
             }
             #endregion
+
             base.OnModelCreating(modelBuilder);
+
+            #region Seed Data
             SeedData.Seedprocesses(modelBuilder);
             SeedData.SeedprocessDefinitions(modelBuilder);
-            // SeedData.SeedPermissions(modelBuilder);
+            SeedData.SeedResources(modelBuilder);
+            SeedData.SeedGroups(modelBuilder);
+            SeedData.SeedPermissions(modelBuilder);
+            SeedData.SeedLookups(modelBuilder);
+            #endregion
 
             #region Audit Config
             Audit.Core.Configuration.Setup()

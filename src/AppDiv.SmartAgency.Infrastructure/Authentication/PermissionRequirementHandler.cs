@@ -26,7 +26,7 @@ public class PermissionRequirementHandler(IUserRepository userRepository) : Auth
         {
             foreach (var permission in group.Permissions)
             {
-                if (permission.Name == requirement.PermissionName && permission.Actions.Contains(requirement.Action))
+                if (permission.Resource.Name == requirement.PermissionName && permission.Actions.Contains(requirement.Action))
                 {
                     context.Succeed(requirement);
                 }

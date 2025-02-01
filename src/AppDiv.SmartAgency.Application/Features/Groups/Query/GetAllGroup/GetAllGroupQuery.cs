@@ -1,4 +1,5 @@
 using AppDiv.SmartAgency.Application.Contracts.DTOs.GroupDTOs;
+using AppDiv.SmartAgency.Application.Contracts.DTOs.ResourceDTOs;
 using AppDiv.SmartAgency.Application.Interfaces.Persistence;
 using AppDiv.SmartAgency.Utility.Contracts;
 using MediatR;
@@ -30,7 +31,7 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
                 Permissions = ug.Permissions.Select(p => new PermissionDto
                 {
                     Id = p.Id,
-                    Name = p.Name,
+                    Resource = new ResourceResponseDTO { Id = p.Resource.Id, Name = p.Resource.Name },
                     Actions = p.Actions.Select(ac => ac.ToString()).ToList()
                 }).ToList()
             });

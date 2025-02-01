@@ -38,7 +38,7 @@ public class UserRepository(SmartAgencyDbContext context) : BaseRepository<Appli
         ApplicationUser? user = await _context.Users.Include(user => user.UserGroups).ThenInclude(ug => ug.Permissions).FirstOrDefaultAsync(user => user.Id == userId);
         if (user is not null)
         {
-            permissions = user.UserGroups.SelectMany(ug => ug.Permissions).Where(per => per.Name == controllerName).ToList();
+            permissions = [.. user.UserGroups.SelectMany(ug => ug.Permissions).Where(per => per.Resource.Name == controllerName)];
         }
         else throw new NotFoundException("User", userId);
         return permissions;
@@ -47,7 +47,8 @@ public class UserRepository(SmartAgencyDbContext context) : BaseRepository<Appli
     {
         var permissionExists = await _context.Users.Include(user => user.UserGroups)
                             .ThenInclude(ug => ug.Permissions)
-                            .AnyAsync(user => user.Id == userId && user.UserGroups.SelectMany(ug => ug.Permissions).Any(per => per.Name == controllerName));
+                            .ThenInclude(p => p.Resource)
+                            .AnyAsync(user => user.Id == userId && user.UserGroups.SelectMany(ug => ug.Permissions).Any(per => per.Resource.Name == controllerName));
 
         return permissionExists;
     }
