@@ -12,7 +12,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
         var userId = context.User.Claims.Where(cl => cl.Type == "UserId").FirstOrDefault()?.Value;
-        if (context.User is null)
+        if (userId is null)
         {
             context.Fail(new AuthorizationFailureReason(this, "No user found!"));
         }

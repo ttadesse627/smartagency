@@ -6,5 +6,5 @@ public class PermissionDto
 {
     public Guid Id { get; set; }
     public ResourceResponseDTO Resource { get; set; } = null!;
-    public List<string> Actions { get; set; } = [];
+    public List<PermissionEnum> Actions { get; set; } = [];
 }
