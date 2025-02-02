@@ -76,37 +76,36 @@ namespace AppDiv.SmartAgency.Infrastructure.Seed
             var userGroupId = Guid.Parse("5a41ae30-1bd5-43ce-8e0d-28582b3eecd2");
 
             var permissionsList = new List<Permission>
-    {
-        new()
-        {
-            Id = Guid.Parse("55555555-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-            ResourceId = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-            GroupId = userGroupId,
-            Actions = permissions
-        },
-        new()
-        {
-            Id = Guid.Parse("66666666-cccc-cccc-cccc-cccccccccccc"),
-            ResourceId = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-            GroupId = userGroupId,
-            Actions = permissions
-        },
-        new()
-        {
-            Id = Guid.Parse("d4444444-0505-0505-0505-050505050505"),
-            ResourceId = Guid.Parse("05050505-0505-0505-0505-050505050505"),
-            GroupId = userGroupId,
-            Actions = permissions
-        },
-        new()
-        {
-            Id = Guid.Parse("11111111-0707-0707-0707-070707070707"),
-            ResourceId = Guid.Parse("07070707-0707-0707-0707-070707070707"),
-            GroupId = userGroupId,
-            Actions = permissions
-        }
-    };
-
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    ResourceId = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
+                    UserGroupId = userGroupId,
+                    Actions = permissions
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    ResourceId = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc"),
+                    UserGroupId = userGroupId,
+                    Actions = permissions
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    ResourceId = Guid.Parse("05050505-0505-0505-0505-050505050505"),
+                    UserGroupId = userGroupId,
+                    Actions = permissions
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    ResourceId = Guid.Parse("07070707-0707-0707-0707-070707070707"),
+                    UserGroupId = userGroupId,
+                    Actions = permissions
+                }
+            };
             builder.Entity<Permission>().HasData(permissionsList);
         }
         internal static void SeedLookups(ModelBuilder builder)
@@ -123,9 +122,7 @@ namespace AppDiv.SmartAgency.Infrastructure.Seed
                 new() { Id = Guid.NewGuid(), Category = "Branch", Value = "Bahir Dar" },
                 new() { Id = Guid.NewGuid(), Category = "Position", Value = "Secretary" },
             };
-
             builder.Entity<LookUp>().HasData(lookUps);
         }
-
     }
 }

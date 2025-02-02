@@ -42,7 +42,7 @@ public class AuthCommandHandler(IIdentityService identityService, ITokenGenerato
                                          Id = r.Resource.Id,
                                          Name = r.Resource.Name
                                      },
-                                     Actions = r.Actions.Select(ac => ac.ToString()).ToList()
+                                     Actions = r.Actions
                                  })).GroupBy(r => r?.Resource.Name?.Trim(), StringComparer.OrdinalIgnoreCase).Select(g => new PermissionDto
                                  {
                                      Resource = new ResourceResponseDTO { Id = g.First().Resource.Id, Name = g.Key },

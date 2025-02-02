@@ -22,33 +22,32 @@ namespace AppDiv.SmartAgency.Application.Features.Groups.Query.GetAllGroups
 
         public async Task<SearchModel<FetchGroupDTO>> Handle(GetAllGroupQuery request, CancellationToken cancellationToken)
         {
-            var userGroups = _groupRepository.GetMultipleUserGroupsBySearch(request.SearchTerm);
-            var paginatedUsers = await _groupRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, userGroups, request.OrderBy);
-            var groupResponse = paginatedUsers.Items.Select(ug => new FetchGroupDTO
+            var userGroups = await _groupRepository.GetAllWithPredicateSearchAsync(request.PageNumber, request.PageSize, request.SearchTerm, request.OrderBy, request.SortingDirection, null, "Permissions.Resource");
+            // var userGroups = await _groupRepository.PaginateItems(request.PageNumber, request.PageSize, request.SortingDirection, userGroups, request.OrderBy);
+            var groupResponse = userGroups.Items.Select(ug => new FetchGroupDTO
             {
                 Id = ug.Id,
                 Name = ug.Name,
-                Permissions = ug.Permissions.Select(p => new PermissionDto
+                Permissions = [.. ug.Permissions.Select(p => new PermissionDto
                 {
                     Id = p.Id,
                     Resource = new ResourceResponseDTO { Id = p.Resource.Id, Name = p.Resource.Name },
-                    Actions = p.Actions.Select(ac => ac.ToString()).ToList()
-                }).ToList()
+                    Actions = p.Actions
+                })]
             });
             return new SearchModel<FetchGroupDTO>
             {
                 Items = groupResponse,
-                CurrentPage = paginatedUsers.CurrentPage,
-                MaxPage = paginatedUsers.MaxPage,
-                TotalCount = paginatedUsers.TotalCount,
-                SearchKeyWord = paginatedUsers.SearchKeyWord,
-                PagingSize = paginatedUsers.PagingSize,
-                Filters = paginatedUsers.Filters,
-                ObjectFilters = paginatedUsers.ObjectFilters,
-                SortingColumn = paginatedUsers.SortingColumn,
-                SortingDirection = paginatedUsers.SortingDirection,
-                Tags = paginatedUsers.Tags,
-
+                CurrentPage = userGroups.CurrentPage,
+                MaxPage = userGroups.MaxPage,
+                TotalCount = userGroups.TotalCount,
+                SearchKeyWord = userGroups.SearchKeyWord,
+                PagingSize = userGroups.PagingSize,
+                Filters = userGroups.Filters,
+                ObjectFilters = userGroups.ObjectFilters,
+                SortingColumn = userGroups.SortingColumn,
+                SortingDirection = userGroups.SortingDirection,
+                Tags = userGroups.Tags,
             };
         }
     }

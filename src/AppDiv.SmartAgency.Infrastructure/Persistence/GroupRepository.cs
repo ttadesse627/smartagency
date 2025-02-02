@@ -12,11 +12,11 @@ namespace AppDiv.SmartAgency.Infrastructure.Persistence
 
         public async Task<bool> CheckPermissionsAsync(string userId, string permissionName, PermissionEnum action)
         {
-            var permissionExists = await _context.UserGroups.Include(ug => ug.Permissions).ThenInclude(p => p.Resource)
-                            .Include(ug => ug.AppUsers)
-                            .AnyAsync(ug => ug.AppUsers.Where(user => user.Id == userId).First() != null && ug.Permissions.Any(per => per.Resource.Name == permissionName && per.Actions.Contains(action)));
+            var permissions = await _context.Permissions
+                            .Where(p => p.UserGroup.AppUsers.Any(user => user.Id == userId) && p.Resource.Name == permissionName).ToListAsync();
 
-            return permissionExists;
+
+            return permissions.Any(p => p.Actions.Contains(action));
         }
 
         public async Task<List<UserGroup>> GetMultipleUserGroups(ICollection<Guid> groupIds)

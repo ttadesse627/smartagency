@@ -89,7 +89,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
             #region Entity Configuration
             {
                 modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
-                modelBuilder.ApplyConfiguration(new UserGroupEntityConfig());
                 modelBuilder.ApplyConfiguration(new AddressEntityConfig());
                 modelBuilder.ApplyConfiguration(new ApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new BeneficiaryEntityConfig());
@@ -126,7 +125,6 @@ namespace AppDiv.SmartAgency.Infrastructure.Context
                 modelBuilder.ApplyConfiguration(new TraveledApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new RequestedApplicantEntityConfig());
                 modelBuilder.ApplyConfiguration(new LoginHistoryEntityConfig());
-                modelBuilder.ApplyConfiguration(new PermissionEntityConfig());
                 modelBuilder.Ignore<PersonalInfo>();
             }
             #endregion
