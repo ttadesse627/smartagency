@@ -33,6 +33,7 @@ public class AuthCommandHandler(IIdentityService identityService, ITokenGenerato
         var userResponse = new AuthResponseDTO();
         var explicitLoadedProperties = new string[] { "UserGroups", "UserGroups.Permissions", "UserGroups.Permissions.Resource", "Partner", "Partner.Orders", };
         var userData = await _userRepository.GetWithPredicateAsync(user => user.Id == userId!, explicitLoadedProperties);
+        var userGroupIds = string.Join(",", userData.UserGroups.Select(ug => ug.Id));
 
         var userRoles = userData.UserGroups.SelectMany(ug => ug.Permissions
                                  .Select(r => new PermissionDto
@@ -49,8 +50,8 @@ public class AuthCommandHandler(IIdentityService identityService, ITokenGenerato
                                      Actions = g.SelectMany(p => p.Actions).ToList()
                                  }).ToList();
         // IList<string?> permissions = [.. userRoles.Select(perm => perm.Resource.Name)];
-        IList<string?> permissions = [.. userRoles.SelectMany(p => p.Actions.Select(ac => $"{p.Resource.Name}.{ac}"))];
-        string token = _tokenGenerator.GenerateJWTToken((userData.Id, userData.UserName, permissions)!);
+        // IList<string?> permissions = [.. userRoles.SelectMany(p => p.Actions.Select(ac => $"{p.Resource.Name}.{ac}"))];
+        string token = _tokenGenerator.GenerateJWTToken((userData.Id, userGroupIds)!);
 
         if (userData.Partner != null)
         {
