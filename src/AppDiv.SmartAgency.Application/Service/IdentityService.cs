@@ -18,7 +18,7 @@ namespace AppDiv.SmartAgency.Application.Service
         private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly HelperService _helperService = helperService;
-        private static readonly string[] errors = new string[] { "could not find user with the given email" };
+        private static readonly string[] errors = ["could not find user with the given email"];
 
         public async Task<bool> AssignUserToRole(string userName, IList<string> roles)
         {
@@ -69,10 +69,11 @@ namespace AppDiv.SmartAgency.Application.Service
             else
             {
                 var userGroupIds = string.Join(",", user.UserGroups.Select(ug => ug.Id));
-                await _userManager.AddClaimsAsync(user, [
-                    new Claim("UserId", user.Id),
-                    new Claim("UserGroupIds", userGroupIds)
-                ]);
+                await _userManager.AddClaimsAsync(user,
+                    [
+                        new Claim("UserId", user.Id),
+                        new Claim("UserGroupIds", userGroupIds)
+                    ]);
                 string userId = await _userManager.GetUserIdAsync(user);
                 response.Success = true;
                 response.Message = $"Successfully created with new Id {userId}";

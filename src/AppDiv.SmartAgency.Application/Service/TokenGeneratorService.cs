@@ -12,20 +12,18 @@ namespace AppDiv.SmartAgency.Application.Service
         private readonly string _issuer = issueer;
         private readonly string _audience = audience;
         private readonly string _expiryMinutes = expiryMinutes;
-        public string GenerateJWTToken((string userId, string userName, IList<string> permissions) userDetails)
+        public string GenerateJWTToken((string userId, string userGroupIds) userDetails)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var (userId, userName, permissions) = userDetails;
+            var (userId, userGroupIds) = userDetails;
 
             var claims = new List<Claim>()
             {
-                new(JwtRegisteredClaimNames.Sub, userId),
-                new(JwtRegisteredClaimNames.Jti, userName),
-                new(ClaimTypes.Name, userName),
+                new("UserId", userId),
+                new("UserGroupIds", userGroupIds)
             };
-            claims.AddRange(permissions.Select(role => new Claim(CustomClaims.Permissions, role)));
 
             var token = new JwtSecurityToken(
                 issuer: _issuer,
