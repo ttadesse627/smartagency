@@ -12,19 +12,20 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
         var userId = context.User.Claims.Where(cl => cl.Type == "UserId").FirstOrDefault()?.Value;
-        if (userId is null)
+        string? groupIds = context.User.Claims.Where(claim => claim.Type == "UserGroupIds").FirstOrDefault()?.Value;
+        if (userId is null || string.IsNullOrEmpty(groupIds))
         {
             context.Fail(new AuthorizationFailureReason(this, "No user found!"));
         }
-        // Get the user's permissions from claims (assuming permissions are stored in claims)
-
-        // Check if the user has the required permission
-        var requiredPermission = await _groupRepository.CheckPermissionsAsync(userId, requirement.PermissionName, requirement.Action);
-        if (requiredPermission)
+        else
         {
-            context.Succeed(requirement);
+            var requiredPermission = await _groupRepository.CheckPermissionsAsync(groupIds, requirement.PermissionName, requirement.Action);
+            if (requiredPermission)
+            {
+                context.Succeed(requirement);
+            }
+            else context.Fail(new AuthorizationFailureReason(this, "You're not authorized!"));
         }
-        else context.Fail(new AuthorizationFailureReason(this, "You're not authorized!"));
 
     }
 }

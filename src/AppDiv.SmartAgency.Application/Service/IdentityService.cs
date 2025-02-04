@@ -68,7 +68,11 @@ namespace AppDiv.SmartAgency.Application.Service
             }
             else
             {
-                await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id));
+                var userGroupIds = string.Join(",", user.UserGroups.Select(ug => ug.Id));
+                await _userManager.AddClaimsAsync(user, [
+                    new Claim("UserId", user.Id),
+                    new Claim("UserGroupIds", userGroupIds)
+                ]);
                 string userId = await _userManager.GetUserIdAsync(user);
                 response.Success = true;
                 response.Message = $"Successfully created with new Id {userId}";
