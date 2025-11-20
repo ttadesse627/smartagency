@@ -1,3 +1,104 @@
+# SmartAgency
+
+SmartAgency is an ASP.NET Core microservice-style API for managing applicants, processes, tickets, partners and related resources. The solution is structured into layered projects (API, Application, Domain, Infrastructure, Utility) and includes authentication (JWT), persistence and unit tests for application logic.
+
+## Key features
+
+- REST API endpoints for applicants, orders, tickets, resources and more (see `src/AppDiv.SmartAgency.API/Controllers`).
+- JWT-based authentication and token validation (see `appsettings.json` and `JwtSettings`).
+- Clean layered architecture: `Application`, `Domain`, `Infrastructure`, `API`, and `Utility` projects.
+- Unit tests for application services located under `tests/AppDiv.SmartAgency.Application.UnitTests`.
+
+## When this is useful
+
+Use this project as a starting point for building an agency/CRM-like backend that requires: authentication, role/permission checks, process tracking and extensible domain logic separated from transport and persistence concerns.
+
+## Getting started (developer)
+
+Prerequisites
+
+- .NET SDK 10.0 (or the SDK version used by the solution)
+- A database engine compatible with the project's EF Core setup (check `src/AppDiv.SmartAgency.Infrastructure/Context` and `Migrations`).
+
+Clone the repository
+
+```batch
+git clone https://github.com/ttadesse627/smartagency.git
+cd smartagency
+```
+
+Build the solution
+
+```batch
+dotnet build SmartAgency.sln
+```
+
+Run the API locally
+
+```batch
+dotnet run --project src/AppDiv.SmartAgency.API/AppDiv.SmartAgency.API.csproj
+```
+
+Run the unit tests
+
+```batch
+dotnet test tests/AppDiv.SmartAgency.Application.UnitTests/AppDiv.SmartAgency.Application.UnitTests.csproj
+```
+
+Configuration
+
+- Application configuration lives in `src/AppDiv.SmartAgency.API/appsettings.json` (and `appsettings.Development.json`).
+- The API uses a `JwtSettings` section for token configuration — ensure values for `Issuer`, `Audience`, `SecretKey` and `ExpiryMinutes` are set.
+- Connection strings and environment-specific secrets should be supplied using environment variables or `appsettings.Development.json` during development.
+
+Quick API test (example)
+
+1. Start the API.
+2. Obtain a JWT token via the authentication endpoint (see `AuthController`).
+3. Call a secured endpoint, for example:
+
+```bash
+curl -H "Authorization: Bearer <token>" https://localhost:5001/api/Applicant
+```
+
+Replace port and route as needed (check the server output when the app starts).
+
+## Project layout (important files)
+
+- `src/AppDiv.SmartAgency.API/` — Web API project and controllers.
+- `src/AppDiv.SmartAgency.Application/` — Application services, DTOs, mapping and features.
+- `src/AppDiv.SmartAgency.Domain/` — Domain entities, enums and domain utilities.
+- `src/AppDiv.SmartAgency.Infrastructure/` — Persistence, EF Core `DbContext`, migrations, and external integrations.
+- `src/AppDiv.SmartAgency.Utility/` — Shared helpers and utilities.
+- `tests/` — Unit test projects.
+
+## Extending and contributing
+
+- Follow standard GitHub flow: branch from `master`, open a PR back to `master`.
+- For contribution guidelines, add or consult `docs/CONTRIBUTING.md` or `.github/CONTRIBUTING.md` (create if needed).
+- File an issue if you find bugs or have feature requests.
+
+## Help and support
+
+- For repo-specific questions, open an issue in this repository.
+- For urgent local setup problems, inspect logs produced by the API and ensure your `appsettings.*.json` and environment variables are set correctly.
+
+## License
+
+See the `LICENSE` file in the repository root for licensing details.
+
+## Maintainers
+
+Maintained by the project owner and contributors. See the repository `Insights` / `Contributors` on GitHub for details.
+
+---
+
+If you'd like, I can also add a small `docs/` folder with CONTRIBUTING and a quick architecture diagram. Want me to scaffold that next?
+
+
+
+
+
 # Smart Agency
 
 ## Getting started
